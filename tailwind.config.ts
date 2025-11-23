@@ -17,6 +17,9 @@ export default {
       },
     },
     extend: {
+      backgroundImage: {
+        'header-background': "url('/images/header.jpg')",
+      },
       fontFamily: {
         body: ['Inter', 'sans-serif'],
         headline: ['Cormorant Garamond', 'serif'],
