@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -7,10 +8,6 @@ import { z } from 'zod';
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,16 +26,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Image from 'next/image';
-import placeholderImagesData from '@/lib/placeholder-images.json';
-
-const { placeholderImages } = placeholderImagesData;
 
 
 const registerSchema = z.object({
-    name: z.string().min(2, { message: 'Der Name muss mindestens 2 Zeichen lang sein.' }),
-    email: z.string().email({ message: 'Ungültige E-Mail-Adresse.' }),
-    password: z.string().min(6, { message: 'Das Passwort muss mindestens 6 Zeichen lang sein.' }),
+    name: z.string().min(2, { message: 'Le nom doit contenir au moins 2 caractères.' }),
+    email: z.string().email({ message: 'Adresse e-mail invalide.' }),
+    password: z.string().min(6, { message: 'Le mot de passe doit contenir au moins 6 caractères.' }),
 });
 
 type RegisterFormInputs = z.infer<typeof registerSchema>;
@@ -47,7 +40,6 @@ export default function RegisterPage() {
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
-  const registerImage = placeholderImages.find(img => img.id === 'womens-category');
 
   const form = useForm<RegisterFormInputs>({
     resolver: zodResolver(registerSchema),
@@ -69,16 +61,19 @@ export default function RegisterPage() {
       }
 
       toast({
-        title: 'Konto erfolgreich erstellt',
-        description: 'Willkommen! Sie werden in Kürze weitergeleitet.',
+        title: 'Compte créé avec succès',
+        description: 'Bienvenue ! Vous allez être redirigé.',
       });
       router.push('/account');
     } catch (error: any) {
       console.error(error);
+       const errorMessage = error.code === 'auth/email-already-in-use' 
+        ? 'Cette adresse e-mail est déjà utilisée.'
+        : 'Une erreur est survenue lors de l\'inscription.';
       toast({
         variant: 'destructive',
-        title: 'Registrierung fehlgeschlagen',
-        description: error.message,
+        title: 'Échec de l\'inscription',
+        description: errorMessage,
       });
     }
   };
@@ -88,117 +83,102 @@ export default function RegisterPage() {
         const provider = new GoogleAuthProvider();
         await signInWithPopup(auth, provider);
         toast({
-            title: 'Erfolgreich angemeldet',
-            description: 'Willkommen!',
+            title: 'Connexion réussie',
+            description: 'Bienvenue !',
         });
         router.push('/account');
     } catch (error: any) {
         console.error(error);
         toast({
             variant: 'destructive',
-            title: 'Google-Anmeldung fehlgeschlagen',
+            title: 'Échec de la connexion Google',
             description: error.message,
         });
     }
   }
 
   return (
-    <div className="grid min-h-[calc(100vh-80px)] w-full grid-cols-1 lg:grid-cols-2">
-       <div className="flex items-center justify-center p-4 sm:p-8 md:p-12">
-        <Card className="w-full max-w-md border-0 shadow-none sm:border sm:shadow">
-            <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-headline md:text-3xl">
-                <TranslatedText fr="Créer un compte">Konto erstellen</TranslatedText>
-            </CardTitle>
-            <CardDescription>
-                <TranslatedText fr="Rejoignez le monde d'EZCENTIALS.">Treten Sie der Welt von EZCENTIALS bei.</TranslatedText>
-            </CardDescription>
-            </CardHeader>
-            <CardContent>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-                <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel><TranslatedText fr="Nom">Name</TranslatedText></FormLabel>
-                            <FormControl>
-                                <Input placeholder="Jane Doe" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel><TranslatedText fr="Email">Email</TranslatedText></FormLabel>
-                            <FormControl>
-                                <Input type="email" placeholder="m@example.com" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel><TranslatedText fr="Mot de passe">Passwort</TranslatedText></FormLabel>
-                            <FormControl>
-                                <Input type="password" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button type="submit" className="w-full mt-4" size="lg" disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? 'Erstellen...' : <TranslatedText fr="Créer un compte">Konto erstellen</TranslatedText>}
-                </Button>
-                </form>
-            </Form>
+    <div className="flex min-h-[calc(100vh-80px)] w-full flex-col items-center justify-center p-4">
+        <div className="mb-8 text-center">
+            <h1 className="font-headline text-5xl tracking-tighter">EZCENTIALS</h1>
+            <p className="mt-2 text-sm uppercase tracking-widest text-muted-foreground"><TranslatedText fr="COLLECTION PREMIUM">PREMIUM COLLECTION</TranslatedText></p>
+        </div>
 
-            <div className="relative my-6">
-                <div className="absolute inset-0 flex items-center">
-                    <Separator />
+        <Card className="w-full max-w-sm rounded-2xl border-none shadow-lg">
+            <CardContent className="p-8">
+                <h2 className="mb-6 text-2xl font-semibold"><TranslatedText fr="Créer un compte">Créer un compte</TranslatedText></h2>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel><TranslatedText fr="Nom complet">Nom complet</TranslatedText></FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Jane Doe" {...field} className="border-0 bg-input" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel><TranslatedText fr="Email">Email</TranslatedText></FormLabel>
+                                    <FormControl>
+                                        <Input type="email" placeholder="votre@email.com" {...field} className="border-0 bg-input" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel><TranslatedText fr="Mot de passe">Mot de passe</TranslatedText></FormLabel>
+                                    <FormControl>
+                                        <Input type="password" placeholder="********" {...field} className="border-0 bg-input"/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Button type="submit" className="w-full mt-4 rounded-full" size="lg" disabled={form.formState.isSubmitting}>
+                            {form.formState.isSubmitting ? 'Création...' : <TranslatedText fr="Créer un compte">Créer un compte</TranslatedText>}
+                        </Button>
+                    </form>
+                </Form>
+
+                <div className="relative my-6">
+                    <div className="absolute inset-0 flex items-center">
+                        <Separator />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-card px-2 text-muted-foreground">
+                            <TranslatedText fr="Ou">OU</TranslatedText>
+                        </span>
+                    </div>
                 </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-2 text-muted-foreground">
-                    <TranslatedText fr="Ou continuer avec">Oder weiter mit</TranslatedText>
-                    </span>
+                
+                <GoogleSignInButton onClick={handleGoogleSignIn}>
+                    <TranslatedText fr="S'inscrire avec Google">S'inscrire avec Google</TranslatedText>
+                </GoogleSignInButton>
+                
+                <div className="mt-6 text-center text-sm">
+                    <p className="text-muted-foreground">
+                        <TranslatedText fr="Vous avez déjà un compte ?">Vous avez déjà un compte ?</TranslatedText>{' '}
+                        <Link href="/login" className="font-semibold text-foreground hover:underline">
+                            <TranslatedText fr="Se connecter">Se connecter</TranslatedText>
+                        </Link>
+                    </p>
                 </div>
-            </div>
-            <GoogleSignInButton onClick={handleGoogleSignIn}>
-                <TranslatedText fr="S'inscrire avec Google">Mit Google registrieren</TranslatedText>
-            </GoogleSignInButton>
             </CardContent>
-            <CardFooter className="justify-center text-sm">
-            <p className="text-muted-foreground">
-                <TranslatedText fr="Vous avez déjà un compte ?">Haben Sie bereits ein Konto?</TranslatedText>{' '}
-                <Link href="/login" className="font-semibold text-primary hover:underline">
-                <TranslatedText fr="Se connecter">Anmelden</TranslatedText>
-                </Link>
-            </p>
-            </CardFooter>
         </Card>
-       </div>
-       <div className="relative hidden lg:block">
-            {registerImage && (
-                <Image
-                    src={registerImage.imageUrl}
-                    alt="Elegantes Model"
-                    fill
-                    className="object-cover"
-                    sizes="50vw"
-                    data-ai-hint={registerImage.imageHint}
-                />
-            )}
-            <div className="absolute inset-0 bg-black/20" />
-       </div>
     </div>
   );
 }
