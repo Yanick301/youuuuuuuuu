@@ -23,7 +23,7 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col">
-      <section className="relative h-[60vh] w-full text-white">
+      <section className="relative h-[80vh] w-full text-foreground">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
@@ -34,7 +34,7 @@ export default function HomePage() {
             data-ai-hint="fashion model"
           />
         )}
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-white/30" />
         <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
           <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl">
             <TranslatedText fr="EZCENTIALS">EZCENTIALS</TranslatedText>
@@ -57,55 +57,40 @@ export default function HomePage() {
           <h2 className="mb-12 text-center font-headline text-3xl md:text-4xl">
             <TranslatedText fr="Acheter par catégorie">Nach Kategorie einkaufen</TranslatedText>
           </h2>
-          <Carousel
-            opts={{
-              align: 'start',
-              loop: true,
-            }}
-            className="w-full"
-          >
-            <CarouselContent>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8">
               {categories.map((category) => {
                 const categoryImage = placeholderImages.find(
                   (p) => p.id === category.imageId
                 );
                 return (
-                  <CarouselItem
-                    key={category.id}
-                    className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/5"
-                  >
-                    <Link
+                  <Link
+                      key={category.id}
                       href={`/products/${category.slug}`}
-                      className="group relative block h-full overflow-hidden rounded-md"
+                      className="group relative block aspect-[3/4] h-full overflow-hidden rounded-md"
                     >
                       {categoryImage && (
                         <Image
                           src={categoryImage.imageUrl}
                           alt={category.name}
-                          width={400}
-                          height={500}
+                          fill
                           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                           data-ai-hint={categoryImage.imageHint}
                         />
                       )}
-                      <div className="absolute inset-0 bg-black/30" />
+                      <div className="absolute inset-0 bg-black/20" />
                       <div className="absolute inset-0 flex items-center justify-center">
                         <h3 className="font-headline text-2xl text-white">
                           <TranslatedText fr={category.name_fr}>{category.name}</TranslatedText>
                         </h3>
                       </div>
                     </Link>
-                  </CarouselItem>
                 );
               })}
-            </CarouselContent>
-            <CarouselPrevious className="hidden md:flex" />
-            <CarouselNext className="hidden md:flex" />
-          </Carousel>
+          </div>
         </div>
       </section>
 
-      <section className="w-full bg-card py-16 lg:py-24">
+      <section className="w-full bg-background py-16 lg:py-24">
         <div className="container mx-auto px-4">
           <h2 className="mb-12 text-center font-headline text-3xl md:text-4xl">
             <TranslatedText fr="Collection d'hiver">Winterkollektion</TranslatedText>

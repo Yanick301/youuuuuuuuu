@@ -17,7 +17,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['Cormorant Garamond', 'serif'],
+        body: ['Inter', 'sans-serif'],
         headline: ['Cormorant Garamond', 'serif'],
         code: ['monospace'],
       },

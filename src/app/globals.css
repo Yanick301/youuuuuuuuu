@@ -13,26 +13,26 @@
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
  
-    --primary: 48 96% 53%;
-    --primary-foreground: 35 92% 15%;
+    --primary: 224 71.4% 4.1%;
+    --primary-foreground: 0 0% 98%;
  
-    --secondary: 215 20.2% 65.1%;
+    --secondary: 220 13% 91%;
     --secondary-foreground: 224 71.4% 4.1%;
  
-    --muted: 215 27.9% 92.5%;
-    --muted-foreground: 215 20.2% 45.1%;
+    --muted: 220 13% 91%;
+    --muted-foreground: 220 9% 46%;
  
-    --accent: 215 27.9% 92.5%;
+    --accent: 220 13% 91%;
     --accent-foreground: 224 71.4% 4.1%;
  
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 215 20.2% 65.1%;
-    --input: 215 27.9% 92.5%;
-    --ring: 48 96% 53%;
+    --border: 220 13% 81%;
+    --input: 220 13% 81%;
+    --ring: 224 71.4% 4.1%;
  
-    --radius: 0.5rem;
+    --radius: 0.3rem;
 
     /* Chart variables */
     --chart-1: 12 76% 61%;
@@ -44,10 +44,10 @@
     /* Sidebar Variables */
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 224 71.4% 4.1%;
-    --sidebar-border: 215 20.2% 65.1%;
-    --sidebar-accent: 215 27.9% 92.5%; 
+    --sidebar-border: 220 13% 81%;
+    --sidebar-accent: 220 13% 91%; 
     --sidebar-accent-foreground: 224 71.4% 4.1%;
-    --sidebar-ring: 48 96% 53%;
+    --sidebar-ring: 224 71.4% 4.1%;
   }
 
   .dark {
@@ -60,24 +60,24 @@
     --popover: 224 71.4% 4.1%;
     --popover-foreground: 0 0% 98%;
  
-    --primary: 48 96% 53%;
-    --primary-foreground: 35 92% 15%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 224 71.4% 4.1%;
  
-    --secondary: 215 20.2% 25.1%;
+    --secondary: 220 13% 18%;
     --secondary-foreground: 0 0% 98%;
  
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 13% 18%;
+    --muted-foreground: 220 9% 65%;
  
-    --accent: 215 27.9% 16.9%;
+    --accent: 220 13% 18%;
     --accent-foreground: 0 0% 98%;
  
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
  
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 48 96% 53%;
+    --border: 220 13% 28%;
+    --input: 220 13% 28%;
+    --ring: 0 0% 98%;
     
     /* Chart variables */
     --chart-1: 220 70% 50%;
@@ -89,29 +89,14 @@
     /* Sidebar Variables */
     --sidebar-background: 224 71.4% 4.1%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-border: 215 27.9% 16.9%;
-    --sidebar-accent: 215 27.9% 16.9%; 
+    --sidebar-border: 220 13% 28%;
+    --sidebar-accent: 220 13% 18%; 
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-ring: 48 96% 53%;
+    --sidebar-ring: 0 0% 98%;
   }
 }
 
 @layer base {
-  @keyframes gradient-animation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  @keyframes stars {
-    0% {
-      transform: translateY(0px);
-    }
-    100% {
-      transform: translateY(-2000px);
-    }
-  }
-
   html {
     @apply scroll-smooth;
   }
@@ -119,51 +104,6 @@
     @apply border-border;
   }
   body {
-    @apply text-foreground bg-background;
-    /* Using a dark, subtle gradient for the background */
-    background: linear-gradient(-45deg, #0a0a0a, #1a1a1a, #0a0a0a, #232323);
-    background-size: 400% 400%;
-    animation: gradient-animation 25s ease infinite;
-    position: relative;
-    overflow-x: hidden;
+    @apply bg-background text-foreground;
   }
-  
-  .stars-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 200%;
-    transform: rotate(25deg);
-    animation: stars 200s linear infinite;
-  }
-
-  .star {
-    position: absolute;
-    background: white;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: twinkle 2s infinite ease-in-out;
-  }
-  
-  @keyframes twinkle {
-    0% { opacity: 0.2; }
-    50% { opacity: 1; }
-    100% { opacity: 0.2; }
-  }
-
-
-   /* Make cards and other elements semi-transparent to see the background */
-   .bg-background {
-    background-color: hsla(var(--background), 0.8);
-   }
-   .bg-card {
-    background-color: hsla(var(--card), 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-   }
-
-   header {
-     background-color: hsla(var(--background), 0.6) !important;
-   }
 }

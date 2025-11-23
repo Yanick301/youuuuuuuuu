@@ -19,35 +19,27 @@ export function ProductCard({ product }: ProductCardProps) {
   const productImage = placeholderImages.find(p => p.id === product.images[0]);
 
   return (
-    <Card className="group flex h-full flex-col overflow-hidden rounded-lg border-border bg-card shadow-sm transition-shadow hover:shadow-lg">
+    <div className="group flex h-full flex-col overflow-hidden rounded-lg">
         <Link href={`/product/${product.slug}`} className="block">
-            <CardHeader className="p-0">
-                <div className="relative block aspect-[3/4] w-full overflow-hidden">
-                    {productImage && (
-                    <Image
-                        src={productImage.imageUrl}
-                        alt={product.name}
-                        fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        data-ai-hint={productImage.imageHint}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                    )}
-                </div>
-            </CardHeader>
+            <div className="relative block aspect-[3/4] w-full overflow-hidden rounded-md">
+                {productImage && (
+                <Image
+                    src={productImage.imageUrl}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    data-ai-hint={productImage.imageHint}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+                )}
+            </div>
         </Link>
-        <CardContent className="p-4 flex-grow flex flex-col">
-            <h3 className="font-semibold leading-snug flex-grow">
+        <div className="p-4 text-center">
+            <h3 className="font-headline text-lg leading-snug">
                 <Link href={`/product/${product.slug}`}><TranslatedText fr={product.name_fr}>{product.name}</TranslatedText></Link>
             </h3>
-            <p className="text-sm text-muted-foreground mt-2">${product.price.toFixed(2)}</p>
-        </CardContent>
-        <CardFooter className="p-4 pt-0 flex gap-2">
-            <AddToCartButton product={product} variant="outline" className="w-full">
-                <TranslatedText fr="Ajouter au panier">In den Warenkorb</TranslatedText>
-            </AddToCartButton>
-            <AddToFavoritesButton productId={product.id} variant="outline" />
-        </CardFooter>
-    </Card>
+            <p className="text-sm text-muted-foreground mt-1">${product.price.toFixed(2)}</p>
+        </div>
+    </div>
   );
 }
