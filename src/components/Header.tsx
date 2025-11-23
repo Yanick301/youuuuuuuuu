@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -68,7 +67,14 @@ export function Header() {
         </div>
 
         {/* Desktop Logo (Centered) - Mobile Logo (Left) */}
-        <div className="hidden items-center justify-center lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden">
+           <Link href="/" className="flex items-center space-x-2">
+            <span className="font-bold font-headline text-2xl tracking-wider">
+              EZCENTIALS
+            </span>
+          </Link>
+        </div>
+        <div className="hidden items-center justify-center lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:flex">
           <Link href="/" className="flex items-center space-x-2">
             <span className="hidden font-bold font-headline text-2xl tracking-wider lg:block">
               EZCENTIALS
@@ -100,4 +106,3 @@ export function Header() {
     </header>
   );
 }
-
