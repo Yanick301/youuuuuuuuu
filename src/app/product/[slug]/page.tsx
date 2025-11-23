@@ -1,7 +1,10 @@
 
+'use client';
+
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { Star } from 'lucide-react';
+import { Star, MessageSquare } from 'lucide-react';
+import { useState } from 'react';
 
 import { getProductBySlug, getProductsByCategory } from '@/lib/data';
 import { Button } from '@/components/ui/button';
@@ -12,6 +15,10 @@ import placeholderImagesData from '@/lib/placeholder-images.json';
 import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { TranslatedText } from '@/components/TranslatedText';
 import { AddToFavoritesButton } from '@/components/favorites/AddToFavoritesButton';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
+import { useLanguage } from '@/context/LanguageContext';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -21,23 +28,13 @@ type ProductPageProps = {
   };
 };
 
-export async function generateMetadata({ params }: ProductPageProps) {
-  const product = getProductBySlug(params.slug);
-
-  if (!product) {
-    return {
-      title: 'Produkt nicht gefunden',
-    }
-  }
-
-  return {
-    title: `${product.name} | EZCENTIALS`,
-    description: product.description,
-  };
-}
-
 export default function ProductPage({ params }: ProductPageProps) {
   const product = getProductBySlug(params.slug);
+  const { toast } = useToast();
+  const { language } = useLanguage();
+  const [newReviewRating, setNewReviewRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [newReviewComment, setNewReviewComment] = useState('');
 
   if (!product) {
     notFound();
@@ -49,6 +46,28 @@ export default function ProductPage({ params }: ProductPageProps) {
   
   const mainImage = placeholderImages.find(p => p.id === product.images[0]);
   const altImages = product.images.slice(1).map(id => placeholderImages.find(p => p.id === id));
+
+  const handleReviewSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newReviewRating === 0 || newReviewComment.trim() === '') {
+      toast({
+        variant: 'destructive',
+        title: language === 'fr' ? 'Champs requis' : 'Erforderliche Felder',
+        description: language === 'fr' ? 'Veuillez fournir une note et un commentaire.' : 'Bitte geben Sie eine Bewertung und einen Kommentar ab.',
+      });
+      return;
+    }
+    // In a real app, you would submit this to a backend/database
+    console.log({ rating: newReviewRating, comment: newReviewComment });
+
+    toast({
+      title: language === 'fr' ? 'Avis soumis' : 'Bewertung abgegeben',
+      description: language === 'fr' ? 'Merci pour votre avis !' : 'Vielen Dank für Ihre Bewertung!',
+    });
+
+    setNewReviewRating(0);
+    setNewReviewComment('');
+  };
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -91,7 +110,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           <div className="mt-4 flex items-center gap-2">
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className={`h-5 w-5 ${i < Math.floor(averageRating) ? 'text-primary fill-primary' : 'text-muted'}`} />
+                <Star key={i} className={`h-5 w-5 ${i < Math.floor(averageRating) ? 'text-yellow-500 fill-yellow-500' : 'text-muted'}`} />
               ))}
             </div>
             <span className="text-sm text-muted-foreground">({product.reviews.length} <TranslatedText fr="avis">Bewertungen</TranslatedText>)</span>
@@ -121,22 +140,71 @@ export default function ProductPage({ params }: ProductPageProps) {
               </ul>
             </TabsContent>
             <TabsContent value="reviews" className="mt-4">
-              <div className="space-y-6">
-                {product.reviews.length > 0 ? product.reviews.map((review, index) => (
-                  <div key={index}>
-                    <div className="flex items-center gap-2">
-                      <p className="font-semibold">{review.author}</p>
-                      <div className="flex items-center">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className={`h-4 w-4 ${i < review.rating ? 'text-primary fill-primary' : 'text-muted'}`} />
-                        ))}
+              <div className="space-y-8">
+                {product.reviews.length > 0 ? (
+                  product.reviews.map((review, index) => (
+                    <div key={index}>
+                      <div className="flex items-center gap-2">
+                        <p className="font-semibold">{review.author}</p>
+                        <div className="flex items-center">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className={`h-4 w-4 ${i < review.rating ? 'text-yellow-500 fill-yellow-500' : 'text-muted'}`} />
+                          ))}
+                        </div>
                       </div>
+                      <p className="mt-2 text-sm text-muted-foreground">{review.comment}</p>
                     </div>
-                    <p className="mt-2 text-sm text-muted-foreground">{review.comment}</p>
-                  </div>
-                )) : (
-                  <p><TranslatedText fr="Pas encore d'avis.">Noch keine Bewertungen.</TranslatedText></p>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground"><TranslatedText fr="Pas encore d'avis pour ce produit.">Noch keine Bewertungen für dieses Produkt.</TranslatedText></p>
                 )}
+
+                <Separator />
+
+                <div>
+                    <h3 className="text-lg font-semibold mb-4"><TranslatedText fr="Laissez votre avis">Hinterlassen Sie eine Bewertung</TranslatedText></h3>
+                    <form onSubmit={handleReviewSubmit} className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-medium text-muted-foreground mb-2"><TranslatedText fr="Note">Bewertung</TranslatedText></label>
+                            <div className="flex items-center gap-1" onMouseLeave={() => setHoverRating(0)}>
+                                {[...Array(5)].map((_, index) => {
+                                    const ratingValue = index + 1;
+                                    return (
+                                        <button
+                                            type="button"
+                                            key={ratingValue}
+                                            onClick={() => setNewReviewRating(ratingValue)}
+                                            onMouseEnter={() => setHoverRating(ratingValue)}
+                                            className="focus:outline-none"
+                                        >
+                                            <Star
+                                                className={cn(
+                                                    'h-6 w-6 cursor-pointer transition-colors',
+                                                    ratingValue <= (hoverRating || newReviewRating)
+                                                        ? 'text-yellow-500 fill-yellow-500'
+                                                        : 'text-muted hover:text-yellow-400'
+                                                )}
+                                            />
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                         <div>
+                            <label htmlFor="comment" className="block text-sm font-medium text-muted-foreground mb-2"><TranslatedText fr="Commentaire">Kommentar</TranslatedText></label>
+                            <Textarea
+                                id="comment"
+                                value={newReviewComment}
+                                onChange={(e) => setNewReviewComment(e.target.value)}
+                                placeholder={language === 'fr' ? "Partagez vos impressions..." : "Teilen Sie Ihre Gedanken..."}
+                                rows={4}
+                            />
+                        </div>
+                        <Button type="submit">
+                            <TranslatedText fr="Soumettre l'avis">Bewertung abschicken</TranslatedText>
+                        </Button>
+                    </form>
+                </div>
               </div>
             </TabsContent>
           </Tabs>
