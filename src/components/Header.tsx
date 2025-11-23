@@ -25,12 +25,17 @@ export function Header() {
                 <span className="sr-only">Menü umschalten</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-              <Link href="/" className="mb-6 flex items-center space-x-2">
-                <span className="font-bold font-headline text-2xl">
-                  EZCENTIALS
-                </span>
-              </Link>
+            <SheetContent side="left" className="flex w-[300px] flex-col sm:w-[400px]">
+              <div className="mb-6 flex items-center justify-between">
+                <Link href="/" className="flex items-center space-x-2">
+                  <span className="font-bold font-headline text-2xl">
+                    EZCENTIALS
+                  </span>
+                </Link>
+                <div className="lg:hidden">
+                  <UserButton />
+                </div>
+              </div>
               <nav className="flex flex-col space-y-4">
                 {categories.map((category) => (
                   <Link
@@ -61,9 +66,12 @@ export function Header() {
         </div>
 
         {/* Desktop Logo (Centered) - Mobile Logo (Left) */}
-        <div className="lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 flex items-center justify-center">
+        <div className="flex items-center justify-center lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="font-bold font-headline text-2xl tracking-wider">
+            <span className="hidden font-bold font-headline text-2xl tracking-wider lg:block">
+              EZCENTIALS
+            </span>
+             <span className="font-bold font-headline text-2xl tracking-wider lg:hidden">
               EZCENTIALS
             </span>
           </Link>
@@ -84,7 +92,9 @@ export function Header() {
             ))}
           </nav>
           <SearchDialog />
-          <UserButton />
+          <div className="hidden lg:flex">
+            <UserButton />
+          </div>
           <CartButton />
         </div>
       </div>
