@@ -12,21 +12,21 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
+import { StarryBackground } from '@/components/StarryBackground';
 
 export default function HomePage() {
   const featuredProducts = getFeaturedProducts(4);
 
   return (
     <div className="flex flex-col">
-      <section className="relative flex h-[70vh] w-full flex-col items-center justify-center bg-background text-center text-foreground">
-        <div className="container px-4">
-          <h1 className="font-headline text-4xl md:text-7xl">
-            <TranslatedText fr="L'Élégance Redéfinie">Eleganz Neu Definiert</TranslatedText>
+      <section className="relative flex h-[70vh] w-full flex-col items-center justify-center bg-background text-center text-foreground overflow-hidden">
+        <StarryBackground />
+        <div className="container px-4 z-10">
+          <h1 className="font-headline text-6xl md:text-9xl">
+            EZCENTIALS
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-base md:text-lg text-muted-foreground">
-            <TranslatedText fr="Découvrez des pièces intemporelles où le savoir-faire artisanal rencontre un design d'exception.">
-              Entdecken Sie zeitlose Stücke, in denen handwerkliches Können auf außergewöhnliches Design trifft.
-            </TranslatedText>
+            Understated elegance and sophistication.
           </p>
           <Button size="lg" asChild className="mt-8">
             <Link href="/products/all">
