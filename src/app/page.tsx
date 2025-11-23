@@ -1,6 +1,5 @@
 
 import Link from 'next/link';
-import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 import { getFeaturedProducts } from '@/lib/data';
@@ -12,7 +11,6 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
-import { StarryBackground } from '@/components/StarryBackground';
 
 export default function HomePage() {
   const featuredProducts = getFeaturedProducts(4);
@@ -20,13 +18,15 @@ export default function HomePage() {
   return (
     <div className="flex flex-col">
       <section className="relative flex h-[70vh] w-full flex-col items-center justify-center bg-background text-center text-foreground overflow-hidden">
-        <StarryBackground />
         <div className="container px-4 z-10">
-          <h1 className="font-headline text-6xl md:text-9xl">
-            EZCENTIALS
+          <p className="text-sm uppercase tracking-widest text-primary">
+             <TranslatedText fr="BIENVENUE CHEZ EZCENTIALS">WILLKOMMEN BEI EZCENTIALS</TranslatedText>
+          </p>
+          <h1 className="mt-4 font-headline text-6xl md:text-9xl">
+            <TranslatedText fr="L'Excellence du Luxe">Die Exzellenz des Luxus</TranslatedText>
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-base md:text-lg text-muted-foreground">
-            Understated elegance and sophistication.
+             <TranslatedText fr="Découvrez notre sélection exclusive de vêtements et accessoires haut de gamme.">Entdecken Sie unsere exklusive Auswahl an hochwertiger Kleidung und Accessoires.</TranslatedText>
           </p>
           <Button size="lg" asChild className="mt-8">
             <Link href="/products/all">
