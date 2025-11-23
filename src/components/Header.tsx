@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { CartButton } from '@/components/cart/CartButton';
 import { UserButton } from './auth/UserButton';
-import { LanguageSelector } from './LanguageSelector';
 import { TranslatedText } from './TranslatedText';
 import { SearchDialog } from './search/SearchDialog';
 
@@ -83,7 +82,6 @@ export function Header() {
             ))}
           </nav>
           <SearchDialog />
-          <LanguageSelector />
           <UserButton />
           <CartButton />
         </div>
