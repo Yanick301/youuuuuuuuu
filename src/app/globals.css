@@ -76,6 +76,12 @@
 }
 
 @layer base {
+  @keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
   html {
     @apply scroll-smooth;
   }
@@ -83,6 +89,23 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background: linear-gradient(-45deg, #e9d5ff, #f3e8ff, #d1d5db, #e5e7eb);
+    background-size: 400% 400%;
+    animation: gradient-animation 15s ease infinite;
   }
+
+  /* Make cards and other elements semi-transparent to see the background */
+   .bg-background {
+    background-color: hsla(var(--background), 0.8);
+   }
+   .bg-card {
+    background-color: hsla(var(--card), 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+   }
+
+   header {
+     background-color: hsla(var(--background), 0.6) !important;
+   }
 }
