@@ -27,7 +27,7 @@ export function CartButton() {
               {itemCount}
             </span>
           )}
-          <span className="sr-only">Warenkorb öffnen</span>
+          <span className="sr-only"><TranslatedText fr="Ouvrir le panier">Warenkorb öffnen</TranslatedText></span>
         </Button>
       </SheetTrigger>
       <SheetContent>

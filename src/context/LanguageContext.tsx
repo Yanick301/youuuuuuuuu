@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 type LanguageContextType = {
   language: string;
@@ -10,8 +10,24 @@ type LanguageContextType = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  // Default language set to German as per requirement
-  const [language, setLanguage] = useState<string>('de');
+  const [language, setLanguageState] = useState('de');
+
+  useEffect(() => {
+    const storedLang = localStorage.getItem('ezcentials-lang');
+    if (storedLang && ['de', 'fr'].includes(storedLang)) {
+      setLanguageState(storedLang);
+    } else {
+        const browserLang = navigator.language.split('-')[0];
+        setLanguageState(browserLang === 'fr' ? 'fr' : 'de');
+    }
+  }, []);
+
+  const setLanguage = (lang: string) => {
+    if (['de', 'fr'].includes(lang)) {
+        setLanguageState(lang);
+        localStorage.setItem('ezcentials-lang', lang);
+    }
+  };
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage }}>

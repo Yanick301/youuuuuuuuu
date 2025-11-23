@@ -1,13 +1,19 @@
 'use client';
 
+import { useLanguage } from '@/context/LanguageContext';
 import type { ReactNode } from 'react';
 
 type TranslatedTextProps = {
-  fr: string;
+  fr: ReactNode;
   children: ReactNode; // German is the default
 };
 
 export function TranslatedText({ children, fr }: TranslatedTextProps) {
-  // Always return German text as per user request to make the site German-only for now.
+  const { language } = useLanguage();
+
+  if (language === 'fr') {
+    return <>{fr}</>;
+  }
+  
   return <>{children}</>;
 }

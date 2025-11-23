@@ -1,6 +1,6 @@
 'use client';
 
-import { User, LogOut } from 'lucide-react';
+import { User, LogOut, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -45,9 +45,9 @@ export function UserButton() {
 
   if (isUserLoading) {
     return (
-        <div className="flex flex-col space-y-2">
+        <div className="hidden lg:flex flex-col space-y-2">
             <Button variant="ghost" className="justify-start" disabled>
-                <User className="mr-2 h-5 w-5" /> Laden...
+                <User className="mr-2 h-5 w-5" /> <TranslatedText fr="Chargement...">Laden...</TranslatedText>
             </Button>
         </div>
     )
@@ -58,15 +58,11 @@ export function UserButton() {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-           <Button variant="ghost" className="relative h-8 w-full justify-start gap-2 px-2">
-                <Avatar className="h-8 w-8">
+           <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                <Avatar className="h-10 w-10">
                     <AvatarImage src={user.photoURL || undefined} alt={user.displayName || 'User'} />
                     <AvatarFallback>{getInitials(user.displayName)}</AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col space-y-1 text-left">
-                    <p className="text-sm font-medium leading-none">{user.displayName || 'User'}</p>
-                    <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
-                </div>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -78,14 +74,14 @@ export function UserButton() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link href="/account"><User className="mr-2" /> <TranslatedText fr="Mon compte">Mein Konto</TranslatedText></Link>
+            <Link href="/account"><User className="mr-2 h-4 w-4" /> <TranslatedText fr="Mon compte">Mein Konto</TranslatedText></Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/account/favorites"><User className="mr-2" /> <TranslatedText fr="Mes favoris">Meine Favoriten</TranslatedText></Link>
+            <Link href="/account/favorites"><Heart className="mr-2 h-4 w-4" /> <TranslatedText fr="Mes favoris">Meine Favoriten</TranslatedText></Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleSignOut}>
-            <LogOut className="mr-2" />
+            <LogOut className="mr-2 h-4 w-4" />
             <TranslatedText fr="Se déconnecter">Abmelden</TranslatedText>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -94,13 +90,10 @@ export function UserButton() {
   }
 
   return (
-    <div className="flex flex-col space-y-2">
-       <Button variant="outline" asChild className="justify-start">
-        <Link href="/login"><User className="mr-2" /> <TranslatedText fr="Se connecter">Anmelden</TranslatedText></Link>
+    <div className="hidden lg:flex flex-col space-y-2">
+       <Button variant="ghost" asChild className="justify-start">
+        <Link href="/login"><User className="mr-2 h-4 w-4" /> <TranslatedText fr="Se connecter">Anmelden</TranslatedText></Link>
        </Button>
-        <Button variant="ghost" asChild className="justify-start">
-            <Link href="/register"><TranslatedText fr="S'inscrire">Registrieren</TranslatedText></Link>
-        </Button>
     </div>
   );
 }

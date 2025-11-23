@@ -12,6 +12,7 @@ import { UserButton } from './auth/UserButton';
 import { TranslatedText } from './TranslatedText';
 import { SearchDialog } from './search/SearchDialog';
 import { Separator } from './ui/separator';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 export function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -102,8 +103,13 @@ export function Header() {
               </Link>
             ))}
           </nav>
-          <div className="hidden lg:flex">
+          <div className="hidden lg:flex items-center">
              <UserButton />
+             <Separator orientation="vertical" className="h-6 mx-2" />
+             <LanguageSwitcher />
+          </div>
+          <div className="flex items-center lg:hidden">
+            <UserButton />
           </div>
           <SearchDialog />
           <CartButton />
