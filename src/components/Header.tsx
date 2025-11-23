@@ -48,8 +48,9 @@ export function Header() {
                 </Link>
               </div>
               <Separator />
-               <div className="p-6">
+               <div className="p-6 flex flex-col space-y-4">
                 <UserButton />
+                <LanguageSwitcher />
               </div>
               <Separator />
               <nav className="flex-grow p-6">
@@ -109,7 +110,7 @@ export function Header() {
              <LanguageSwitcher />
           </div>
           <div className="flex items-center lg:hidden">
-            <UserButton />
+             {/* The user button is in the sheet on mobile */}
           </div>
           <SearchDialog />
           <CartButton />

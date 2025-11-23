@@ -16,6 +16,7 @@ import { useUser, useAuth } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Skeleton } from '../ui/skeleton';
 
 export function UserButton() {
   const { user, isUserLoading } = useUser();
@@ -44,15 +45,8 @@ export function UserButton() {
   }
 
   if (isUserLoading) {
-    return (
-        <div className="hidden lg:flex flex-col space-y-2">
-            <Button variant="ghost" className="justify-start" disabled>
-                <User className="mr-2 h-5 w-5" /> <TranslatedText fr="Chargement...">Laden...</TranslatedText>
-            </Button>
-        </div>
-    )
+    return <Skeleton className="h-10 w-24" />
   }
-
 
   if (user) {
     return (
@@ -90,10 +84,8 @@ export function UserButton() {
   }
 
   return (
-    <div className="hidden lg:flex flex-col space-y-2">
-       <Button variant="ghost" asChild className="justify-start">
-        <Link href="/login"><User className="mr-2 h-4 w-4" /> <TranslatedText fr="Se connecter">Anmelden</TranslatedText></Link>
-       </Button>
-    </div>
+   <Button variant="ghost" asChild className="justify-start">
+    <Link href="/login"><User className="mr-2 h-4 w-4" /> <TranslatedText fr="Se connecter">Anmelden</TranslatedText></Link>
+   </Button>
   );
 }
