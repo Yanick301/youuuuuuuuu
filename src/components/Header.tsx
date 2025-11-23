@@ -80,8 +80,8 @@ export function Header() {
                  <Image
                     src="/images/logo.png"
                     alt="EZCENTIALS Logo"
-                    width={40}
-                    height={40}
+                    width={50}
+                    height={50}
                 />
             </Link>
         </div>
