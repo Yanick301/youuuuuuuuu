@@ -6,7 +6,7 @@ import { Footer } from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'Atelier Luxe',
+  title: 'EZCENTIALS',
   description: 'Understated elegance and sophistication.',
 };
 

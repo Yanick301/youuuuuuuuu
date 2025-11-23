@@ -39,7 +39,7 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
           <div className="col-span-2 mb-8 md:col-span-4 lg:col-span-1 lg:mb-0">
-            <h4 className="font-headline text-lg"><TranslatedText>Atelier Luxe</TranslatedText></h4>
+            <h4 className="font-headline text-lg"><TranslatedText>EZCENTIALS</TranslatedText></h4>
             <p className="mt-2 text-sm text-muted-foreground"><TranslatedText>Understated elegance and sophistication.</TranslatedText></p>
           </div>
 
@@ -73,7 +73,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} <TranslatedText>Atelier Luxe. All rights reserved.</TranslatedText></p>
+          <p>&copy; {new Date().getFullYear()} <TranslatedText>EZCENTIALS. All rights reserved.</TranslatedText></p>
         </div>
       </div>
     </footer>

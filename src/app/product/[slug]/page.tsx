@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
   }
 
   return {
-    title: `${product.name} | Atelier Luxe`,
+    title: `${product.name} | EZCENTIALS`,
     description: product.description,
   };
 }

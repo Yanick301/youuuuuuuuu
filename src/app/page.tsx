@@ -30,7 +30,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
           <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl">
-            <TranslatedText>Atelier Luxe</TranslatedText>
+            <TranslatedText>EZCENTIALS</TranslatedText>
           </h1>
           <p className="mt-4 max-w-2xl text-lg md:text-xl">
             <TranslatedText>

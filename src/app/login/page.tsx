@@ -25,7 +25,7 @@ export default function LoginPage() {
           </CardTitle>
           <CardDescription>
             <TranslatedText>
-              Welcome back to Atelier Luxe.
+              Welcome back to EZCENTIALS.
             </TranslatedText>
           </CardDescription>
         </CardHeader>

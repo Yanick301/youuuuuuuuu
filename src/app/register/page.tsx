@@ -24,7 +24,7 @@ export default function RegisterPage() {
             <TranslatedText>Create an Account</TranslatedText>
           </CardTitle>
           <CardDescription>
-            <TranslatedText>Join the world of Atelier Luxe.</TranslatedText>
+            <TranslatedText>Join the world of EZCENTIALS.</TranslatedText>
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">

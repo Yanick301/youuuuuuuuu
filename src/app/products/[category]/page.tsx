@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   const title = categorySlug === 'all' ? 'All Products' : category?.name;
 
   return {
-    title: `${title} | Atelier Luxe`,
+    title: `${title} | EZCENTIALS`,
   };
 }
 
