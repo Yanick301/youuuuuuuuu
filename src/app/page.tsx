@@ -18,18 +18,19 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col">
-      <section className="relative flex h-[70vh] w-full flex-col items-center justify-center bg-background text-center text-foreground overflow-hidden">
+      <section className="relative flex h-[70vh] w-full flex-col items-center justify-center bg-header-background bg-cover bg-center text-center text-white overflow-hidden">
+        <div className="absolute inset-0 bg-black/20" />
         <div className="container px-4 z-10">
-          <p className="text-sm uppercase tracking-widest text-primary">
+          <p className="text-sm uppercase tracking-widest text-white">
              <TranslatedText fr="BIENVENUE CHEZ EZCENTIALS">WILLKOMMEN BEI EZCENTIALS</TranslatedText>
           </p>
           <h1 className="mt-4 font-headline text-6xl md:text-9xl">
             <TranslatedText fr="L'Excellence du Luxe">Die Exzellenz des Luxus</TranslatedText>
           </h1>
-          <p className="mt-6 max-w-2xl mx-auto text-base md:text-lg text-muted-foreground">
+          <p className="mt-6 max-w-2xl mx-auto text-base md:text-lg text-white/90">
              <TranslatedText fr="Découvrez notre sélection exclusive de vêtements et accessoires haut de gamme.">Entdecken Sie unsere exklusive Auswahl an hochwertiger Kleidung und Accessoires.</TranslatedText>
           </p>
-          <Button size="lg" asChild className="mt-8">
+          <Button size="lg" asChild className="mt-8 bg-white text-black hover:bg-white/90">
             <Link href="/products/all">
               <TranslatedText fr="Explorer la collection">Die Kollektion entdecken</TranslatedText>
             </Link>
