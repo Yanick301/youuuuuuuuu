@@ -37,7 +37,7 @@ export default function HomePage() {
               Entdecken Sie unsere neue Kollektion zeitloser Stücke, gefertigt mit Leidenschaft und Präzision.
             </TranslatedText>
           </p>
-          <Button variant="outline" asChild className="mt-8 rounded-full border-white bg-transparent text-white hover:bg-white hover:text-black">
+          <Button variant="outline" asChild className="mt-8 border-white bg-transparent text-white hover:bg-white hover:text-black">
             <Link href="/products/all">
               <TranslatedText fr="Découvrir">Entdecken</TranslatedText>
             </Link>
@@ -63,7 +63,7 @@ export default function HomePage() {
           <h2 className="mb-12 text-center font-headline text-3xl md:text-4xl">
             <TranslatedText fr="Acheter par catégorie">Nach Kategorie einkaufen</TranslatedText>
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5 md:gap-8">
               {categories.map((category) => {
                 const categoryImage = placeholderImages.find(
                   (p) => p.id === category.imageId
@@ -72,22 +72,24 @@ export default function HomePage() {
                   <Link
                       key={category.id}
                       href={`/products/${category.slug}`}
-                      className="group relative block aspect-[3/4] h-full overflow-hidden"
+                      className="group block overflow-hidden"
                     >
-                      {categoryImage && (
-                        <Image
-                          src={categoryImage.imageUrl}
-                          alt={category.name}
-                          fill
-                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          data-ai-hint={categoryImage.imageHint}
-                        />
-                      )}
-                      <div className="absolute inset-0 bg-black/20" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <h3 className="font-headline text-2xl text-white">
-                          <TranslatedText fr={category.name_fr}>{category.name}</TranslatedText>
-                        </h3>
+                      <div className="relative aspect-[3/4] w-full">
+                        {categoryImage && (
+                          <Image
+                            src={categoryImage.imageUrl}
+                            alt={category.name}
+                            fill
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            data-ai-hint={categoryImage.imageHint}
+                          />
+                        )}
+                        <div className="absolute inset-0 bg-black/20" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <h3 className="font-headline text-2xl text-white">
+                            <TranslatedText fr={category.name_fr}>{category.name}</TranslatedText>
+                          </h3>
+                        </div>
                       </div>
                     </Link>
                 );
