@@ -20,7 +20,6 @@ export default {
       fontFamily: {
         body: ['Inter', 'sans-serif'],
         headline: ['Cormorant Garamond', 'serif'],
-        code: ['monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',

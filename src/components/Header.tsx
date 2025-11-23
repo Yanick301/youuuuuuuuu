@@ -23,22 +23,32 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-20 items-center">
-        {/* Mobile Nav & Left items */}
         <div className="flex flex-1 items-center justify-start">
-           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="lg:hidden">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Menü umschalten</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="flex w-[300px] flex-col bg-background p-0 sm:w-[350px]">
+            <SheetContent
+              side="left"
+              className="flex w-[300px] flex-col bg-background p-0 sm:w-[350px]"
+            >
               <div className="p-6">
-                <Link href="/" className="flex items-center space-x-2" onClick={handleLinkClick}>
+                <Link
+                  href="/"
+                  className="flex items-center space-x-2"
+                  onClick={handleLinkClick}
+                >
                   <span className="font-bold font-headline text-2xl">
                     EZCENTIALS
                   </span>
                 </Link>
+              </div>
+              <Separator />
+               <div className="p-6">
+                <UserButton />
               </div>
               <Separator />
               <nav className="flex-grow p-6">
@@ -50,55 +60,45 @@ export function Header() {
                         className="text-lg uppercase tracking-wider text-foreground/80 transition-colors hover:text-foreground"
                         onClick={handleLinkClick}
                       >
-                        <TranslatedText fr={category.name_fr}>{category.name}</TranslatedText>
+                        <TranslatedText fr={category.name_fr}>
+                          {category.name}
+                        </TranslatedText>
                       </Link>
                     </li>
                   ))}
                 </ul>
               </nav>
-              <Separator />
-              <div className="p-6">
-                <UserButton />
-              </div>
             </SheetContent>
           </Sheet>
-          
-          <div className="hidden lg:flex lg:items-center lg:gap-4">
-             <Link href="/" className="flex items-center space-x-2">
-                <span className="font-bold font-headline text-2xl tracking-wider lg:block">
+
+          <div className="hidden lg:flex lg:items-center">
+            <Link href="/" className="flex items-center space-x-2">
+              <span className="font-bold font-headline text-2xl tracking-wider">
                 EZCENTIALS
-                </span>
+              </span>
             </Link>
           </div>
         </div>
 
-        {/* Centered Logo on Desktop, Left-aligned logo on mobile (in Sheet) */}
         <div className="flex flex-1 items-center justify-center lg:hidden">
-           <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2">
             <span className="font-bold font-headline text-2xl tracking-wider">
               EZCENTIALS
             </span>
           </Link>
         </div>
-        <div className="hidden items-center justify-center lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:flex">
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="hidden font-bold font-headline text-2xl tracking-wider lg:block">
-              EZCENTIALS
-            </span>
-          </Link>
-        </div>
 
-
-        {/* Right items */}
         <div className="flex flex-1 items-center justify-end space-x-1 md:space-x-2 shrink-0 flex-nowrap">
           <nav className="hidden lg:flex lg:items-center lg:space-x-6 text-sm font-medium">
-             {categories.map((category) => (
+            {categories.map((category) => (
               <Link
                 key={category.id}
                 href={`/products/${category.slug}`}
                 className="transition-colors hover:text-primary text-foreground/80"
               >
-                <TranslatedText fr={category.name_fr}>{category.name}</TranslatedText>
+                <TranslatedText fr={category.name_fr}>
+                  {category.name}
+                </TranslatedText>
               </Link>
             ))}
           </nav>

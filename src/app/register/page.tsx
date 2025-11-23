@@ -1,5 +1,9 @@
-import Link from 'next/link';
+'use client';
 
+import Link from 'next/link';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import {
   Card,
   CardContent,
@@ -10,12 +14,82 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton';
 import { TranslatedText } from '@/components/TranslatedText';
 import { Separator } from '@/components/ui/separator';
+import { useAuth } from '@/firebase';
+import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+
+const registerSchema = z.object({
+    name: z.string().min(2, { message: 'Der Name muss mindestens 2 Zeichen lang sein.' }),
+    email: z.string().email({ message: 'Ungültige E-Mail-Adresse.' }),
+    password: z.string().min(6, { message: 'Das Passwort muss mindestens 6 Zeichen lang sein.' }),
+});
+
+type RegisterFormInputs = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
+  const auth = useAuth();
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const form = useForm<RegisterFormInputs>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
+    try {
+      await createUserWithEmailAndPassword(auth, data.email, data.password);
+      // Here you would typically also update the user's profile with the name
+      toast({
+        title: 'Konto erfolgreich erstellt',
+        description: 'Willkommen! Sie werden in Kürze weitergeleitet.',
+      });
+      router.push('/account');
+    } catch (error: any) {
+      console.error(error);
+      toast({
+        variant: 'destructive',
+        title: 'Registrierung fehlgeschlagen',
+        description: error.message,
+      });
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+        const provider = new GoogleAuthProvider();
+        await signInWithPopup(auth, provider);
+        toast({
+            title: 'Erfolgreich angemeldet',
+            description: 'Willkommen!',
+        });
+        router.push('/account');
+    } catch (error: any) {
+        console.error(error);
+        toast({
+            variant: 'destructive',
+            title: 'Google-Anmeldung fehlgeschlagen',
+            description: error.message,
+        });
+    }
+  }
+
   return (
     <div className="flex min-h-[80vh] items-center justify-center bg-background px-4">
       <Card className="w-full max-w-sm">
@@ -27,25 +101,55 @@ export default function RegisterPage() {
             <TranslatedText fr="Rejoignez le monde d'EZCENTIALS.">Treten Sie der Welt von EZCENTIALS bei.</TranslatedText>
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4">
-           <div className="grid gap-2">
-            <Label htmlFor="name"><TranslatedText fr="Nom">Name</TranslatedText></Label>
-            <Input id="name" placeholder="Jane Doe" required />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="email"><TranslatedText fr="Email">Email</TranslatedText></Label>
-            <Input id="email" type="email" placeholder="m@example.com" required />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password"><TranslatedText fr="Mot de passe">Passwort</TranslatedText></Label>
-            <Input id="password" type="password" required />
-          </div>
-          <Button className="w-full mt-2"><TranslatedText fr="Créer un compte">Konto erstellen</TranslatedText></Button>
-          <p className="text-xs text-center text-muted-foreground">
-            <TranslatedText fr="Un e-mail sera envoyé pour vérifier votre compte.">Eine E-Mail wird gesendet, um Ihr Konto zu verifizieren.</TranslatedText>
-          </p>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+               <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel><TranslatedText fr="Nom">Name</TranslatedText></FormLabel>
+                        <FormControl>
+                            <Input placeholder="Jane Doe" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+               />
+               <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel><TranslatedText fr="Email">Email</TranslatedText></FormLabel>
+                        <FormControl>
+                            <Input type="email" placeholder="m@example.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+               />
+               <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel><TranslatedText fr="Mot de passe">Passwort</TranslatedText></FormLabel>
+                        <FormControl>
+                            <Input type="password" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+               />
+              <Button type="submit" className="w-full mt-2" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? 'Erstellen...' : <TranslatedText fr="Créer un compte">Konto erstellen</TranslatedText>}
+              </Button>
+            </form>
+          </Form>
 
-          <div className="relative my-2">
+          <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
                 <Separator />
             </div>
@@ -55,7 +159,9 @@ export default function RegisterPage() {
                 </span>
             </div>
           </div>
-           <GoogleSignInButton><TranslatedText fr="S'inscrire avec Google">Mit Google registrieren</TranslatedText></GoogleSignInButton>
+           <GoogleSignInButton onClick={handleGoogleSignIn}>
+            <TranslatedText fr="S'inscrire avec Google">Mit Google registrieren</TranslatedText>
+           </GoogleSignInButton>
         </CardContent>
         <CardFooter className="justify-center text-sm">
           <p className="text-muted-foreground">

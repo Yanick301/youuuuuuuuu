@@ -4,6 +4,7 @@ import { AppProviders } from '@/components/AppProviders';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
+import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 
 export const metadata: Metadata = {
@@ -27,14 +28,16 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <AppProviders>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-          </div>
-          <Toaster />
-        </AppProviders>
+        <FirebaseClientProvider>
+          <AppProviders>
+            <div className="flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-grow">{children}</main>
+              <Footer />
+            </div>
+            <Toaster />
+          </AppProviders>
+        </FirebaseClientProvider>
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { User } from 'lucide-react';
+import { User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -8,32 +8,86 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuLabel,
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 import { TranslatedText } from '../TranslatedText';
+import { useUser, useAuth } from '@/firebase';
+import { signOut } from 'firebase/auth';
+import { useToast } from '@/hooks/use-toast';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 export function UserButton() {
-  // Mock user state
-  const isLoggedIn = false;
+  const { user, isUserLoading } = useUser();
+  const auth = useAuth();
+  const { toast } = useToast();
 
-  if (isLoggedIn) {
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      toast({
+        title: 'Abgemeldet',
+        description: 'Sie wurden erfolgreich abgemeldet.',
+      });
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Abmeldung fehlgeschlagen',
+        description: error.message,
+      });
+    }
+  };
+  
+  const getInitials = (name?: string | null) => {
+    if (!name) return 'U';
+    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  }
+
+  if (isUserLoading) {
+    return (
+        <div className="flex flex-col space-y-2">
+            <Button variant="ghost" className="justify-start" disabled>
+                <User className="mr-2 h-5 w-5" /> Laden...
+            </Button>
+        </div>
+    )
+  }
+
+
+  if (user) {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-           <Button variant="ghost" className="w-full justify-start gap-2 px-0 text-base font-normal">
-            <User className="h-5 w-5" />
-            <TranslatedText fr="Mon compte">Mein Konto</TranslatedText>
+           <Button variant="ghost" className="relative h-8 w-full justify-start gap-2 px-2">
+                <Avatar className="h-8 w-8">
+                    <AvatarImage src={user.photoURL || undefined} alt={user.displayName || 'User'} />
+                    <AvatarFallback>{getInitials(user.displayName)}</AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col space-y-1 text-left">
+                    <p className="text-sm font-medium leading-none">{user.displayName || 'User'}</p>
+                    <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                </div>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent className="w-56" align="end" forceMount>
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col space-y-1">
+                <p className="text-sm font-medium leading-none">{user.displayName || 'User'}</p>
+                <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link href="/account"><TranslatedText fr="Mon compte">Mein Konto</TranslatedText></Link>
+            <Link href="/account"><User className="mr-2" /> <TranslatedText fr="Mon compte">Mein Konto</TranslatedText></Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/account/favorites"><TranslatedText fr="Mes favoris">Meine Favoriten</TranslatedText></Link>
+            <Link href="/account/favorites"><User className="mr-2" /> <TranslatedText fr="Mes favoris">Meine Favoriten</TranslatedText></Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem><TranslatedText fr="Se déconnecter">Abmelden</TranslatedText></DropdownMenuItem>
+          <DropdownMenuItem onClick={handleSignOut}>
+            <LogOut className="mr-2" />
+            <TranslatedText fr="Se déconnecter">Abmelden</TranslatedText>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     );
