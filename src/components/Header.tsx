@@ -23,8 +23,8 @@ export function Header() {
             <Image
               src="/images/logo.png"
               alt="EZCENTIALS Logo"
-              width={50}
-              height={50}
+              width={60}
+              height={60}
             />
             <span className="font-bold font-headline text-2xl">
               EZCENTIALS
@@ -56,8 +56,8 @@ export function Header() {
                 <Image
                   src="/images/logo.png"
                   alt="EZCENTIALS Logo"
-                  width={40}
-                  height={40}
+                  width={50}
+                  height={50}
                 />
                 <span className="font-bold font-headline text-2xl">
                   EZCENTIALS
