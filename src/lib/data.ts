@@ -1,3 +1,4 @@
+
 import type { Product, Category, Review } from './types';
 
 export const categories: Category[] = [
@@ -72,7 +73,7 @@ export const products: Product[] = [
     price: 4500.00,
     description: 'Luxus in seiner reinsten Form. Dieser doppelseitige Kaschmirmantel von Loro Piana ist von unvergleichlicher Weichheit und Wärme.',
     description_fr: 'Le luxe à l\'état pur. Ce manteau en cachemire double face de Loro Piana est d\'une douceur et d\'une chaleur inégalées.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['manteau-cachemire-loro-piana-homme'],
     reviews: [
         { author: 'Arthur', rating: 5, comment: 'Das ist kein Mantel, das ist ein Traum. Die Weichheit ist unglaublich.' },
@@ -90,7 +91,7 @@ export const products: Product[] = [
     price: 4800.00,
     description: 'Ein kühner Fliegerblouson aus gewachsenem Lammfell von Saint Laurent für einen rockigen und luxuriösen Stil.',
     description_fr: 'Un audacieux blouson aviateur en peau de mouton retournée par Saint Laurent pour un style rock et luxueux.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['blouson-shearling-saint-laurent'],
     reviews: [
         { author: 'Jules', rating: 5, comment: 'Rock\'n\'Roll und Luxus perfekt vereint. Ich liebe diese Jacke.' },
@@ -108,7 +109,7 @@ export const products: Product[] = [
     price: 350.00,
     description: 'Ein unverzichtbares Winter-Basic: Dieser Rollkragenpullover aus feiner Merinowolle von Paul Smith ist ebenso weich wie vielseitig.',
     description_fr: 'Un basique hivernal essentiel, ce pull à col roulé en fine laine mérinos de Paul Smith est aussi doux que polyvalent.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['pull-col-roule-laine-merinos-paul-smith'],
     reviews: [
         { author: 'Tim', rating: 5, comment: 'Perfektes Basic. Super weich und kratzt nicht.' },
@@ -126,7 +127,7 @@ export const products: Product[] = [
     price: 420.00,
     description: 'Das gefütterte Wollflanell-Überhemd von Acne Studios, perfekt für Lagenlooks in der Übergangszeit mit skandinavischem Touch.',
     description_fr: 'La surchemise en flanelle de laine doublée d\'Acne Studios, parfaite pour les superpositions de mi-saison avec une touche scandinave.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['surchemise-doublee-acne-studios-homme'],
     reviews: [
         { author: 'Oskar', rating: 5, comment: 'Perfekt für den Herbst. Sieht toll aus und ist sehr gut verarbeitet.' },
@@ -180,7 +181,7 @@ export const products: Product[] = [
     price: 1100.00,
     description: 'Ein reich texturierter Pullover aus Wolle und Kaschmir, verziert mit klassischen Zopfmustern. Ein Meisterstück von Dior.',
     description_fr: 'Un pull richement texturé en laine et cachemire, orné de torsades classiques. Une pièce maîtresse de Dior.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['pull-torsade-epais-dior-homme'],
     reviews: [
         { author: 'Antoine', rating: 5, comment: 'Unglaublich weich und warm. Das Zopfmuster ist wunderschön gearbeitet.' },
