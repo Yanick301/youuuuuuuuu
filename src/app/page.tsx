@@ -29,7 +29,7 @@ export default function HomePage() {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
         <div className="relative z-10 flex h-full flex-col items-center justify-end pb-20 text-center text-white">
-          <h1 className="font-headline text-4xl md:text-5xl">
+          <h1 className="font-headline text-5xl md:text-6xl">
             <TranslatedText fr="La Collection">Die Kollektion</TranslatedText>
           </h1>
           <p className="mt-4 max-w-lg text-base">
@@ -47,7 +47,7 @@ export default function HomePage() {
 
       <section className="w-full bg-background py-16 lg:py-24">
         <div className="container mx-auto px-4">
-          <h2 className="mb-12 text-center font-headline text-3xl md:text-4xl">
+          <h2 className="mb-12 text-center font-headline text-4xl md:text-5xl">
             <TranslatedText fr="Produits Phares">Ausgewählte Produkte</TranslatedText>
           </h2>
           <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -60,10 +60,10 @@ export default function HomePage() {
 
       <section className="w-full bg-background py-16 lg:py-24">
         <div className="container mx-auto px-4">
-          <h2 className="mb-12 text-center font-headline text-3xl md:text-4xl">
+          <h2 className="mb-12 text-center font-headline text-4xl md:text-5xl">
             <TranslatedText fr="Acheter par catégorie">Nach Kategorie einkaufen</TranslatedText>
           </h2>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5 md:gap-8">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
               {categories.map((category) => {
                 const categoryImage = placeholderImages.find(
                   (p) => p.id === category.imageId
@@ -72,25 +72,23 @@ export default function HomePage() {
                   <Link
                       key={category.id}
                       href={`/products/${category.slug}`}
-                      className="group block overflow-hidden"
+                      className="group block overflow-hidden text-center"
                     >
-                      <div className="relative aspect-[3/4] w-full">
+                      <div className="relative aspect-[3/4] w-full bg-gray-100">
                         {categoryImage && (
                           <Image
                             src={categoryImage.imageUrl}
                             alt={category.name}
                             fill
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            className="object-cover transition-transform duration-300 group-hover:scale-105"
+                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
                             data-ai-hint={categoryImage.imageHint}
                           />
                         )}
-                        <div className="absolute inset-0 bg-black/20" />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <h3 className="font-headline text-2xl text-white">
-                            <TranslatedText fr={category.name_fr}>{category.name}</TranslatedText>
-                          </h3>
-                        </div>
                       </div>
+                      <h3 className="mt-4 font-headline text-2xl text-foreground">
+                        <TranslatedText fr={category.name_fr}>{category.name}</TranslatedText>
+                      </h3>
                     </Link>
                 );
               })}
