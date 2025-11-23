@@ -1,6 +1,6 @@
 'use client';
 
-import { User, LogOut, Heart } from 'lucide-react';
+import { User, LogOut, Heart, ListOrdered } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -45,7 +45,7 @@ export function UserButton() {
   }
 
   if (isUserLoading) {
-    return <Skeleton className="h-10 w-24" />
+    return <Skeleton className="h-10 w-10 rounded-full" />
   }
 
   if (user) {
@@ -70,6 +70,9 @@ export function UserButton() {
           <DropdownMenuItem asChild>
             <Link href="/account"><User className="mr-2 h-4 w-4" /> <TranslatedText fr="Mon compte">Mein Konto</TranslatedText></Link>
           </DropdownMenuItem>
+           <DropdownMenuItem asChild>
+            <Link href="/account/orders"><ListOrdered className="mr-2 h-4 w-4" /> <TranslatedText fr="Mes commandes">Meine Bestellungen</TranslatedText></Link>
+          </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="/account/favorites"><Heart className="mr-2 h-4 w-4" /> <TranslatedText fr="Mes favoris">Meine Favoriten</TranslatedText></Link>
           </DropdownMenuItem>
@@ -84,8 +87,8 @@ export function UserButton() {
   }
 
   return (
-   <Button variant="ghost" asChild className="justify-start">
-    <Link href="/login"><User className="mr-2 h-4 w-4" /> <TranslatedText fr="Se connecter">Anmelden</TranslatedText></Link>
+   <Button variant="ghost" asChild>
+    <Link href="/login"><TranslatedText fr="Se connecter">Anmelden</TranslatedText></Link>
    </Button>
   );
 }

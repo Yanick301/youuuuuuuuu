@@ -9,25 +9,12 @@ import {
 } from '@/components/ui/card';
 import { TranslatedText } from '@/components/TranslatedText';
 import { useUser } from '@/firebase';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 export default function AccountPage() {
-  const { user, isUserLoading } = useUser();
-  const router = useRouter();
+  const { user } = useUser();
 
-  useEffect(() => {
-    if (!isUserLoading && !user) {
-      router.push('/login');
-    }
-  }, [user, isUserLoading, router]);
-
-  if (isUserLoading || !user) {
-    return (
-        <div className="container mx-auto px-4 py-12 text-center">
-            <p>Laden...</p>
-        </div>
-    )
+  if (!user) {
+    return null;
   }
 
   return (
@@ -37,7 +24,7 @@ export default function AccountPage() {
       </h1>
       <Card>
         <CardHeader>
-          <CardTitle><TranslatedText fr="Bienvenue, Utilisateur !">Willkommen, {user.displayName || 'Benutzer'}!</TranslatedText></CardTitle>
+          <CardTitle><TranslatedText fr={`Bienvenue, ${user.displayName || 'Utilisateur'} !`}>Willkommen, {user.displayName || 'Benutzer'}!</TranslatedText></CardTitle>
           <CardDescription>
             <TranslatedText fr="Vous pouvez consulter et modifier les informations de votre compte ici.">
               Hier können Sie Ihre Kontoinformationen einsehen und bearbeiten.

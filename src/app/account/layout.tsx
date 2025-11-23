@@ -6,6 +6,9 @@ import { usePathname } from 'next/navigation';
 import { Heart, ListOrdered, User } from 'lucide-react';
 import { TranslatedText } from '@/components/TranslatedText';
 import { cn } from '@/lib/utils';
+import { useUser } from '@/firebase';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const accountNav = [
   {
@@ -34,6 +37,22 @@ export default function AccountLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { user, isUserLoading } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isUserLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, isUserLoading, router]);
+
+  if (isUserLoading || !user) {
+    return (
+        <div className="container mx-auto px-4 py-12 text-center">
+            <p>Laden...</p>
+        </div>
+    )
+  }
 
   return (
     <div className="container mx-auto px-4 py-12">
