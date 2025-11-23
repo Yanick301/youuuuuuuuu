@@ -9,31 +9,31 @@
     {
       "id": "mens-category",
       "description": "Men's Clothing Category",
-      "imageUrl": "/images/products/category-men.jpg",
+      "imageUrl": "/images/products/Homme.jpg",
       "imageHint": "male model"
     },
     {
       "id": "womens-category",
       "description": "Women's Clothing Category",
-      "imageUrl": "/images/products/category-women.jpg",
+      "imageUrl": "/images/products/Femme.jpg",
       "imageHint": "female model"
     },
     {
       "id": "accessories-category",
       "description": "Accessories Category",
-      "imageUrl": "/images/products/category-accessories.jpg",
+      "imageUrl": "/images/products/acc.jpg",
       "imageHint": "watch sunglasses"
     },
     {
       "id": "shoes-category",
       "description": "Shoes Category",
-      "imageUrl": "/images/products/category-shoes.jpg",
+      "imageUrl": "/images/products/chaussur.jpg",
       "imageHint": "stylish shoes"
     },
     {
       "id": "winter-category",
       "description": "Winter Clothing Category",
-      "imageUrl": "/images/products/category-winter.jpg",
+      "imageUrl": "/images/products/hiver.jpg",
       "imageHint": "winter fashion"
     },
     {
