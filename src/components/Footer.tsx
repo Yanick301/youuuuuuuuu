@@ -1,6 +1,8 @@
 
 import Link from 'next/link';
 import { TranslatedText } from './TranslatedText';
+import { InstagramIcon } from './InstagramIcon';
+import { SnapchatIcon } from './SnapchatIcon';
 
 export function Footer() {
   const footerSections = [
@@ -32,26 +34,36 @@ export function Footer() {
         { name: 'Karriere', name_fr: 'Carrières', href: '#' },
       ],
     },
+     {
+      title: 'Réseaux sociaux',
+      title_fr: 'Réseaux sociaux',
+      isSocial: true,
+      links: [
+        { name: 'Instagram', href: '#', icon: InstagramIcon },
+        { name: 'Snapchat', href: '#', icon: SnapchatIcon },
+      ],
+    },
   ];
 
   return (
     <footer className="border-t bg-background text-foreground">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
-            <div className="col-span-2 mb-8 lg:col-span-2 lg:mb-0">
+            <div className="col-span-2 mb-8 lg:col-span-1 lg:mb-0">
                 <h5 className="font-headline text-xl font-semibold tracking-wider">EZCENTIALS</h5>
             </div>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 col-span-2 md:col-span-4 lg:col-span-3">
+            <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 col-span-2 md:col-span-4 lg:col-span-4">
                 {footerSections.map((section) => (
                 <div key={section.title}>
                     <h5 className="font-headline text-lg font-semibold tracking-wider">
                     <TranslatedText fr={section.title_fr}>{section.title}</TranslatedText>
                     </h5>
-                    <ul className="mt-4 space-y-3">
+                    <ul className={`mt-4 space-y-3 ${section.isSocial ? 'flex space-x-4 space-y-0' : ''}`}>
                     {section.links.map((link) => (
                         <li key={link.name}>
-                        <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground">
-                            <TranslatedText fr={link.name_fr}>{link.name}</TranslatedText>
+                        <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-2">
+                           {link.icon && <link.icon />}
+                           {!section.isSocial && <TranslatedText fr={link.name_fr}>{link.name}</TranslatedText>}
                         </Link>
                         </li>
                     ))}
