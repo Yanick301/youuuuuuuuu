@@ -21,28 +21,28 @@ export default function RegisterPage() {
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-headline">
-            <TranslatedText>Konto erstellen</TranslatedText>
+            <TranslatedText fr="Créer un compte">Konto erstellen</TranslatedText>
           </CardTitle>
           <CardDescription>
-            <TranslatedText>Treten Sie der Welt von EZCENTIALS bei.</TranslatedText>
+            <TranslatedText fr="Rejoignez le monde d'EZCENTIALS.">Treten Sie der Welt von EZCENTIALS bei.</TranslatedText>
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
            <div className="grid gap-2">
-            <Label htmlFor="name"><TranslatedText>Name</TranslatedText></Label>
+            <Label htmlFor="name"><TranslatedText fr="Nom">Name</TranslatedText></Label>
             <Input id="name" placeholder="Jane Doe" required />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="email"><TranslatedText>Email</TranslatedText></Label>
+            <Label htmlFor="email"><TranslatedText fr="Email">Email</TranslatedText></Label>
             <Input id="email" type="email" placeholder="m@example.com" required />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="password"><TranslatedText>Passwort</TranslatedText></Label>
+            <Label htmlFor="password"><TranslatedText fr="Mot de passe">Passwort</TranslatedText></Label>
             <Input id="password" type="password" required />
           </div>
-          <Button className="w-full mt-2"><TranslatedText>Konto erstellen</TranslatedText></Button>
+          <Button className="w-full mt-2"><TranslatedText fr="Créer un compte">Konto erstellen</TranslatedText></Button>
           <p className="text-xs text-center text-muted-foreground">
-            <TranslatedText>Eine E-Mail wird gesendet, um Ihr Konto zu verifizieren.</TranslatedText>
+            <TranslatedText fr="Un e-mail sera envoyé pour vérifier votre compte.">Eine E-Mail wird gesendet, um Ihr Konto zu verifizieren.</TranslatedText>
           </p>
 
           <div className="relative my-2">
@@ -51,17 +51,17 @@ export default function RegisterPage() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-card px-2 text-muted-foreground">
-                <TranslatedText>Oder weiter mit</TranslatedText>
+                <TranslatedText fr="Ou continuer avec">Oder weiter mit</TranslatedText>
                 </span>
             </div>
           </div>
-           <GoogleSignInButton><TranslatedText>Mit Google registrieren</TranslatedText></GoogleSignInButton>
+           <GoogleSignInButton><TranslatedText fr="S'inscrire avec Google">Mit Google registrieren</TranslatedText></GoogleSignInButton>
         </CardContent>
         <CardFooter className="justify-center text-sm">
           <p className="text-muted-foreground">
-            <TranslatedText>Haben Sie bereits ein Konto?</TranslatedText>{' '}
+            <TranslatedText fr="Vous avez déjà un compte ?">Haben Sie bereits ein Konto?</TranslatedText>{' '}
             <Link href="/login" className="font-semibold text-primary hover:underline">
-              <TranslatedText>Anmelden</TranslatedText>
+              <TranslatedText fr="Se connecter">Anmelden</TranslatedText>
             </Link>
           </p>
         </CardFooter>

@@ -21,7 +21,9 @@ export default function SearchPage() {
       const filteredProducts = products.filter(
         (product) =>
           product.name.toLowerCase().includes(lowerCaseQuery) ||
-          product.description.toLowerCase().includes(lowerCaseQuery)
+          product.description.toLowerCase().includes(lowerCaseQuery) ||
+          product.name_fr.toLowerCase().includes(lowerCaseQuery) ||
+          product.description_fr.toLowerCase().includes(lowerCaseQuery)
       );
       setResults(filteredProducts);
       setLoading(false);
@@ -34,16 +36,16 @@ export default function SearchPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       {loading ? (
-        <p className="text-center"><TranslatedText>Suche...</TranslatedText></p>
+        <p className="text-center"><TranslatedText fr="Recherche...">Suche...</TranslatedText></p>
       ) : (
         <>
           <h1 className="mb-8 text-center font-headline text-4xl md:text-5xl">
             {query && results.length > 0 ? (
               <>
-                <TranslatedText>Suchergebnisse für</TranslatedText>: "{query}"
+                <TranslatedText fr="Résultats de recherche pour">Suchergebnisse für</TranslatedText>: "{query}"
               </>
             ) : (
-                <TranslatedText>Keine Ergebnisse gefunden für</TranslatedText>
+                <TranslatedText fr={`Aucun résultat trouvé pour "${query}"`}>Keine Ergebnisse gefunden für "{query}"</TranslatedText>
             )}
           </h1>
           {results.length > 0 ? (
@@ -55,7 +57,7 @@ export default function SearchPage() {
           ) : (
              !query && (
                 <p className="text-center text-muted-foreground">
-                    <TranslatedText>Bitte geben Sie einen Suchbegriff ein, um Produkte zu finden.</TranslatedText>
+                    <TranslatedText fr="Veuillez entrer un terme de recherche pour trouver des produits.">Bitte geben Sie einen Suchbegriff ein, um Produkte zu finden.</TranslatedText>
                 </p>
              )
           )}

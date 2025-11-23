@@ -38,13 +38,13 @@ export function ProductCard({ product }: ProductCardProps) {
         </Link>
         <CardContent className="p-4 flex-grow flex flex-col">
             <h3 className="font-semibold leading-snug flex-grow">
-                <Link href={`/product/${product.slug}`}><TranslatedText>{product.name}</TranslatedText></Link>
+                <Link href={`/product/${product.slug}`}><TranslatedText fr={product.name_fr}>{product.name}</TranslatedText></Link>
             </h3>
             <p className="text-sm text-muted-foreground mt-2">${product.price.toFixed(2)}</p>
         </CardContent>
         <CardFooter className="p-4 pt-0 flex gap-2">
             <AddToCartButton product={product} variant="outline" className="w-full">
-                <TranslatedText>In den Warenkorb</TranslatedText>
+                <TranslatedText fr="Ajouter au panier">In den Warenkorb</TranslatedText>
             </AddToCartButton>
             <AddToFavoritesButton productId={product.id} variant="outline" />
         </CardFooter>

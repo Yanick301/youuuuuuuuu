@@ -1,87 +1,20 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
-import { translateContent } from '@/ai/flows/translate-content';
+import type { ReactNode } from 'react';
 
 type TranslatedTextProps = {
-  children: string;
+  fr: string;
+  children: ReactNode; // German is the default
 };
 
-// A simple in-memory cache for translations
-const translationCache = new Map<string, string>();
-const apiKeyIsSet = !!process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-
-export function TranslatedText({ children }: TranslatedTextProps) {
+export function TranslatedText({ children, fr }: TranslatedTextProps) {
   const { language } = useLanguage();
-  const [translatedText, setTranslatedText] = useState(children);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const originalLanguage = 'de';
-  const cacheKey = useMemo(() => `${language}:${children}`, [language, children]);
-
-  useEffect(() => {
-    // Do not translate on the server or if the key is not set
-    if (typeof window === 'undefined') {
-      setTranslatedText(children);
-      return;
-    }
-    
-    if (!apiKeyIsSet) {
-      if(language !== originalLanguage) {
-        // To avoid showing the original german text when another language is selected
-        // but no API key is present, we can show a placeholder or the key.
-        // Here, showing the original child text is a safe fallback.
-         setTranslatedText(children);
-      } else {
-         setTranslatedText(children);
-      }
-      return;
-    }
-
-    if (language === originalLanguage) {
-      setTranslatedText(children);
-      return;
-    }
-    
-    if (translationCache.has(cacheKey)) {
-        setTranslatedText(translationCache.get(cacheKey)!);
-        return;
-    }
-
-    let isCancelled = false;
-    const doTranslate = async () => {
-      setIsLoading(true);
-      try {
-        const result = await translateContent({ text: children, targetLanguage: language });
-        if (!isCancelled) {
-          translationCache.set(cacheKey, result.translatedText);
-          setTranslatedText(result.translatedText);
-        }
-      } catch (error) {
-        console.error('Translation failed:', error);
-        if (!isCancelled) {
-          setTranslatedText(children); // Fallback to original text on error
-        }
-      } finally {
-        if (!isCancelled) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    doTranslate();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [children, language, cacheKey]);
-
-  // Si le texte est en cours de traduction et que ce n'est pas la langue par défaut
-  if (isLoading && language !== originalLanguage) {
-    return <span className="opacity-75 animate-pulse">...</span>;
+  if (language === 'fr') {
+    return <>{fr}</>;
   }
-  
-  // Sinon, afficher le texte traduit (ou l'original si c'est la langue par défaut).
-  return <>{translatedText}</>;
+
+  // Default to German
+  return <>{children}</>;
 }

@@ -10,28 +10,31 @@ export function Footer() {
   const footerLinks = [
     {
       title: 'Shop',
+      title_fr: 'Boutique',
       links: [
-        { name: "Herrenbekleidung", href: '/products/mens-clothing' },
-        { name: "Damenbekleidung", href: '/products/womens-clothing' },
-        { name: 'Accessoires', href: '/products/accessories' },
-        { name: 'Schuhe', href: '/products/shoes' },
-        { name: 'Winterkleidung', href: '/products/winter-clothing' },
+        { name: "Herrenbekleidung", name_fr: "Vêtements pour hommes", href: '/products/mens-clothing' },
+        { name: "Damenbekleidung", name_fr: "Vêtements pour femmes", href: '/products/womens-clothing' },
+        { name: 'Accessoires', name_fr: 'Accessoires', href: '/products/accessories' },
+        { name: 'Schuhe', name_fr: 'Chaussures', href: '/products/shoes' },
+        { name: 'Winterkleidung', name_fr: 'Vêtements d\'hiver', href: '/products/winter-clothing' },
       ],
     },
     {
       title: 'Über uns',
+      title_fr: 'À propos',
       links: [
-        { name: 'Unsere Geschichte', href: '#' },
-        { name: 'Nachhaltigkeit', href: '#' },
-        { name: 'Karriere', href: '#' },
+        { name: 'Unsere Geschichte', name_fr: 'Notre histoire', href: '#' },
+        { name: 'Nachhaltigkeit', name_fr: 'Durabilité', href: '#' },
+        { name: 'Karriere', name_fr: 'Carrières', href: '#' },
       ],
     },
     {
       title: 'Support',
+      title_fr: 'Support',
       links: [
-        { name: 'Kontaktieren Sie uns', href: '#' },
-        { name: 'FAQ', href: '#' },
-        { name: 'Versand & Rücksendungen', href: '#' },
+        { name: 'Kontaktieren Sie uns', name_fr: 'Contactez-nous', href: '#' },
+        { name: 'FAQ', name_fr: 'FAQ', href: '#' },
+        { name: 'Versand & Rücksendungen', name_fr: 'Expédition et retours', href: '#' },
       ],
     },
   ];
@@ -45,17 +48,17 @@ export function Footer() {
               <Image src="/images/logo.png" alt="EZCENTIALS Logo" width={50} height={50} />
               <span className="font-bold font-headline text-2xl">EZCENTIALS</span>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground"><TranslatedText>Dezente Eleganz und Raffinesse.</TranslatedText></p>
+            <p className="mt-2 text-sm text-muted-foreground"><TranslatedText fr="Élégance discrète et sophistication.">Dezente Eleganz und Raffinesse.</TranslatedText></p>
           </div>
 
           {footerLinks.map((section) => (
             <div key={section.title}>
-              <h5 className="font-semibold"><TranslatedText>{section.title}</TranslatedText></h5>
+              <h5 className="font-semibold"><TranslatedText fr={section.title_fr}>{section.title}</TranslatedText></h5>
               <ul className="mt-4 space-y-2">
                 {section.links.map((link) => (
                   <li key={link.name}>
                     <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground">
-                      <TranslatedText>{link.name}</TranslatedText>
+                      <TranslatedText fr={link.name_fr}>{link.name}</TranslatedText>
                     </Link>
                   </li>
                 ))}
@@ -68,17 +71,17 @@ export function Footer() {
           </div>
           
           <div className="col-span-2 md:col-span-2 lg:col-span-2">
-              <h5 className="font-semibold"><TranslatedText>Bleiben Sie in Kontakt</TranslatedText></h5>
-              <p className="mt-2 text-sm text-muted-foreground"><TranslatedText>Melden Sie sich für unseren Newsletter an, um Updates zu Neuankömmlingen und Sonderangeboten zu erhalten.</TranslatedText></p>
+              <h5 className="font-semibold"><TranslatedText fr="Restez en contact">Bleiben Sie in Kontakt</TranslatedText></h5>
+              <p className="mt-2 text-sm text-muted-foreground"><TranslatedText fr="Inscrivez-vous à notre newsletter pour recevoir des mises à jour sur les nouveautés et les offres spéciales.">Melden Sie sich für unseren Newsletter an, um Updates zu Neuankömmlingen und Sonderangeboten zu erhalten.</TranslatedText></p>
               <form className="mt-4 flex gap-2">
                 <Input type="email" placeholder="Geben Sie Ihre E-Mail-Adresse ein" className="max-w-xs" />
-                <Button type="submit"><TranslatedText>Abonnieren</TranslatedText></Button>
+                <Button type="submit"><TranslatedText fr="S'abonner">Abonnieren</TranslatedText></Button>
               </form>
           </div>
         </div>
 
         <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} <TranslatedText>EZCENTIALS. Alle Rechte vorbehalten.</TranslatedText></p>
+          <p>&copy; {new Date().getFullYear()} <TranslatedText fr="EZCENTIALS. Tous droits réservés.">EZCENTIALS. Alle Rechte vorbehalten.</TranslatedText></p>
         </div>
       </div>
     </footer>

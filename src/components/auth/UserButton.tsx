@@ -27,13 +27,13 @@ export function UserButton() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem asChild>
-            <Link href="/account"><TranslatedText>Mein Konto</TranslatedText></Link>
+            <Link href="/account"><TranslatedText fr="Mon compte">Mein Konto</TranslatedText></Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/account/favorites"><TranslatedText>Meine Favoriten</TranslatedText></Link>
+            <Link href="/account/favorites"><TranslatedText fr="Mes favoris">Meine Favoriten</TranslatedText></Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem><TranslatedText>Abmelden</TranslatedText></DropdownMenuItem>
+          <DropdownMenuItem><TranslatedText fr="Se déconnecter">Abmelden</TranslatedText></DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     );
@@ -49,10 +49,10 @@ export function UserButton() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>
-          <Link href="/login"><TranslatedText>Anmelden</TranslatedText></Link>
+          <Link href="/login"><TranslatedText fr="Se connecter">Anmelden</TranslatedText></Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/register"><TranslatedText>Registrieren</TranslatedText></Link>
+          <Link href="/register"><TranslatedText fr="S'inscrire">Registrieren</TranslatedText></Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

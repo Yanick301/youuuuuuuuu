@@ -35,7 +35,7 @@ export default function CheckoutPage() {
   if (cart.length === 0) {
     return (
       <div className="container mx-auto flex h-[60vh] items-center justify-center text-center">
-        <p><TranslatedText>Ihr Warenkorb ist leer. Sie werden weitergeleitet...</TranslatedText></p>
+        <p><TranslatedText fr="Votre panier est vide. Vous allez être redirigé...">Ihr Warenkorb ist leer. Sie werden weitergeleitet...</TranslatedText></p>
       </div>
     );
   }
@@ -53,7 +53,7 @@ export default function CheckoutPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <h1 className="mb-8 text-center font-headline text-4xl md:text-5xl">
-        <TranslatedText>Kasse</TranslatedText>
+        <TranslatedText fr="Paiement">Kasse</TranslatedText>
       </h1>
 
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
@@ -61,31 +61,31 @@ export default function CheckoutPage() {
         <div className="space-y-8">
           <Card>
             <CardHeader>
-              <CardTitle><TranslatedText>Versandinformationen</TranslatedText></CardTitle>
+              <CardTitle><TranslatedText fr="Informations de livraison">Versandinformationen</TranslatedText></CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
-                <Label htmlFor="email"><TranslatedText>Email</TranslatedText></Label>
+                <Label htmlFor="email"><TranslatedText fr="Email">Email</TranslatedText></Label>
                 <Input id="email" type="email" placeholder="sie@beispiel.com" />
               </div>
               <div className="sm:col-span-2">
-                <Label htmlFor="address"><TranslatedText>Adresse</TranslatedText></Label>
+                <Label htmlFor="address"><TranslatedText fr="Adresse">Adresse</TranslatedText></Label>
                 <Input id="address" placeholder="Hauptstraße 123" />
               </div>
               <div>
-                <Label htmlFor="city"><TranslatedText>Stadt</TranslatedText></Label>
+                <Label htmlFor="city"><TranslatedText fr="Ville">Stadt</TranslatedText></Label>
                 <Input id="city" placeholder="Musterstadt" />
               </div>
               <div>
-                <Label htmlFor="state"><TranslatedText>Bundesland / Provinz</TranslatedText></Label>
+                <Label htmlFor="state"><TranslatedText fr="État / Province">Bundesland / Provinz</TranslatedText></Label>
                 <Input id="state" placeholder="BE" />
               </div>
               <div>
-                <Label htmlFor="zip"><TranslatedText>PLZ / Postleitzahl</TranslatedText></Label>
+                <Label htmlFor="zip"><TranslatedText fr="Code postal">PLZ / Postleitzahl</TranslatedText></Label>
                 <Input id="zip" placeholder="12345" />
               </div>
                <div>
-                <Label htmlFor="country"><TranslatedText>Land</TranslatedText></Label>
+                <Label htmlFor="country"><TranslatedText fr="Pays">Land</TranslatedText></Label>
                 <Input id="country" placeholder="Deutschland" />
               </div>
             </CardContent>
@@ -93,15 +93,15 @@ export default function CheckoutPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle><TranslatedText>Zahlungsdetails</TranslatedText></CardTitle>
+              <CardTitle><TranslatedText fr="Détails de paiement">Zahlungsdetails</TranslatedText></CardTitle>
               <CardDescription className="flex items-center gap-2 text-sm">
                 <Lock className="h-4 w-4" />
-                <TranslatedText>Alle Transaktionen sind sicher und verschlüsselt.</TranslatedText>
+                <TranslatedText fr="Toutes les transactions sont sécurisées et cryptées.">Alle Transaktionen sind sicher und verschlüsselt.</TranslatedText>
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                <div className="grid gap-2">
-                <Label htmlFor="card-number"><TranslatedText>Kartennummer</TranslatedText></Label>
+                <Label htmlFor="card-number"><TranslatedText fr="Numéro de carte">Kartennummer</TranslatedText></Label>
                 <div className="relative">
                     <Input id="card-number" placeholder="0000 0000 0000 0000" />
                     <CreditCard className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -109,11 +109,11 @@ export default function CheckoutPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                  <div className="grid gap-2">
-                    <Label htmlFor="expiry-date"><TranslatedText>Ablaufdatum</TranslatedText></Label>
+                    <Label htmlFor="expiry-date"><TranslatedText fr="Date d'expiration">Ablaufdatum</TranslatedText></Label>
                     <Input id="expiry-date" placeholder="MM / JJ" />
                 </div>
                  <div className="grid gap-2">
-                    <Label htmlFor="cvc"><TranslatedText>CVC</TranslatedText></Label>
+                    <Label htmlFor="cvc"><TranslatedText fr="CVC">CVC</TranslatedText></Label>
                     <Input id="cvc" placeholder="123" />
                 </div>
               </div>
@@ -125,7 +125,7 @@ export default function CheckoutPage() {
         <div className="space-y-8">
           <Card>
             <CardHeader>
-              <CardTitle><TranslatedText>Bestellübersicht</TranslatedText></CardTitle>
+              <CardTitle><TranslatedText fr="Résumé de la commande">Bestellübersicht</TranslatedText></CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="divide-y divide-border">
@@ -146,7 +146,7 @@ export default function CheckoutPage() {
                          <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-muted text-sm font-medium">{item.quantity}</span>
                       </div>
                       <div className="ml-4 flex-1">
-                        <p className="font-medium"><TranslatedText>{item.product.name}</TranslatedText></p>
+                        <p className="font-medium"><TranslatedText fr={item.product.name_fr}>{item.product.name}</TranslatedText></p>
                         <p className="text-sm text-muted-foreground">
                             ${item.product.price.toFixed(2)}
                         </p>
@@ -159,27 +159,27 @@ export default function CheckoutPage() {
               <Separator className="my-4" />
               <div className="space-y-2 text-sm">
                  <div className="flex justify-between">
-                  <p className="text-muted-foreground"><TranslatedText>Zwischensumme</TranslatedText></p>
+                  <p className="text-muted-foreground"><TranslatedText fr="Sous-total">Zwischensumme</TranslatedText></p>
                   <p>${subtotal.toFixed(2)}</p>
                 </div>
                  <div className="flex justify-between">
-                  <p className="text-muted-foreground"><TranslatedText>Versand</TranslatedText></p>
+                  <p className="text-muted-foreground"><TranslatedText fr="Livraison">Versand</TranslatedText></p>
                   <p>${shipping.toFixed(2)}</p>
                 </div>
                  <div className="flex justify-between">
-                  <p className="text-muted-foreground"><TranslatedText>Steuern</TranslatedText></p>
+                  <p className="text-muted-foreground"><TranslatedText fr="Taxes">Steuern</TranslatedText></p>
                   <p>${taxes.toFixed(2)}</p>
                 </div>
               </div>
                <Separator className="my-4" />
                <div className="flex justify-between font-bold text-lg">
-                  <p><TranslatedText>Gesamt</TranslatedText></p>
+                  <p><TranslatedText fr="Total">Gesamt</TranslatedText></p>
                   <p>${total.toFixed(2)}</p>
                 </div>
             </CardContent>
           </Card>
           <Button size="lg" className="w-full" onClick={handlePlaceOrder}>
-            <TranslatedText>Bestellung aufgeben</TranslatedText>
+            <TranslatedText fr="Passer la commande">Bestellung aufgeben</TranslatedText>
           </Button>
         </div>
       </div>

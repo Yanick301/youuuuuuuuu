@@ -33,12 +33,12 @@ export function SearchDialog() {
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
           <Search className="h-5 w-5" />
-          <span className="sr-only"><TranslatedText>Suche</TranslatedText></span>
+          <span className="sr-only"><TranslatedText fr="Rechercher">Suche</TranslatedText></span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle><TranslatedText>Nach Produkten suchen</TranslatedText></DialogTitle>
+          <DialogTitle><TranslatedText fr="Rechercher des produits">Nach Produkten suchen</TranslatedText></DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSearch} className="flex items-center space-x-2">
           <Input

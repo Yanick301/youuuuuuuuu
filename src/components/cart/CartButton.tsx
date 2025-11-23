@@ -32,7 +32,7 @@ export function CartButton() {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle><TranslatedText>Warenkorb</TranslatedText></SheetTitle>
+          <SheetTitle><TranslatedText fr="Panier">Warenkorb</TranslatedText></SheetTitle>
         </SheetHeader>
         <CartSheetContent />
       </SheetContent>

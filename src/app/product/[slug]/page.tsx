@@ -85,7 +85,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
         {/* Product Info */}
         <div>
-          <h1 className="font-headline text-4xl">{product.name}</h1>
+          <h1 className="font-headline text-4xl"><TranslatedText fr={product.name_fr}>{product.name}</TranslatedText></h1>
           <p className="mt-2 text-2xl text-muted-foreground">${product.price.toFixed(2)}</p>
           
           <div className="mt-4 flex items-center gap-2">
@@ -94,11 +94,11 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <Star key={i} className={`h-5 w-5 ${i < Math.floor(averageRating) ? 'text-primary fill-primary' : 'text-muted'}`} />
               ))}
             </div>
-            <span className="text-sm text-muted-foreground">({product.reviews.length} <TranslatedText>Bewertungen</TranslatedText>)</span>
+            <span className="text-sm text-muted-foreground">({product.reviews.length} <TranslatedText fr="avis">Bewertungen</TranslatedText>)</span>
           </div>
 
           <p className="mt-6 text-base leading-relaxed">
-            <TranslatedText>{product.description}</TranslatedText>
+            <TranslatedText fr={product.description_fr}>{product.description}</TranslatedText>
           </p>
 
           <div className="mt-8 flex items-center gap-4">
@@ -110,14 +110,14 @@ export default function ProductPage({ params }: ProductPageProps) {
           
           <Tabs defaultValue="details" className="w-full">
             <TabsList>
-              <TabsTrigger value="details"><TranslatedText>Details</TranslatedText></TabsTrigger>
-              <TabsTrigger value="reviews"><TranslatedText>Bewertungen</TranslatedText></TabsTrigger>
+              <TabsTrigger value="details"><TranslatedText fr="Détails">Details</TranslatedText></TabsTrigger>
+              <TabsTrigger value="reviews"><TranslatedText fr="Avis">Bewertungen</TranslatedText></TabsTrigger>
             </TabsList>
             <TabsContent value="details" className="mt-4 text-sm text-muted-foreground">
               <ul className="list-disc pl-5 space-y-2">
-                <li><TranslatedText>Hergestellt aus hochwertigen Materialien</TranslatedText></li>
-                <li><TranslatedText>Entworfen für Komfort und Stil</TranslatedText></li>
-                <li><TranslatedText>Nachhaltig bezogen</TranslatedText></li>
+                <li><TranslatedText fr="Fabriqué avec des matériaux de haute qualité">Hergestellt aus hochwertigen Materialien</TranslatedText></li>
+                <li><TranslatedText fr="Conçu pour le confort et le style">Entworfen für Komfort und Stil</TranslatedText></li>
+                <li><TranslatedText fr="Approvisionnement durable">Nachhaltig bezogen</TranslatedText></li>
               </ul>
             </TabsContent>
             <TabsContent value="reviews" className="mt-4">
@@ -135,7 +135,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                     <p className="mt-2 text-sm text-muted-foreground">{review.comment}</p>
                   </div>
                 )) : (
-                  <p><TranslatedText>Noch keine Bewertungen.</TranslatedText></p>
+                  <p><TranslatedText fr="Pas encore d'avis.">Noch keine Bewertungen.</TranslatedText></p>
                 )}
               </div>
             </TabsContent>
@@ -146,7 +146,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       {/* Related Products */}
       <div className="mt-24">
         <h2 className="mb-12 text-center font-headline text-3xl md:text-4xl">
-          <TranslatedText>Das könnte Ihnen auch gefallen</TranslatedText>
+          <TranslatedText fr="Vous pourriez aussi aimer">Das könnte Ihnen auch gefallen</TranslatedText>
         </h2>
         <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
           {relatedProducts.map((relatedProduct) => (

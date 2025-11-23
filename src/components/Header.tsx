@@ -37,7 +37,7 @@ export function Header() {
                 href={`/products/${category.slug}`}
                 className="transition-colors hover:text-foreground/80 text-foreground/60"
               >
-                <TranslatedText>{category.name}</TranslatedText>
+                <TranslatedText fr={category.name_fr}>{category.name}</TranslatedText>
               </Link>
             ))}
           </nav>
@@ -70,7 +70,7 @@ export function Header() {
                     href={`/products/${category.slug}`}
                     className="text-muted-foreground transition-colors hover:text-foreground"
                   >
-                    <TranslatedText>{category.name}</TranslatedText>
+                    <TranslatedText fr={category.name_fr}>{category.name}</TranslatedText>
                   </Link>
                 ))}
               </nav>

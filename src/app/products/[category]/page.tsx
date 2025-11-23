@@ -31,7 +31,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const { category: categorySlug } = params;
   const products = getProductsByCategory(categorySlug);
   const category = categories.find((c) => c.slug === categorySlug);
+
   const title = categorySlug === 'all' ? 'Alle Produkte' : category?.name;
+  const titleFr = categorySlug === 'all' ? 'Tous les produits' : category?.name_fr;
 
   if (!products) {
     notFound();
@@ -40,11 +42,11 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   return (
     <div className="container mx-auto px-4 py-12">
       <h1 className="mb-8 text-center font-headline text-4xl md:text-5xl">
-        <TranslatedText>{title || 'Produkte'}</TranslatedText>
+        <TranslatedText fr={titleFr || 'Produits'}>{title || 'Produkte'}</TranslatedText>
       </h1>
       {products.length === 0 ? (
         <p className="text-center text-muted-foreground">
-          <TranslatedText>Keine Produkte in dieser Kategorie gefunden.</TranslatedText>
+          <TranslatedText fr="Aucun produit trouvé dans cette catégorie.">Keine Produkte in dieser Kategorie gefunden.</TranslatedText>
         </p>
       ) : (
         <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
