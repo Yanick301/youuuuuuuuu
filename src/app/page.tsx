@@ -19,7 +19,12 @@ export default function HomePage() {
   return (
     <div className="flex flex-col">
       <section className="relative flex h-[70vh] w-full flex-col items-center justify-center bg-header-background bg-cover bg-center text-center text-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/20" />
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: 'radial-gradient(circle at center, hsl(30 80% 85% / 0.2), transparent 40%), linear-gradient(to top, rgb(0 0 0 / 0.6), rgb(0 0 0 / 0.2))'
+          }} 
+        />
         <div className="container px-4 z-10">
           <p className="text-sm uppercase tracking-widest text-white animate-fade-in-up">
              <TranslatedText fr="BIENVENUE CHEZ EZCENTIALS">WILLKOMMEN BEI EZCENTIALS</TranslatedText>
