@@ -19,7 +19,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: CategoryPageProps) {
   const categorySlug = params.category;
   const category = categories.find((c) => c.slug === categorySlug);
-  const title = categorySlug === 'all' ? 'All Products' : category?.name;
+  const title = categorySlug === 'all' ? 'Alle Produkte' : category?.name;
 
   return {
     title: `${title} | EZCENTIALS`,
@@ -31,7 +31,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const { category: categorySlug } = params;
   const products = getProductsByCategory(categorySlug);
   const category = categories.find((c) => c.slug === categorySlug);
-  const title = categorySlug === 'all' ? 'All Products' : category?.name;
+  const title = categorySlug === 'all' ? 'Alle Produkte' : category?.name;
 
   if (!products) {
     notFound();
@@ -40,11 +40,11 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   return (
     <div className="container mx-auto px-4 py-12">
       <h1 className="mb-8 text-center font-headline text-4xl md:text-5xl">
-        <TranslatedText>{title || 'Products'}</TranslatedText>
+        <TranslatedText>{title || 'Produkte'}</TranslatedText>
       </h1>
       {products.length === 0 ? (
         <p className="text-center text-muted-foreground">
-          <TranslatedText>No products found in this category.</TranslatedText>
+          <TranslatedText>Keine Produkte in dieser Kategorie gefunden.</TranslatedText>
         </p>
       ) : (
         <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

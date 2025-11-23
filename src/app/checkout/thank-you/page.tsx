@@ -8,15 +8,15 @@ export default function ThankYouPage() {
     <div className="container mx-auto flex min-h-[70vh] flex-col items-center justify-center text-center px-4">
       <CheckCircle2 className="h-20 w-20 text-green-500" />
       <h1 className="mt-6 font-headline text-4xl md:text-5xl">
-        <TranslatedText>Thank You for Your Order!</TranslatedText>
+        <TranslatedText>Vielen Dank für Ihre Bestellung!</TranslatedText>
       </h1>
       <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
         <TranslatedText>
-          Your order has been placed successfully. A confirmation email has been sent to you with the order details. We'll notify you once your items have shipped.
+          Ihre Bestellung wurde erfolgreich aufgegeben. Eine Bestätigungs-E-Mail mit den Bestelldetails wurde an Sie gesendet. Wir benachrichtigen Sie, sobald Ihre Artikel versendet wurden.
         </TranslatedText>
       </p>
       <Button asChild className="mt-8" size="lg">
-        <Link href="/products/all"><TranslatedText>Continue Shopping</TranslatedText></Link>
+        <Link href="/products/all"><TranslatedText>Weiter einkaufen</TranslatedText></Link>
       </Button>
     </div>
   );

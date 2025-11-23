@@ -20,8 +20,8 @@ export function CartSheetContent() {
     return (
       <div className="flex h-full flex-col items-center justify-center text-center">
         <ShoppingBagIcon className="h-24 w-24 text-muted" />
-        <h3 className="mt-4 text-lg font-semibold"><TranslatedText>Your cart is empty</TranslatedText></h3>
-        <p className="mt-2 text-sm text-muted-foreground"><TranslatedText>Add some products to get started.</TranslatedText></p>
+        <h3 className="mt-4 text-lg font-semibold"><TranslatedText>Ihr Warenkorb ist leer</TranslatedText></h3>
+        <p className="mt-2 text-sm text-muted-foreground"><TranslatedText>Fügen Sie einige Produkte hinzu, um loszulegen.</TranslatedText></p>
       </div>
     );
   }
@@ -97,15 +97,15 @@ export function CartSheetContent() {
 
       <div className="border-t border-border px-4 py-6 sm:px-6">
         <div className="flex justify-between text-base font-medium text-foreground">
-          <p><TranslatedText>Subtotal</TranslatedText></p>
+          <p><TranslatedText>Zwischensumme</TranslatedText></p>
           <p>${subtotal.toFixed(2)}</p>
         </div>
         <p className="mt-0.5 text-sm text-muted-foreground">
-          <TranslatedText>Shipping and taxes calculated at checkout.</TranslatedText>
+          <TranslatedText>Versand und Steuern werden an der Kasse berechnet.</TranslatedText>
         </p>
         <div className="mt-6">
           <Button asChild className="w-full">
-            <Link href="/checkout"><TranslatedText>Checkout</TranslatedText></Link>
+            <Link href="/checkout"><TranslatedText>Kasse</TranslatedText></Link>
           </Button>
         </div>
       </div>

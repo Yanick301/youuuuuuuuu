@@ -27,7 +27,7 @@ export default function HomePage() {
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
-            alt="Elegant fashion model"
+            alt="Elegantes Model"
             fill
             className="object-cover"
             priority
@@ -41,12 +41,12 @@ export default function HomePage() {
           </h1>
           <p className="mt-4 max-w-2xl text-lg md:text-xl">
             <TranslatedText>
-              Découvrez notre nouvelle collection de pièces intemporelles, confectionnées avec passion et précision.
+              Entdecken Sie unsere neue Kollektion zeitloser Stücke, gefertigt mit Leidenschaft und Präzision.
             </TranslatedText>
           </p>
           <Button asChild className="mt-8" size="lg">
             <Link href="/products/all">
-              <TranslatedText>Acheter maintenant</TranslatedText>
+              <TranslatedText>Jetzt einkaufen</TranslatedText>
             </Link>
           </Button>
         </div>
@@ -55,7 +55,7 @@ export default function HomePage() {
       <section className="w-full bg-background py-16 lg:py-24">
         <div className="container mx-auto px-4">
           <h2 className="mb-12 text-center font-headline text-3xl md:text-4xl">
-            <TranslatedText>Acheter par catégorie</TranslatedText>
+            <TranslatedText>Nach Kategorie einkaufen</TranslatedText>
           </h2>
           <Carousel
             opts={{
@@ -108,7 +108,7 @@ export default function HomePage() {
       <section className="w-full bg-card py-16 lg:py-24">
         <div className="container mx-auto px-4">
           <h2 className="mb-12 text-center font-headline text-3xl md:text-4xl">
-            <TranslatedText>Collection Hiver</TranslatedText>
+            <TranslatedText>Winterkollektion</TranslatedText>
           </h2>
           <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
             {featuredProducts.map((product) => (

@@ -8,17 +8,17 @@ import { cn } from '@/lib/utils';
 
 const accountNav = [
   {
-    name: 'Account Details',
+    name: 'Kontodetails',
     href: '/account',
     icon: User,
   },
   {
-    name: 'Order History',
+    name: 'Bestellverlauf',
     href: '/account/orders',
     icon: ListOrdered,
   },
   {
-    name: 'My Favorites',
+    name: 'Meine Favoriten',
     href: '/account/favorites',
     icon: Heart,
   },
@@ -36,7 +36,7 @@ export default function AccountLayout({
       <div className="grid grid-cols-1 gap-8 md:grid-cols-4 lg:grid-cols-5">
         <aside className="md:col-span-1">
           <h2 className="mb-6 font-headline text-2xl hidden md:block">
-            <TranslatedText>My Account</TranslatedText>
+            <TranslatedText>Mein Konto</TranslatedText>
           </h2>
           <nav className="flex flex-row space-x-2 md:flex-col md:space-x-0 md:space-y-2 overflow-x-auto -mx-4 px-4 pb-2 md:pb-0 md:p-0 md:overflow-visible">
             {accountNav.map((item) => (

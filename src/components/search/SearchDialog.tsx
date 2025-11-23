@@ -33,21 +33,21 @@ export function SearchDialog() {
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
           <Search className="h-5 w-5" />
-          <span className="sr-only"><TranslatedText>Search</TranslatedText></span>
+          <span className="sr-only"><TranslatedText>Suche</TranslatedText></span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle><TranslatedText>Search for Products</TranslatedText></DialogTitle>
+          <DialogTitle><TranslatedText>Nach Produkten suchen</TranslatedText></DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSearch} className="flex items-center space-x-2">
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="e.g. 'manteau en laine'"
-            aria-label="Search"
+            placeholder="z.B. 'Wollmantel'"
+            aria-label="Suche"
           />
-          <Button type="submit" size="icon" aria-label="Perform search">
+          <Button type="submit" size="icon" aria-label="Suche durchführen">
             <Search className="h-4 w-4" />
           </Button>
         </form>

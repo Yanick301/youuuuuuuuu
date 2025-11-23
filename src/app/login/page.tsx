@@ -21,11 +21,11 @@ export default function LoginPage() {
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-headline">
-            <TranslatedText>Log In</TranslatedText>
+            <TranslatedText>Anmelden</TranslatedText>
           </CardTitle>
           <CardDescription>
             <TranslatedText>
-              Welcome back to EZCENTIALS.
+              Willkommen zurück bei EZCENTIALS.
             </TranslatedText>
           </CardDescription>
         </CardHeader>
@@ -36,17 +36,17 @@ export default function LoginPage() {
           </div>
           <div className="grid gap-2">
              <div className="flex items-center justify-between">
-              <Label htmlFor="password"><TranslatedText>Password</TranslatedText></Label>
+              <Label htmlFor="password"><TranslatedText>Passwort</TranslatedText></Label>
               <Link
                 href="/forgot-password"
                 className="text-sm text-muted-foreground hover:text-primary"
               >
-                <TranslatedText>Forgot password?</TranslatedText>
+                <TranslatedText>Passwort vergessen?</TranslatedText>
               </Link>
             </div>
             <Input id="password" type="password" required />
           </div>
-          <Button className="w-full mt-2"><TranslatedText>Log In</TranslatedText></Button>
+          <Button className="w-full mt-2"><TranslatedText>Anmelden</TranslatedText></Button>
 
           <div className="relative my-2">
             <div className="absolute inset-0 flex items-center">
@@ -54,18 +54,18 @@ export default function LoginPage() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-card px-2 text-muted-foreground">
-                <TranslatedText>Or continue with</TranslatedText>
+                <TranslatedText>Oder weiter mit</TranslatedText>
                 </span>
             </div>
           </div>
 
-           <GoogleSignInButton><TranslatedText>Sign in with Google</TranslatedText></GoogleSignInButton>
+           <GoogleSignInButton><TranslatedText>Mit Google anmelden</TranslatedText></GoogleSignInButton>
         </CardContent>
         <CardFooter className="justify-center text-sm">
           <p className="text-muted-foreground">
-            <TranslatedText>Don't have an account?</TranslatedText>{' '}
+            <TranslatedText>Sie haben noch kein Konto?</TranslatedText>{' '}
             <Link href="/register" className="font-semibold text-primary hover:underline">
-              <TranslatedText>Sign Up</TranslatedText>
+              <TranslatedText>Registrieren</TranslatedText>
             </Link>
           </p>
         </CardFooter>

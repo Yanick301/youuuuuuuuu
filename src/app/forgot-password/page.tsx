@@ -17,11 +17,11 @@ export default function ForgotPasswordPage() {
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-headline">
-            <TranslatedText>Forgot Password</TranslatedText>
+            <TranslatedText>Passwort vergessen</TranslatedText>
           </CardTitle>
           <CardDescription>
             <TranslatedText>
-              Enter your email and we'll send you a link to reset your password.
+              Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.
             </TranslatedText>
           </CardDescription>
         </CardHeader>
@@ -30,9 +30,9 @@ export default function ForgotPasswordPage() {
             <Label htmlFor="email"><TranslatedText>Email</TranslatedText></Label>
             <Input id="email" type="email" placeholder="m@example.com" required />
           </div>
-          <Button className="w-full"><TranslatedText>Send Reset Link</TranslatedText></Button>
+          <Button className="w-full"><TranslatedText>Link zum Zurücksetzen senden</TranslatedText></Button>
           <Button variant="ghost" asChild>
-            <Link href="/login"><TranslatedText>Back to Log In</TranslatedText></Link>
+            <Link href="/login"><TranslatedText>Zurück zum Login</TranslatedText></Link>
           </Button>
         </CardContent>
       </Card>

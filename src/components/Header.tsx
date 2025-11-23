@@ -48,7 +48,7 @@ export function Header() {
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle Menu</span>
+                <span className="sr-only">Menü umschalten</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="left">

@@ -11,27 +11,27 @@ export function Footer() {
     {
       title: 'Shop',
       links: [
-        { name: "Men's Clothing", href: '/products/mens-clothing' },
-        { name: "Women's Clothing", href: '/products/womens-clothing' },
-        { name: 'Accessories', href: '/products/accessories' },
-        { name: 'Shoes', href: '/products/shoes' },
-        { name: 'Winter Wear', href: '/products/winter-clothing' },
+        { name: "Herrenbekleidung", href: '/products/mens-clothing' },
+        { name: "Damenbekleidung", href: '/products/womens-clothing' },
+        { name: 'Accessoires', href: '/products/accessories' },
+        { name: 'Schuhe', href: '/products/shoes' },
+        { name: 'Winterkleidung', href: '/products/winter-clothing' },
       ],
     },
     {
-      title: 'About',
+      title: 'Über uns',
       links: [
-        { name: 'Our Story', href: '#' },
-        { name: 'Sustainability', href: '#' },
-        { name: 'Careers', href: '#' },
+        { name: 'Unsere Geschichte', href: '#' },
+        { name: 'Nachhaltigkeit', href: '#' },
+        { name: 'Karriere', href: '#' },
       ],
     },
     {
       title: 'Support',
       links: [
-        { name: 'Contact Us', href: '#' },
+        { name: 'Kontaktieren Sie uns', href: '#' },
         { name: 'FAQ', href: '#' },
-        { name: 'Shipping & Returns', href: '#' },
+        { name: 'Versand & Rücksendungen', href: '#' },
       ],
     },
   ];
@@ -42,10 +42,10 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
           <div className="col-span-2 mb-8 md:col-span-4 lg:col-span-1 lg:mb-0">
             <div className="flex items-center space-x-2">
-              <Image src="/images/logo.png" alt="EZCENTIALS Logo" width={40} height={40} />
+              <Image src="/images/logo.png" alt="EZCENTIALS Logo" width={50} height={50} />
               <span className="font-bold font-headline text-2xl">EZCENTIALS</span>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground"><TranslatedText>Understated elegance and sophistication.</TranslatedText></p>
+            <p className="mt-2 text-sm text-muted-foreground"><TranslatedText>Dezente Eleganz und Raffinesse.</TranslatedText></p>
           </div>
 
           {footerLinks.map((section) => (
@@ -68,17 +68,17 @@ export function Footer() {
           </div>
           
           <div className="col-span-2 md:col-span-2 lg:col-span-2">
-              <h5 className="font-semibold"><TranslatedText>Stay in Touch</TranslatedText></h5>
-              <p className="mt-2 text-sm text-muted-foreground"><TranslatedText>Sign up for our newsletter to receive updates on new arrivals and special offers.</TranslatedText></p>
+              <h5 className="font-semibold"><TranslatedText>Bleiben Sie in Kontakt</TranslatedText></h5>
+              <p className="mt-2 text-sm text-muted-foreground"><TranslatedText>Melden Sie sich für unseren Newsletter an, um Updates zu Neuankömmlingen und Sonderangeboten zu erhalten.</TranslatedText></p>
               <form className="mt-4 flex gap-2">
-                <Input type="email" placeholder="Enter your email" className="max-w-xs" />
-                <Button type="submit"><TranslatedText>Subscribe</TranslatedText></Button>
+                <Input type="email" placeholder="Geben Sie Ihre E-Mail-Adresse ein" className="max-w-xs" />
+                <Button type="submit"><TranslatedText>Abonnieren</TranslatedText></Button>
               </form>
           </div>
         </div>
 
         <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} <TranslatedText>EZCENTIALS. All rights reserved.</TranslatedText></p>
+          <p>&copy; {new Date().getFullYear()} <TranslatedText>EZCENTIALS. Alle Rechte vorbehalten.</TranslatedText></p>
         </div>
       </div>
     </footer>

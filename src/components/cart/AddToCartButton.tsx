@@ -21,8 +21,8 @@ export function AddToCartButton({ product, children, ...props }: AddToCartButton
         e.stopPropagation();
         addToCart(product);
         toast({
-            title: "Added to cart",
-            description: `${product.name} has been added to your cart.`,
+            title: "Zum Warenkorb hinzugefügt",
+            description: `${product.name} wurde Ihrem Warenkorb hinzugefügt.`,
         });
     }
 

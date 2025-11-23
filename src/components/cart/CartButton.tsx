@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { CartSheetContent } from './CartSheetContent';
+import { TranslatedText } from '../TranslatedText';
 
 export function CartButton() {
   const { cart } = useCart();
@@ -26,12 +27,12 @@ export function CartButton() {
               {itemCount}
             </span>
           )}
-          <span className="sr-only">Open cart</span>
+          <span className="sr-only">Warenkorb öffnen</span>
         </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Shopping Cart</SheetTitle>
+          <SheetTitle><TranslatedText>Warenkorb</TranslatedText></SheetTitle>
         </SheetHeader>
         <CartSheetContent />
       </SheetContent>

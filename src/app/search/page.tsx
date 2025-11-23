@@ -34,16 +34,16 @@ export default function SearchPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       {loading ? (
-        <p className="text-center"><TranslatedText>Searching...</TranslatedText></p>
+        <p className="text-center"><TranslatedText>Suche...</TranslatedText></p>
       ) : (
         <>
           <h1 className="mb-8 text-center font-headline text-4xl md:text-5xl">
             {query && results.length > 0 ? (
               <>
-                <TranslatedText>Search Results for</TranslatedText>: "{query}"
+                <TranslatedText>Suchergebnisse für</TranslatedText>: "{query}"
               </>
             ) : (
-                <TranslatedText>No results found for</TranslatedText>
+                <TranslatedText>Keine Ergebnisse gefunden für</TranslatedText>
             )}
           </h1>
           {results.length > 0 ? (
@@ -55,7 +55,7 @@ export default function SearchPage() {
           ) : (
              !query && (
                 <p className="text-center text-muted-foreground">
-                    <TranslatedText>Please enter a search term to find products.</TranslatedText>
+                    <TranslatedText>Bitte geben Sie einen Suchbegriff ein, um Produkte zu finden.</TranslatedText>
                 </p>
              )
           )}

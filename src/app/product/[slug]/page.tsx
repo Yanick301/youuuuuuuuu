@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
 
   if (!product) {
     return {
-      title: 'Product Not Found',
+      title: 'Produkt nicht gefunden',
     }
   }
 
@@ -45,7 +45,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   const relatedProducts = getProductsByCategory(product.category, 4, product.id);
 
-  const averageRating = product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length;
+  const averageRating = product.reviews.length > 0 ? product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length : 0;
   
   const mainImage = placeholderImages.find(p => p.id === product.images[0]);
   const altImages = product.images.slice(1).map(id => placeholderImages.find(p => p.id === id));
@@ -72,7 +72,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                     <div key={img.id} className="aspect-[3/4] w-full overflow-hidden rounded-lg">
                         <Image
                             src={img.imageUrl}
-                            alt={`${product.name} alternate view`}
+                            alt={`${product.name} alternative Ansicht`}
                             width={200}
                             height={267}
                             className="h-full w-full object-cover"
@@ -94,7 +94,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <Star key={i} className={`h-5 w-5 ${i < Math.floor(averageRating) ? 'text-primary fill-primary' : 'text-muted'}`} />
               ))}
             </div>
-            <span className="text-sm text-muted-foreground">({product.reviews.length} <TranslatedText>reviews</TranslatedText>)</span>
+            <span className="text-sm text-muted-foreground">({product.reviews.length} <TranslatedText>Bewertungen</TranslatedText>)</span>
           </div>
 
           <p className="mt-6 text-base leading-relaxed">
@@ -111,18 +111,18 @@ export default function ProductPage({ params }: ProductPageProps) {
           <Tabs defaultValue="details" className="w-full">
             <TabsList>
               <TabsTrigger value="details"><TranslatedText>Details</TranslatedText></TabsTrigger>
-              <TabsTrigger value="reviews"><TranslatedText>Reviews</TranslatedText></TabsTrigger>
+              <TabsTrigger value="reviews"><TranslatedText>Bewertungen</TranslatedText></TabsTrigger>
             </TabsList>
             <TabsContent value="details" className="mt-4 text-sm text-muted-foreground">
               <ul className="list-disc pl-5 space-y-2">
-                <li><TranslatedText>Made from high-quality materials</TranslatedText></li>
-                <li><TranslatedText>Designed for comfort and style</TranslatedText></li>
-                <li><TranslatedText>Sustainably sourced</TranslatedText></li>
+                <li><TranslatedText>Hergestellt aus hochwertigen Materialien</TranslatedText></li>
+                <li><TranslatedText>Entworfen für Komfort und Stil</TranslatedText></li>
+                <li><TranslatedText>Nachhaltig bezogen</TranslatedText></li>
               </ul>
             </TabsContent>
             <TabsContent value="reviews" className="mt-4">
               <div className="space-y-6">
-                {product.reviews.map((review, index) => (
+                {product.reviews.length > 0 ? product.reviews.map((review, index) => (
                   <div key={index}>
                     <div className="flex items-center gap-2">
                       <p className="font-semibold">{review.author}</p>
@@ -134,7 +134,9 @@ export default function ProductPage({ params }: ProductPageProps) {
                     </div>
                     <p className="mt-2 text-sm text-muted-foreground">{review.comment}</p>
                   </div>
-                ))}
+                )) : (
+                  <p><TranslatedText>Noch keine Bewertungen.</TranslatedText></p>
+                )}
               </div>
             </TabsContent>
           </Tabs>
@@ -144,7 +146,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       {/* Related Products */}
       <div className="mt-24">
         <h2 className="mb-12 text-center font-headline text-3xl md:text-4xl">
-          <TranslatedText>You Might Also Like</TranslatedText>
+          <TranslatedText>Das könnte Ihnen auch gefallen</TranslatedText>
         </h2>
         <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
           {relatedProducts.map((relatedProduct) => (

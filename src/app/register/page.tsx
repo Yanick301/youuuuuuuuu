@@ -21,10 +21,10 @@ export default function RegisterPage() {
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-headline">
-            <TranslatedText>Create an Account</TranslatedText>
+            <TranslatedText>Konto erstellen</TranslatedText>
           </CardTitle>
           <CardDescription>
-            <TranslatedText>Join the world of EZCENTIALS.</TranslatedText>
+            <TranslatedText>Treten Sie der Welt von EZCENTIALS bei.</TranslatedText>
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
@@ -37,12 +37,12 @@ export default function RegisterPage() {
             <Input id="email" type="email" placeholder="m@example.com" required />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="password"><TranslatedText>Password</TranslatedText></Label>
+            <Label htmlFor="password"><TranslatedText>Passwort</TranslatedText></Label>
             <Input id="password" type="password" required />
           </div>
-          <Button className="w-full mt-2"><TranslatedText>Create Account</TranslatedText></Button>
+          <Button className="w-full mt-2"><TranslatedText>Konto erstellen</TranslatedText></Button>
           <p className="text-xs text-center text-muted-foreground">
-            <TranslatedText>An email will be sent to verify your account.</TranslatedText>
+            <TranslatedText>Eine E-Mail wird gesendet, um Ihr Konto zu verifizieren.</TranslatedText>
           </p>
 
           <div className="relative my-2">
@@ -51,17 +51,17 @@ export default function RegisterPage() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-card px-2 text-muted-foreground">
-                <TranslatedText>Or continue with</TranslatedText>
+                <TranslatedText>Oder weiter mit</TranslatedText>
                 </span>
             </div>
           </div>
-           <GoogleSignInButton><TranslatedText>Sign up with Google</TranslatedText></GoogleSignInButton>
+           <GoogleSignInButton><TranslatedText>Mit Google registrieren</TranslatedText></GoogleSignInButton>
         </CardContent>
         <CardFooter className="justify-center text-sm">
           <p className="text-muted-foreground">
-            <TranslatedText>Already have an account?</TranslatedText>{' '}
+            <TranslatedText>Haben Sie bereits ein Konto?</TranslatedText>{' '}
             <Link href="/login" className="font-semibold text-primary hover:underline">
-              <TranslatedText>Log In</TranslatedText>
+              <TranslatedText>Anmelden</TranslatedText>
             </Link>
           </p>
         </CardFooter>

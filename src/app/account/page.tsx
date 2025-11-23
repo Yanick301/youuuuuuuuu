@@ -11,14 +11,14 @@ export default function AccountPage() {
   return (
     <div>
       <h1 className="mb-6 font-headline text-3xl">
-        <TranslatedText>Account Details</TranslatedText>
+        <TranslatedText>Kontodetails</TranslatedText>
       </h1>
       <Card>
         <CardHeader>
-          <CardTitle><TranslatedText>Welcome, User!</TranslatedText></CardTitle>
+          <CardTitle><TranslatedText>Willkommen, Benutzer!</TranslatedText></CardTitle>
           <CardDescription>
             <TranslatedText>
-              Here you can view and edit your account information.
+              Hier können Sie Ihre Kontoinformationen einsehen und bearbeiten.
             </TranslatedText>
           </CardDescription>
         </CardHeader>

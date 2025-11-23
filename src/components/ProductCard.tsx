@@ -44,7 +44,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </CardContent>
         <CardFooter className="p-4 pt-0 flex gap-2">
             <AddToCartButton product={product} variant="outline" className="w-full">
-                <TranslatedText>Add to cart</TranslatedText>
+                <TranslatedText>In den Warenkorb</TranslatedText>
             </AddToCartButton>
             <AddToFavoritesButton productId={product.id} variant="outline" />
         </CardFooter>
