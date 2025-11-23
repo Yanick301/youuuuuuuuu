@@ -42,7 +42,7 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
           <div className="col-span-2 mb-8 md:col-span-4 lg:col-span-1 lg:mb-0">
             <div className="flex items-center space-x-2">
-              <Image src="/images/products/logo.png" alt="EZCENTIALS Logo" width={180} height={60} className="h-20 w-auto" />
+              <Image src="/images/products/logo.png" alt="EZCENTIALS Logo" width={180} height={60} />
               <span className="font-bold font-headline text-2xl">EZCENTIALS</span>
             </div>
             <p className="mt-2 text-sm text-muted-foreground"><TranslatedText>Understated elegance and sophistication.</TranslatedText></p>

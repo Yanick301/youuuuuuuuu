@@ -17,7 +17,7 @@ export function Header() {
       <div className="container flex h-20 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Image src="/images/products/logo.png" alt="EZCENTIALS Logo" width={180} height={60} className="h-20 w-auto" />
+            <Image src="/images/products/logo.png" alt="EZCENTIALS Logo" width={180} height={60} />
             <span className="font-bold font-headline text-2xl">EZCENTIALS</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
@@ -42,7 +42,7 @@ export function Header() {
           </SheetTrigger>
           <SheetContent side="left">
             <Link href="/" className="mb-6 flex items-center space-x-2">
-               <Image src="/images/products/logo.png" alt="EZCENTIALS Logo" width={180} height={60} className="h-20 w-auto" />
+               <Image src="/images/products/logo.png" alt="EZCENTIALS Logo" width={180} height={60} />
                <span className="font-bold font-headline text-2xl">EZCENTIALS</span>
             </Link>
             <nav className="flex flex-col space-y-4">
