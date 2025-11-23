@@ -1,7 +1,9 @@
 
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, Search } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 import { categories } from '@/lib/data';
 import { Button } from '@/components/ui/button';
@@ -10,6 +12,7 @@ import { CartButton } from '@/components/cart/CartButton';
 import { UserButton } from './auth/UserButton';
 import { LanguageSelector } from './LanguageSelector';
 import { TranslatedText } from './TranslatedText';
+import { SearchDialog } from './search/SearchDialog';
 
 export function Header() {
   return (
@@ -41,39 +44,39 @@ export function Header() {
         </div>
 
         <div className="flex flex-1 items-center justify-start md:hidden">
-            <Sheet>
+          <Sheet>
             <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle Menu</span>
-                </Button>
+              </Button>
             </SheetTrigger>
             <SheetContent side="left">
-                <Link href="/" className="mb-6 flex items-center space-x-2">
+              <Link href="/" className="mb-6 flex items-center space-x-2">
                 <Image
-                    src="/images/logo.png"
-                    alt="EZCENTIALS Logo"
-                    width={40}
-                    height={40}
+                  src="/images/logo.png"
+                  alt="EZCENTIALS Logo"
+                  width={40}
+                  height={40}
                 />
                 <span className="font-bold font-headline text-2xl">
-                    EZCENTIALS
+                  EZCENTIALS
                 </span>
-                </Link>
-                <nav className="flex flex-col space-y-4">
+              </Link>
+              <nav className="flex flex-col space-y-4">
                 {categories.map((category) => (
-                    <Link
+                  <Link
                     key={category.id}
                     href={`/products/${category.slug}`}
                     className="text-muted-foreground transition-colors hover:text-foreground"
-                    >
+                  >
                     <TranslatedText>{category.name}</TranslatedText>
-                    </Link>
+                  </Link>
                 ))}
-                </nav>
+              </nav>
             </SheetContent>
-            </Sheet>
-             <Link href="/" className="ml-2">
+          </Sheet>
+           <Link href="/" className="ml-2">
                  <Image
                     src="/images/logo.png"
                     alt="EZCENTIALS Logo"
@@ -84,10 +87,7 @@ export function Header() {
         </div>
         
         <div className="flex flex-1 items-center justify-end space-x-2">
-          <Button variant="ghost" size="icon">
-            <Search className="h-5 w-5" />
-            <span className="sr-only">Search</span>
-          </Button>
+          <SearchDialog />
           <LanguageSelector />
           <UserButton />
           <CartButton />
