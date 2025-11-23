@@ -26,7 +26,7 @@ export function Header() {
                 <span className="sr-only">Menü umschalten</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left">
+            <SheetContent side="left" className="w-[300px] sm:w-[400px]">
               <Link href="/" className="mb-6 flex items-center space-x-2">
                 <span className="font-bold font-headline text-2xl">
                   EZCENTIALS
@@ -47,7 +47,7 @@ export function Header() {
           </Sheet>
           <div className="hidden md:flex items-center gap-4">
              <SearchDialog />
-              <nav className="flex items-center space-x-6 text-sm font-medium">
+              <nav className="hidden lg:flex lg:items-center lg:space-x-6 text-sm font-medium">
                 {categories.map((category) => (
                   <Link
                     key={category.id}
@@ -71,7 +71,7 @@ export function Header() {
         </div>
         
         {/* Right items */}
-        <div className="flex flex-1 items-center justify-end space-x-2">
+        <div className="flex flex-1 items-center justify-end space-x-1 md:space-x-2 flex-nowrap shrink-0">
           <div className="md:hidden">
             <SearchDialog />
           </div>
