@@ -37,40 +37,42 @@ export function Header() {
               side="left"
               className="flex w-[300px] flex-col bg-background p-0 sm:w-[350px]"
             >
-              <div className="p-6">
-                <Link
-                  href="/"
-                  className="flex items-center space-x-2"
-                  onClick={handleLinkClick}
-                >
-                  <span className="font-bold font-headline text-2xl">
-                    EZCENTIALS
-                  </span>
-                </Link>
-              </div>
-              <Separator />
-               <div className="p-6 flex flex-col space-y-4">
-                <UserButton />
-                <LanguageSwitcher />
-              </div>
-              <Separator />
-              <nav className="flex-grow p-6">
-                <ul className="flex flex-col space-y-5">
-                  {categories.map((category) => (
-                    <li key={category.id}>
-                      <Link
-                        href={`/products/${category.slug}`}
-                        className="text-lg uppercase tracking-wider text-foreground/80 transition-colors hover:text-foreground"
+                <header className="border-b p-6">
+                    <Link
+                        href="/"
+                        className="flex items-center space-x-2"
                         onClick={handleLinkClick}
-                      >
-                        <TranslatedText fr={category.name_fr}>
-                          {category.name}
-                        </TranslatedText>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
+                    >
+                        <span className="font-bold font-headline text-2xl">
+                        EZCENTIALS
+                        </span>
+                    </Link>
+                </header>
+                <main className="flex-grow overflow-y-auto p-6">
+                    <nav>
+                        <ul className="flex flex-col space-y-6">
+                        {categories.map((category) => (
+                            <li key={category.id}>
+                            <Link
+                                href={`/products/${category.slug}`}
+                                className="text-xl text-foreground/80 transition-colors hover:text-foreground"
+                                onClick={handleLinkClick}
+                            >
+                                <TranslatedText fr={category.name_fr}>
+                                {category.name}
+                                </TranslatedText>
+                            </Link>
+                            </li>
+                        ))}
+                        </ul>
+                    </nav>
+                </main>
+                <footer className="border-t p-6">
+                    <div className="flex flex-col space-y-4">
+                        <UserButton />
+                        <LanguageSwitcher />
+                    </div>
+                </footer>
             </SheetContent>
           </Sheet>
 
