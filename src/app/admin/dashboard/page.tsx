@@ -103,7 +103,7 @@ export default function AdminDashboardPage() {
                   <CardDescription>
                     {format(order.orderDate.toDate(), 'PPPpp', { locale: language === 'fr' ? fr : language === 'en' ? enUS : de })}
                   </CardDescription>
-                   <p className="text-sm text-muted-foreground mt-1">Client: {order.shippingInfo.email}</p>
+                   <p className="text-sm text-muted-foreground mt-1">Client: {order.userEmail}</p>
                 </div>
                 <Badge variant={getStatusVariant(order.paymentStatus)}>{getStatusText(order.paymentStatus)}</Badge>
               </CardHeader>
