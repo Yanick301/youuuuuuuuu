@@ -44,13 +44,6 @@ export default function AdminDashboardPage() {
   const { toast } = useToast();
   const { language } = useLanguage();
 
-  const ordersQuery = useMemoFirebase(() => {
-    if (!firestore || !isAdmin) return null;
-    return query(collection(firestore, 'orders'), orderBy('orderDate', 'desc'));
-  }, [firestore, isAdmin]);
-
-  const { data: orders, isLoading: isLoadingOrders } = useCollection(ordersQuery);
-
   useEffect(() => {
     if (!isUserLoading) {
       if (!user) {
@@ -65,6 +58,14 @@ export default function AdminDashboardPage() {
       }
     }
   }, [user, isAdmin, isUserLoading, router, toast, language]);
+
+  const ordersQuery = useMemoFirebase(() => {
+    // Only fetch orders if the user is an admin
+    if (!firestore || !isAdmin) return null;
+    return query(collection(firestore, 'orders'), orderBy('orderDate', 'desc'));
+  }, [firestore, isAdmin]);
+
+  const { data: orders, isLoading: isLoadingOrders } = useCollection(ordersQuery);
 
   const handleValidateOrder = async (orderId: string) => {
     if (!firestore) return;
@@ -111,7 +112,7 @@ export default function AdminDashboardPage() {
     }
   }
 
-  if (isUserLoading || !isAdmin || isLoadingOrders) {
+  if (isUserLoading || !isAdmin) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Loader2 className="h-12 w-12 animate-spin text-primary" />
@@ -124,7 +125,11 @@ export default function AdminDashboardPage() {
       <h1 className="mb-8 font-headline text-4xl">Tableau de bord Administrateur</h1>
       
       <div className="grid grid-cols-1 gap-8">
-        {orders && orders.length > 0 ? (
+        {isLoadingOrders ? (
+          <div className="flex h-64 items-center justify-center">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          </div>
+        ) : orders && orders.length > 0 ? (
           orders.map((order: any) => (
             <Card key={order.id} className="shadow-md">
               <CardHeader className="flex flex-row items-start justify-between gap-4">
