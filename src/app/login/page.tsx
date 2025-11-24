@@ -93,15 +93,17 @@ export default function LoginPage() {
       await handleUserCreation(userCredential);
       
       const isAdmin = userCredential.user.email === ADMIN_EMAIL;
-
-      toast({
-        title: language === 'fr' ? 'Connexion réussie' : language === 'en' ? 'Login Successful' : 'Anmeldung erfolgreich',
-        description: language === 'fr' ? 'Bienvenue à nouveau !' : language === 'en' ? 'Welcome back!' : 'Willkommen zurück!',
-      });
       
       if (isAdmin) {
+        toast({
+            title: 'Bienvenue cher administrateur',
+        });
         router.push('/admin/dashboard');
       } else {
+        toast({
+            title: language === 'fr' ? 'Connexion réussie' : language === 'en' ? 'Login Successful' : 'Anmeldung erfolgreich',
+            description: language === 'fr' ? 'Bienvenue à nouveau !' : language === 'en' ? 'Welcome back!' : 'Willkommen zurück!',
+        });
         const redirectUrl = searchParams.get('redirect') || '/account';
         router.push(redirectUrl);
       }
@@ -127,15 +129,17 @@ export default function LoginPage() {
         await handleUserCreation(userCredential);
 
         const isAdmin = userCredential.user.email === ADMIN_EMAIL;
-
-        toast({
-            title: language === 'fr' ? 'Connexion réussie' : language === 'en' ? 'Login Successful' : 'Anmeldung erfolgreich',
-            description: language === 'fr' ? 'Bienvenue !' : language === 'en' ? 'Welcome!' : 'Willkommen!',
-        });
         
         if (isAdmin) {
+            toast({
+                title: 'Bienvenue cher administrateur',
+            });
             router.push('/admin/dashboard');
         } else {
+            toast({
+                title: language === 'fr' ? 'Connexion réussie' : language === 'en' ? 'Login Successful' : 'Anmeldung erfolgreich',
+                description: language === 'fr' ? 'Bienvenue !' : language === 'en' ? 'Welcome!' : 'Willkommen!',
+            });
             const redirectUrl = searchParams.get('redirect') || '/account';
             router.push(redirectUrl);
         }
