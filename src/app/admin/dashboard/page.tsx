@@ -15,6 +15,28 @@ import { format } from 'date-fns';
 import { fr, de, enUS } from 'date-fns/locale';
 import { useLanguage } from '@/context/LanguageContext';
 
+const getSafeDate = (order: any): Date => {
+  if (!order || !order.orderDate) {
+    return new Date();
+  }
+  if (order.orderDate && typeof order.orderDate.toDate === 'function') {
+    return order.orderDate.toDate();
+  }
+  if (order.orderDate instanceof Date) {
+    return order.orderDate;
+  }
+  try {
+    const parsedDate = new Date(order.orderDate);
+    if (!isNaN(parsedDate.getTime())) {
+      return parsedDate;
+    }
+  } catch (e) {
+    // Ignore and fallback
+  }
+  return new Date();
+};
+
+
 export default function AdminDashboardPage() {
   const { user, isAdmin, isUserLoading } = useUser();
   const router = useRouter();
@@ -109,7 +131,7 @@ export default function AdminDashboardPage() {
                 <div>
                   <CardTitle>Commande #{order.id.substring(0, 7)}...</CardTitle>
                   <CardDescription>
-                    {order.orderDate?.toDate ? format(order.orderDate.toDate(), 'PPPpp', { locale: getDateLocale() }) : 'Date not available'}
+                    {format(getSafeDate(order), 'PPPpp', { locale: getDateLocale() })}
                   </CardDescription>
                    <p className="text-sm text-muted-foreground mt-1">Client: {order.userEmail || 'N/A'}</p>
                 </div>
