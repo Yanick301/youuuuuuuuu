@@ -78,7 +78,7 @@ export default function CareersPage() {
                 en="We are the guardians of a craftsmanship that we wish to pass on."
               >
                 Wir sind die Hüter einer Handwerkskunst, die wir weitergeben möchten.
-              </EingabeübersetzterText>
+              </TranslatedText>
             </p>
           </div>
         </div>
