@@ -194,7 +194,7 @@ export default function CheckoutPage() {
           title: language === 'fr' ? 'Commande passée' : language === 'en' ? 'Order Placed' : 'Bestellung aufgegeben',
           description: language === 'fr' ? 'Veuillez maintenant valider votre paiement.' : language === 'en' ? 'Please validate your payment now.' : 'Bitte bestätigen Sie jetzt Ihre Zahlung.',
         });
-        router.push('/account/orders');
+        router.push('/checkout/thank-you');
 
     } catch (error) {
         console.error("Error placing order: ", error);
@@ -423,5 +423,3 @@ export default function CheckoutPage() {
     </div>
   );
 }
-
-    
