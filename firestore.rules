@@ -8,9 +8,7 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      // For now, no one is an admin to simplify rules.
-      // This can be changed later to `return get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.isAdmin == true;`
-      return false;
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
     }
 
     match /products/{productId} {
@@ -23,21 +21,16 @@ service cloud.firestore {
       allow create, update, delete: if isOwner(request.resource.data.userId);
     }
 
-    match /userProfiles/{userId} {
+    match /users/{userId} {
       allow create: if isOwner(userId);
       allow read, update, delete: if isOwner(userId);
-
-      match /orders/{orderId} {
-        allow read, create: if isOwner(userId);
-        allow update, delete: if false; // Orders are immutable for clients
-      }
     }
     
-    // CartItems are at the root, access is controlled by the userId field inside the doc
-    match /cartItems/{cartItemId} {
-       allow read, write: if isOwner(resource.data.userId);
-       allow create: if isOwner(request.resource.data.userId);
+    match /orders/{orderId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow list: if isAdmin();
+      allow create: if isOwner(request.resource.data.userId);
+      allow update: if (isOwner(resource.data.userId) && request.resource.data.paymentStatus == 'processing') || isAdmin();
     }
-
   }
 }

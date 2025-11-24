@@ -81,13 +81,18 @@ export default function OrdersPage() {
   const ordersQuery = useMemoFirebase(() => {
     if (!user || !firestore) return null;
     
-    // For now, admins see their own orders just like regular users.
-    // An admin-specific view can be built later.
+    if (isAdmin) {
+      // Admin can see all orders
+      return query(collection(firestore, 'orders'), orderBy('orderDate', 'desc'));
+    }
+
+    // Regular users see only their own orders
     return query(
-      collection(firestore, `userProfiles/${user.uid}/orders`),
+      collection(firestore, 'orders'),
+      where('userId', '==', user.uid),
       orderBy('orderDate', 'desc')
     );
-  }, [firestore, user]);
+  }, [firestore, user, isAdmin]);
 
   const { data: orders, isLoading } = useCollection(ordersQuery);
 
@@ -123,7 +128,7 @@ export default function OrdersPage() {
       const uploadResult = await uploadBytes(fileRef, file);
       const downloadURL = await getDownloadURL(uploadResult.ref);
       
-      const orderDocRef = doc(firestore, `userProfiles/${user.uid}/orders`, selectedOrderId);
+      const orderDocRef = doc(firestore, `orders`, selectedOrderId);
       await updateDoc(orderDocRef, {
         receiptImageURL: downloadURL,
         paymentStatus: 'processing',
@@ -170,14 +175,9 @@ export default function OrdersPage() {
   };
 
   const handleValidateOrder = async (orderId: string) => {
-    if (!firestore || !orders || !user) return;
+    if (!firestore || !isAdmin) return;
     try {
-      const orderToValidate = orders.find(o => o.id === orderId);
-      if (!orderToValidate) throw new Error("Order not found");
-
-      // This logic assumes an admin is updating an order within a user's subcollection.
-      // For this to work, security rules must allow admins this specific write access.
-      const orderRef = doc(firestore, `userProfiles/${orderToValidate.userId}/orders`, orderId);
+      const orderRef = doc(firestore, `orders`, orderId);
       await updateDoc(orderRef, { paymentStatus: 'completed' });
       toast({
         title:
