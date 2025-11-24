@@ -1,38 +1,13 @@
-
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Heart, ListOrdered, User } from 'lucide-react';
+import { Heart, ListOrdered, User, Shield } from 'lucide-react';
 import { TranslatedText } from '@/components/TranslatedText';
 import { cn } from '@/lib/utils';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-
-const accountNav = [
-  {
-    name: 'Kontodetails',
-    name_fr: 'Détails du compte',
-    name_en: 'Account Details',
-    href: '/account',
-    icon: User,
-  },
-  {
-    name: 'Bestellverlauf',
-    name_fr: 'Historique des commandes',
-    name_en: 'Order History',
-    href: '/account/orders',
-    icon: ListOrdered,
-  },
-  {
-    name: 'Meine Favoriten',
-    name_fr: 'Mes favoris',
-    name_en: 'My Favorites',
-    href: '/account/favorites',
-    icon: Heart,
-  },
-];
 
 export default function AccountLayout({
   children,
@@ -40,37 +15,82 @@ export default function AccountLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { user, isUserLoading } = useUser();
+  const { user, isUserLoading, isAdmin } = useUser();
   const router = useRouter();
+
+  const accountNav = [
+    {
+      name: 'Kontodetails',
+      name_fr: 'Détails du compte',
+      name_en: 'Account Details',
+      href: '/account',
+      icon: User,
+    },
+    {
+      name: 'Bestellverlauf',
+      name_fr: 'Historique des commandes',
+      name_en: 'Order History',
+      href: '/account/orders',
+      icon: ListOrdered,
+    },
+    {
+      name: 'Meine Favoriten',
+      name_fr: 'Mes favoris',
+      name_en: 'My Favorites',
+      href: '/account/favorites',
+      icon: Heart,
+    },
+    ...(isAdmin
+      ? [
+          {
+            name: 'Admin Dashboard',
+            name_fr: 'Tableau de bord Admin',
+            name_en: 'Admin Dashboard',
+            href: '/admin/dashboard',
+            icon: Shield,
+          },
+        ]
+      : []),
+  ];
 
   useEffect(() => {
     if (isUserLoading) {
-        return; // Do nothing while loading
+      return; // Do nothing while loading
     }
     if (!user) {
-        router.push('/login');
-        return;
+      router.push('/login');
+      return;
     }
-    if (!user.emailVerified && user.providerData.some(p => p.providerId === 'password')) {
-        router.push('/verify-email');
-        return;
+    if (
+      user.providerData.some((p) => p.providerId === 'password') &&
+      !user.emailVerified
+    ) {
+      router.push('/verify-email');
+      return;
     }
   }, [user, isUserLoading, router]);
 
-  if (isUserLoading || !user || (!user.emailVerified && user.providerData.some(p => p.providerId === 'password'))) {
+  if (
+    isUserLoading ||
+    !user ||
+    (user.providerData.some((p) => p.providerId === 'password') &&
+      !user.emailVerified)
+  ) {
     return (
-        <div className="container mx-auto px-4 py-12 text-center">
-            <p>Laden...</p>
-        </div>
-    )
+      <div className="container mx-auto px-4 py-12 text-center">
+        <p>Laden...</p>
+      </div>
+    );
   }
 
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="grid grid-cols-1 gap-8 md:grid-cols-4 lg:grid-cols-5">
         <aside className="md:col-span-1">
-          <h2 className="mb-6 font-headline text-2xl hidden md:block">
-            <TranslatedText fr="Mon compte" en="My Account">Mein Konto</TranslatedText>
+          <h2 className="mb-6 hidden font-headline text-2xl md:block">
+            <TranslatedText fr="Mon compte" en="My Account">
+              Mein Konto
+            </TranslatedText>
           </h2>
           <nav className="flex flex-row space-x-2 md:flex-col md:space-x-0 md:space-y-1">
             {accountNav.map((item) => (
@@ -85,7 +105,11 @@ export default function AccountLayout({
                 )}
               >
                 <item.icon className="h-5 w-5" />
-                <span className="hidden md:inline"><TranslatedText fr={item.name_fr} en={item.name_en}>{item.name}</TranslatedText></span>
+                <span className="hidden md:inline">
+                  <TranslatedText fr={item.name_fr} en={item.name_en}>
+                    {item.name}
+                  </TranslatedText>
+                </span>
               </Link>
             ))}
           </nav>

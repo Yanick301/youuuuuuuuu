@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useCart } from '@/context/CartContext';
@@ -14,7 +13,7 @@ import {
 } from '@/components/ui/card';
 import placeholderImagesData from '@/lib/placeholder-images.json';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Banknote, Loader2 } from 'lucide-react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -68,6 +67,7 @@ type ShippingFormInputs = z.infer<typeof shippingSchemaDE>;
 export default function CheckoutPage() {
   const { cart, subtotal, clearCart } = useCart();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
@@ -77,7 +77,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (isUserLoading) return;
     if (!user) {
-      router.push('/login?redirect=/checkout');
+      router.push(`/login?redirect=${encodeURIComponent('/checkout')}`);
     }
   }, [user, isUserLoading, router]);
 
@@ -110,9 +110,10 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (cart.length === 0 && !form.formState.isSubmitSuccessful) {
-      router.push('/products/all');
+      const redirectUrl = searchParams.get('redirect') || '/products/all';
+      router.push(redirectUrl);
     }
-  }, [cart, router, form.formState.isSubmitSuccessful]);
+  }, [cart, router, form.formState.isSubmitSuccessful, searchParams]);
 
   useEffect(() => {
     if (user) {
@@ -165,7 +166,9 @@ export default function CheckoutPage() {
     }
     
     try {
-        const orderData = {
+        const ordersCollectionRef = collection(firestore, `users/${user.uid}/orders`);
+        
+        await addDoc(ordersCollectionRef, {
             userId: user.uid,
             userEmail: user.email,
             shippingInfo: data,
@@ -182,12 +185,9 @@ export default function CheckoutPage() {
             taxes,
             totalAmount: total,
             orderDate: serverTimestamp(),
-            paymentStatus: 'pending', // Initial status
+            paymentStatus: 'pending',
             receiptImageURL: '',
-        };
-
-        const ordersCollection = collection(firestore, `orders`);
-        await addDoc(ordersCollection, orderData);
+        });
 
         clearCart();
         toast({

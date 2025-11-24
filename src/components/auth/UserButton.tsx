@@ -72,7 +72,7 @@ export function UserButton() {
           <DropdownMenuSeparator />
           {isAdmin && (
             <DropdownMenuItem asChild>
-                <Link href="/account/orders"><Shield className="mr-2 h-4 w-4" /> <TranslatedText fr="Gérer les commandes" en="Manage Orders">Bestellungen verwalten</TranslatedText></Link>
+                <Link href="/admin/dashboard"><Shield className="mr-2 h-4 w-4" /> <TranslatedText fr="Tableau de bord Admin" en="Admin Dashboard">Admin Dashboard</TranslatedText></Link>
             </DropdownMenuItem>
           )}
           <DropdownMenuItem asChild>
