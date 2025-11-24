@@ -40,8 +40,7 @@ export function CollectionHighlight({
         const image = placeholderImages.find(img => img.id === id);
         if (!image) return null;
         
-        // Find the product that uses this image as its primary image to get the slug
-        const product = allProducts.find(p => p.images[0] === id);
+        const product = allProducts.find(p => p.slug === id);
         return { ...image, slug: product?.slug };
     }).filter(Boolean);
 

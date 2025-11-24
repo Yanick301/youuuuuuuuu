@@ -1333,6 +1333,62 @@ export const products: Product[] = [
     reviews: [
         { author: 'Eva', rating: 5, comment: 'Parfaite pour un mariage. J\'ai reçu beaucoup de compliments.'}
     ]
+  },
+  {
+    id: 'prod-71',
+    name: 'Manteau Long en Laine',
+    name_fr: 'Manteau Long en Laine',
+    name_en: 'Long Wool Coat',
+    slug: 'manteau-long-laine-hugo-boss',
+    price: 850,
+    description: 'Ein zeitloser Mantel aus hochwertiger Wolle, der Eleganz und Wärme vereint. Perfekt für den Winter.',
+    description_fr: 'Un manteau intemporel en laine de qualité supérieure qui allie élégance et chaleur. Parfait pour l\'hiver.',
+    description_en: 'A timeless coat made of high-quality wool that combines elegance and warmth. Perfect for winter.',
+    category: 'winter-clothing',
+    images: ['manteau-long-laine-hugo-boss'],
+    reviews: []
+  },
+  {
+    id: 'prod-72',
+    name: 'Doudoune Matelassée',
+    name_fr: 'Doudoune Matelassée',
+    name_en: 'Quilted Down Jacket',
+    slug: 'doudoune-matelassee-moncler',
+    price: 1200,
+    description: 'Eine leichte und warme Daunenjacke, ideal für kalte Tage. Ein Klassiker von Moncler.',
+    description_fr: 'Une doudoune légère et chaude, idéale pour les journées froides. Un classique de chez Moncler.',
+    description_en: 'A light and warm down jacket, ideal for cold days. A classic from Moncler.',
+    category: 'winter-clothing',
+    images: ['doudoune-matelassee-moncler'],
+    reviews: []
+  },
+  {
+    id: 'prod-73',
+    name: 'Parka Arctic',
+    name_fr: 'Parka Arctic',
+    name_en: 'Arctic Parka',
+    slug: 'parka-arctic-canada-goose',
+    price: 1100,
+    description: 'Ein extrem warmer Parka, entworfen, um den härtesten Wintern standzuhalten. Mit der Qualität von Canada Goose.',
+    description_fr: 'Une parka extrêmement chaude conçue pour résister aux hivers les plus rudes. La qualité Canada Goose.',
+    description_en: 'An extremely warm parka designed to withstand the harshest winters. Canada Goose quality.',
+    category: 'winter-clothing',
+    images: ['parka-arctic-canada-goose'],
+    reviews: []
+  },
+  {
+    id: 'prod-74',
+    name: 'Pull Col Roulé Laine Merinos',
+    name_fr: 'Pull Col Roulé Laine Merinos',
+    name_en: 'Merino Wool Turtleneck Sweater',
+    slug: 'pull-col-roule-laine-merinos-paul-smith',
+    price: 320,
+    description: 'Ein weicher und eleganter Rollkragenpullover aus Merinowolle. Ein Muss für Ihre Wintergarderobe.',
+    description_fr: 'Un pull à col roulé doux et élégant en laine de mérinos. Un indispensable de votre garde-robe d\'hiver.',
+    description_en: 'A soft and elegant turtleneck sweater in merino wool. An essential for your winter wardrobe.',
+    category: 'winter-clothing',
+    images: ['pull-col-roule-laine-merinos-paul-smith'],
+    reviews: []
   }
 ];
 
@@ -1345,7 +1401,7 @@ export function getProductsByCategory(products: Product[], categorySlug: string,
   if (categorySlug === 'all') {
     filteredProducts = products;
   } else if (categorySlug === 'winter-clothing') {
-    const winterKeywords = ['winter', 'manteau', 'pull', 'parka', 'doudoune', 'bonnet', 'écharpe', 'gants', 'coat', 'sweater', 'beanie', 'scarf', 'gloves', 'mantel', 'pullover'];
+    const winterKeywords = ['winter', 'manteau', 'pull', 'parka', 'doudoune', 'bonnet', 'écharpe', 'gants', 'coat', 'sweater', 'beanie', 'scarf', 'gloves', 'mantel', 'pullover', 'wolle', 'laine', 'wool'];
     filteredProducts = products.filter(p => 
       p.category === 'winter-clothing' || 
       winterKeywords.some(keyword => p.name_fr.toLowerCase().includes(keyword)) ||
