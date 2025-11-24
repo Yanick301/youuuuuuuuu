@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useState, type ReactNode, useEffect, useCallback } from 'react';
 import type { CartItem, Product } from '@/lib/types';
 
 type CartContextType = {
@@ -14,10 +14,32 @@ type CartContextType = {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>([]);
+const getInitialCart = (): CartItem[] => {
+  if (typeof window === 'undefined') {
+    return [];
+  }
+  try {
+    const storedCart = localStorage.getItem('ezcentials-cart');
+    return storedCart ? JSON.parse(storedCart) : [];
+  } catch (error) {
+    console.error('Failed to parse cart from localStorage', error);
+    return [];
+  }
+};
 
-  const addToCart = (product: Product, quantity: number = 1) => {
+export function CartProvider({ children }: { children: ReactNode }) {
+  const [cart, setCart] = useState<CartItem[]>(getInitialCart);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('ezcentials-cart', JSON.stringify(cart));
+    } catch (error) {
+      console.error('Failed to save cart to localStorage', error);
+    }
+  }, [cart]);
+
+
+  const addToCart = useCallback((product: Product, quantity: number = 1) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.product.id === product.id);
       if (existingItem) {
@@ -29,13 +51,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return [...prevCart, { product, quantity }];
     });
-  };
+  }, []);
 
-  const removeFromCart = (productId: string) => {
+  const removeFromCart = useCallback((productId: string) => {
     setCart((prevCart) => prevCart.filter((item) => item.product.id !== productId));
-  };
+  }, []);
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = useCallback((productId: string, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(productId);
     } else {
@@ -45,11 +67,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
         )
       );
     }
-  };
+  }, [removeFromCart]);
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCart([]);
-  };
+  }, []);
 
   const subtotal = cart.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
