@@ -1,9 +1,8 @@
 
 'use client';
 
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { Star, MessageSquare } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { useState } from 'react';
 
 import { getProductBySlug, getProductsByCategory } from '@/lib/data';
@@ -76,11 +75,9 @@ export default function ProductPage({ params }: ProductPageProps) {
         <div className="flex flex-col gap-4">
             {mainImage && (
                 <div className="aspect-[3/4] w-full overflow-hidden rounded-lg">
-                    <Image
+                    <img
                         src={mainImage.imageUrl}
                         alt={product.name}
-                        width={600}
-                        height={800}
                         className="h-full w-full object-cover"
                         data-ai-hint={mainImage.imageHint}
                     />
@@ -89,11 +86,9 @@ export default function ProductPage({ params }: ProductPageProps) {
             <div className="grid grid-cols-3 gap-4">
                 {altImages.map(img => img && (
                     <div key={img.id} className="aspect-[3/4] w-full overflow-hidden rounded-lg">
-                        <Image
+                        <img
                             src={img.imageUrl}
                             alt={`${product.name} alternative Ansicht`}
-                            width={200}
-                            height={267}
                             className="h-full w-full object-cover"
                             data-ai-hint={img.imageHint}
                         />

@@ -1,9 +1,7 @@
 
-import Image from 'next/image';
 import Link from 'next/link';
 import placeholderImagesData from '@/lib/placeholder-images.json';
 import { ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import type { ReactNode } from 'react';
 
 type CategoryCardProps = {
@@ -26,12 +24,10 @@ export function CategoryCard({ pretitle, title, description, linkText, href, ima
 
     return (
         <Link href={href} className="group relative block aspect-[3/4] w-full overflow-hidden">
-            <Image
+            <img
                 src={image.imageUrl}
                 alt={title?.toString() || 'Category'}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, 33vw"
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 data-ai-hint={image.imageHint}
             />
             <div className="absolute inset-0 bg-black/40" />

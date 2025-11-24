@@ -1,10 +1,18 @@
 
+'use client';
 import Link from 'next/link';
 import { TranslatedText } from './TranslatedText';
 import { InstagramIcon } from './InstagramIcon';
 import { SnapchatIcon } from './SnapchatIcon';
+import { useState, useEffect } from 'react';
 
 export function Footer() {
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
+
   const footerSections = [
     {
       title: 'Hilfe',
@@ -73,7 +81,7 @@ export function Footer() {
             </div>
         </div>
         <div className="mt-16 pt-8 border-t text-center text-sm text-muted-foreground">
-           <p>&copy; {new Date().getFullYear()} <TranslatedText fr="EZCENTIALS. Tous droits réservés.">EZCENTIALS. Alle Rechte vorbehalten.</TranslatedText></p>
+           <p>&copy; {currentYear} <TranslatedText fr="EZCENTIALS. Tous droits réservés.">EZCENTIALS. Alle Rechte vorbehalten.</TranslatedText></p>
         </div>
       </div>
     </footer>

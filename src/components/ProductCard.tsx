@@ -1,6 +1,5 @@
 
 import Link from 'next/link';
-import Image from 'next/image';
 import type { Product } from '@/lib/types';
 import placeholderImagesData from '@/lib/placeholder-images.json';
 import { TranslatedText } from './TranslatedText';
@@ -24,13 +23,11 @@ export function ProductCard({ product }: ProductCardProps) {
         <Link href={`/product/${product.slug}`} className="block">
             <div className="relative block aspect-[3/4] w-full overflow-hidden bg-gray-100 rounded-lg">
                 {productImage && (
-                <Image
+                <img
                     src={productImage.imageUrl}
                     alt={product.name}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     data-ai-hint={productImage.imageHint}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
                 )}
             </div>

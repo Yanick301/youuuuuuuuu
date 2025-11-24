@@ -1,7 +1,6 @@
 
 'use client';
 
-import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,7 +16,7 @@ import placeholderImagesData from '@/lib/placeholder-images.json';
 import { TranslatedText } from '@/components/TranslatedText';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { Banknote, Lock } from 'lucide-react';
+import { Banknote } from 'lucide-react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -197,9 +196,11 @@ export default function CheckoutPage() {
             <Card>
               <CardHeader>
                 <CardTitle><TranslatedText fr="Instructions de Paiement">Zahlungsanweisungen</TranslatedText></CardTitle>
-                <CardDescription className="flex items-center gap-2 text-sm">
-                  <Banknote className="h-4 w-4" />
-                  <TranslatedText fr="Veuillez effectuer un virement bancaire pour finaliser votre commande.">Bitte tätigen Sie eine Banküberweisung, um Ihre Bestellung abzuschließen.</TranslatedText>
+                <CardDescription>
+                    <div className="flex items-center gap-2 text-sm">
+                        <Banknote className="h-4 w-4" />
+                        <TranslatedText fr="Veuillez effectuer un virement bancaire pour finaliser votre commande.">Bitte tätigen Sie eine Banküberweisung, um Ihre Bestellung abzuschließen.</TranslatedText>
+                    </div>
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 text-sm">
@@ -237,12 +238,10 @@ export default function CheckoutPage() {
                       <li key={item.product.id} className="flex items-center py-4">
                         <div className="relative h-16 w-16 overflow-hidden rounded-md border">
                           {productImage && (
-                            <Image
+                            <img
                               src={productImage.imageUrl}
                               alt={item.product.name}
-                              fill
-                              className="object-cover"
-                              sizes="64px"
+                              className="h-full w-full object-cover"
                             />
                           )}
                           <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-muted text-sm font-medium">{item.quantity}</span>

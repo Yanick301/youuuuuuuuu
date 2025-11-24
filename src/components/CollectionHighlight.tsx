@@ -1,5 +1,4 @@
 
-import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import placeholderImagesData from '@/lib/placeholder-images.json';
@@ -47,11 +46,9 @@ export function CollectionHighlight({
                             image && (
                                 <div key={image.id} className="aspect-w-1 aspect-h-1">
                                     <div className="overflow-hidden rounded-lg">
-                                        <Image
+                                        <img
                                             src={image.imageUrl}
                                             alt={image.description || 'Collection image'}
-                                            width={300}
-                                            height={400}
                                             className="h-full w-full object-cover object-center transition-transform duration-300 hover:scale-105"
                                             data-ai-hint={image.imageHint}
                                         />

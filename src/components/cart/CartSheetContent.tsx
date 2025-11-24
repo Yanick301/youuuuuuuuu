@@ -1,7 +1,6 @@
 
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { Plus, Minus, Trash2 } from 'lucide-react';
 
@@ -36,11 +35,9 @@ export function CartSheetContent() {
                 <li key={item.product.id} className="flex py-4">
                   <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border">
                     {productImage && (
-                        <Image
+                        <img
                             src={productImage.imageUrl}
                             alt={item.product.name}
-                            width={96}
-                            height={96}
                             className="h-full w-full object-cover object-center"
                             data-ai-hint={productImage.imageHint}
                         />
