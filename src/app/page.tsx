@@ -18,7 +18,11 @@ import { useMemo } from 'react';
 
 export default function HomePage() {
   const saleProducts = useMemo(() => {
-    return getWinterSaleProducts(products, 4);
+    // Get only parkas and beanies for the homepage sale section
+    const allSaleProducts = getWinterSaleProducts(products);
+    const parkas = allSaleProducts.filter(p => p.name_fr.toLowerCase().includes('parka')).slice(0, 2);
+    const beanies = allSaleProducts.filter(p => p.slug.includes('bonnet')).slice(0, 2);
+    return [...parkas, ...beanies];
   }, []);
 
   return (
@@ -130,3 +134,4 @@ export default function HomePage() {
     </div>
   );
 }
+

@@ -56,7 +56,7 @@ export const products: Product[] = [
     description: 'Eine luxuriöse Pulloverkleid aus reinem Kaschmir, für eine komfortable und warme Eleganz. Seine lockere Passform und die Weichheit des Materials machen es zu einem Kokon des Luxus für den Winter.',
     description_fr: 'Une robe pull luxueuse en pur cachemire, pour une élégance confortable et chaleureuse. Sa coupe décontractée et la douceur de sa maille en font un cocon de luxe pour l\'hiver.',
     description_en: 'A luxurious sweater dress in pure cashmere, for comfortable and warm elegance. Its relaxed fit and the softness of its knit make it a cocoon of luxury for the winter.',
-    category: 'womens-clothing',
+    category: 'winter-clothing',
     images: ['robe-pull-en-cachemire-max-mara'],
     reviews: [
       { author: 'Elodie', rating: 5, comment: 'Incroyablement douce et confortable, tout en restant très chic.' },
@@ -121,7 +121,7 @@ export const products: Product[] = [
     description: 'Eine romantische und moderne Silhouette. Dieser Pullover mit U-Boot-Ausschnitt zeichnet sich durch seine voluminösen Ballonärmel aus und verleiht jedem Outfit einen Hauch von Couture.',
     description_fr: 'Une silhouette romantique et moderne. Ce pull à col bateau se distingue par ses manches ballon volumineuses, apportant une touche couture à n\'importe quelle tenue.',
     description_en: 'A romantic and modern silhouette. This boatneck sweater is distinguished by its voluminous balloon sleeves, bringing a couture touch to any outfit.',
-    category: 'womens-clothing',
+    category: 'winter-clothing',
     images: ['pull-col-bateau-manches-ballon-chloe'],
     reviews: [
       { author: 'Emma', rating: 5, comment: 'Les manches sont magnifiques, c\'est une pièce très originale.' },
@@ -235,7 +235,7 @@ export const products: Product[] = [
     description: 'Erleben Sie die Umarmung von purem Luxus. Dieser Rollkragenpullover aus feinstem mongolischem Kaschmir bietet unübertroffene Weichheit und wohlige Wärme. Ein Kunstwerk der Strickerei für die kältesten Tage.',
     description_fr: 'Vivez l\'étreinte du luxe pur. Ce pull à col roulé, confectionné dans le plus fin cachemire de Mongolie, offre une douceur inégalée et une chaleur réconfortante. Une œuvre d\'art du tricotage pour les jours les plus froids.',
     description_en: 'Experience the embrace of pure luxury. This turtleneck sweater, crafted from the finest Mongolian cashmere, offers unparalleled softness and comforting warmth. A work of knitting art for the coldest days.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['pull-col-roule-cachemire-loro-piana'],
     reviews: [
         { author: 'François', rating: 5, comment: 'Une douceur incroyable. On ne veut plus le quitter.'},
@@ -300,7 +300,7 @@ export const products: Product[] = [
     description: 'Ein urbaner Klassiker, neu interpretiert. Diese Bomberjacke aus glänzendem Nylon, gefüttert mit feinsten Daunen, vereint Streetwear-Stil und High-End-Performance. Ein Must-have für die Zwischensaison.',
     description_fr: 'Un classique urbain réinventé. Ce bomber en nylon brillant, doublé du plus fin duvet, allie style streetwear et performance haut de gamme. Un must-have de la mi-saison.',
     description_en: 'A reinvented urban classic. This shiny nylon bomber, lined with the finest down, combines streetwear style and high-end performance. A mid-season must-have.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['bomber-nylon-moncler'],
     reviews: [
       { author: 'Nico', rating: 5, comment: 'Légère, chaude et incroyablement stylée. Parfaite.'},
@@ -412,7 +412,7 @@ export const products: Product[] = [
     description: 'Die zeitlose Eleganz von Merinowolle. Dieser Pullover bietet unübertroffene Weichheit und natürliche Thermoregulation. Ein Must-Have für eine anspruchsvolle und komfortable Garderobe.',
     description_fr: 'L\'élégance intemporelle de la laine mérinos. Ce pull offre une douceur inégalée et une thermorégulation naturelle. Un indispensable pour une garde-robe sophistiquée et confortable.',
     description_en: 'The timeless elegance of merino wool. This sweater offers unparalleled softness and natural thermoregulation. An essential for a sophisticated and comfortable wardrobe.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['pull-laine-merinos-lacoste'],
     reviews: [
         { author: 'Bastien', rating: 5, comment: 'Doux, chaud et élégant. La qualité Lacoste est au rendez-vous.'}
@@ -657,7 +657,7 @@ export const products: Product[] = [
     description: 'Essentielle Wärme ohne das Volumen. Diese leichte Daunenjacke bietet außergewöhnliche Isolierung in einem schlanken, vielseitigen Paket. Ideal für Reisen oder als Schicht an kühleren Tagen.',
     description_fr: 'La chaleur essentielle sans l\'encombrement. Cette doudoune légère offre une isolation exceptionnelle dans un format fin et polyvalent. Idéale pour le voyage ou comme couche intermédiaire les jours plus frais.',
     description_en: 'Essential warmth without the bulk. This lightweight down jacket offers exceptional insulation in a slim, versatile package. Ideal for travel or as a layer on cooler days.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['doudoune-legere-canada-goose'],
     reviews: [
         { author: 'Adam', rating: 5, comment: 'Incroyablement légère et chaude. Parfaite pour la mi-saison.'}
@@ -673,7 +673,7 @@ export const products: Product[] = [
     description: 'Ultimativer Schutz vor den Elementen. Dieser Parka aus der Black Series ist für extreme Bedingungen konzipiert und kombiniert modernste technische Materialien mit einem urbanen, anspruchsvollen Design.',
     description_fr: 'La protection ultime contre les éléments. Conçue pour les conditions extrêmes, cette parka de la Black Series allie des matériaux techniques de pointe à un design urbain et sophistiqué.',
     description_en: 'Ultimate protection against the elements. Designed for extreme conditions, this Black Series parka combines cutting-edge technical materials with an urban, sophisticated design.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['parka-expedition-the-north-face-black-series'],
     reviews: [
         { author: 'Xavier', rating: 5, comment: 'Un véritable bouclier contre le froid. Chaque détail est pensé.'}
@@ -689,7 +689,7 @@ export const products: Product[] = [
     description: 'Der lässige Luxus in seiner reinsten Form. Dieser Cardigan mit Reißverschluss aus reinem Kaschmir ist unglaublich weich und vielseitig und kann allein oder als Schicht getragen werden.',
     description_fr: 'Le luxe décontracté à son paroxysme. Ce cardigan zippé en pur cachemire est d\'une douceur et d\'une polyvalence inégalées, à porter seul ou en superposition.',
     description_en: 'Casual luxury at its finest. This pure cashmere zip-up cardigan is incredibly soft and versatile, to be worn alone or as a layer.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['cardigan-zippe-cachemire-brunello-cucinelli'],
     reviews: [
         { author: 'Gaspard', rating: 5, comment: 'Une pièce d\'une qualité exceptionnelle. Le prix est justifié.'}
@@ -705,7 +705,7 @@ export const products: Product[] = [
     description: 'Eine imposante und zeitlose Silhouette. Dieser lange Mantel aus reiner Schurwolle bietet eine elegante Struktur und eine unvergleichliche Wärme für einen makellosen Winterstil.',
     description_fr: 'Une silhouette imposante et intemporelle. Ce long manteau en pure laine vierge offre une structure élégante et une chaleur inégalée pour un style hivernal impeccable.',
     description_en: 'An imposing and timeless silhouette. This long coat in pure virgin wool offers an elegant structure and unparalleled warmth for an impeccable winter style.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['manteau-long-laine-max-mara-homme'],
     reviews: [
         { author: 'Augustin', rating: 5, comment: 'La coupe est majestueuse. Un manteau pour la vie.'}
@@ -785,7 +785,7 @@ export const products: Product[] = [
     description: 'Ein zeitloser Klassiker neu interpretiert. Dieser Pullover mit Zopfmuster ist aus weicher Wolle gefertigt und verfügt über die für Paul Smith typischen subtilen Farbakzente.',
     description_fr: 'Un classique intemporel revisité. Ce pull à torsades est confectionné dans une laine douce et présente les touches de couleur subtiles signatures de Paul Smith.',
     description_en: 'A timeless classic revisited. This cable-knit sweater is made of soft wool and features the subtle color touches signature of Paul Smith.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['pull-torsade-paul-smith'],
     reviews: [
         { author: 'Adrien', rating: 5, comment: 'Très beau pull, la petite touche de couleur fait toute la différence.'}
@@ -849,7 +849,7 @@ export const products: Product[] = [
     description: 'Eine schicke und funktionale Schicht. Diese ärmellose Weste aus dem ikonischen Nylon von Prada verleiht jedem Outfit einen Hauch von modernem und anspruchsvollem Luxus.',
     description_fr: 'Une couche chic et fonctionnelle. Ce gilet sans manches, en nylon iconique de Prada, ajoute une touche de luxe moderne et sophistiqué à n\'importe quelle tenue.',
     description_en: 'A chic and functional layer. This sleeveless vest, in Prada\'s iconic nylon, adds a touch of modern and sophisticated luxury to any outfit.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['gilet-sans-manches-prada'],
     reviews: [
         { author: 'David', rating: 5, comment: 'Très polyvalent. Je le porte sur une chemise ou sous un manteau.'}
@@ -979,7 +979,7 @@ export const products: Product[] = [
     description: 'Wärme und Textur für Ihre Wintertage. Diese Mütze aus reiner Wolle mit Zopfstrickmuster bietet einen schicken und gemütlichen Stil. Ein unverzichtbares Accessoire, um der Kälte mit nordischer Eleganz zu trotzen.',
     description_fr: 'De la chaleur et de la texture pour vos journées d\'hiver. Ce bonnet en pure laine, au tricot torsadé, offre un style chic et douillet. Un accessoire indispensable pour affronter le froid avec une élégance nordique.',
     description_en: 'Warmth and texture for your winter days. This pure wool beanie with a cable knit pattern offers a chic and cozy style. An essential accessory to face the cold with Nordic elegance.',
-    category: 'winter-clothing',
+    category: 'accessories',
     images: ['bonnet-laine-torsadee-noir-nordic-luxe'],
     reviews: [
         { author: 'Elsa', rating: 5, comment: 'Très chaud et la laine ne gratte pas. J\'adore !'}
@@ -995,7 +995,7 @@ export const products: Product[] = [
     description: 'Schlichtheit und Funktionalität. Diese dicke Mütze in neutralem Grau ist das unverzichtbare Accessoire, das sich leicht mit all Ihren Wintermänteln kombinieren lässt, um stilvoll warm zu bleiben.',
     description_fr: 'La simplicité et l\'efficacité. Ce bonnet épais d\'un gris neutre est l\'accessoire essentiel qui s\'associe facilement à tous vos manteaux d\'hiver pour rester au chaud avec style.',
     description_en: 'Simplicity and efficiency. This thick, neutral grey beanie is the essential accessory that easily pairs with all your winter coats to stay warm in style.',
-    category: 'winter-clothing',
+    category: 'accessories',
     images: ['bonnet-epais-gris-winter-essential'],
     reviews: [
         { author: 'Martin', rating: 5, comment: 'Simple, chaud, efficace. Exactement ce que je cherchais.'}
@@ -1012,7 +1012,7 @@ export const products: Product[] = [
     description: 'Hüllen Sie sich in einen Kokon aus Weichheit. Dieser Schal aus reiner Schurwolle bietet eine unvergleichliche Wärme und ein Gefühl von zartem Luxus auf der Haut. Das perfekte Accessoire für die kältesten Tage.',
     description_fr: 'Enveloppez-vous dans un cocon de douceur. Cette écharpe en pure laine vierge offre une chaleur inégalée et une sensation de luxe délicat contre la peau. L\'accessoire parfait pour les jours les plus froids.',
     description_en: 'Wrap yourself in a cocoon of softness. This pure virgin wool scarf offers unparalleled warmth and a feeling of delicate luxury against the skin. The perfect accessory for the coldest days.',
-    category: 'winter-clothing',
+    category: 'accessories',
     images: ['echarpe-laine-vierge-premium-alpine-soft'],
     reviews: [
         { author: 'Isabelle', rating: 5, comment: 'Une douceur incroyable, c\'est comme un câlin.'}
@@ -1028,7 +1028,7 @@ export const products: Product[] = [
     description: 'Eine moderne und praktische Alternative zum Schal. Dieser Fleece-Snood bietet optimalen Schutz vor Wind und Kälte und bewahrt dabei einen klaren und urbanen Stil. Perfekt für Ihre Outdoor-Aktivitäten.',
     description_fr: 'Une alternative moderne et pratique à l\'écharpe. Ce snood en polaire offre une protection optimale contre le vent et le froid, tout en conservant un style épuré et urbain. Parfait pour vos activités extérieures.',
     description_en: 'A modern and practical alternative to the scarf. This fleece snood offers optimal protection against wind and cold, while maintaining a clean and urban style. Perfect for your outdoor activities.',
-    category: 'winter-clothing',
+    category: 'accessories',
     images: ['snood-polaire-winter-shield-premium'],
     reviews: [
         { author: 'Romain', rating: 5, comment: 'Très pratique et bien plus chaud que je ne le pensais.'}
@@ -1061,7 +1061,7 @@ export const products: Product[] = [
     description: 'Kombinieren Sie Wärme und Konnektivität. Diese Thermohandschuhe sind mit einer speziellen Technologie ausgestattet, mit der Sie Ihre Touchscreens bedienen können, ohne sie ausziehen zu müssen. Nie wieder kalte Hände, um in Verbindung zu bleiben.',
     description_fr: 'Alliez chaleur et connectivité. Ces gants thermiques sont dotés d\'une technologie spécifique vous permettant d\'utiliser vos écrans tactiles sans les retirer. Ne plus jamais avoir froid aux mains pour rester connecté.',
     description_en: 'Combine warmth and connectivity. These thermal gloves are equipped with a special technology that allows you to use your touch screens without taking them off. Never have cold hands to stay connected again.',
-    category: 'winter-clothing',
+    category: 'accessories',
     images: ['gants-tactiles-thermiques-tech-gloves'],
     reviews: [
         { author: 'Laura', rating: 5, comment: 'Enfin des gants qui fonctionnent vraiment avec mon téléphone !'}
@@ -1174,7 +1174,7 @@ export const products: Product[] = [
     description: 'Vereinen Sie Wärme und Glamour. Diese Wollmütze ist mit einem weichen Bommel aus hochwertigem Kunstpelz versehen, der Ihrem Winterlook einen Hauch von verspieltem Luxus verleiht.',
     description_fr: 'Alliez chaleur et glamour. Ce bonnet en laine est surmonté d\'un pompon doux en fausse fourrure de haute qualité, ajoutant une touche de luxe ludique à votre look d\'hiver.',
     description_en: 'Combine warmth and glamour. This wool beanie is topped with a soft, high-quality faux fur pom-pom, adding a touch of playful luxury to your winter look.',
-    category: 'winter-clothing',
+    category: 'accessories',
     images: ['bonnet-laine-pompon-fourrure-synthetique-cozy-glam'],
     reviews: [
         { author: 'Jessica', rating: 5, comment: 'Très doux et le pompon est adorable !'}
@@ -1206,7 +1206,7 @@ export const products: Product[] = [
     description: 'Ein Hauch von Zartheit im Herzen des Winters. Diese gestrickte Mütze ist subtil mit kleinen Perlen verziert, die einen Hauch von Licht und winterlicher Poesie in Ihre Garderobe bringen.',
     description_fr: 'Une touche de délicatesse au cœur de l\'hiver. Ce bonnet tricoté est subtilement orné de petites perles, apportant un éclat de lumière et une poésie hivernale à votre garde-robe.',
     description_en: 'A touch of delicacy in the heart of winter. This knitted beanie is subtly adorned with small pearls, bringing a splash of light and winter poetry to your wardrobe.',
-    category: 'winter-clothing',
+    category: 'accessories',
     images: ['bonnet-tricote-perle-winter-pearl'],
     reviews: [
         { author: 'Amélie', rating: 5, comment: 'Très original et féminin. J\'aime beaucoup les petites perles.'}
@@ -1223,7 +1223,7 @@ export const products: Product[] = [
     description: 'Hüllen Sie sich in extremen Luxus. Dieser Oversize-Schal aus hochwertigem Kunstpelz bietet eine unvergleichliche Weichheit und einen Hauch von opulentem Glamour für Ihre Winteroutfits.',
     description_fr: 'Drapez-vous dans un luxe extrême. Cette écharpe oversize en fausse fourrure de haute qualité offre une douceur inégalée et une touche de glamour opulent à vos tenues d\'hiver.',
     description_en: 'Drape yourself in extreme luxury. This oversized scarf in high-quality faux fur offers unparalleled softness and a touch of opulent glamour to your winter outfits.',
-    category: 'winter-clothing',
+    category: 'accessories',
     images: ['echarpe-oversize-fausse-fourrure-luxe-soft'],
     reviews: [
         { author: 'Caroline', rating: 5, comment: 'Incroyablement douce et luxueuse. C\'est magnifique.'}
@@ -1240,7 +1240,7 @@ export const products: Product[] = [
     description: 'Die zeitlose Eleganz von Zopfstrick. Dieser dicke und weiche Schal umhüllt Sie mit stilvoller Wärme. Seine reiche Textur und großzügigen Abmessungen machen ihn zum perfekten Verbündeten gegen die Winterkälte.',
     description_fr: 'L\'élégance intemporelle de la maille torsadée. Cette écharpe épaisse et moelleuse vous enveloppe de chaleur avec style. Sa texture riche et ses dimensions généreuses en font l\'alliée parfaite contre le froid hivernal.',
     description_en: 'The timeless elegance of cable knit. This thick and soft scarf envelops you in warmth with style. Its rich texture and generous dimensions make it the perfect ally against the winter cold.',
-    category: 'winter-clothing',
+    category: 'accessories',
     images: ['echarpe-maille-torsadee-warm-plush'],
     reviews: [
         { author: 'Nicolas', rating: 5, comment: 'Écharpe de grande qualité, très chaude et confortable.'}
@@ -1256,7 +1256,7 @@ export const products: Product[] = [
     description: 'Mehr als nur ein Accessoire, ein Statement. Diese große Winterstola mit ihrem raffinierten und eleganten Muster wertet jedes Outfit auf, vom einfachen Mantel bis zum Abendkleid.',
     description_fr: 'Plus qu\'un accessoire, une déclaration de style. Ce grand châle d\'hiver, avec son motif raffiné et élégant, sublime n\'importe quelle tenue, du simple manteau à la robe de soirée.',
     description_en: 'More than an accessory, a style statement. This large winter shawl, with its refined and elegant pattern, enhances any outfit, from a simple coat to an evening dress.',
-    category: 'winter-clothing',
+    category: 'accessories',
     images: ['chale-hiver-motif-elegant-elegant-wrap'],
     reviews: [
         { author: 'Béatrice', rating: 5, comment: 'Les motifs sont superbes et il est très grand et enveloppant.'}
@@ -1289,7 +1289,7 @@ export const products: Product[] = [
     description: 'Die perfekte Allianz zwischen Eleganz und Komfort. Diese Handschuhe aus geschmeidigem Leder sind mit einem weichen Fleece gefüttert, um Ihre Hände warm zu halten, ohne auf einen raffinierten Stil zu verzichten.',
     description_fr: 'L\'alliance parfaite entre l\'élégance et le confort. Ces gants en cuir souple sont doublés d\'une polaire douce pour garder vos mains au chaud sans sacrifier un style raffiné.',
     description_en: 'The perfect alliance between elegance and comfort. These supple leather gloves are lined with soft fleece to keep your hands warm without sacrificing a refined style.',
-    category: 'winter-clothing',
+    category: 'accessories',
     images: ['gants-cuir-doubles-polaire-lady-warm'],
     reviews: [
         { author: 'Hélène', rating: 5, comment: 'Très chauds et le cuir est d\'une grande souplesse. Parfaits.'}
@@ -1791,7 +1791,7 @@ export const products: Product[] = [
     description: 'Leichte technische Jacke mit reflektierendem Thermofutter.',
     description_fr: 'Veste technique légère avec doublure thermique réfléchissante.',
     description_en: 'Lightweight technical jacket with reflective thermal lining.',
-    category: 'sport',
+    category: 'winter-clothing',
     images: ['columbia-omniheat-winter-sports-jacket'],
     reviews: []
   },
@@ -2049,17 +2049,6 @@ export function getProductsByCategory(products: Product[], categorySlug: string,
 
   if (categorySlug === 'all') {
     filteredProducts = products;
-  } else if (categorySlug === 'winter-clothing') {
-    const winterKeywords = ['winter', 'manteau', 'pull', 'parka', 'doudoune', 'bonnet', 'écharpe', 'gants', 'coat', 'sweater', 'beanie', 'scarf', 'gloves', 'mantel', 'pullover', 'wolle', 'laine', 'wool', 'cardigan', 'cachemire', 'cashmere'];
-    filteredProducts = products.filter(p => 
-      p.category === 'winter-clothing' || 
-      winterKeywords.some(keyword => p.name_fr.toLowerCase().includes(keyword)) ||
-      winterKeywords.some(keyword => p.name_en.toLowerCase().includes(keyword)) ||
-      winterKeywords.some(keyword => p.name.toLowerCase().includes(keyword)) ||
-      winterKeywords.some(keyword => p.description_fr.toLowerCase().includes(keyword)) ||
-      winterKeywords.some(keyword => p.description_en.toLowerCase().includes(keyword)) ||
-      winterKeywords.some(keyword => p.description.toLowerCase().includes(keyword))
-    );
   } else {
     filteredProducts = products.filter((p) => p.category === categorySlug);
   }
@@ -2090,9 +2079,16 @@ export function getFeaturedProducts(products: Product[], limit: number = 4): Pro
 
 
 export function getWinterSaleProducts(products: Product[], limit?: number): Product[] {
-  const saleProducts = products.filter(p => p.category === 'winter-clothing' && p.oldPrice);
+  const saleProducts = products.filter(p => (p.category === 'winter-clothing' || p.slug.includes('bonnet')) && p.oldPrice);
+
+  const parkas = saleProducts.filter(p => p.name_fr.toLowerCase().includes('parka'));
+  const beanies = saleProducts.filter(p => p.slug.includes('bonnet'));
+
+  let combined = [...parkas, ...beanies];
+
   if (limit) {
-    return saleProducts.slice(0, limit);
+    return combined.slice(0, limit);
   }
-  return saleProducts;
+  return combined;
 }
+
