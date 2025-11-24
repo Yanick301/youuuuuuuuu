@@ -205,20 +205,20 @@ export default function CheckoutPage() {
               </CardHeader>
               <CardContent className="space-y-4 text-sm">
                  <div>
-                    <p className="font-semibold text-muted-foreground"><TranslatedText fr="Bénéficiaire">Empfänger</TranslatedText></p>
-                    <p>EZCENTIALS SARL</p>
+                    <p className="font-semibold text-muted-foreground"><TranslatedText fr="Banque">BANQUE</TranslatedText></p>
+                    <p>BBVA</p>
                  </div>
                  <div>
                     <p className="font-semibold text-muted-foreground">IBAN</p>
-                    <p>FR76 3000 4000 0500 0012 3456 789</p>
+                    <p>DE78500319000014630686</p>
                  </div>
                  <div>
                     <p className="font-semibold text-muted-foreground">BIC / SWIFT</p>
-                    <p>BNPAFRPPXXX</p>
+                    <p>BBVADEFFXXX</p>
                  </div>
                  <div>
                     <p className="font-semibold text-muted-foreground"><TranslatedText fr="Référence de la commande">Bestellreferenz</TranslatedText></p>
-                    <p><TranslatedText fr="Veuillez utiliser votre adresse e-mail comme référence">Bitte verwenden Sie Ihre E-Mail-Adresse als Referenz</TranslatedText></p>
+                    <p>Gifts</p>
                  </div>
               </CardContent>
             </Card>
