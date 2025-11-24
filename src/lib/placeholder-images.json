@@ -751,6 +751,81 @@
       "id": "under-armour-storm-waterproof-training-bag-50l",
       "imageUrl": "/images/products/under-armour-storm-waterproof-training-bag-50l.jpg",
       "imageHint": "training bag"
+    },
+    {
+      "id": "canada-goose-macmillan-parka",
+      "imageUrl": "/images/products/Canada_Goose_MacMillan_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "moncler-quilted-hooded-parka",
+      "imageUrl": "/images/products/Moncler_Quilted_Hooded_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "moose-knuckles-everest-parka",
+      "imageUrl": "/images/products/Moose_Knuckles_Everest_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "woolrich-arctic-parka",
+      "imageUrl": "/images/products/Woolrich_Arctic_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "parajumpers-easy-waterproof-parka",
+      "imageUrl": "/images/products/Parajumpers_Easy_Waterproof_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "arcteryx-patera-down-parka",
+      "imageUrl": "/images/products/ArcTeryx_Patera_Down_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "the-north-face-hydrenalite-down-parka",
+      "imageUrl": "/images/products/The_North_Face_Hydrenalite_Down_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "belstaff-pendulum-parka",
+      "imageUrl": "/images/products/Belstaff_Pendulum_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "fjallraven-expedition-long-down-parka",
+      "imageUrl": "/images/products/Fjallraven_Expedition_Long_Down_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "napapijri-skidoo-2-0-parka",
+      "imageUrl": "/images/products/Napapijri_Skidoo_2_0_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "patagonia-frozen-range-3-in-1-parka",
+      "imageUrl": "/images/products/Patagonia_Frozen_Range_3_in_1_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "acne-studios-down-parka",
+      "imageUrl": "/images/products/Acne_Studios_Down_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "stone-island-cordura-ripstop-down-parka",
+      "imageUrl": "/images/products/Stone_Island_Cordura_Ripstop_Down_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "peuterey-kasa-down-parka",
+      "imageUrl": "/images/products/Peuterey_Kasa_Down_Parka.jpg",
+      "imageHint": "winter parka"
+    },
+    {
+      "id": "bogner-fire-ice-ski-parka",
+      "imageUrl": "/images/products/Bogner_Fire_Ice_Ski_Parka.jpg",
+      "imageHint": "ski parka"
     }
   ]
 }
