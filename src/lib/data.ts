@@ -71,7 +71,7 @@ export const products: Product[] = [
     price: 900,
     description: 'Ein luxuriöser Rollkragenpullover aus reinem Kaschmir für unübertroffene Weichheit und Wärme.',
     description_fr: 'Un pull col roulé luxueux en pur cachemire pour une douceur et une chaleur inégalées.',
-    category: 'mens-clothing',
+    category: 'winter-clothing',
     images: ['pull-col-roule-cachemire-loro-piana'],
     reviews: []
   },
@@ -333,7 +333,7 @@ export const products: Product[] = [
     price: 65,
     description: 'Eine dicke, graue Mütze, ein unverzichtbares Accessoire, um dem Winter mit Stil zu begegnen.',
     description_fr: 'Un bonnet épais et gris, l\'essentiel pour affronter l\'hiver avec style.',
-    category: 'accessories',
+    category: 'winter-clothing',
     images: ['bonnet-epais-gris-winter-essential'],
     reviews: []
   },
@@ -345,7 +345,7 @@ export const products: Product[] = [
     price: 150,
     description: 'Ein Schal aus reiner Schurwolle für unübertroffene Weichheit und Wärme.',
     description_fr: 'Une écharpe en pure laine vierge pour une douceur et une chaleur inégalées.',
-    category: 'accessories',
+    category: 'winter-clothing',
     images: ['echarpe-laine-vierge-premium-alpine-soft'],
     reviews: []
   },
@@ -357,7 +357,7 @@ export const products: Product[] = [
     price: 75,
     description: 'Ein Fleece-Snood für optimalen Schutz vor Kälte, ohne Kompromisse beim Stil einzugehen.',
     description_fr: 'Un snood en polaire pour une protection optimale contre le froid, sans compromis sur le style.',
-    category: 'accessories',
+    category: 'winter-clothing',
     images: ['snood-polaire-winter-shield-premium'],
     reviews: []
   },
@@ -381,7 +381,7 @@ export const products: Product[] = [
     price: 95,
     description: 'Thermische und taktile Handschuhe, um auch im Winter verbunden zu bleiben.',
     description_fr: 'Des gants thermiques et tactiles pour rester connecté même en hiver.',
-    category: 'accessories',
+    category: 'winter-clothing',
     images: ['gants-tactiles-thermiques-tech-gloves'],
     reviews: []
   },
@@ -465,7 +465,7 @@ export const products: Product[] = [
     price: 90,
     description: 'Eine Wollmütze mit einem Bommel aus Kunstpelz, für einen glamourösen und gemütlichen Winter.',
     description_fr: 'Un bonnet en laine avec un pompon en fourrure synthétique, pour un hiver glamour et douillet.',
-    category: 'accessories',
+    category: 'winter-clothing',
     images: ['bonnet-laine-pompon-fourrure-synthetique-cozy-glam'],
     reviews: []
   },
@@ -489,7 +489,7 @@ export const products: Product[] = [
     price: 85,
     description: 'Eine gestrickte Mütze mit Perlen verziert, für einen Hauch von winterlicher Zartheit.',
     description_fr: 'Un bonnet tricoté orné de perles, pour une touche de délicatesse hivernale.',
-    category: 'accessories',
+    category: 'winter-clothing',
     images: ['bonnet-tricote-perle-winter-pearl'],
     reviews: []
   },
@@ -501,7 +501,7 @@ export const products: Product[] = [
     price: 180,
     description: 'Ein Oversize-Schal aus Kunstpelz für einen Hauch von Luxus und extremer Weichheit.',
     description_fr: 'Une écharpe oversize en fausse fourrure pour une touche de luxe et de douceur extrême.',
-    category: 'accessories',
+    category: 'winter-clothing',
     images: ['echarpe-oversize-fausse-fourrure-luxe-soft'],
     reviews: []
   },
@@ -513,7 +513,7 @@ export const products: Product[] = [
     price: 130,
     description: 'Ein Schal aus Zopfstrick, um sich stilvoll in Wärme zu hüllen.',
     description_fr: 'Une écharpe en maille torsadée pour s\'envelopper de chaleur avec style.',
-    category: 'accessories',
+    category: 'winter-clothing',
     images: ['echarpe-maille-torsadee-warm-plush'],
     reviews: []
   },
@@ -525,7 +525,7 @@ export const products: Product[] = [
     price: 160,
     description: 'Eine Winterstola mit elegantem Muster, um jedes Outfit zu veredeln.',
     description_fr: 'Un châle d\'hiver au motif élégant pour sublimer n\'importe quelle tenue.',
-    category: 'accessories',
+    category: 'winter-clothing',
     images: ['chale-hiver-motif-elegant-elegant-wrap'],
     reviews: []
   },
@@ -549,7 +549,7 @@ export const products: Product[] = [
     price: 110,
     description: 'Lederhandschuhe mit Fleecefutter, um Eleganz und Wärme zu vereinen.',
     description_fr: 'Des gants en cuir doublés de polaire pour allier élégance et chaleur.',
-    category: 'accessories',
+    category: 'winter-clothing',
     images: ['gants-cuir-doubles-polaire-lady-warm'],
     reviews: []
   },
@@ -587,6 +587,54 @@ export const products: Product[] = [
     description_fr: 'Une pochette de soirée pour transporter vos essentiels avec élégance.',
     category: 'accessories',
     images: ['pochette-soiree-shine-night-premium'],
+    reviews: []
+  },
+    {
+    id: 'prod-21',
+    name: 'Robe pull en cachemire',
+    name_fr: 'Robe pull en cachemire',
+    slug: 'robe-pull-en-cachemire-max-mara',
+    price: 1200,
+    description: 'Une robe pull luxueuse en pur cachemire, pour une élégance confortable et chaleureuse.',
+    description_fr: 'Une robe pull luxueuse en pur cachemire, pour une élégance confortable et chaleureuse.',
+    category: 'womens-clothing',
+    images: ['robe-pull-en-cachemire-max-mara'],
+    reviews: []
+  },
+  {
+    id: 'prod-22',
+    name: 'Pantalon en cuir',
+    name_fr: 'Pantalon en cuir',
+    slug: 'pantalon-en-cuir-saint-laurent',
+    price: 1500,
+    description: 'Un pantalon en cuir d\'agneau souple, coupe slim, pour un look rock et chic.',
+    description_fr: 'Un pantalon en cuir d\'agneau souple, coupe slim, pour un look rock et chic.',
+    category: 'womens-clothing',
+    images: ['pantalon-en-cuir-saint-laurent'],
+    reviews: []
+  },
+  {
+    id: 'prod-23',
+    name: 'Jupe plissée midi',
+    name_fr: 'Jupe plissée midi',
+    slug: 'jupe-plissee-midi-valentino',
+    price: 850,
+    description: 'Une jupe midi plissée, fluide et légère, pour un mouvement gracieux et une allure féminine.',
+    description_fr: 'Une jupe midi plissée, fluide et légère, pour un mouvement gracieux et une allure féminine.',
+    category: 'womens-clothing',
+    images: ['jupe-plissee-midi-valentino'],
+    reviews: []
+  },
+  {
+    id: 'prod-24',
+    name: 'T-shirt brodé logo',
+    name_fr: 'T-shirt brodé logo',
+    slug: 't-shirt-brode-logo-gucci',
+    price: 450,
+    description: 'Un t-shirt en coton de qualité supérieure, rehaussé du logo emblématique brodé de la maison.',
+    description_fr: 'Un t-shirt en coton de qualité supérieure, rehaussé du logo emblématique brodé de la maison.',
+    category: 'womens-clothing',
+    images: ['t-shirt-brode-logo-gucci'],
     reviews: []
   }
 ];
