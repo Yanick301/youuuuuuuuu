@@ -144,7 +144,7 @@ export default function CheckoutPage() {
 
   const handlePlaceOrder: SubmitHandler<ShippingFormInputs> = async (data) => {
     setIsSubmitting(true);
-    if (!user) { // Redundant check, but good for safety
+    if (!user) { 
         toast({
             variant: "destructive",
             title: language === 'fr' ? "Authentification requise" : language === 'en' ? "Authentication Required" : "Authentifizierung erforderlich",

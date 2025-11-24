@@ -53,14 +53,14 @@ service cloud.firestore {
     }
 
     match /orders/{orderId} {
+      // A user can only create an order for themselves.
+      allow create: if isOwner(request.resource.data.userId);
+
       // An owner can read their own order. An admin can read any order.
       allow get: if (resource != null && isOwner(resource.data.userId)) || isAdmin();
       
-      // Only admins can list all orders.
+      // Only admins can list all orders. Users cannot list all orders.
       allow list: if isAdmin();
-      
-      // An owner can create an order for themselves.
-      allow create: if isOwner(request.resource.data.userId);
       
       // An owner can update their order (e.g., upload receipt). An admin can update any order (e.g., change status).
       allow update: if (resource != null && isOwner(resource.data.userId)) || isAdmin();
