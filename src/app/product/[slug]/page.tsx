@@ -3,7 +3,7 @@
 
 import { notFound, useParams } from 'next/navigation';
 import { Star } from 'lucide-react';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -20,6 +20,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection, query, where, limit } from 'firebase/firestore';
 import type { Product } from '@/lib/types';
+import { getProductBySlug, getProductsByCategory, products as allProducts } from '@/lib/data';
 
 
 const { placeholderImages } = placeholderImagesData;
@@ -32,27 +33,26 @@ type ProductPageProps = {
 
 export default function ProductPage({ params }: ProductPageProps) {
   const { slug } = params;
-  const firestore = useFirestore();
+  const [product, setProduct] = useState<Product | null | undefined>(undefined);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [isProductLoading, setIsProductLoading] = useState(true);
+
   const { toast } = useToast();
   const { language } = useLanguage();
   const [newReviewRating, setNewReviewRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [newReviewComment, setNewReviewComment] = useState('');
 
-  const productQuery = useMemoFirebase(() => {
-    if (!firestore) return null;
-    return query(collection(firestore, 'products'), where('slug', '==', slug), limit(1));
-  }, [firestore, slug]);
-
-  const { data: productData, isLoading: isProductLoading } = useCollection<Product>(productQuery);
-  const product = useMemo(() => (productData && productData.length > 0 ? productData[0] : null), [productData]);
-
-  const relatedProductsQuery = useMemoFirebase(() => {
-    if (!firestore || !product) return null;
-    return query(collection(firestore, 'products'), where('category', '==', product.category), where('id', '!=', product.id), limit(4));
-  }, [firestore, product]);
-
-  const { data: relatedProducts, isLoading: areRelatedLoading } = useCollection<Product>(relatedProductsQuery);
+  useEffect(() => {
+    setIsProductLoading(true);
+    const foundProduct = getProductBySlug(allProducts, slug);
+    setProduct(foundProduct);
+    if (foundProduct) {
+      const related = getProductsByCategory(allProducts, foundProduct.category, 4, foundProduct.id);
+      setRelatedProducts(related);
+    }
+    setIsProductLoading(false);
+  }, [slug]);
 
   if (isProductLoading) {
     return <div className="container mx-auto px-4 py-12 text-center">Chargement du produit...</div>;
@@ -231,18 +231,16 @@ export default function ProductPage({ params }: ProductPageProps) {
         <h2 className="mb-12 text-center font-headline text-3xl md:text-4xl">
           <TranslatedText fr="Vous pourriez aussi aimer">Das könnte Ihnen auch gefallen</TranslatedText>
         </h2>
-        {areRelatedLoading ? (
-            <div className="text-center">Chargement...</div>
-        ) : (
+        {relatedProducts && relatedProducts.length > 0 ? (
             <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-              {relatedProducts && relatedProducts.map((relatedProduct) => (
+              {relatedProducts.map((relatedProduct) => (
                 <ProductCard key={relatedProduct.id} product={relatedProduct} />
               ))}
             </div>
+        ): (
+            <div className="text-center">Chargement...</div>
         )}
       </div>
     </div>
   );
 }
-
-    
