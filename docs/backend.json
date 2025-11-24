@@ -254,7 +254,8 @@
   "auth": {
     "providers": [
       "password",
-      "anonymous"
+      "anonymous",
+      "google.com"
     ]
   },
   "firestore": {
@@ -391,3 +392,4 @@
     "reasoning": "The Firestore structure is designed to be secure, scalable, and easily debuggable, following the core design principles and strategy mandates. It uses path-based ownership for user-specific data and separates data with different access requirements into distinct collections.\n\n**Authorization Independence:**\n\n*   No `get()` calls are needed in the security rules because user ownership is implicit in the path (e.g., `/users/{userId}/cart_items/{cartItemId}`). This avoids hierarchical authorization dependencies.\n\n**Structural Segregation:**\n\n*   Each collection contains documents with the same security requirements. For example, `/categories` are globally accessible, while `/users/{userId}/cart_items` are only accessible to the specific user.\n\n**Access Modeling:**\n\n*   Private data is structured using path-based ownership (e.g., `/users/{userId}/orders`).\n\n**QAPs (Rules are not Filters):**\n\n*   Secure `list` operations are enabled because collections are structurally segregated based on access requirements. Listing categories is different than listing a user's cart items. Each has different authorization rules that can be simply scoped to the path.\n\n**Debuggability:**\n\n*   The structure clearly indicates the authorization context based on the path."
   }
 }
+    
