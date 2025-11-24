@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import placeholderImagesData from '@/lib/placeholder-images.json';
 import { TranslatedText } from '../TranslatedText';
+import { SheetClose } from '@/components/ui/sheet';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -101,9 +102,11 @@ export function CartSheetContent() {
           <TranslatedText fr="Les frais de port et les taxes sont calculés au moment du paiement." en="Shipping and taxes calculated at checkout.">Versand und Steuern werden an der Kasse berechnet.</TranslatedText>
         </p>
         <div className="mt-6">
-          <Button asChild className="w-full">
-            <Link href="/checkout"><TranslatedText fr="Paiement" en="Checkout">Kasse</TranslatedText></Link>          
-          </Button>
+            <SheetClose asChild>
+                <Button asChild className="w-full">
+                    <Link href="/checkout"><TranslatedText fr="Paiement" en="Checkout">Kasse</TranslatedText></Link>          
+                </Button>
+            </SheetClose>
         </div>
       </div>
     </div>
