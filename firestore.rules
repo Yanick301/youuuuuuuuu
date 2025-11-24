@@ -1,36 +1,18 @@
-
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    function isOwner(userId) {
-      return request.auth != null && request.auth.uid == userId;
-    }
-
-    function isAdmin() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
-    }
-
     match /products/{productId} {
       allow read: if true;
-      allow write: if false; 
-    }
-    
-    match /products/{productId}/reviews/{reviewId} {
-      allow read: if true;
-      allow create, update, delete: if isOwner(request.resource.data.userId);
+      allow write: if false;
     }
 
-    match /users/{userId} {
-      allow create: if isOwner(userId);
-      allow read, update, delete: if isOwner(userId);
+    match /products/{productId}/reviews/{reviewId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null && request.auth.uid == request.resource.data.userId;
     }
-    
-    match /orders/{orderId} {
-      allow read: if isOwner(resource.data.userId) || isAdmin();
-      allow list: if isAdmin();
-      allow create: if isOwner(request.resource.data.userId);
-      allow update: if (isOwner(resource.data.userId) && request.resource.data.paymentStatus == 'processing') || isAdmin();
+
+    match /userProfiles/{userId}/{documents=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
   }
 }

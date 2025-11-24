@@ -16,7 +16,6 @@ import {
   CheckCircle,
   Loader2,
   AlertCircle,
-  ShieldCheck,
   FileCheck,
 } from 'lucide-react';
 import {
@@ -68,7 +67,7 @@ const getSafeDate = (order: any): Date => {
 };
 
 export default function OrdersPage() {
-  const { user, isAdmin } = useUser();
+  const { user } = useUser();
   const firestore = useFirestore();
   const { language } = useLanguage();
   const storage = getStorage();
@@ -80,19 +79,12 @@ export default function OrdersPage() {
 
   const ordersQuery = useMemoFirebase(() => {
     if (!user || !firestore) return null;
-    
-    if (isAdmin) {
-      // Admin can see all orders
-      return query(collection(firestore, 'orders'), orderBy('orderDate', 'desc'));
-    }
 
-    // Regular users see only their own orders
     return query(
-      collection(firestore, 'orders'),
-      where('userId', '==', user.uid),
+      collection(firestore, `userProfiles/${user.uid}/orders`),
       orderBy('orderDate', 'desc')
     );
-  }, [firestore, user, isAdmin]);
+  }, [firestore, user]);
 
   const { data: orders, isLoading } = useCollection(ordersQuery);
 
@@ -119,16 +111,17 @@ export default function OrdersPage() {
     setUploadingOrderId(selectedOrderId);
 
     try {
-      const orderToUpdate = orders?.find(o => o.id === selectedOrderId);
-      if (!orderToUpdate) throw new Error("Order not found");
-      
       const filePath = `receipts/${user.uid}/${selectedOrderId}/${file.name}`;
       const fileRef = storageRef(storage, filePath);
 
       const uploadResult = await uploadBytes(fileRef, file);
       const downloadURL = await getDownloadURL(uploadResult.ref);
-      
-      const orderDocRef = doc(firestore, `orders`, selectedOrderId);
+
+      const orderDocRef = doc(
+        firestore,
+        `userProfiles/${user.uid}/orders`,
+        selectedOrderId
+      );
       await updateDoc(orderDocRef, {
         receiptImageURL: downloadURL,
         paymentStatus: 'processing',
@@ -171,47 +164,6 @@ export default function OrdersPage() {
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
-    }
-  };
-
-  const handleValidateOrder = async (orderId: string) => {
-    if (!firestore || !isAdmin) return;
-    try {
-      const orderRef = doc(firestore, `orders`, orderId);
-      await updateDoc(orderRef, { paymentStatus: 'completed' });
-      toast({
-        title:
-          language === 'fr'
-            ? 'Commande validée'
-            : language === 'en'
-            ? 'Order Validated'
-            : 'Bestellung validiert',
-        description: `${
-          language === 'fr'
-            ? 'Le paiement pour la commande'
-            : language === 'en'
-            ? 'Payment for order'
-            : 'Zahlung für Bestellung'
-        } ${orderId} ${
-          language === 'fr'
-            ? 'a été validé.'
-            : language === 'en'
-            ? 'has been validated.'
-            : 'wurde validiert.'
-        }`,
-      });
-    } catch (error) {
-      console.error('Error validating order:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description:
-          language === 'fr'
-            ? 'Impossible de valider la commande.'
-            : language === 'en'
-            ? 'Could not validate the order.'
-            : 'Bestellung konnte nicht validiert werden.',
-      });
     }
   };
 
@@ -309,11 +261,8 @@ export default function OrdersPage() {
         accept="image/png, image/jpeg, image/gif, application/pdf"
       />
       <h1 className="mb-6 font-headline text-3xl">
-        <TranslatedText
-          fr={isAdmin ? 'Gérer les commandes' : 'Historique des commandes'}
-          en={isAdmin ? 'Manage Orders' : 'Order History'}
-        >
-          {isAdmin ? 'Bestellungen verwalten' : 'Bestellverlauf'}
+        <TranslatedText fr="Historique des commandes" en="Order History">
+          Bestellverlauf
         </TranslatedText>
       </h1>
       {orders && orders.length > 0 ? (
@@ -340,11 +289,6 @@ export default function OrdersPage() {
                       Bestell-ID
                     </TranslatedText>
                     : {order.id}
-                    {isAdmin && (
-                      <span className="mt-1 block text-xs">
-                        Client: {order.userEmail || 'N/A'}
-                      </span>
-                    )}
                   </CardDescription>
                 </div>
                 <Badge
@@ -416,8 +360,7 @@ export default function OrdersPage() {
                   </div>
                 </div>
 
-                {/* USER ACTIONS */}
-                {!isAdmin && order.paymentStatus === 'pending' && (
+                {order.paymentStatus === 'pending' && (
                   <div className="mt-6 rounded-md bg-destructive/10 p-6 pt-6 text-center">
                     <h4 className="font-semibold text-destructive">
                       <TranslatedText
@@ -455,7 +398,7 @@ export default function OrdersPage() {
                     </Button>
                   </div>
                 )}
-                {!isAdmin && order.paymentStatus === 'processing' && (
+                {order.paymentStatus === 'processing' && (
                   <div className="mt-6 flex items-center justify-center rounded-md bg-blue-50 p-4 text-sm font-semibold text-blue-700">
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                     <p>
@@ -468,7 +411,7 @@ export default function OrdersPage() {
                     </p>
                   </div>
                 )}
-                {!isAdmin && order.paymentStatus === 'completed' && (
+                {order.paymentStatus === 'completed' && (
                   <div className="mt-6 flex flex-col items-center justify-center rounded-md bg-green-50 p-4 text-sm font-semibold text-green-700">
                     <div className="flex items-center">
                       <CheckCircle className="mr-2 h-5 w-5" />
@@ -488,73 +431,11 @@ export default function OrdersPage() {
                         rel="noopener noreferrer"
                         className="mt-2 text-xs underline"
                       >
+                        <FileCheck className="mr-2 h-3 w-3 inline-block" />
                         <TranslatedText fr="Voir le reçu" en="View receipt">
                           Beleg anzeigen
                         </TranslatedText>
                       </a>
-                    )}
-                  </div>
-                )}
-
-                {/* ADMIN ACTIONS */}
-                {isAdmin && (
-                  <div className="mt-6 flex items-center justify-between border-t pt-4">
-                    <div>
-                      {order.receiptImageURL ? (
-                        <Button variant="outline" size="sm" asChild>
-                          <a
-                            href={order.receiptImageURL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <FileCheck className="mr-2 h-4 w-4" />
-                            <TranslatedText fr="Voir le reçu" en="View Receipt">
-                              Beleg anzeigen
-                            </TranslatedText>
-                          </a>
-                        </Button>
-                      ) : (
-                        <div className="flex items-center text-sm text-amber-600">
-                          <AlertCircle className="mr-2 h-4 w-4" />
-                          <TranslatedText
-                            fr="Preuve de paiement en attente"
-                            en="Proof of payment pending"
-                          >
-                            Zahlungsnachweis ausstehend
-                          </TranslatedText>
-                        </div>
-                      )}
-                    </div>
-                    {order.paymentStatus === 'processing' && (
-                      <Button onClick={() => handleValidateOrder(order.id)}>
-                        <ShieldCheck className="mr-2 h-4 w-4" />
-                        <TranslatedText
-                          fr="Valider le Paiement"
-                          en="Validate Payment"
-                        >
-                          Zahlung validieren
-                        </TranslatedText>
-                      </Button>
-                    )}
-                    {order.paymentStatus === 'pending' && (
-                      <p className="text-sm font-semibold text-destructive">
-                        <TranslatedText
-                          fr="En attente du paiement par le client"
-                          en="Waiting for customer payment"
-                        >
-                          Warten auf Kundenzahlung
-                        </TranslatedText>
-                      </p>
-                    )}
-                    {order.paymentStatus === 'completed' && (
-                      <p className="text-sm font-semibold text-green-600">
-                        <TranslatedText
-                          fr="Commande terminée"
-                          en="Order Completed"
-                        >
-                          Bestellung abgeschlossen
-                        </TranslatedText>
-                      </p>
                     )}
                   </div>
                 )}
@@ -567,7 +448,10 @@ export default function OrdersPage() {
           <CardContent className="flex flex-col items-center justify-center p-12 text-center">
             <ShoppingBag className="h-16 w-16 text-muted-foreground" />
             <h3 className="mt-4 text-xl font-semibold">
-              <TranslatedText fr="Aucune commande pour le moment" en="No orders yet">
+              <TranslatedText
+                fr="Aucune commande pour le moment"
+                en="No orders yet"
+              >
                 Noch keine Bestellungen
               </TranslatedText>
             </h3>
@@ -582,7 +466,10 @@ export default function OrdersPage() {
             </p>
             <Button asChild className="mt-6">
               <Link href="/products/all">
-                <TranslatedText fr="Continuer les achats" en="Continue Shopping">
+                <TranslatedText
+                  fr="Continuer les achats"
+                  en="Continue Shopping"
+                >
                   Weiter einkaufen
                 </TranslatedText>
               </Link>

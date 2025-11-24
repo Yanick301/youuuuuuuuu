@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Heart, ListOrdered, User, Shield } from 'lucide-react';
+import { Heart, ListOrdered, User } from 'lucide-react';
 import { TranslatedText } from '@/components/TranslatedText';
 import { cn } from '@/lib/utils';
 import { useUser } from '@/firebase';
@@ -15,7 +15,7 @@ export default function AccountLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { user, isUserLoading, isAdmin } = useUser();
+  const { user, isUserLoading } = useUser();
   const router = useRouter();
 
   const accountNav = [
@@ -40,17 +40,6 @@ export default function AccountLayout({
       href: '/account/favorites',
       icon: Heart,
     },
-    ...(isAdmin
-      ? [
-          {
-            name: 'Admin Dashboard',
-            name_fr: 'Tableau de bord Admin',
-            name_en: 'Admin Dashboard',
-            href: '/admin/dashboard',
-            icon: Shield,
-          },
-        ]
-      : []),
   ];
 
   useEffect(() => {

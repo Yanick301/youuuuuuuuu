@@ -1,7 +1,6 @@
-
 'use client';
 
-import { User, LogOut, Heart, ListOrdered, Shield } from 'lucide-react';
+import { User, LogOut, Heart, ListOrdered } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -21,7 +20,7 @@ import { Skeleton } from '../ui/skeleton';
 import { useLanguage } from '@/context/LanguageContext';
 
 export function UserButton() {
-  const { user, isUserLoading, isAdmin } = useUser();
+  const { user, isUserLoading } = useUser();
   const auth = useAuth();
   const { toast } = useToast();
   const { language } = useLanguage();
@@ -70,11 +69,6 @@ export function UserButton() {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {isAdmin && (
-            <DropdownMenuItem asChild>
-                <Link href="/admin/dashboard"><Shield className="mr-2 h-4 w-4" /> <TranslatedText fr="Tableau de bord Admin" en="Admin Dashboard">Admin Dashboard</TranslatedText></Link>
-            </DropdownMenuItem>
-          )}
           <DropdownMenuItem asChild>
             <Link href="/account"><User className="mr-2 h-4 w-4" /> <TranslatedText fr="Mon compte" en="My Account">Mein Konto</TranslatedText></Link>
           </DropdownMenuItem>
