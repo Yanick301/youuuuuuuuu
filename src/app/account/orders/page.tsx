@@ -10,9 +10,9 @@ import {
 import { TranslatedText } from '@/components/TranslatedText';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ShoppingBag, Upload, CheckCircle, Loader2 } from 'lucide-react';
+import { ShoppingBag, Upload, CheckCircle, Loader2, AlertCircle } from 'lucide-react';
 import { useCollection, useFirestore, useUser, useMemoFirebase } from '@/firebase';
-import { collection, doc, updateDoc } from 'firebase/firestore';
+import { collection, doc, updateDoc, query } from 'firebase/firestore';
 import { useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
@@ -34,8 +34,8 @@ export default function OrdersPage() {
 
 
   const ordersQuery = useMemoFirebase(() => {
-    if (!user) return null;
-    return collection(firestore, `users/${user.uid}/orders`);
+    if (!user || !firestore) return null;
+    return query(collection(firestore, `users/${user.uid}/orders`));
   }, [firestore, user]);
 
   const { data: orders, isLoading } = useCollection(ordersQuery);
@@ -46,7 +46,7 @@ export default function OrdersPage() {
   };
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || event.target.files.length === 0 || !selectedOrderId || !user) {
+    if (!event.target.files || event.target.files.length === 0 || !selectedOrderId || !user || !firestore) {
       return;
     }
 
@@ -91,11 +91,11 @@ export default function OrdersPage() {
   const getStatusVariant = (status: string) => {
     switch (status) {
       case 'pending':
-        return 'secondary';
+        return 'destructive';
       case 'processing':
         return 'default';
       case 'completed':
-        return 'default';
+        return 'secondary';
       default:
         return 'outline';
     }
@@ -103,7 +103,7 @@ export default function OrdersPage() {
 
   const getStatusTextDE = (status: string) => {
     switch (status) {
-        case 'pending': return 'Ausstehend';
+        case 'pending': return 'Aktion erforderlich';
         case 'processing': return 'In Bearbeitung';
         case 'completed': return 'Abgeschlossen';
         default: return status;
@@ -112,15 +112,24 @@ export default function OrdersPage() {
 
   const getStatusTextFR = (status: string) => {
     switch (status) {
-        case 'pending': return 'En attente';
+        case 'pending': return 'Action requise';
         case 'processing': return 'En traitement';
         case 'completed': return 'Terminé';
         default: return status;
     }
   }
+  
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+        case 'pending': return <AlertCircle className="mr-2 h-4 w-4" />;
+        case 'processing': return <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
+        case 'completed': return <CheckCircle className="mr-2 h-4 w-4" />;
+        default: return null;
+    }
+  }
 
   if (isLoading) {
-    return <div className="text-center"><TranslatedText fr="Chargement des commandes...">Bestellungen werden geladen...</TranslatedText></div>;
+    return <div className="text-center p-12"><Loader2 className="mx-auto h-8 w-8 animate-spin text-muted-foreground" /></div>;
   }
 
   return (
@@ -137,46 +146,61 @@ export default function OrdersPage() {
       </h1>
       {orders && orders.length > 0 ? (
         <div className="space-y-6">
-          {(orders as any[]).sort((a,b) => b.orderDate.toDate() - a.orderDate.toDate()).map((order: any) => (
+          {(orders as any[]).sort((a,b) => (b.orderDate?.toDate() || 0) - (a.orderDate?.toDate() || 0)).map((order: any) => (
             <Card key={order.id}>
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                    <div>
-                        <CardTitle className="text-lg">
-                          <TranslatedText fr={`Commande du ${order.orderDate ? format(order.orderDate.toDate(), 'PPP', { locale: fr }) : ''}`}>
-                            Bestellung vom {order.orderDate ? format(order.orderDate.toDate(), 'PPP', { locale: de }) : ''}
-                          </TranslatedText>
-                        </CardTitle>
-                        <CardDescription>
-                          <TranslatedText fr="ID de commande">Bestell-ID</TranslatedText>: {order.id}
-                        </CardDescription>
-                    </div>
-                     <Badge variant={getStatusVariant(order.paymentStatus)}>
-                        <TranslatedText fr={getStatusTextFR(order.paymentStatus)}>{getStatusTextDE(order.paymentStatus)}</TranslatedText>
-                    </Badge>
+              <CardHeader className="flex-row items-center justify-between">
+                <div>
+                  <CardTitle className="text-lg">
+                    <TranslatedText fr={`Commande du ${order.orderDate ? format(order.orderDate.toDate(), 'PPP', { locale: fr }) : ''}`}>
+                      Bestellung vom {order.orderDate ? format(order.orderDate.toDate(), 'PPP', { locale: de }) : ''}
+                    </TranslatedText>
+                  </CardTitle>
+                  <CardDescription>
+                    <TranslatedText fr="ID de commande">Bestell-ID</TranslatedText>: {order.id}
+                  </CardDescription>
                 </div>
+                <Badge variant={getStatusVariant(order.paymentStatus)} className="flex items-center">
+                  {getStatusIcon(order.paymentStatus)}
+                  <TranslatedText fr={getStatusTextFR(order.paymentStatus)}>{getStatusTextDE(order.paymentStatus)}</TranslatedText>
+                </Badge>
               </CardHeader>
               <CardContent>
-                <ul className="divide-y divide-border mb-4">
-                  {order.items.map((item: any) => (
-                    <li key={item.productId} className="flex justify-between items-center py-2 text-sm">
-                      <span>{item.quantity} x <TranslatedText fr={item.name_fr}>{item.name}</TranslatedText></span>
-                      <span>${(item.price * item.quantity).toFixed(2)}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="border-t pt-4">
-                  <div className="flex justify-between text-sm text-muted-foreground">
-                    <p><TranslatedText fr="Total">Gesamt</TranslatedText></p>
-                    <p className="font-bold text-foreground">${order.totalAmount.toFixed(2)}</p>
+                <div className="border rounded-md p-4">
+                  <ul className="divide-y">
+                    {order.items.map((item: any) => (
+                      <li key={item.productId} className="flex justify-between items-center py-3 text-sm">
+                        <span className="flex-grow pr-4">
+                          {item.quantity} x <TranslatedText fr={item.name_fr}>{item.name}</TranslatedText>
+                        </span>
+                        <span className="font-medium">${(item.price * item.quantity).toFixed(2)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="border-t pt-4 mt-4">
+                    <div className="flex justify-between text-sm">
+                      <p className="text-muted-foreground"><TranslatedText fr="Sous-total">Zwischensumme</TranslatedText></p>
+                      <p>${order.subtotal.toFixed(2)}</p>
+                    </div>
+                     <div className="flex justify-between text-sm">
+                      <p className="text-muted-foreground"><TranslatedText fr="Livraison">Versand</TranslatedText></p>
+                      <p>${order.shipping.toFixed(2)}</p>
+                    </div>
+                     <div className="flex justify-between text-sm">
+                      <p className="text-muted-foreground"><TranslatedText fr="Taxes">Steuern</TranslatedText></p>
+                      <p>${order.taxes.toFixed(2)}</p>
+                    </div>
+                    <div className="flex justify-between font-semibold text-base mt-2 pt-2 border-t">
+                      <p><TranslatedText fr="Total">Gesamt</TranslatedText></p>
+                      <p>${order.totalAmount.toFixed(2)}</p>
+                    </div>
                   </div>
                 </div>
 
                 {order.paymentStatus === 'pending' && (
-                  <div className="mt-6 border-t pt-4 text-center">
-                    <h4 className="font-semibold"><TranslatedText fr="Action requise">Aktion erforderlich</TranslatedText></h4>
-                    <p className="text-sm text-muted-foreground mb-4"><TranslatedText fr="Veuillez téléverser votre preuve de paiement.">Bitte laden Sie Ihren Zahlungsnachweis hoch.</TranslatedText></p>
-                    <Button onClick={() => handleUploadClick(order.id)} disabled={uploadingOrderId === order.id}>
+                  <div className="mt-6 border-t pt-6 text-center bg-destructive/10 p-6 rounded-md">
+                    <h4 className="font-semibold text-destructive"><TranslatedText fr="Action requise : valider votre paiement">Aktion erforderlich: Zahlung bestätigen</TranslatedText></h4>
+                    <p className="text-sm text-destructive/80 my-2"><TranslatedText fr="Pour finaliser votre commande, veuillez téléverser une preuve de votre virement bancaire.">Um Ihre Bestellung abzuschließen, laden Sie bitte einen Nachweis Ihrer Banküberweisung hoch.</TranslatedText></p>
+                    <Button onClick={() => handleUploadClick(order.id)} disabled={uploadingOrderId === order.id} variant="destructive">
                        {uploadingOrderId === order.id ? (
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         ) : (
@@ -186,17 +210,22 @@ export default function OrdersPage() {
                     </Button>
                   </div>
                 )}
-                 {order.paymentStatus === 'completed' && (
-                    <div className="mt-6 flex items-center justify-center text-green-600">
-                        <CheckCircle className="mr-2 h-5 w-5" />
-                        <p className="text-sm font-semibold"><TranslatedText fr="Paiement confirmé">Zahlung bestätigt</TranslatedText></p>
+                {order.paymentStatus === 'processing' && (
+                    <div className="mt-6 flex items-center justify-center text-sm font-semibold p-4 bg-blue-50 text-blue-700 rounded-md">
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        <p><TranslatedText fr="Paiement en cours de vérification">Zahlung wird überprüft</TranslatedText></p>
                     </div>
                 )}
-                 {order.paymentStatus === 'processing' && (
-                    <div className="mt-6 flex items-center justify-center text-blue-600">
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        <p className="text-sm font-semibold"><TranslatedText fr="Paiement en cours de vérification">Zahlung wird überprüft</TranslatedText></p>
-                    </div>
+                {order.paymentStatus === 'completed' && order.receiptImageURL && (
+                   <div className="mt-6 flex flex-col items-center justify-center text-sm font-semibold p-4 bg-green-50 text-green-700 rounded-md">
+                      <div className="flex items-center">
+                         <CheckCircle className="mr-2 h-5 w-5" />
+                         <p><TranslatedText fr="Paiement confirmé">Zahlung bestätigt</TranslatedText></p>
+                      </div>
+                      <a href={order.receiptImageURL} target="_blank" rel="noopener noreferrer" className="text-xs mt-2 underline">
+                        <TranslatedText fr="Voir le reçu">Beleg anzeigen</TranslatedText>
+                      </a>
+                   </div>
                 )}
               </CardContent>
             </Card>

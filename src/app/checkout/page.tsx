@@ -30,6 +30,7 @@ import {
 import { useFirestore, useUser } from '@/firebase';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/context/LanguageContext';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -51,6 +52,7 @@ export default function CheckoutPage() {
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
+  const { language } = useLanguage();
 
   const form = useForm<ShippingFormInputs>({
     resolver: zodResolver(shippingSchema),
@@ -70,6 +72,13 @@ export default function CheckoutPage() {
     }
   }, [cart, router, form.formState.isSubmitSuccessful]);
 
+  useEffect(() => {
+    if (user) {
+        form.setValue('name', user.displayName || '');
+        form.setValue('email', user.email || '');
+    }
+  }, [user, form]);
+
 
   if (cart.length === 0 && !form.formState.isSubmitSuccessful) {
     return (
@@ -87,10 +96,18 @@ export default function CheckoutPage() {
     if (!user) {
         toast({
             variant: "destructive",
-            title: "Authentification requise",
-            description: "Vous devez être connecté pour passer une commande.",
+            title: language === 'fr' ? "Authentification requise" : "Authentifizierung erforderlich",
+            description: language === 'fr' ? "Vous devez être connecté pour passer une commande." : "Sie müssen angemeldet sein, um eine Bestellung aufzugeben.",
         });
-        router.push('/login');
+        router.push('/login?redirect=/checkout');
+        return;
+    }
+    if (!firestore) {
+        toast({
+            variant: "destructive",
+            title: "Database Error",
+            description: "Could not connect to the database.",
+        });
         return;
     }
     
@@ -110,7 +127,7 @@ export default function CheckoutPage() {
             taxes,
             totalAmount: total,
             orderDate: serverTimestamp(),
-            paymentStatus: 'pending',
+            paymentStatus: 'pending', // Initial status
             receiptImageURL: '',
         };
 
@@ -124,8 +141,8 @@ export default function CheckoutPage() {
         console.error("Error placing order: ", error);
         toast({
             variant: "destructive",
-            title: "Erreur lors de la commande",
-            description: "Une erreur est survenue. Veuillez réessayer.",
+            title: language === 'fr' ? "Erreur lors de la commande" : "Fehler bei der Bestellung",
+            description: language === 'fr' ? "Une erreur est survenue. Veuillez réessayer." : "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
         });
     }
   };
