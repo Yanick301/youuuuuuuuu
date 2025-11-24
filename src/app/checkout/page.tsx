@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useCart } from '@/context/CartContext';
@@ -155,17 +156,28 @@ export default function CheckoutPage() {
         setIsSubmitting(false);
         return;
     }
-    if (!firestore) {
-        toast({
-            variant: "destructive",
-            title: "Database Error",
-            description: "Could not connect to the database.",
-        });
-        setIsSubmitting(false);
-        return;
-    }
     
+    // Instead of writing to firestore, we save to session storage and redirect.
     try {
+        const orderData = {
+            shippingInfo: data,
+            items: cart.map(item => ({
+                productId: item.product.id,
+                name: item.product.name,
+                name_fr: item.product.name_fr,
+                name_en: item.product.name_en,
+                price: item.product.price,
+                quantity: item.quantity,
+            })),
+            subtotal,
+            shipping,
+            taxes,
+            totalAmount: total,
+            // We'll add user and date info when we actually create the order
+        };
+
+        sessionStorage.setItem('stagedOrder', JSON.stringify(orderData));
+        
         const ordersCollectionRef = collection(firestore, `userProfiles/${user.uid}/orders`);
         
         await addDoc(ordersCollectionRef, {
@@ -185,22 +197,18 @@ export default function CheckoutPage() {
             taxes,
             totalAmount: total,
             orderDate: serverTimestamp(),
-            paymentStatus: 'pending',
+            paymentStatus: 'pending', // Initial status
             receiptImageURL: '',
         });
 
         clearCart();
-        toast({
-          title: language === 'fr' ? 'Commande créée' : language === 'en' ? 'Order Created' : 'Bestellung erstellt',
-          description: language === 'fr' ? 'Veuillez maintenant valider votre paiement.' : language === 'en' ? 'Please validate your payment now.' : 'Bitte bestätigen Sie jetzt Ihre Zahlung.',
-        });
         router.push('/checkout/thank-you');
 
     } catch (error) {
-        console.error("Error placing order: ", error);
+        console.error("Error staging order: ", error);
         toast({
             variant: "destructive",
-            title: language === 'fr' ? "Erreur lors de la commande" : language === 'en' ? "Error Placing Order" : "Fehler bei der Bestellung",
+            title: language === 'fr' ? "Erreur lors de la préparation de la commande" : language === 'en' ? "Error Preparing Order" : "Fehler bei der Bestellvorbereitung",
             description: language === 'fr' ? "Une erreur est survenue. Veuillez réessayer." : language === 'en' ? "An error occurred. Please try again." : "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
         });
     } finally {
