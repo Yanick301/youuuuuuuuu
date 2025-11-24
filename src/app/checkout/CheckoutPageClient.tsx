@@ -374,10 +374,10 @@ export default function CheckoutPageClient() {
               <CardHeader>
                 <CardTitle><TranslatedText fr="Instructions de Paiement" en="Payment Instructions">Zahlungsanweisungen</TranslatedText></CardTitle>
                 <CardDescription>
-                    <div className="flex items-center gap-2 text-sm">
+                    <span className="flex items-center gap-2 text-sm">
                         <Banknote className="h-4 w-4" />
                         <TranslatedText fr="Veuillez effectuer un virement bancaire pour finaliser votre commande." en="Please make a bank transfer to finalize your order.">Bitte tätigen Sie eine Banküberweisung, um Ihre Bestellung abzuschließen.</TranslatedText>
-                    </div>
+                    </span>
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 text-sm">
@@ -420,3 +420,5 @@ export default function CheckoutPageClient() {
     </div>
   );
 }
+
+    
