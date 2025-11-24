@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import placeholderImagesData from '@/lib/placeholder-images.json';
 import { Button } from './ui/button';
-import { products as allProducts, getProductById } from '@/lib/data';
+import { products as allProducts } from '@/lib/data';
 
 type Stat = {
     value: string;
@@ -40,7 +40,7 @@ export function CollectionHighlight({
         const image = placeholderImages.find(img => img.id === id);
         if (!image) return null;
         
-        // Find the product that uses this image as its primary image
+        // Find the product that uses this image as its primary image to get the slug
         const product = allProducts.find(p => p.images[0] === id);
         return { ...image, slug: product?.slug };
     }).filter(Boolean);
