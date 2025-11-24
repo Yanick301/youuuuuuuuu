@@ -10,19 +10,28 @@ import {
 import { TranslatedText } from '@/components/TranslatedText';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ShoppingBag, Upload, CheckCircle } from 'lucide-react';
+import { ShoppingBag, Upload, CheckCircle, Loader2 } from 'lucide-react';
 import { useCollection, useFirestore, useUser } from '@/firebase';
-import { collection } from 'firebase/firestore';
-import { useMemo } from 'react';
+import { collection, doc, updateDoc } from 'firebase/firestore';
+import { useMemo, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { fr, de } from 'date-fns/locale';
 import { useLanguage } from '@/context/LanguageContext';
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { useToast } from '@/hooks/use-toast';
 
 export default function OrdersPage() {
   const { user } = useUser();
   const firestore = useFirestore();
   const { language } = useLanguage();
+  const storage = getStorage();
+  const { toast } = useToast();
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingOrderId, setUploadingOrderId] = useState<string | null>(null);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+
 
   const ordersQuery = useMemo(() => {
     if (!user) return null;
@@ -31,10 +40,53 @@ export default function OrdersPage() {
 
   const { data: orders, isLoading } = useCollection(ordersQuery as any);
 
-  const handleUploadReceipt = (orderId: string) => {
-    // Logic to open file dialog and upload will be added later
-    alert(`Téléverser le reçu pour la commande ${orderId}`);
+  const handleUploadClick = (orderId: string) => {
+    setSelectedOrderId(orderId);
+    fileInputRef.current?.click();
   };
+
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files || event.target.files.length === 0 || !selectedOrderId || !user) {
+      return;
+    }
+
+    const file = event.target.files[0];
+    setUploadingOrderId(selectedOrderId);
+
+    try {
+      const filePath = `receipts/${user.uid}/${selectedOrderId}/${file.name}`;
+      const fileRef = storageRef(storage, filePath);
+      
+      const uploadResult = await uploadBytes(fileRef, file);
+      const downloadURL = await getDownloadURL(uploadResult.ref);
+
+      const orderDocRef = doc(firestore, `users/${user.uid}/orders`, selectedOrderId);
+      await updateDoc(orderDocRef, {
+        receiptImageURL: downloadURL,
+        paymentStatus: 'processing',
+      });
+
+      toast({
+        title: language === 'fr' ? 'Reçu téléversé' : 'Beleg hochgeladen',
+        description: language === 'fr' ? 'Votre preuve de paiement a été soumise.' : 'Ihr Zahlungsnachweis wurde übermittelt.',
+      });
+
+    } catch (error) {
+      console.error("Error uploading receipt: ", error);
+      toast({
+        variant: "destructive",
+        title: language === 'fr' ? 'Erreur de téléversement' : 'Upload-Fehler',
+        description: language === 'fr' ? 'Une erreur est survenue. Veuillez réessayer.' : 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
+      });
+    } finally {
+      setUploadingOrderId(null);
+      setSelectedOrderId(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
 
   const getStatusVariant = (status: string) => {
     switch (status) {
@@ -49,18 +101,43 @@ export default function OrdersPage() {
     }
   };
 
+  const getStatusTextDE = (status: string) => {
+    switch (status) {
+        case 'pending': return 'Ausstehend';
+        case 'processing': return 'In Bearbeitung';
+        case 'completed': return 'Abgeschlossen';
+        default: return status;
+    }
+  }
+
+  const getStatusTextFR = (status: string) => {
+    switch (status) {
+        case 'pending': return 'En attente';
+        case 'processing': return 'En traitement';
+        case 'completed': return 'Terminé';
+        default: return status;
+    }
+  }
+
   if (isLoading) {
     return <div className="text-center"><TranslatedText fr="Chargement des commandes...">Bestellungen werden geladen...</TranslatedText></div>;
   }
 
   return (
     <div>
+        <input 
+            type="file" 
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            className="hidden"
+            accept="image/png, image/jpeg, image/gif, application/pdf"
+        />
       <h1 className="mb-6 font-headline text-3xl">
         <TranslatedText fr="Historique des commandes">Bestellverlauf</TranslatedText>
       </h1>
       {orders && orders.length > 0 ? (
         <div className="space-y-6">
-          {orders.map((order: any) => (
+          {(orders as any[]).sort((a,b) => b.orderDate.toDate() - a.orderDate.toDate()).map((order: any) => (
             <Card key={order.id}>
               <CardHeader>
                 <div className="flex justify-between items-start">
@@ -75,7 +152,7 @@ export default function OrdersPage() {
                         </CardDescription>
                     </div>
                      <Badge variant={getStatusVariant(order.paymentStatus)}>
-                        <TranslatedText fr={order.paymentStatus === 'pending' ? 'En attente' : order.paymentStatus}>{order.paymentStatus === 'pending' ? 'Ausstehend' : order.paymentStatus}</TranslatedText>
+                        <TranslatedText fr={getStatusTextFR(order.paymentStatus)}>{getStatusTextDE(order.paymentStatus)}</TranslatedText>
                     </Badge>
                 </div>
               </CardHeader>
@@ -99,8 +176,12 @@ export default function OrdersPage() {
                   <div className="mt-6 border-t pt-4 text-center">
                     <h4 className="font-semibold"><TranslatedText fr="Action requise">Aktion erforderlich</TranslatedText></h4>
                     <p className="text-sm text-muted-foreground mb-4"><TranslatedText fr="Veuillez téléverser votre preuve de paiement.">Bitte laden Sie Ihren Zahlungsnachweis hoch.</TranslatedText></p>
-                    <Button onClick={() => handleUploadReceipt(order.id)}>
-                      <Upload className="mr-2 h-4 w-4" />
+                    <Button onClick={() => handleUploadClick(order.id)} disabled={uploadingOrderId === order.id}>
+                       {uploadingOrderId === order.id ? (
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                          <Upload className="mr-2 h-4 w-4" />
+                       )}
                       <TranslatedText fr="Téléverser le reçu">Beleg hochladen</TranslatedText>
                     </Button>
                   </div>
@@ -109,6 +190,12 @@ export default function OrdersPage() {
                     <div className="mt-6 flex items-center justify-center text-green-600">
                         <CheckCircle className="mr-2 h-5 w-5" />
                         <p className="text-sm font-semibold"><TranslatedText fr="Paiement confirmé">Zahlung bestätigt</TranslatedText></p>
+                    </div>
+                )}
+                 {order.paymentStatus === 'processing' && (
+                    <div className="mt-6 flex items-center justify-center text-blue-600">
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        <p className="text-sm font-semibold"><TranslatedText fr="Paiement en cours de vérification">Zahlung wird überprüft</TranslatedText></p>
                     </div>
                 )}
               </CardContent>

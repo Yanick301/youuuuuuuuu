@@ -325,7 +325,11 @@ export default function CheckoutPage() {
               </CardContent>
             </Card>
             <Button size="lg" className="w-full" type="submit" disabled={form.formState.isSubmitting}>
-              <TranslatedText fr="Passer la commande">Bestellung aufgeben</TranslatedText>
+              {form.formState.isSubmitting ? (
+                  <TranslatedText fr="Passage de la commande...">Bestellung wird aufgegeben...</TranslatedText>
+              ) : (
+                  <TranslatedText fr="Passer la commande">Bestellung aufgeben</TranslatedText>
+              )}
             </Button>
           </div>
         </form>
