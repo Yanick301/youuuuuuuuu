@@ -10,6 +10,173 @@ export const categories: Category[] = [
 ];
 
 export const products: Product[] = [
+  // Shoes
+  {
+    id: 'prod-shoe-1',
+    name: 'Handgenähte Oxfords "Souverain"',
+    name_fr: 'Richelieu Cousu Main "Souverain"',
+    slug: 'richelieu-cousu-main-cuir-patine-souverain',
+    price: 850.00,
+    description: 'Ein Meisterwerk der Schuhmacherkunst. Handgenähte Oxfords aus patiniertem Leder für einen souveränen und zeitlosen Auftritt.',
+    description_fr: 'Un chef-d\'œuvre de l\'artisanat bottier. Ces richelieus cousus main en cuir patiné assurent une allure souveraine et intemporelle.',
+    category: 'shoes',
+    images: ['richelieu-cousu-main-cuir-patine-souverain'],
+    reviews: [
+        { author: 'Charles', rating: 5, comment: 'Die Qualität ist in jedem Stich spürbar. Perfektion.' },
+        { author: 'Édouard', rating: 5, comment: 'La patine du cuir est sublime. De vrais bijoux.' },
+        { author: 'Konstantin', rating: 4, comment: 'Wunderschön, aber sie brauchen eine gewisse Einlaufzeit.' },
+    ],
+  },
+  {
+    id: 'prod-shoe-2',
+    name: 'Luxus-Sneakers "Runway"',
+    name_fr: 'Sneakers Luxe "Runway"',
+    slug: 'sneakers-luxe-cuir-nubuck-runway',
+    price: 620.00,
+    description: 'Kombinieren Sie Komfort und High Fashion mit diesen Luxus-Sneakers aus Nubukleder. Der perfekte Schuh für einen modernen, urbanen Look.',
+    description_fr: 'Associez confort et haute couture avec ces sneakers de luxe en cuir nubuck. La chaussure parfaite pour un look urbain et moderne.',
+    category: 'shoes',
+    images: ['sneakers-luxe-cuir-nubuck-runway'],
+    reviews: [
+        { author: 'Leo', rating: 5, comment: 'Endlich Sneaker, die man auch zu einem Anzug tragen kann.' },
+        { author: 'Gabriel', rating: 5, comment: 'Incroyablement confortables et le style est impeccable.' },
+    ],
+  },
+  {
+    id: 'prod-shoe-3',
+    name: 'Wildleder-Loafer "Club"',
+    name_fr: 'Mocassin à Glands "Club"',
+    slug: 'mocassin-tasseled-suede-club',
+    price: 480.00,
+    description: 'Klassische Loafer mit Quasten aus weichem Wildleder. Die Verkörperung von lässiger Eleganz für den modernen Gentleman.',
+    description_fr: 'Le classique mocassin à glands en daim souple. L\'incarnation de l\'élégance décontractée pour le gentleman moderne.',
+    category: 'shoes',
+    images: ['mocassin-tasseled-suede-club'],
+    reviews: [
+        { author: 'Maximilian', rating: 5, comment: 'Sehr bequem und stilvoll. Perfekt für den Sommer.' },
+        { author: 'Arthur', rating: 4, comment: 'La couleur est magnifique, mais le daim est délicat.' },
+    ],
+  },
+  {
+    id: 'prod-shoe-4',
+    name: 'Full-Brogues "Tradition"',
+    name_fr: 'Brogues Perforées "Tradition"',
+    slug: 'brogues-perforees-full-brogue-tradition',
+    price: 720.00,
+    description: 'Der Inbegriff des klassischen Herrenschuhs. Diese Full-Brogues mit kunstvoller Perforation sind ein Zeichen von zeitlosem Stil.',
+    description_fr: 'La quintessence de la chaussure masculine classique. Ces brogues "full-brogue" avec leurs perforations artistiques sont un gage de style intemporel.',
+    category: 'shoes',
+    images: ['brogues-perforees-full-brogue-tradition'],
+    reviews: [
+        { author: 'Henry', rating: 5, comment: 'Ein Schuh für die Ewigkeit. Die Verarbeitung ist tadellos.' },
+        { author: 'Louis', rating: 5, comment: 'Un classique indispensable. Va avec tout.' },
+    ],
+  },
+  {
+    id: 'prod-shoe-5',
+    name: 'Chelsea Boots "Citadin"',
+    name_fr: 'Bottines Chelsea "Citadin"',
+    slug: 'bottines-chelsea-cuir-citadin',
+    price: 550.00,
+    description: 'Die perfekten Stadt-Stiefel. Diese Chelsea Boots aus glattem Leder sind vielseitig, bequem und mühelos schick.',
+    description_fr: 'La bottine urbaine par excellence. Ces bottines Chelsea en cuir lisse sont polyvalentes, confortables et chic sans effort.',
+    category: 'shoes',
+    images: ['bottines-chelsea-cuir-citadin'],
+    reviews: [
+        { author: 'Alex', rating: 5, comment: 'Ich lebe in diesen Stiefeln. Passen zu Jeans wie zu Anzughosen.' },
+        { author: 'Hugo', rating: 5, comment: 'Faciles à enfiler, confortables toute la journée.' },
+    ],
+  },
+  {
+    id: 'prod-shoe-6',
+    name: 'Derby-Schuhe "Elite"',
+    name_fr: 'Derby en Cuir Grainé "Elite"',
+    slug: 'derby-cuir-graine-elite',
+    price: 680.00,
+    description: 'Ein robuster und dennoch eleganter Derby aus genarbtem Leder. Die perfekte Balance zwischen formell und informell.',
+    description_fr: 'Un derby robuste mais élégant en cuir grainé. L\'équilibre parfait entre le formel et l\'informel.',
+    category: 'shoes',
+    images: ['derby-cuir-graine-elite'],
+    reviews: [
+        { author: 'Philipp', rating: 5, comment: 'Das genarbte Leder ist sehr widerstandsfähig und sieht toll aus.' },
+        { author: 'Paul', rating: 4, comment: 'Très belles chaussures, un peu rigides au début.' },
+    ],
+  },
+  {
+    id: 'prod-shoe-7',
+    name: 'Lackleder-Pumps "Eclipse"',
+    name_fr: 'Escarpins en Cuir Verni "Eclipse"',
+    slug: 'escarpins-cuir-verni-talon-9-cm-eclipse',
+    price: 590.00,
+    description: 'Der ultimative Abendschuh. Diese Pumps aus schwarzem Lackleder mit einem 9-cm-Absatz sind pure Verführung und Eleganz.',
+    description_fr: 'La chaussure de soirée ultime. Ces escarpins en cuir verni noir avec un talon de 9 cm sont la pure séduction et l\'élégance.',
+    category: 'shoes',
+    images: ['escarpins-cuir-verni-talon-9-cm-eclipse'],
+    reviews: [
+        { author: 'Isabelle', rating: 5, comment: 'Sie machen unendlich lange Beine. Ein Klassiker.' },
+        { author: 'Carla', rating: 5, comment: 'Étonnamment confortables pour cette hauteur de talon.' },
+    ],
+  },
+  {
+    id: 'prod-shoe-8',
+    name: 'Sandalen "Sérénité"',
+    name_fr: 'Sandales à Bride "Sérénité"',
+    slug: 'sandales-a-bride-cheville-en-cuir-serenite',
+    price: 450.00,
+    description: 'Minimalistische Sandalen mit feinen Knöchelriemen aus weichem Leder. Die Verkörperung von schlichter Sommer-Eleganz.',
+    description_fr: 'Des sandales minimalistes avec de fines brides de cheville en cuir souple. L\'incarnation de l\'élégance estivale épurée.',
+    category: 'shoes',
+    images: ['sandales-a-bride-cheville-en-cuir-serenite'],
+    reviews: [
+        { author: 'Sofia', rating: 5, comment: 'So zart und elegant. Perfekt für Sommerabende.' },
+        { author: 'Chloé', rating: 5, comment: 'Vont avec toutes mes robes d\'été. Je les adore.' },
+    ],
+  },
+  {
+    id: 'prod-shoe-9',
+    name: 'Satin-Mules "Diva"',
+    name_fr: 'Mules en Satin "Diva"',
+    slug: 'mules-satin-talon-sculpte-diva',
+    price: 680.00,
+    description: 'Ein Statement-Schuh. Diese Mules aus luxuriösem Satin mit einem skulpturalen Absatz ziehen alle Blicke auf sich.',
+    description_fr: 'Une chaussure audacieuse. Ces mules en satin luxueux avec un talon sculptural attireront tous les regards.',
+    category: 'shoes',
+    images: ['mules-satin-talon-sculpte-diva'],
+    reviews: [
+        { author: 'Victoria', rating: 5, comment: 'Ein Kunstwerk am Fuss. Absolut spektakulär.' },
+        { author: 'Donatella', rating: 5, comment: 'Pour les femmes qui n\'ont pas peur de se faire remarquer.' },
+    ],
+  },
+  {
+    id: 'prod-shoe-10',
+    name: 'Chunky Derbys "Street-Luxe"',
+    name_fr: 'Derby Chunky "Street-Luxe"',
+    slug: 'derby-chunky-platform-street-luxe',
+    price: 750.00,
+    description: 'Der klassische Derby auf einer modernen, dicken Plateausohle. Die perfekte Fusion von Streetwear-Attitüde und Luxus.',
+    description_fr: 'Le derby classique réinventé sur une semelle plateforme épaisse et moderne. La fusion parfaite de l\'attitude streetwear et du luxe.',
+    category: 'shoes',
+    images: ['derby-chunky-platform-street-luxe'],
+    reviews: [
+        { author: 'Stella', rating: 5, comment: 'Gibt jedem Outfit eine coole, unerwartete Note.' },
+        { author: 'Hailey', rating: 5, comment: 'Confortables et super tendance. Je les porte tous les jours.' },
+    ],
+  },
+  {
+    id: 'prod-shoe-11',
+    name: 'Wildleder-Stiefeletten "Paris"',
+    name_fr: 'Bottines en Daim "Paris"',
+    slug: 'bottines-en-cuir-suede-talon-carre-paris',
+    price: 610.00,
+    description: 'Elegante Stiefeletten aus weichem Wildleder mit einem bequemen Blockabsatz. Der Inbegriff des mühelosen Pariser Chics.',
+    description_fr: 'Des bottines élégantes en daim souple avec un talon carré confortable. L\'incarnation du chic parisien sans effort.',
+    category: 'shoes',
+    images: ['bottines-en-cuir-suede-talon-carre-paris'],
+    reviews: [
+        { author: 'Jeanne', rating: 5, comment: 'Die perfekten Stiefel für jeden Tag. Schick und bequem.' },
+        { author: 'Inès', rating: 5, comment: 'Le talon carré est idéal pour marcher toute la journée.' },
+    ],
+  },
   // Winter Wear (Previously Men's)
   {
     id: 'prod-winter-1',
@@ -764,6 +931,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Daniel', rating: 5, comment: 'Perfekte Passform. Fühlt sich an wie maßgeschneidert.' },
         { author: 'James', rating: 5, comment: 'Die Qualität der Baumwolle ist außergewöhnlich.' },
+        { author: 'Colin', rating: 4, comment: 'Sehr elegant, aber der Preis ist hoch für ein Hemd.' },
+        { author: 'Michael', rating: 5, comment: 'Jeden Cent wert. Man spürt den Unterschied.' },
+        { author: 'Tom', rating: 5, comment: 'Ein Meisterstück der Schneiderkunst.' }
     ],
   },
   {
@@ -779,6 +949,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Charles', rating: 5, comment: 'Ein Must-Have in jeder Garderobe. Qualität und Stil unübertroffen.' },
         { author: 'William', rating: 4, comment: 'Gute Qualität, aber die Passform ist etwas lockerer als erwartet.' },
+        { author: 'David', rating: 5, comment: 'Der Stoff ist großartig, sehr atmungsaktiv.' },
+        { author: 'Andrew', rating: 5, comment: 'Perfekt für den Sommer. Sehr bequem.' },
+        { author: 'Harry', rating: 3, comment: 'Die Farbe ist nach ein paar Wäschen etwas verblasst.' }
     ],
   },
   {
@@ -794,6 +967,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Leonardo', rating: 5, comment: 'Es ist, als würde man eine Wolke tragen. Der Preis ist hoch, aber die Qualität ist unbeschreiblich.' },
         { author: 'Filippo', rating: 5, comment: 'Incroyablement doux et luxueux. Cela vaut chaque centime.' },
+        { author: 'Gianni', rating: 5, comment: 'Der weichste Stoff, den ich je gefühlt habe.' },
+        { author: 'Matteo', rating: 5, comment: 'Ein Traum von einem Pullover.' },
+        { author: 'Luca', rating: 4, comment: 'Wunderschön, aber die Pflege ist sehr aufwendig.' }
     ],
   },
   {
@@ -809,6 +985,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Chris', rating: 5, comment: 'Das beste weiße T-Shirt, das ich je besessen habe. Tolle Passform.' },
         { author: 'Ryan', rating: 4, comment: 'Gute Qualität, aber es ist nach dem Waschen leicht eingegangen.' },
+        { author: 'Mark', rating: 5, comment: 'Der Stoff ist sehr weich und angenehm auf der Haut.' },
+        { author: 'Jason', rating: 4, comment: 'Gutes Basic, aber der Preis ist für ein T-Shirt recht hoch.' },
+        { author: 'Sebastian', rating: 5, comment: 'Behält auch nach vielen Wäschen die Form.' }
     ],
   },
   {
@@ -824,6 +1003,9 @@ export const products: Product[] = [
     reviews: [
       { author: 'Eddie', rating: 5, comment: 'Sehr bequem und trotzdem schick. Passt zu allem.' },
       { author: 'George', rating: 5, comment: 'Le confort est incroyable, le style est impeccable.' },
+      { author: 'Bradley', rating: 5, comment: 'Die beste Chino, die ich je getragen habe. Der Stretch-Anteil macht den Unterschied.' },
+      { author: 'Hugh', rating: 4, comment: 'Fällt etwas lang aus, musste sie kürzen lassen.' },
+      { author: 'Jude', rating: 5, comment: 'Perfekte Hose für einen Smart-Casual-Look.' }
     ],
   },
   {
@@ -839,6 +1021,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Renzo', rating: 5, comment: 'Diesel-Jeans enttäuschen nie. Perfekter Schnitt.' },
         { author: 'Marco', rating: 4, comment: 'Bon jean, mais j\'aurais aimé un peu plus d\'élasticité.' },
+        { author: 'Adriano', rating: 5, comment: 'Sitzt wie angegossen. Sehr schmeichelhaft.' },
+        { author: 'Liam', rating: 5, comment: 'Tolle Waschung, sieht sehr authentisch aus.' },
+        { author: 'Zac', rating: 3, comment: 'Der Bund ist etwas zu niedrig für meinen Geschmack.' }
     ],
   },
   {
@@ -854,6 +1039,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Luca', rating: 5, comment: 'Léger, élégant et parfait pour la mi-saison.'},
         { author: 'Remo', rating: 5, comment: 'Moncler Qualität ist unübertroffen. Sehr stylisch.'},
+        { author: 'Gino', rating: 5, comment: 'Hält den Wind perfekt ab und ist super leicht.' },
+        { author: 'Nico', rating: 4, comment: 'Tolles Design, aber der Preis ist sehr hoch für eine so dünne Jacke.' },
+        { author: 'Leo', rating: 5, comment: 'Ein echter Hingucker. Die Details sind fantastisch.' }
     ],
   },
   {
@@ -869,6 +1057,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Hedi', rating: 5, comment: 'Rock\'n\'Roll in seiner reinsten Form.' },
         { author: 'Anthony', rating: 5, comment: 'Le cuir est d\'une qualité exceptionnelle. Une veste pour la vie.' },
+        { author: 'Kate', rating: 5, comment: 'Das Leder ist so weich wie Butter. Unglaublich.' },
+        { author: 'Alex', rating: 5, comment: 'Ein Investment, das sich auszahlt. Zeitlos cool.' },
+        { author: ' Lenny', rating: 5, comment: 'Mehr als eine Jacke, ein Statement.' }
     ],
 },
   {
@@ -884,6 +1075,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Richard', rating: 5, comment: 'Die Definition von lässiger Eleganz. Unvergleichlicher Komfort.' },
         { author: 'Christian', rating: 5, comment: 'La coupe est parfaite, si confortable qu\'on oublie qu\'on porte une veste.' },
+        { author: 'George', rating: 5, comment: 'Man sieht sofort die Qualität. Fällt wunderschön.' },
+        { author: 'Matthew', rating: 5, comment: 'Ein Meisterwerk der Schneiderkunst.' },
+        { author: 'Patrick', rating: 4, comment: 'Der Stoff knittert etwas, was ich nicht erwartet hatte.' }
     ],
   },
   {
@@ -899,6 +1093,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Alessandro', rating: 5, comment: 'Ein Anzug, der Macht und Raffinesse ausstrahlt.' },
         { author: 'Gildo', rating: 5, comment: 'Le tissu est d\'une qualité incroyable. On sent le savoir-faire.' },
+        { author: 'Javier', rating: 5, comment: 'Sitzt wie eine zweite Haut. Die Investition lohnt sich.' },
+        { author: 'Dev', rating: 5, comment: 'Der beste Anzug, den ich je besessen habe.' },
+        { author: 'John', rating: 5, comment: 'Zeitlose Eleganz und perfekte Handwerkskunst.' }
     ],
   },
   {
@@ -914,6 +1111,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Virgil', rating: 5, comment: '"LUXURY"' },
         { author: 'Heron', rating: 4, comment: 'Très stylé, mais le prix est élevé pour un hoodie.' },
+        { author: 'Kanye', rating: 5, comment: 'Die Passform ist perfekt. Ein echtes Sammlerstück.' },
+        { author: 'Gigi', rating: 5, comment: 'Lässiger Look, aber mit High-Fashion-Anspruch.' },
+        { author: 'A$AP', rating: 5, comment: 'Iconic.' }
     ],
   },
   {
@@ -929,6 +1129,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Jerry', rating: 5, comment: 'Die perfekte Oversize-Passform. Der Stoff ist dick und hochwertig.' },
         { author: 'Justin', rating: 5, comment: 'Un basique de tous les jours, mais en mieux.' },
+        { author: 'Hailey', rating: 5, comment: 'Ich liebe die neutrale Farbe und den Schnitt.' },
+        { author: 'Chris', rating: 4, comment: 'Gute Qualität, aber der Hype macht es schwer zu bekommen.' },
+        { author: 'Manuel', rating: 5, comment: 'Der beste Schnitt für ein T-Shirt auf dem Markt.' }
     ],
   },
   {
@@ -944,6 +1147,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'René', rating: 5, comment: 'Klassisch, sportlich, schick. Der perfekte Pullover.' },
         { author: 'Novak', rating: 4, comment: 'Très confortable, mais un peu dünn für den tiefsten Winter.' },
+        { author: 'Stan', rating: 5, comment: 'Die Wolle kratzt überhaupt nicht. Sehr angenehm.' },
+        { author: 'Daniil', rating: 5, comment: 'Ein vielseitiges Stück, das man schick oder lässig tragen kann.' },
+        { author: 'Louise', rating: 5, comment: 'Habe es für meinen Freund gekauft, er liebt es.' }
     ],
   },
   {
@@ -959,6 +1165,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Demna', rating: 5, comment: 'Mehr als ein Hemd, es ist eine Silhouette.' },
         { author: 'Kanye', rating: 5, comment: 'Die Zukunft.' },
+        { author: 'Kim', rating: 4, comment: 'Man muss den Look lieben. Es ist definitiv ein Statement.' },
+        { author: 'Isabelle', rating: 5, comment: 'Ein Kunstwerk, das man tragen kann.' },
+        { author: 'Lewis', rating: 3, comment: 'Es ist einfach zu groß. Es sieht aus wie ein Zelt.' }
     ],
   },
   {
@@ -974,6 +1183,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Jonny', rating: 5, comment: 'Perfekt für den Lagenlook. Sehr weich und warm.' },
         { author: 'Mikael', rating: 4, comment: 'Tolles Muster, aber die Passform ist sehr kastig.' },
+        { author: 'Björn', rating: 5, comment: 'Skandinavischer Minimalismus vom Feinsten.' },
+        { author: 'Frida', rating: 5, comment: 'Habe es für meinen Freund gekauft, er sieht toll darin aus.' },
+        { author: 'Lars', rating: 4, comment: 'Gute Qualität, aber der Stoff ist etwas kratzig.' }
     ],
   },
   {
@@ -989,6 +1201,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Carlo', rating: 5, comment: 'Funktionalität trifft auf High Fashion. Die Stofffärbung ist einzigartig.' },
         { author: 'Massimo', rating: 5, comment: 'Parfait pour l\'été. Beaucoup de poches et un style impeccable.' },
+        { author: 'Drake', rating: 5, comment: 'Der Stoff ist unglaublich. Stone Island ist eine andere Liga.' },
+        { author: 'Skepta', rating: 5, comment: 'Ein Muss für jeden, der Streetwear versteht.' },
+        { author: 'Vince', rating: 4, comment: 'Sehr cool, aber der Preis für Shorts ist hoch.' }
     ],
   },
   {
@@ -1004,6 +1219,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Drake', rating: 5, comment: 'Warm und leicht, perfekt für Toronto.' },
         { author: 'Daniel', rating: 4, comment: 'Gute Jacke, aber nicht für extrem kalte Temperaturen geeignet.' },
+        { author: 'Bear', rating: 5, comment: 'Ideal für Abenteuer, bei denen jedes Gramm zählt.' },
+        { author: 'Meghan', rating: 5, comment: 'Elegant und funktional. Perfekt für Spaziergänge im Herbst.' },
+        { author: 'Harry', rating: 4, comment: 'Sehr praktisch, aber der Reißverschluss ist etwas fummelig.' }
     ],
   },
   {
@@ -1019,6 +1237,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Jun', rating: 5, comment: 'Funktionalität und futuristisches Design. Hält absolut alles aus.' },
         { author: 'Kazuki', rating: 5, comment: 'Le meilleur du techwear. Imbattable.' },
+        { author: 'Errolson', rating: 5, comment: 'Ein Meisterwerk der technischen Bekleidung.' },
+        { author: 'Rei', rating: 4, comment: 'Sehr komplexes Design, man muss den Stil mögen.' },
+        { author: 'Yohji', rating: 5, comment: 'Form und Funktion in perfekter Harmonie.' }
     ],
   },
   {
@@ -1034,6 +1255,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Brunello', rating: 5, comment: 'Weichheit ist eine Form von Seele. Dieser Cardigan hat viel Seele.' },
         { author: 'Leonardo', rating: 5, comment: 'Confort et élégance, la définition du luxe italien.' },
+        { author: 'Jeff', rating: 5, comment: 'Der Inbegriff von "Quiet Luxury".' },
+        { author: 'Ryan', rating: 5, comment: 'So weich, man will ihn nie wieder ausziehen.' },
+        { author: 'Patrick', rating: 4, comment: 'Wunderschön, aber der Preis ist wirklich nur für Milliardäre.' }
     ],
   },
   {
@@ -1049,6 +1273,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Ian', rating: 5, comment: 'Endlich! Der gleiche Luxus und die gleiche Qualität wie die Damenmäntel.' },
         { author: 'Luigi', rating: 5, comment: 'Un manteau pour toute une vie. La coupe est sublime.' },
+        { author: 'Nicola', rating: 5, comment: 'Ein zeitloser Klassiker. Die Wolle ist von außergewöhnlicher Qualität.' },
+        { author: 'Gigi', rating: 5, comment: 'Macht eine unglaubliche Silhouette.' },
+        { author: 'Achille', rating: 4, comment: 'Sehr elegant, aber auch sehr schwer.' }
     ],
   },
   // Women's Clothing (from new list)
@@ -1065,6 +1292,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Donatella', rating: 5, comment: 'Purer Luxus, pure Versace. Mehr ist mehr!' },
         { author: 'Gigi', rating: 5, comment: 'Incroyable sur la peau, l\'imprimé est magnifique.' },
+        { author: 'Jennifer', rating: 5, comment: 'Ein echter Hingucker. Man fühlt sich wie eine Königin.' },
+        { author: 'Naomi', rating: 5, comment: 'Zeitlos und doch so modern. Versace eben.' },
+        { author: 'Cardi', rating: 5, comment: 'Money!' }
     ],
   },
   {
@@ -1080,6 +1310,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Francesco', rating: 5, comment: 'Lässiger Luxus vom Feinsten.' },
         { author: 'Dua', rating: 4, comment: 'Très confortable, mais la coupe est extrêmement oversize.' },
+        { author: 'Kylie', rating: 5, comment: 'So bequem für lange Flüge. Und trotzdem stylisch.' },
+        { author: 'Pharrell', rating: 5, comment: 'Der Vibe ist unübertroffen.' },
+        { author: 'Teyana', rating: 4, comment: 'Cool, aber der Print ist sehr auffällig.' }
     ],
   },
   {
@@ -1095,6 +1328,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Kate', rating: 5, comment: 'Ein britischer Klassiker. Perfekt für das Landleben.' },
         { author: 'Helen', rating: 5, comment: 'Chaud, pratique et élégant. Que demander de plus ?' },
+        { author: 'Elizabeth', rating: 5, comment: 'Eine Jacke für jedes Wetter. Unverwüstlich.' },
+        { author: 'Alexa', rating: 5, comment: 'Perfekt für Festivals. Hält warm und sieht cool aus.' },
+        { author: 'Sienna', rating: 4, comment: 'Gute Jacke, aber die Passform ist etwas kastig.' }
     ],
   },
   {
@@ -1110,6 +1346,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Pauline', rating: 5, comment: 'Klassiker mit Twist. Die versteckten Farben sind eine Freude.' },
         { author: 'Emma', rating: 4, comment: 'Très beau pull, mais il gratte un peu.' },
+        { author: 'Keira', rating: 5, comment: 'Ein gemütlicher und fröhlicher Pullover.' },
+        { author: 'Jodie', rating: 5, comment: 'Die Qualität ist hervorragend. Ein Stück für die Ewigkeit.' },
+        { author: 'Florence', rating: 4, comment: 'Ich liebe die Farben, aber er fällt etwas klein aus.' }
     ],
   },
   {
@@ -1125,6 +1364,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Clare', rating: 5, comment: 'Einfachheit ist die ultimative Raffinesse.' },
         { author: 'Julianne', rating: 5, comment: 'La coupe est parfaite. Un basique de luxe.' },
+        { author: 'Audrey', rating: 5, comment: 'Das T-Shirt, das Audrey Hepburn heute tragen würde.' },
+        { author: 'Meghan', rating: 5, comment: 'Schlicht, elegant, perfekt.' },
+        { author: 'Gal', rating: 4, comment: 'Gute Qualität, aber es ist am Ende des Tages ein sehr teures T-Shirt.' }
     ],
   },
   {
@@ -1140,6 +1382,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Rihanna', rating: 5, comment: 'Wenn Sport auf Luxus trifft. Ikonisch.' },
         { author: 'Beyoncé', rating: 5, comment: 'Confortable et tellement chic. J\'adore.' },
+        { author: 'Madonna', rating: 5, comment: 'Eine Kollaboration, die Geschichte geschrieben hat.' },
+        { author: 'Spike', rating: 5, comment: 'Genial.' },
+        { author: 'Tyler', rating: 4, comment: 'Sehr auffällig. Man muss es tragen können.' }
     ],
   },
   {
@@ -1155,6 +1400,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Bella', rating: 5, comment: 'Perfekt für Wanderungen in L.A. Funktional und stylisch.' },
         { author: 'Travis', rating: 5, comment: 'ACG ist immer eine gute Wahl.' },
+        { author: 'Drake', rating: 4, comment: 'Hält dich trocken, egal was kommt.' },
+        { author: 'Gigi', rating: 5, comment: 'Ich liebe die Farben und die Passform.' },
+        { author: 'Frank', rating: 5, comment: 'Funktionalität ist die neue Mode.' }
     ],
   },
   {
@@ -1170,6 +1418,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Miuccia', rating: 5, comment: 'Funktionalität ist nicht das Gegenteil von Schönheit.' },
         { author: 'Frank', rating: 5, comment: 'L\'uniforme moderne. Parfait.' },
+        { author: 'Raf', rating: 5, comment: 'Subtil und doch so wiedererkennbar. Prada in seiner reinsten Form.' },
+        { author: 'Hunter', rating: 5, comment: 'Ein vielseitiges Stück, das man auf viele Arten stylen kann.' },
+        { author: 'Emma', rating: 4, comment: 'Sehr cool, aber auch sehr teuer für eine Weste.' }
     ],
   },
   {
@@ -1185,6 +1436,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Hailey', rating: 5, comment: 'Die perfekte Jeansjacke. Der Denim ist unglaublich.' },
         { author: 'Kendall', rating: 5, comment: 'Un classique amélioré. J\'adore.' },
+        { author: 'Gigi', rating: 5, comment: 'Der Schnitt ist perfekt. Nicht zu eng, nicht zu locker.' },
+        { author: 'Kaia', rating: 5, comment: 'Ein Stück, das mit der Zeit nur besser wird.' },
+        { author: 'Jacob', rating: 4, comment: 'Gute Qualität, aber ich bevorzuge den klassischen, günstigeren Levi\'s-Stoff.' }
     ],
   },
   {
@@ -1200,6 +1454,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Kim', rating: 5, comment: 'Die Schneiderkunst ist außergewöhnlich. Perfekte Passform.' },
         { author: 'Robert', rating: 5, comment: 'Une élégance discrète mais puissante.' },
+        { author: 'David', rating: 5, comment: 'Der Stoff fällt wunderschön. Sehr elegant.' },
+        { author: 'Brooklyn', rating: 5, comment: 'Ein zeitloses Stück. Perfekt für formelle Anlässe.' },
+        { author: 'Jimin', rating: 5, comment: 'Sehr bequem und stilvoll.' }
     ],
   },
 ];

@@ -390,6 +390,61 @@
       "id": "gilet-sans-manches-prada",
       "imageUrl": "/images/products/gilet-sans-manches-prada.jpg",
       "imageHint": "sleeveless vest"
+    },
+    {
+      "id": "bottines-chelsea-cuir-citadin",
+      "imageUrl": "/images/products/bottines-chelsea-cuir-citadin.jpg",
+      "imageHint": "leather boots"
+    },
+    {
+      "id": "bottines-en-cuir-suede-talon-carre-paris",
+      "imageUrl": "/images/products/bottines-en-cuir-suede-talon-carre-paris.jpg",
+      "imageHint": "suede boots"
+    },
+    {
+      "id": "brogues-perforees-full-brogue-tradition",
+      "imageUrl": "/images/products/brogues-perforees-full-brogue-tradition.jpg",
+      "imageHint": "brogue shoes"
+    },
+    {
+      "id": "derby-chunky-platform-street-luxe",
+      "imageUrl": "/images/products/derby-chunky-platform-street-luxe.jpg",
+      "imageHint": "platform shoes"
+    },
+    {
+      "id": "derby-cuir-graine-elite",
+      "imageUrl": "/images/products/derby-cuir-graine-elite.jpg",
+      "imageHint": "leather shoes"
+    },
+    {
+      "id": "escarpins-cuir-verni-talon-9-cm-eclipse",
+      "imageUrl": "/images/products/escarpins-cuir-verni-talon-9-cm-eclipse.jpg",
+      "imageHint": "heels shoes"
+    },
+    {
+      "id": "mocassin-tasseled-suede-club",
+      "imageUrl": "/images/products/mocassin-tasseled-suede-club.jpg",
+      "imageHint": "loafers suede"
+    },
+    {
+      "id": "mules-satin-talon-sculpte-diva",
+      "imageUrl": "/images/products/mules-satin-talon-sculpte-diva.jpg",
+      "imageHint": "satin mules"
+    },
+    {
+      "id": "richelieu-cousu-main-cuir-patine-souverain",
+      "imageUrl": "/images/products/richelieu-cousu-main-cuir-patine-souverain.jpg",
+      "imageHint": "oxford shoes"
+    },
+    {
+      "id": "sandales-a-bride-cheville-en-cuir-serenite",
+      "imageUrl": "/images/products/sandales-a-bride-cheville-en-cuir-serenite.jpg",
+      "imageHint": "leather sandals"
+    },
+    {
+      "id": "sneakers-luxe-cuir-nubuck-runway",
+      "imageUrl": "/images/products/sneakers-luxe-cuir-nubuck-runway.jpg",
+      "imageHint": "luxury sneakers"
     }
   ]
 }
