@@ -14,8 +14,9 @@ import { Input } from '@/components/ui/input';
 import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton';
 import { TranslatedText } from '@/components/TranslatedText';
 import { Separator } from '@/components/ui/separator';
-import { useAuth } from '@/firebase';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { useAuth, useFirestore } from '@/firebase';
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, UserCredential } from 'firebase/auth';
+import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -36,6 +37,7 @@ type LoginFormInputs = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const auth = useAuth();
+  const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -47,9 +49,28 @@ export default function LoginPage() {
     },
   });
 
+  const handleUserCreation = async (userCredential: UserCredential) => {
+    const user = userCredential.user;
+    if (!user || !firestore) return;
+
+    const userRef = doc(firestore, 'users', user.uid);
+    const userDoc = await getDoc(userRef);
+
+    if (!userDoc.exists()) {
+      await setDoc(userRef, {
+        id: user.uid,
+        email: user.email,
+        firstName: user.displayName?.split(' ')[0] || '',
+        lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
+        registrationDate: serverTimestamp(),
+      });
+    }
+  };
+
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+      await handleUserCreation(userCredential);
       toast({
         title: 'Connexion réussie',
         description: 'Bienvenue à nouveau !',
@@ -69,9 +90,11 @@ export default function LoginPage() {
   };
 
   const handleGoogleSignIn = async () => {
+    if (!auth) return;
     try {
         const provider = new GoogleAuthProvider();
-        await signInWithPopup(auth, provider);
+        const userCredential = await signInWithPopup(auth, provider);
+        await handleUserCreation(userCredential);
         toast({
             title: 'Connexion réussie',
             description: 'Bienvenue !',
