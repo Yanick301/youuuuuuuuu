@@ -51,8 +51,8 @@ export function Footer() {
       title_en: 'Social Media',
       isSocial: true,
       links: [
-        { name: 'Instagram', href: '/', icon: InstagramIcon },
-        { name: 'Snapchat', href: '/', icon: SnapchatIcon },
+        { name: 'Instagram', href: 'https://www.instagram.com/ezcentials_?igsh=MWQ2aTR60WgyYnpvag%3D%3D&utm_source=qr', icon: InstagramIcon },
+        { name: 'Snapchat', href: 'https://snapchat.com/t/qez0Z1z0', icon: SnapchatIcon },
       ],
     },
   ];
