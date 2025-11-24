@@ -166,7 +166,7 @@ export default function CheckoutPage() {
     }
     
     try {
-        const ordersCollectionRef = collection(firestore, `userProfiles/${user.uid}/orders`);
+        const ordersCollectionRef = collection(firestore, `orders`);
         
         await addDoc(ordersCollectionRef, {
             userId: user.uid,

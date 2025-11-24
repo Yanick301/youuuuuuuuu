@@ -32,6 +32,9 @@ import {
   query,
   orderBy,
   collectionGroup,
+  addDoc,
+  serverTimestamp,
+  where,
 } from 'firebase/firestore';
 import { useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -80,14 +83,18 @@ export default function OrdersPage() {
 
   const ordersQuery = useMemoFirebase(() => {
     if (!user || !firestore) return null;
-    // For admins, we will need a different approach later on.
-    // For now, let's keep it simple and just show the user's own orders.
-    // This will prevent permission errors.
+    if (isAdmin) {
+      return query(
+        collection(firestore, `orders`),
+        orderBy('orderDate', 'desc')
+      );
+    }
     return query(
-      collection(firestore, `userProfiles/${user.uid}/orders`),
+      collection(firestore, `orders`),
+      where('userId', '==', user.uid),
       orderBy('orderDate', 'desc')
     );
-  }, [firestore, user]);
+  }, [firestore, user, isAdmin]);
 
   const { data: orders, isLoading } = useCollection(ordersQuery);
 
@@ -116,13 +123,13 @@ export default function OrdersPage() {
       const orderToUpdate = orders?.find(o => o.id === selectedOrderId);
       if (!orderToUpdate) throw new Error("Order not found");
       
-      const filePath = `receipts/${orderToUpdate.userId}/${selectedOrderId}/${file.name}`;
+      const filePath = `receipts/${user.uid}/${selectedOrderId}/${file.name}`;
       const fileRef = storageRef(storage, filePath);
 
       const uploadResult = await uploadBytes(fileRef, file);
       const downloadURL = await getDownloadURL(uploadResult.ref);
       
-      const orderDocRef = doc(firestore, `userProfiles/${orderToUpdate.userId}/orders`, selectedOrderId);
+      const orderDocRef = doc(firestore, `orders`, selectedOrderId);
       await updateDoc(orderDocRef, {
         receiptImageURL: downloadURL,
         paymentStatus: 'processing',
@@ -174,7 +181,7 @@ export default function OrdersPage() {
       const orderToValidate = orders.find(o => o.id === orderId);
       if (!orderToValidate) throw new Error("Order not found");
 
-      const orderRef = doc(firestore, `userProfiles/${orderToValidate.userId}/orders`, orderId);
+      const orderRef = doc(firestore, `orders`, orderId);
       await updateDoc(orderRef, { paymentStatus: 'completed' });
       toast({
         title:
