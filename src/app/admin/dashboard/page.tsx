@@ -112,7 +112,7 @@ export default function AdminDashboardPage() {
                   <h4 className="font-semibold">Articles</h4>
                   <ul className="list-disc pl-5 text-sm text-muted-foreground">
                     {order.items?.map((item: any) => (
-                      <li key={item.productId}>{item.quantity} x <TranslatedText fr={item.name_fr} en={item.name_en}>{item.name}</TranslatedText></li>
+                      <li key={item.productId}><TranslatedText fr={`${item.quantity} x ${item.name_fr}`} en={`${item.quantity} x ${item.name_en}`}>{`${item.quantity} x ${item.name}`}</TranslatedText></li>
                     ))}
                   </ul>
                 </div>
