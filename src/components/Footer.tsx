@@ -19,7 +19,7 @@ export function Footer() {
       title_fr: 'Aide',
       title_en: 'Help',
       links: [
-        { name: 'Kontaktieren Sie uns', name_fr: 'Contactez-nous', name_en: 'Contact Us', href: '/account' },
+        { name: 'Kontaktieren Sie uns', name_fr: 'Contactez-nous', name_en: 'Contact Us', href: 'mailto:contact-support@ezcentials.com' },
         { name: 'FAQs', name_fr: 'FAQs', name_en: 'FAQs', href: '/products/all' },
         { name: 'Produktpflege', name_fr: 'Entretien des produits', name_en: 'Product Care', href: '/products/all' },
         { name: 'Rechtliche Hinweise', name_fr: 'Mentions légales', name_en: 'Legal Notice', href: '/account' },
