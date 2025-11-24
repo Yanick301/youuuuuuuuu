@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -38,7 +39,7 @@ export default function OrdersPage() {
     return query(collection(firestore, `users/${user.uid}/orders`));
   }, [firestore, user]);
 
-  const { data: orders, isLoading } = useCollection(ordersQuery as any);
+  const { data: orders, isLoading } = useCollection(ordersQuery);
 
   const handleUploadClick = (orderId: string) => {
     setSelectedOrderId(orderId);
@@ -206,7 +207,7 @@ export default function OrdersPage() {
                         ) : (
                           <Upload className="mr-2 h-4 w-4" />
                        )}
-                      <TranslatedText fr="Téléverser le reçu">Beleg hochladen</TranslatedText>
+                      <TranslatedText fr="Valider mon paiement">Zahlung bestätigen</TranslatedText>
                     </Button>
                   </div>
                 )}
@@ -246,5 +247,3 @@ export default function OrdersPage() {
     </div>
   );
 }
-
-    
