@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { TranslatedText } from '@/components/TranslatedText';
@@ -11,13 +12,23 @@ export default function ThankYouPage() {
         <TranslatedText fr="Merci pour votre commande !" en="Thank you for your order!">Vielen Dank für Ihre Bestellung!</TranslatedText>
       </h1>
       <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-        <TranslatedText fr="Votre commande a été passée avec succès. Un e-mail de confirmation avec les détails de la commande vous a été envoyé. Nous vous informerons lorsque vos articles auront été expédiés." en="Your order has been successfully placed. A confirmation email with the order details has been sent to you. We will notify you when your items have been shipped.">
-          Ihre Bestellung wurde erfolgreich aufgegeben. Eine Bestätigungs-E-Mail mit den Bestelldetails wurde an Sie gesendet. Wir benachrichtigen Sie, sobald Ihre Artikel versendet wurden.
+        <TranslatedText 
+          fr="Votre commande a été passée avec succès. Veuillez maintenant vous rendre dans votre espace client pour téléverser votre preuve de paiement et finaliser la commande." 
+          en="Your order has been successfully placed. Please now go to your account area to upload your proof of payment and finalize the order."
+        >
+          Ihre Bestellung wurde erfolgreich aufgegeben. Bitte gehen Sie nun in Ihren Kundenbereich, um Ihren Zahlungsnachweis hochzuladen und die Bestellung abzuschließen.
         </TranslatedText>
       </p>
-      <Button asChild className="mt-8" size="lg">
-        <Link href="/products/all"><TranslatedText fr="Continuer les achats" en="Continue Shopping">Weiter einkaufen</TranslatedText></Link>
-      </Button>
+      <div className="mt-8 flex gap-4">
+        <Button asChild size="lg">
+          <Link href="/account/orders"><TranslatedText fr="Valider mon paiement" en="Validate my payment">Zahlung bestätigen</TranslatedText></Link>
+        </Button>
+        <Button asChild size="lg" variant="outline">
+          <Link href="/products/all"><TranslatedText fr="Continuer les achats" en="Continue Shopping">Weiter einkaufen</TranslatedText></Link>
+        </Button>
+      </div>
     </div>
   );
 }
+
+    

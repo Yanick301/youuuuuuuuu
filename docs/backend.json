@@ -133,7 +133,7 @@
         },
         "paymentStatus": {
           "type": "string",
-          "description": "Status of the payment (e.g., pending, completed, failed)."
+          "description": "Status of the payment (e.g., pending, processing, completed)."
         },
         "receiptImageURL": {
           "type": "string",
@@ -295,3 +295,5 @@
     "reasoning": "This Firestore structure prioritizes security and scalability by adhering to the principles of Authorization Independence, Structural Segregation, and Access Modeling. It avoids `get()` calls in security rules by denormalizing authorization data and ensures secure `list` operations. The structure includes paths for users, products, reviews, cart items, and orders, with appropriate ownership and membership models. Importantly, the `Order` collection includes a `receiptImageURL`, allowing users to upload proof of payment as requested. This design facilitates simple, robust, and easily debuggable security rules.\n\n**Authorization Independence:** User ownership is established using path-based ownership (e.g., `/users/{userId}/orders/{orderId}`). This structure eliminates the need for `get()` calls to verify ownership. \n\n**Structural Segregation:** Each collection serves a distinct purpose and data access pattern, simplifying security rules. For instance, products and users have separate collections with distinct access requirements.\n\n**QAPs (Rules are not Filters):** The data structure uses path-based ownership for private user data. This enables secure `list` operations, as rules can easily filter based on the requesting user's ID without reading the content of the documents.\n\n**Receipt Image Storage:** The `Order` entity includes a `receiptImageURL` field to store the uploaded image URL, fulfilling the user's request. The `paymentStatus` field allows tracking the payment process."
   }
 }
+
+    

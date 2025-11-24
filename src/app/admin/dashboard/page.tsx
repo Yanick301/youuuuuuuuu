@@ -51,7 +51,7 @@ export default function AdminDashboardPage() {
       await updateDoc(orderRef, { paymentStatus: 'completed' });
       toast({
         title: 'Commande validée',
-        description: `La commande ${orderId} a été marquée comme complétée. Le client sera notifié.`,
+        description: `La commande ${orderId} a été marquée comme complétée.`,
       });
     } catch (error) {
       console.error('Error validating order:', error);
@@ -159,3 +159,5 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+
+    

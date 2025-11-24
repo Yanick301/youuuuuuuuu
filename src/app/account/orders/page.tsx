@@ -68,7 +68,7 @@ export default function OrdersPage() {
 
       toast({
         title: language === 'fr' ? 'Reçu téléversé' : language === 'en' ? 'Receipt Uploaded' : 'Beleg hochgeladen',
-        description: language === 'fr' ? 'Votre preuve de paiement a été soumise.' : language === 'en' ? 'Your proof of payment has been submitted.' : 'Ihr Zahlungsnachweis wurde übermittelt.',
+        description: language === 'fr' ? 'Votre preuve de paiement a été soumise pour validation.' : language === 'en' ? 'Your proof of payment has been submitted for validation.' : 'Ihr Zahlungsnachweis wurde zur Validierung übermittelt.',
       });
 
     } catch (error) {
@@ -225,7 +225,7 @@ export default function OrdersPage() {
                         ) : (
                           <Upload className="mr-2 h-4 w-4" />
                        )}
-                      <TranslatedText fr="Valider mon paiement" en="Validate my payment">Zahlung bestätigen</TranslatedText>
+                      <TranslatedText fr="Téléverser le reçu" en="Upload Receipt">Beleg hochladen</TranslatedText>
                     </Button>
                   </div>
                 )}
@@ -267,3 +267,5 @@ export default function OrdersPage() {
     </div>
   );
 }
+
+    

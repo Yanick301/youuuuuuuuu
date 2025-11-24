@@ -175,7 +175,11 @@ export default function CheckoutPage() {
         await addDoc(ordersCollection, orderData);
 
         clearCart();
-        router.push('/checkout/thank-you');
+        toast({
+          title: language === 'fr' ? 'Commande passée' : language === 'en' ? 'Order Placed' : 'Bestellung aufgegeben',
+          description: language === 'fr' ? 'Veuillez maintenant valider votre paiement.' : language === 'en' ? 'Please validate your payment now.' : 'Bitte bestätigen Sie jetzt Ihre Zahlung.',
+        });
+        router.push('/account/orders');
 
     } catch (error) {
         console.error("Error placing order: ", error);
@@ -197,7 +201,7 @@ export default function CheckoutPage() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handlePlaceOrder)} className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          {/* Forms */}
+          {/* Left Column: Shipping and Payment */}
           <div className="space-y-8">
             <Card>
               <CardHeader>
@@ -296,39 +300,9 @@ export default function CheckoutPage() {
                 </div>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle><TranslatedText fr="Instructions de Paiement" en="Payment Instructions">Zahlungsanweisungen</TranslatedText></CardTitle>
-                <CardDescription>
-                    <div className="flex items-center gap-2 text-sm">
-                        <Banknote className="h-4 w-4" />
-                        <TranslatedText fr="Veuillez effectuer un virement bancaire pour finaliser votre commande." en="Please make a bank transfer to finalize your order.">Bitte tätigen Sie eine Banküberweisung, um Ihre Bestellung abzuschließen.</TranslatedText>
-                    </div>
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 text-sm">
-                 <div>
-                    <p className="font-semibold text-muted-foreground"><TranslatedText fr="Banque" en="Bank">BANQUE</TranslatedText></p>
-                    <p>BBVA</p>
-                 </div>
-                 <div>
-                    <p className="font-semibold text-muted-foreground">IBAN</p>
-                    <p>DE78500319000014630686</p>
-                 </div>
-                 <div>
-                    <p className="font-semibold text-muted-foreground">BIC / SWIFT</p>
-                    <p>BBVADEFFXXX</p>
-                 </div>
-                 <div>
-                    <p className="font-semibold text-muted-foreground"><TranslatedText fr="Référence de la commande" en="Order Reference">Bestellreferenz</TranslatedText></p>
-                    <p>Gifts</p>
-                 </div>
-              </CardContent>
-            </Card>
           </div>
 
-          {/* Order Summary */}
+          {/* Right Column: Order Summary and Payment Instructions */}
           <div className="space-y-8">
             <Card>
               <CardHeader>
@@ -351,7 +325,8 @@ export default function CheckoutPage() {
                           <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-muted text-sm font-medium">{item.quantity}</span>
                         </div>
                         <div className="ml-4 flex-1">
-                          <p className="font-medium"><TranslatedText fr={item.product.name_fr} en={item.product.name_en}>{item.product.name}</TranslatedText></p>                          <p className="text-sm text-muted-foreground">
+                          <p className="font-medium"><TranslatedText fr={item.product.name_fr} en={item.product.name_en}>{item.product.name}</TranslatedText></p>
+                          <p className="text-sm text-muted-foreground">
                               €{item.product.price.toFixed(2)}
                           </p>
                         </div>
@@ -382,6 +357,41 @@ export default function CheckoutPage() {
                   </div>
               </CardContent>
             </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle><TranslatedText fr="Instructions de Paiement" en="Payment Instructions">Zahlungsanweisungen</TranslatedText></CardTitle>
+                <CardDescription>
+                    <div className="flex items-center gap-2 text-sm">
+                        <Banknote className="h-4 w-4" />
+                        <TranslatedText fr="Veuillez effectuer un virement bancaire pour finaliser votre commande." en="Please make a bank transfer to finalize your order.">Bitte tätigen Sie eine Banküberweisung, um Ihre Bestellung abzuschließen.</TranslatedText>
+                    </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm">
+                 <div>
+                    <p className="font-semibold text-muted-foreground"><TranslatedText fr="Titulaire du compte" en="Account Holder">Kontoinhaber</TranslatedText></p>
+                    <p>Sabine Menke</p>
+                 </div>
+                 <div>
+                    <p className="font-semibold text-muted-foreground"><TranslatedText fr="Banque" en="Bank">BANQUE</TranslatedText></p>
+                    <p>BBVA</p>
+                 </div>
+                 <div>
+                    <p className="font-semibold text-muted-foreground">IBAN</p>
+                    <p>DE78500319000014630686</p>
+                 </div>
+                 <div>
+                    <p className="font-semibold text-muted-foreground">BIC / SWIFT</p>
+                    <p>BBVADEFFXXX</p>
+                 </div>
+                 <div>
+                    <p className="font-semibold text-muted-foreground"><TranslatedText fr="Référence de la commande" en="Order Reference">Bestellreferenz</TranslatedText></p>
+                    <p>Gifts</p>
+                 </div>
+              </CardContent>
+            </Card>
+
             <Button size="lg" className="w-full" type="submit" disabled={isSubmitting}>
               {isSubmitting ? (
                   <>
@@ -398,3 +408,5 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
+    
