@@ -28,7 +28,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { useFirestore, useUser } from '@/firebase';
+import { useFirestore, useUser, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { addDoc, collection, serverTimestamp, writeBatch, doc } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/context/LanguageContext';
@@ -157,52 +157,55 @@ export default function CheckoutPageClient() {
         return;
     }
     
-    try {
-      const orderData = {
-          userId: user.uid,
-          shippingInfo: data,
-          items: cart.map(item => ({
-              productId: item.product.id,
-              name: item.product.name,
-              name_fr: item.product.name_fr,
-              name_en: item.product.name_en,
-              price: item.product.price,
-              quantity: item.quantity,
-          })),
-          subtotal,
-          shipping,
-          taxes,
-          totalAmount: total,
-          orderDate: serverTimestamp(),
-          paymentStatus: 'pending',
-          receiptImageURL: '',
-      };
+    const orderData = {
+        userId: user.uid,
+        shippingInfo: data,
+        items: cart.map(item => ({
+            productId: item.product.id,
+            name: item.product.name,
+            name_fr: item.product.name_fr,
+            name_en: item.product.name_en,
+            price: item.product.price,
+            quantity: item.quantity,
+        })),
+        subtotal,
+        shipping,
+        taxes,
+        totalAmount: total,
+        orderDate: serverTimestamp(),
+        paymentStatus: 'pending',
+        receiptImageURL: '',
+    };
 
-      const batch = writeBatch(firestore);
+    const batch = writeBatch(firestore);
 
-      // 1. Create order in the global collection
-      const globalOrderRef = doc(collection(firestore, 'orders'));
-      batch.set(globalOrderRef, orderData);
+    // 1. Create order in the global collection
+    const globalOrderRef = doc(collection(firestore, 'orders'));
+    batch.set(globalOrderRef, orderData);
 
-      // 2. Create order in the user's subcollection with the SAME ID
-      const userOrderRef = doc(firestore, `userProfiles/${user.uid}/orders`, globalOrderRef.id);
-      batch.set(userOrderRef, orderData);
-      
-      await batch.commit();
+    // 2. Create order in the user's subcollection with the SAME ID
+    const userOrderRef = doc(firestore, `userProfiles/${user.uid}/orders`, globalOrderRef.id);
+    batch.set(userOrderRef, orderData);
+    
+    batch.commit().then(() => {
+        clearCart();
+        router.push('/checkout/thank-you');
+    }).catch((serverError) => {
+      // This is a simplified context. For batch writes, you might need to iterate
+      // through the operations to create a more detailed error.
+      const permissionError = new FirestorePermissionError({
+        path: `userProfiles/${user.uid}/orders/${globalOrderRef.id}`, // Example path
+        operation: 'create',
+        requestResourceData: orderData,
+      });
 
-      clearCart();
-      router.push('/checkout/thank-you');
+      errorEmitter.emit('permission-error', permissionError);
 
-    } catch (error) {
-        console.error("Error creating order: ", error);
-        toast({
-            variant: "destructive",
-            title: language === 'fr' ? "Erreur lors de la création de la commande" : language === 'en' ? "Error Creating Order" : "Fehler bei der Bestellerstellung",
-            description: language === 'fr' ? "Une erreur est survenue. Veuillez réessayer." : language === 'en' ? "An error occurred. Please try again." : "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
-        });
-    } finally {
-        setIsSubmitting(false);
-    }
+      // Re-enable the button so the user can try again
+      setIsSubmitting(false);
+
+    });
+
   };
 
   return (
