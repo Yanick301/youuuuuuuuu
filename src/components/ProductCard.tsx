@@ -15,7 +15,7 @@ type ProductCardProps = {
 
 export function ProductCard({ product }: ProductCardProps) {
   const productImage = placeholderImages.find(p => p.id === product.images[0]);
-  const averageRating = product.reviews.length > 0 ? product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length : 0;
+  const averageRating = product.reviews && product.reviews.length > 0 ? product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length : 0;
 
 
   return (
@@ -46,7 +46,7 @@ export function ProductCard({ product }: ProductCardProps) {
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className={`h-4 w-4 ${i < Math.floor(averageRating) ? 'text-yellow-500 fill-yellow-500' : 'text-muted'}`} />
               ))}
-              <span className="text-xs text-muted-foreground ml-1">({product.reviews.length})</span>
+              <span className="text-xs text-muted-foreground ml-1">({product.reviews?.length || 0})</span>
             </div>
             <div className="mt-4 flex justify-between items-center">
               <p className="text-lg font-medium text-foreground">${product.price.toFixed(2)}</p>

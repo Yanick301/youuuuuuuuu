@@ -26,7 +26,7 @@ export default function HomePage() {
     return query(collection(firestore, 'products'));
   }, [firestore]);
 
-  const { data: products, isLoading } = useCollection(productsQuery as any);
+  const { data: products, isLoading } = useCollection(productsQuery);
   
   const featuredProducts = useMemo(() => {
     if (!products) return [];

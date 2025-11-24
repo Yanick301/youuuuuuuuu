@@ -20,7 +20,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection, query, where, limit } from 'firebase/firestore';
 import type { Product } from '@/lib/types';
-import { getProductBySlug, getProductsByCategory, products as allProducts } from '@/lib/data';
+import { getProductBySlug, getProductsByCategory } from '@/lib/data';
 
 
 const { placeholderImages } = placeholderImagesData;
@@ -33,32 +33,39 @@ type ProductPageProps = {
 
 export default function ProductPage({ params }: ProductPageProps) {
   const { slug } = params;
-  const [product, setProduct] = useState<Product | null | undefined>(undefined);
-  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
-  const [isProductLoading, setIsProductLoading] = useState(true);
+  const firestore = useFirestore();
 
+  const productQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return query(collection(firestore, 'products'), where('slug', '==', slug), limit(1));
+  }, [firestore, slug]);
+
+  const { data: productData, isLoading: isProductLoading } = useCollection<Product>(productQuery);
+  const product = productData?.[0];
+
+  const relatedProductsQuery = useMemoFirebase(() => {
+    if (!firestore || !product) return null;
+    return query(
+      collection(firestore, 'products'),
+      where('category', '==', product.category),
+      where('id', '!=', product.id),
+      limit(4)
+    );
+  }, [firestore, product]);
+
+  const { data: relatedProducts } = useCollection<Product>(relatedProductsQuery);
+  
   const { toast } = useToast();
   const { language } = useLanguage();
   const [newReviewRating, setNewReviewRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [newReviewComment, setNewReviewComment] = useState('');
 
-  useEffect(() => {
-    setIsProductLoading(true);
-    const foundProduct = getProductBySlug(allProducts, slug);
-    setProduct(foundProduct);
-    if (foundProduct) {
-      const related = getProductsByCategory(allProducts, foundProduct.category, 4, foundProduct.id);
-      setRelatedProducts(related);
-    }
-    setIsProductLoading(false);
-  }, [slug]);
-
   if (isProductLoading) {
     return <div className="container mx-auto px-4 py-12 text-center">Chargement du produit...</div>;
   }
   
-  if (!product) {
+  if (!product && !isProductLoading) {
     notFound();
   }
   

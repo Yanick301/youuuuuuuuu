@@ -19,7 +19,7 @@ function SearchPageClient() {
     return query(collection(firestore, 'products'));
   }, [firestore]);
 
-  const { data: products, isLoading } = useCollection<Product>(productsQuery as any);
+  const { data: products, isLoading } = useCollection<Product>(productsQuery);
 
   useEffect(() => {
     if (queryParam && products) {

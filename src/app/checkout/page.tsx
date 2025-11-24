@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useCart } from '@/context/CartContext';
@@ -50,7 +49,7 @@ const shippingSchemaFR = z.object({
   address: z.string().min(1, { message: "L'adresse est requise." }),
   city: z.string().min(1, { message: 'La ville est requise.' }),
   zip: z.string().min(1, { message: 'Le code postal est requis.' }),
-  country: zstring().min(1, { message: 'Le pays est requis.' }),
+  country: z.string().min(1, { message: 'Le pays est requis.' }),
 });
 
 type ShippingFormInputs = z.infer<typeof shippingSchemaDE>;
@@ -375,5 +374,3 @@ export default function CheckoutPage() {
     </div>
   );
 }
-
-    
