@@ -35,10 +35,10 @@ export default function ThankYouPage() {
       </h1>
       <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
         <TranslatedText 
-          fr="Votre commande a été passée avec succès. Veuillez maintenant vous rendre dans votre espace client pour téléverser votre preuve de paiement et finaliser la commande." 
-          en="Your order has been successfully placed. Please now go to your account area to upload your proof of payment and finalize the order."
+          fr="Votre commande a été créée. Veuillez maintenant vous rendre dans votre espace client pour téléverser votre preuve de paiement afin de la finaliser." 
+          en="Your order has been created. Please now go to your account area to upload your proof of payment to finalize it."
         >
-          Ihre Bestellung wurde erfolgreich aufgegeben. Bitte gehen Sie nun in Ihren Kundenbereich, um Ihren Zahlungsnachweis hochzuladen und die Bestellung abzuschließen.
+          Ihre Bestellung wurde erstellt. Bitte gehen Sie nun in Ihren Kundenbereich, um Ihren Zahlungsnachweis hochzuladen und die Bestellung abzuschließen.
         </TranslatedText>
       </p>
       <div className="mt-8 flex gap-4">

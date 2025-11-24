@@ -51,7 +51,7 @@ export default function AdminDashboardPage() {
       await updateDoc(orderRef, { paymentStatus: 'completed' });
       toast({
         title: 'Commande validée',
-        description: `La commande ${orderId} a été marquée comme complétée.`,
+        description: `Le paiement pour la commande ${orderId} a été validé.`,
       });
     } catch (error) {
       console.error('Error validating order:', error);
@@ -74,9 +74,9 @@ export default function AdminDashboardPage() {
 
   const getStatusText = (status: string) => {
     const texts: { [key: string]: { [key: string]: string } } = {
-        de: { pending: 'Aktion erforderlich', processing: 'In Bearbeitung', completed: 'Abgeschlossen' },
-        fr: { pending: 'Action requise', processing: 'En traitement', completed: 'Terminé' },
-        en: { pending: 'Action Required', processing: 'Processing', completed: 'Completed' },
+        de: { pending: 'Aktion erforderlich', processing: 'In Bearbeitung', completed: 'Zahlung bestätigt' },
+        fr: { pending: 'Action requise', processing: 'En traitement', completed: 'Paiement validé' },
+        en: { pending: 'Action Required', processing: 'Processing', completed: 'Payment validated' },
     };
     return texts[language][status] || status;
   }
@@ -139,7 +139,7 @@ export default function AdminDashboardPage() {
                   {order.paymentStatus === 'processing' && (
                     <Button onClick={() => handleValidateOrder(order.id)}>
                       <ShieldCheck className="mr-2 h-4 w-4" />
-                      Valider la Commande
+                      Valider le Paiement
                     </Button>
                   )}
                    {order.paymentStatus === 'pending' && (
@@ -159,5 +159,3 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-
-    

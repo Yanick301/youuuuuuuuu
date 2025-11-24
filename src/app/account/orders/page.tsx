@@ -67,8 +67,8 @@ export default function OrdersPage() {
       });
 
       toast({
-        title: language === 'fr' ? 'Reçu téléversé' : language === 'en' ? 'Receipt Uploaded' : 'Beleg hochgeladen',
-        description: language === 'fr' ? 'Votre preuve de paiement a été soumise pour validation.' : language === 'en' ? 'Your proof of payment has been submitted for validation.' : 'Ihr Zahlungsnachweis wurde zur Validierung übermittelt.',
+        title: language === 'fr' ? 'Paiement en cours de validation' : language === 'en' ? 'Payment Under Review' : 'Zahlung wird überprüft',
+        description: language === 'fr' ? 'Votre preuve de paiement a été soumise.' : language === 'en' ? 'Your proof of payment has been submitted.' : 'Ihr Zahlungsnachweis wurde übermittelt.',
       });
 
     } catch (error) {
@@ -251,7 +251,7 @@ export default function OrdersPage() {
                    <div className="mt-6 flex flex-col items-center justify-center text-sm font-semibold p-4 bg-green-50 text-green-700 rounded-md">
                       <div className="flex items-center">
                          <CheckCircle className="mr-2 h-5 w-5" />
-                         <p><TranslatedText fr="Commande validée" en="Order Validated">Bestellung bestätigt</TranslatedText></p>
+                         <p><TranslatedText fr="Paiement validé" en="Payment validated">Zahlung bestätigt</TranslatedText></p>
                       </div>
                       {order.receiptImageURL && (
                         <a href={order.receiptImageURL} target="_blank" rel="noopener noreferrer" className="text-xs mt-2 underline">

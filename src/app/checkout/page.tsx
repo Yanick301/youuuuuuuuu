@@ -191,7 +191,7 @@ export default function CheckoutPage() {
 
         clearCart();
         toast({
-          title: language === 'fr' ? 'Commande passée' : language === 'en' ? 'Order Placed' : 'Bestellung aufgegeben',
+          title: language === 'fr' ? 'Commande créée' : language === 'en' ? 'Order Created' : 'Bestellung erstellt',
           description: language === 'fr' ? 'Veuillez maintenant valider votre paiement.' : language === 'en' ? 'Please validate your payment now.' : 'Bitte bestätigen Sie jetzt Ihre Zahlung.',
         });
         router.push('/checkout/thank-you');
