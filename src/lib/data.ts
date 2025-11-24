@@ -793,6 +793,7 @@ export const products: Product[] = [
     images: ['pull-col-roule-cachemire-loro-piana'],
     reviews: [
         { author: 'Leonardo', rating: 5, comment: 'Es ist, als würde man eine Wolke tragen. Der Preis ist hoch, aber die Qualität ist unbeschreiblich.' },
+        { author: 'Filippo', rating: 5, comment: 'Incroyablement doux et luxueux. Cela vaut chaque centime.' },
     ],
   },
   {
@@ -822,6 +823,7 @@ export const products: Product[] = [
     images: ['pantalon-chino-stretch-burberry'],
     reviews: [
       { author: 'Eddie', rating: 5, comment: 'Sehr bequem und trotzdem schick. Passt zu allem.' },
+      { author: 'George', rating: 5, comment: 'Le confort est incroyable, le style est impeccable.' },
     ],
   },
   {
@@ -836,6 +838,7 @@ export const products: Product[] = [
     images: ['jean-coupe-ajustee-diesel'],
     reviews: [
         { author: 'Renzo', rating: 5, comment: 'Diesel-Jeans enttäuschen nie. Perfekter Schnitt.' },
+        { author: 'Marco', rating: 4, comment: 'Bon jean, mais j\'aurais aimé un peu plus d\'élasticité.' },
     ],
   },
   {
@@ -848,7 +851,10 @@ export const products: Product[] = [
     description_fr: 'Un bomber léger en nylon technique, alliant style urbain et la fonctionnalité signature de Moncler.',
     category: 'mens-clothing',
     images: ['bomber-nylon-moncler'],
-    reviews: [],
+    reviews: [
+        { author: 'Luca', rating: 5, comment: 'Léger, élégant et parfait pour la mi-saison.'},
+        { author: 'Remo', rating: 5, comment: 'Moncler Qualität ist unübertroffen. Sehr stylisch.'},
+    ],
   },
   {
     id: 'prod-men-8',
@@ -862,8 +868,9 @@ export const products: Product[] = [
     images: ['blouson-cuir-saint-laurent'],
     reviews: [
         { author: 'Hedi', rating: 5, comment: 'Rock\'n\'Roll in seiner reinsten Form.' },
+        { author: 'Anthony', rating: 5, comment: 'Le cuir est d\'une qualité exceptionnelle. Une veste pour la vie.' },
     ],
-  },
+},
   {
     id: 'prod-men-9',
     name: 'Giorgio Armani Anzugjacke',
@@ -874,7 +881,10 @@ export const products: Product[] = [
     description_fr: 'Une veste de costume déconstruite qui incarne l\'élégance fluide et décontractée qui a fait la renommée de Giorgio Armani.',
     category: 'mens-clothing',
     images: ['veste-costume-giorgio-armani'],
-    reviews: [],
+    reviews: [
+        { author: 'Richard', rating: 5, comment: 'Die Definition von lässiger Eleganz. Unvergleichlicher Komfort.' },
+        { author: 'Christian', rating: 5, comment: 'La coupe est parfaite, si confortable qu\'on oublie qu\'on porte une veste.' },
+    ],
   },
   {
     id: 'prod-men-10',
@@ -886,7 +896,10 @@ export const products: Product[] = [
     description_fr: 'Un costume magistralement taillé dans le plus fin des tissus en laine par Ermenegildo Zegna. La perfection de la coupe et de la matière.',
     category: 'mens-clothing',
     images: ['costume-2-pieces-zegna'],
-    reviews: [],
+    reviews: [
+        { author: 'Alessandro', rating: 5, comment: 'Ein Anzug, der Macht und Raffinesse ausstrahlt.' },
+        { author: 'Gildo', rating: 5, comment: 'Le tissu est d\'une qualité incroyable. On sent le savoir-faire.' },
+    ],
   },
   {
     id: 'prod-men-11',
@@ -898,7 +911,10 @@ export const products: Product[] = [
     description_fr: 'Un sweat à capuche affirmé avec les motifs graphiques emblématiques d\'Off-White. Le streetwear de luxe à son apogée.',
     category: 'mens-clothing',
     images: ['sweat-a-capuche-off-white'],
-    reviews: [],
+    reviews: [
+        { author: 'Virgil', rating: 5, comment: '"LUXURY"' },
+        { author: 'Heron', rating: 4, comment: 'Très stylé, mais le prix est élevé pour un hoodie.' },
+    ],
   },
   {
     id: 'prod-men-12',
@@ -910,7 +926,10 @@ export const products: Product[] = [
     description_fr: 'Le t-shirt culte de la ligne Essentials, avec sa coupe décontractée et son logo discret. Le luxe minimaliste.',
     category: 'mens-clothing',
     images: ['t-shirt-essential-fear-of-god'],
-    reviews: [],
+    reviews: [
+        { author: 'Jerry', rating: 5, comment: 'Die perfekte Oversize-Passform. Der Stoff ist dick und hochwertig.' },
+        { author: 'Justin', rating: 5, comment: 'Un basique de tous les jours, mais en mieux.' },
+    ],
   },
   {
     id: 'prod-men-13',
@@ -922,7 +941,10 @@ export const products: Product[] = [
     description_fr: 'Un pull col rond classique en fine laine mérinos, alliant élégance sportive et confort.',
     category: 'mens-clothing',
     images: ['pull-laine-merinos-lacoste'],
-    reviews: [],
+    reviews: [
+        { author: 'René', rating: 5, comment: 'Klassisch, sportlich, schick. Der perfekte Pullover.' },
+        { author: 'Novak', rating: 4, comment: 'Très confortable, mais un peu dünn für den tiefsten Winter.' },
+    ],
   },
   {
     id: 'prod-men-14',
@@ -934,7 +956,10 @@ export const products: Product[] = [
     description_fr: 'Une chemise à la coupe oversize extrême qui repousse les limites des silhouettes traditionnelles. Une déclaration avant-gardiste.',
     category: 'mens-clothing',
     images: ['chemise-oversize-balenciaga'],
-    reviews: [],
+    reviews: [
+        { author: 'Demna', rating: 5, comment: 'Mehr als ein Hemd, es ist eine Silhouette.' },
+        { author: 'Kanye', rating: 5, comment: 'Die Zukunft.' },
+    ],
   },
   {
     id: 'prod-men-15',
@@ -946,7 +971,10 @@ export const products: Product[] = [
     description_fr: 'Une surchemise à carreaux en flanelle de laine douce, dans le style minimaliste et cool typique d\'Acne Studios.',
     category: 'mens-clothing',
     images: ['surchemise-flanelle-acne-studios'],
-    reviews: [],
+    reviews: [
+        { author: 'Jonny', rating: 5, comment: 'Perfekt für den Lagenlook. Sehr weich und warm.' },
+        { author: 'Mikael', rating: 4, comment: 'Tolles Muster, aber die Passform ist sehr kastig.' },
+    ],
   },
   {
     id: 'prod-men-16',
@@ -958,7 +986,10 @@ export const products: Product[] = [
     description_fr: 'Un short cargo fonctionnel fabriqué dans un tissu innovant teint en pièce. L\'emblématique badge boussole sur la jambe.',
     category: 'mens-clothing',
     images: ['short-cargo-stone-island'],
-    reviews: [],
+    reviews: [
+        { author: 'Carlo', rating: 5, comment: 'Funktionalität trifft auf High Fashion. Die Stofffärbung ist einzigartig.' },
+        { author: 'Massimo', rating: 5, comment: 'Parfait pour l\'été. Beaucoup de poches et un style impeccable.' },
+    ],
   },
   {
     id: 'prod-men-17',
@@ -970,7 +1001,10 @@ export const products: Product[] = [
     description_fr: 'La chaleur sans le volume. Cette doudoune légère est parfaite pour la mi-saison ou comme couche isolante.',
     category: 'mens-clothing',
     images: ['doudoune-legere-canada-goose'],
-    reviews: [],
+    reviews: [
+        { author: 'Drake', rating: 5, comment: 'Warm und leicht, perfekt für Toronto.' },
+        { author: 'Daniel', rating: 4, comment: 'Gute Jacke, aber nicht für extrem kalte Temperaturen geeignet.' },
+    ],
   },
   {
     id: 'prod-men-18',
@@ -982,7 +1016,10 @@ export const products: Product[] = [
     description_fr: 'Une parka de haute technologie issue de la ligne premium de TNF, fusionnant design urbain et résistance extrême aux intempéries.',
     category: 'mens-clothing',
     images: ['parka-expedition-the-north-face-black-series'],
-    reviews: [],
+    reviews: [
+        { author: 'Jun', rating: 5, comment: 'Funktionalität und futuristisches Design. Hält absolut alles aus.' },
+        { author: 'Kazuki', rating: 5, comment: 'Le meilleur du techwear. Imbattable.' },
+    ],
   },
   {
     id: 'prod-men-19',
@@ -994,7 +1031,10 @@ export const products: Product[] = [
     description_fr: 'Le luxe décontracté à son paroxysme. Un cardigan zippé en cachemire des plus fins pour une élégance sans effort.',
     category: 'mens-clothing',
     images: ['cardigan-zippe-cachemire-brunello-cucinelli'],
-    reviews: [],
+    reviews: [
+        { author: 'Brunello', rating: 5, comment: 'Weichheit ist eine Form von Seele. Dieser Cardigan hat viel Seele.' },
+        { author: 'Leonardo', rating: 5, comment: 'Confort et élégance, la définition du luxe italien.' },
+    ],
   },
   {
     id: 'prod-men-20',
@@ -1006,7 +1046,10 @@ export const products: Product[] = [
     description_fr: 'L\'élégance iconique de Max Mara, désormais pour homme. Un long manteau en pure laine à la coupe parfaite.',
     category: 'mens-clothing',
     images: ['manteau-long-laine-max-mara-homme'],
-    reviews: [],
+    reviews: [
+        { author: 'Ian', rating: 5, comment: 'Endlich! Der gleiche Luxus und die gleiche Qualität wie die Damenmäntel.' },
+        { author: 'Luigi', rating: 5, comment: 'Un manteau pour toute une vie. La coupe est sublime.' },
+    ],
   },
   // Women's Clothing (from new list)
   {
@@ -1019,7 +1062,10 @@ export const products: Product[] = [
     description_fr: 'Une opulente chemise en soie arborant l\'imprimé Barocco emblématique de Versace. Une déclaration audacieuse de luxe pur.',
     category: 'womens-clothing',
     images: ['chemise-soie-versace'],
-    reviews: [],
+    reviews: [
+        { author: 'Donatella', rating: 5, comment: 'Purer Luxus, pure Versace. Mehr ist mehr!' },
+        { author: 'Gigi', rating: 5, comment: 'Incroyable sur la peau, l\'imprimé est magnifique.' },
+    ],
   },
   {
     id: 'prod-women-43',
@@ -1031,7 +1077,10 @@ export const products: Product[] = [
     description_fr: 'Un sweat à capuche décontracté d\'inspiration skate avec un imprimé Palm Angels audacieux. La coolitude californienne rencontre le luxe italien.',
     category: 'womens-clothing',
     images: ['hoodie-imprime-palm-angels'],
-    reviews: [],
+    reviews: [
+        { author: 'Francesco', rating: 5, comment: 'Lässiger Luxus vom Feinsten.' },
+        { author: 'Dua', rating: 4, comment: 'Très confortable, mais la coupe est extrêmement oversize.' },
+    ],
   },
   {
     id: 'prod-women-44',
@@ -1043,7 +1092,10 @@ export const products: Product[] = [
     description_fr: 'La veste matelassée classique de Barbour, inspirée de l\'héritage motocycliste. Style intemporel et fonctionnalité britannique.',
     category: 'womens-clothing',
     images: ['veste-matelassee-barbour-international'],
-    reviews: [],
+    reviews: [
+        { author: 'Kate', rating: 5, comment: 'Ein britischer Klassiker. Perfekt für das Landleben.' },
+        { author: 'Helen', rating: 5, comment: 'Chaud, pratique et élégant. Que demander de plus ?' },
+    ],
   },
   {
     id: 'prod-women-45',
@@ -1055,7 +1107,10 @@ export const products: Product[] = [
     description_fr: 'Un pull à torsades classique en laine d\'agneau douce, égayé par les détails colorés subtils propres à Paul Smith.',
     category: 'womens-clothing',
     images: ['pull-torsade-paul-smith'],
-    reviews: [],
+    reviews: [
+        { author: 'Pauline', rating: 5, comment: 'Klassiker mit Twist. Die versteckten Farben sind eine Freude.' },
+        { author: 'Emma', rating: 4, comment: 'Très beau pull, mais il gratte un peu.' },
+    ],
   },
   {
     id: 'prod-women-46',
@@ -1067,7 +1122,10 @@ export const products: Product[] = [
     description_fr: 'Un t-shirt minimaliste en coton de haute qualité, rehaussé du logo Givenchy, sobre mais emblématique.',
     category: 'womens-clothing',
     images: ['t-shirt-logo-givenchy'],
-    reviews: [],
+    reviews: [
+        { author: 'Clare', rating: 5, comment: 'Einfachheit ist die ultimative Raffinesse.' },
+        { author: 'Julianne', rating: 5, comment: 'La coupe est parfaite. Un basique de luxe.' },
+    ],
   },
   {
     id: 'prod-women-47',
@@ -1079,7 +1137,10 @@ export const products: Product[] = [
     description_fr: 'La fusion ultime du sportswear et du luxe. Un survêtement complet issu de la collaboration la plus convoitée.',
     category: 'womens-clothing',
     images: ['survetement-luxe-adidas-gucci'],
-    reviews: [],
+    reviews: [
+        { author: 'Rihanna', rating: 5, comment: 'Wenn Sport auf Luxus trifft. Ikonisch.' },
+        { author: 'Beyoncé', rating: 5, comment: 'Confortable et tellement chic. J\'adore.' },
+    ],
   },
   {
     id: 'prod-women-48',
@@ -1091,7 +1152,10 @@ export const products: Product[] = [
     description_fr: 'All Conditions Gear. Une veste technique conçue pour l\'aventure en plein air sans compromettre le style urbain.',
     category: 'womens-clothing',
     images: ['veste-technique-nike-acg'],
-    reviews: [],
+    reviews: [
+        { author: 'Bella', rating: 5, comment: 'Perfekt für Wanderungen in L.A. Funktional und stylisch.' },
+        { author: 'Travis', rating: 5, comment: 'ACG ist immer eine gute Wahl.' },
+    ],
   },
   {
     id: 'prod-women-49',
@@ -1103,7 +1167,10 @@ export const products: Product[] = [
     description_fr: 'Un gilet sans manches en Re-Nylon recyclé, incarnant l\'esprit minimaliste et technique de Prada. Le logo triangulaire iconique sur la poitrine.',
     category: 'womens-clothing',
     images: ['gilet-sans-manches-prada'],
-    reviews: [],
+    reviews: [
+        { author: 'Miuccia', rating: 5, comment: 'Funktionalität ist nicht das Gegenteil von Schönheit.' },
+        { author: 'Frank', rating: 5, comment: 'L\'uniforme moderne. Parfait.' },
+    ],
   },
   {
     id: 'prod-women-50',
@@ -1115,7 +1182,10 @@ export const products: Product[] = [
     description_fr: 'L\'iconique veste de camionneur, réinterprétée avec un denim japonais de première qualité et un savoir-faire supérieur.',
     category: 'womens-clothing',
     images: ['veste-denim-levis-made-crafted'],
-    reviews: [],
+    reviews: [
+        { author: 'Hailey', rating: 5, comment: 'Die perfekte Jeansjacke. Der Denim ist unglaublich.' },
+        { author: 'Kendall', rating: 5, comment: 'Un classique amélioré. J\'adore.' },
+    ],
   },
   {
     id: 'prod-men-21',
@@ -1127,7 +1197,10 @@ export const products: Product[] = [
     description_fr: 'Un pantalon de costume à la coupe parfaite en laine légère, incarnant l\'esthétique moderne et raffinée de Dior Homme.',
     category: 'mens-clothing',
     images: ['pantalon-tailleur-dior-homme'],
-    reviews: [],
+    reviews: [
+        { author: 'Kim', rating: 5, comment: 'Die Schneiderkunst ist außergewöhnlich. Perfekte Passform.' },
+        { author: 'Robert', rating: 5, comment: 'Une élégance discrète mais puissante.' },
+    ],
   },
 ];
 
