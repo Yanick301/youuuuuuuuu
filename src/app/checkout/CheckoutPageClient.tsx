@@ -63,7 +63,7 @@ const shippingSchemaEN = z.object({
 });
 
 
-type ShippingFormInputs = z.infer&lt;typeof shippingSchemaDE&gt;;
+type ShippingFormInputs = z.infer<typeof shippingSchemaDE>;
 
 export default function CheckoutPageClient() {
   const { cart, subtotal, clearCart } = useCart();
@@ -75,14 +75,14 @@ export default function CheckoutPageClient() {
   const { language } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() =&gt; {
+  useEffect(() => {
     if (isUserLoading) return;
     if (!user) {
       router.push(`/login?redirect=${encodeURIComponent('/checkout')}`);
     }
   }, [user, isUserLoading, router]);
 
-  const getValidationSchema = (lang: string) =&gt; {
+  const getValidationSchema = (lang: string) => {
     switch (lang) {
       case 'fr':
         return shippingSchemaFR;
@@ -93,7 +93,7 @@ export default function CheckoutPageClient() {
     }
   };
 
-  const form = useForm&lt;ShippingFormInputs&gt;({
+  const form = useForm<ShippingFormInputs>({
     resolver: zodResolver(getValidationSchema(language)),
     defaultValues: {
       name: '',
@@ -105,18 +105,18 @@ export default function CheckoutPageClient() {
     },
   });
   
-  useEffect(() =&gt; {
+  useEffect(() => {
     form.reset(undefined, { keepValues: true });
   }, [language, form]);
 
-  useEffect(() =&gt; {
-    if (cart.length === 0 &amp;&amp; !form.formState.isSubmitSuccessful) {
+  useEffect(() => {
+    if (cart.length === 0 && !form.formState.isSubmitSuccessful) {
       const redirectUrl = searchParams.get('redirect') || '/products/all';
       router.push(redirectUrl);
     }
   }, [cart, router, form.formState.isSubmitSuccessful, searchParams]);
 
-  useEffect(() =&gt; {
+  useEffect(() => {
     if (user) {
         form.setValue('name', user.displayName || '');
         form.setValue('email', user.email || '');
@@ -132,10 +132,10 @@ export default function CheckoutPageClient() {
     );
   }
 
-  if (cart.length === 0 &amp;&amp; !form.formState.isSubmitSuccessful) {
+  if (cart.length === 0 && !form.formState.isSubmitSuccessful) {
     return (
       <div className="container mx-auto flex h-[60vh] items-center justify-center text-center">
-        <p&gt;<TranslatedText fr="Votre panier est vide. Vous allez être redirigé..." en="Your cart is empty. You will be redirected...">Ihr Warenkorb ist leer. Sie werden weitergeleitet...</TranslatedText&gt;</p>
+        <p><TranslatedText fr="Votre panier est vide. Vous allez être redirigé..." en="Your cart is empty. You will be redirected...">Ihr Warenkorb ist leer. Sie werden weitergeleitet...</TranslatedText></p>
       </div>
     );
   }
@@ -144,7 +144,7 @@ export default function CheckoutPageClient() {
   const taxes = subtotal * 0.08;
   const total = subtotal + shipping + taxes;
 
-  const handlePlaceOrder: SubmitHandler&lt;ShippingFormInputs&gt; = async (data) =&gt; {
+  const handlePlaceOrder: SubmitHandler<ShippingFormInputs> = async (data) => {
     setIsSubmitting(true);
     if (!user || !firestore) { 
         toast({
@@ -161,7 +161,7 @@ export default function CheckoutPageClient() {
       const orderData = {
           userId: user.uid,
           shippingInfo: data,
-          items: cart.map(item =&gt; ({
+          items: cart.map(item => ({
               productId: item.product.id,
               name: item.product.name,
               name_fr: item.product.name_fr,
@@ -217,16 +217,16 @@ export default function CheckoutPageClient() {
           <div className="space-y-8">
             <Card>
               <CardHeader>
-                <CardTitle&gt;<TranslatedText fr="Informations de livraison" en="Shipping Information">Versandinformationen</TranslatedText&gt;</CardTitle>
+                <CardTitle><TranslatedText fr="Informations de livraison" en="Shipping Information">Versandinformationen</TranslatedText></CardTitle>
               </CardHeader>
               <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="sm:col-span-2">
                    <FormField
                       control={form.control}
                       name="name"
-                      render={({ field }) =&gt; (
+                      render={({ field }) => (
                         <FormItem>
-                          <FormLabel&gt;<TranslatedText fr="Nom complet" en="Full Name">Vollständiger Name</TranslatedText&gt;</FormLabel>
+                          <FormLabel><TranslatedText fr="Nom complet" en="Full Name">Vollständiger Name</TranslatedText></FormLabel>
                           <FormControl>
                             <Input {...field} />
                           </FormControl>
@@ -239,9 +239,9 @@ export default function CheckoutPageClient() {
                     <FormField
                         control={form.control}
                         name="email"
-                        render={({ field }) =&gt; (
+                        render={({ field }) => (
                             <FormItem>
-                            <FormLabel&gt;<TranslatedText fr="Email" en="Email">Email</TranslatedText&gt;</FormLabel>
+                            <FormLabel><TranslatedText fr="Email" en="Email">Email</TranslatedText></FormLabel>
                             <FormControl>
                                 <Input type="email" {...field} />
                             </FormControl>
@@ -254,9 +254,9 @@ export default function CheckoutPageClient() {
                     <FormField
                         control={form.control}
                         name="address"
-                        render={({ field }) =&gt; (
+                        render={({ field }) => (
                             <FormItem>
-                            <FormLabel&gt;<TranslatedText fr="Adresse" en="Address">Adresse</TranslatedText&gt;</FormLabel>
+                            <FormLabel><TranslatedText fr="Adresse" en="Address">Adresse</TranslatedText></FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
@@ -269,9 +269,9 @@ export default function CheckoutPageClient() {
                     <FormField
                         control={form.control}
                         name="city"
-                        render={({ field }) =&gt; (
+                        render={({ field }) => (
                             <FormItem>
-                            <FormLabel&gt;<TranslatedText fr="Ville" en="City">Stadt</TranslatedText&gt;</FormLabel>
+                            <FormLabel><TranslatedText fr="Ville" en="City">Stadt</TranslatedText></FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
@@ -284,9 +284,9 @@ export default function CheckoutPageClient() {
                      <FormField
                         control={form.control}
                         name="zip"
-                        render={({ field }) =&gt; (
+                        render={({ field }) => (
                             <FormItem>
-                            <FormLabel&gt;<TranslatedText fr="Code postal" en="ZIP / Postal Code">PLZ / Postleitzahl</TranslatedText&gt;</FormLabel>
+                            <FormLabel><TranslatedText fr="Code postal" en="ZIP / Postal Code">PLZ / Postleitzahl</TranslatedText></FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
@@ -299,9 +299,9 @@ export default function CheckoutPageClient() {
                     <FormField
                         control={form.control}
                         name="country"
-                        render={({ field }) =&gt; (
+                        render={({ field }) => (
                             <FormItem>
-                            <FormLabel&gt;<TranslatedText fr="Pays" en="Country">Land</TranslatedText&gt;</FormLabel>
+                            <FormLabel><TranslatedText fr="Pays" en="Country">Land</TranslatedText></FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
@@ -318,16 +318,16 @@ export default function CheckoutPageClient() {
           <div className="space-y-8">
             <Card>
               <CardHeader>
-                <CardTitle&gt;<TranslatedText fr="Résumé de la commande" en="Order Summary">Bestellübersicht</TranslatedText&gt;</CardTitle>
+                <CardTitle><TranslatedText fr="Résumé de la commande" en="Order Summary">Bestellübersicht</TranslatedText></CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="divide-y divide-border">
-                  {cart.map((item) =&gt; {
-                    const productImage = placeholderImages.find(p =&gt; p.id === item.product.images[0]);
+                  {cart.map((item) => {
+                    const productImage = placeholderImages.find(p => p.id === item.product.images[0]);
                     return (
                       <li key={item.product.id} className="flex items-center py-4">
                         <div className="relative h-16 w-16 overflow-hidden rounded-md border">
-                          {productImage &amp;&amp; (
+                          {productImage && (
                             <img
                               src={productImage.imageUrl}
                               alt={item.product.name}
@@ -337,7 +337,7 @@ export default function CheckoutPageClient() {
                           <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-muted text-sm font-medium">{item.quantity}</span>
                         </div>
                         <div className="ml-4 flex-1">
-                          <p className="font-medium&gt;<TranslatedText fr={item.product.name_fr} en={item.product.name_en}>{item.product.name}</TranslatedText&gt;</p>
+                          <p className="font-medium"><TranslatedText fr={item.product.name_fr} en={item.product.name_en}>{item.product.name}</TranslatedText></p>
                           <p className="text-sm text-muted-foreground">
                               €{item.product.price.toFixed(2)}
                           </p>
@@ -350,21 +350,21 @@ export default function CheckoutPageClient() {
                 <Separator className="my-4" />
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <p className="text-muted-foreground&gt;<TranslatedText fr="Sous-total" en="Subtotal">Zwischensumme</TranslatedText&gt;</p>
+                    <p className="text-muted-foreground"><TranslatedText fr="Sous-total" en="Subtotal">Zwischensumme</TranslatedText></p>
                     <p>€{subtotal.toFixed(2)}</p>
                   </div>
                   <div className="flex justify-between">
-                    <p className="text-muted-foreground&gt;<TranslatedText fr="Livraison" en="Shipping">Versand</TranslatedText&gt;</p>
+                    <p className="text-muted-foreground"><TranslatedText fr="Livraison" en="Shipping">Versand</TranslatedText></p>
                     <p>€{shipping.toFixed(2)}</p>
                   </div>
                   <div className="flex justify-between">
-                    <p className="text-muted-foreground&gt;<TranslatedText fr="Taxes" en="Taxes">Steuern</TranslatedText&gt;</p>
+                    <p className="text-muted-foreground"><TranslatedText fr="Taxes" en="Taxes">Steuern</TranslatedText></p>
                     <p>€{taxes.toFixed(2)}</p>
                   </div>
                 </div>
                 <Separator className="my-4" />
                 <div className="flex justify-between font-bold text-lg">
-                    <p&gt;<TranslatedText fr="Total" en="Total">Gesamt</TranslatedText&gt;</p>
+                    <p><TranslatedText fr="Total" en="Total">Gesamt</TranslatedText></p>
                     <p>€{total.toFixed(2)}</p>
                   </div>
               </CardContent>
@@ -372,7 +372,7 @@ export default function CheckoutPageClient() {
             
             <Card>
               <CardHeader>
-                <CardTitle&gt;<TranslatedText fr="Instructions de Paiement" en="Payment Instructions">Zahlungsanweisungen</TranslatedText&gt;</CardTitle>
+                <CardTitle><TranslatedText fr="Instructions de Paiement" en="Payment Instructions">Zahlungsanweisungen</TranslatedText></CardTitle>
                 <CardDescription>
                     <div className="flex items-center gap-2 text-sm">
                         <Banknote className="h-4 w-4" />
@@ -382,11 +382,11 @@ export default function CheckoutPageClient() {
               </CardHeader>
               <CardContent className="space-y-4 text-sm">
                  <div>
-                    <p className="font-semibold text-muted-foreground&gt;<TranslatedText fr="Titulaire du compte" en="Account Holder">Kontoinhaber</TranslatedText&gt;</p>
+                    <p className="font-semibold text-muted-foreground"><TranslatedText fr="Titulaire du compte" en="Account Holder">Kontoinhaber</TranslatedText></p>
                     <p>Sabine Menke</p>
                  </div>
                  <div>
-                    <p className="font-semibold text-muted-foreground&gt;<TranslatedText fr="Banque" en="Bank">BANQUE</TranslatedText&gt;</p>
+                    <p className="font-semibold text-muted-foreground"><TranslatedText fr="Banque" en="Bank">BANQUE</TranslatedText></p>
                     <p>BBVA</p>
                  </div>
                  <div>
@@ -398,7 +398,7 @@ export default function CheckoutPageClient() {
                     <p>BBVADEFFXXX</p>
                  </div>
                  <div>
-                    <p className="font-semibold text-muted-foreground&gt;<TranslatedText fr="Référence de la commande" en="Order Reference">Bestellreferenz</TranslatedText&gt;</p>
+                    <p className="font-semibold text-muted-foreground"><TranslatedText fr="Référence de la commande" en="Order Reference">Bestellreferenz</TranslatedText></p>
                     <p>Gifts</p>
                  </div>
               </CardContent>
@@ -406,10 +406,10 @@ export default function CheckoutPageClient() {
 
             <Button size="lg" className="w-full" type="submit" disabled={isSubmitting}>
               {isSubmitting ? (
-                  &lt;&gt;
+                  <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     <TranslatedText fr="Création de la commande..." en="Creating order...">Bestellung wird erstellt...</TranslatedText>
-                  &lt;/{&gt;&lt;&gt;&lt;{&gt;}
+                  </>
               ) : (
                   <TranslatedText fr="Créer la commande" en="Create Order">Bestellung erstellen</TranslatedText>
               )}
