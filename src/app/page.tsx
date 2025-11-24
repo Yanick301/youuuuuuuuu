@@ -54,13 +54,12 @@ export default function HomePage() {
              <Carousel
                 opts={{
                     align: "start",
-                    loop: true,
                 }}
                 className="w-full"
             >
                 <CarouselContent>
                     {categories.map((category, index) => (
-                        <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                        <CarouselItem key={index} className="basis-4/5 md:basis-1/2 lg:basis-1/3">
                              <CategoryCard 
                                 pretitle={<TranslatedText fr="CATÉGORIE">KATEGORIE</TranslatedText>}
                                 title={<TranslatedText fr={category.name_fr}>{category.name}</TranslatedText>}
@@ -72,8 +71,6 @@ export default function HomePage() {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="hidden lg:flex" />
-                <CarouselNext className="hidden lg:flex" />
             </Carousel>
         </div>
       </section>
