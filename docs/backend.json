@@ -8,7 +8,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the product."
+          "description": "Unique identifier for the Product entity."
         },
         "name": {
           "type": "string",
@@ -24,18 +24,12 @@
         },
         "imageUrl": {
           "type": "string",
-          "description": "URL of the product's main image."
+          "description": "URL of the product's main image.",
+          "format": "uri"
         },
-        "additionalImageUrls": {
-          "type": "array",
-          "description": "URLs of additional images for the product.",
-          "items": {
-            "type": "string"
-          }
-        },
-        "categoryId": {
+        "category": {
           "type": "string",
-          "description": "Reference to the Category entity. (Relationship: Category 1:N Product)"
+          "description": "Category of the product (e.g., Men's Clothing, Women's Clothing)."
         }
       },
       "required": [
@@ -44,32 +38,7 @@
         "description",
         "price",
         "imageUrl",
-        "categoryId"
-      ]
-    },
-    "Category": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Category",
-      "type": "object",
-      "description": "Represents a product category.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the category."
-        },
-        "name": {
-          "type": "string",
-          "description": "Name of the category (e.g., Men's Clothing, Women's Clothing)."
-        },
-        "imageUrl": {
-          "type": "string",
-          "description": "URL of the category image."
-        }
-      },
-      "required": [
-        "id",
-        "name",
-        "imageUrl"
+        "category"
       ]
     },
     "Review": {
@@ -80,23 +49,23 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the review."
+          "description": "Unique identifier for the Review entity."
         },
         "productId": {
           "type": "string",
-          "description": "Reference to the Product entity. (Relationship: Product 1:N Review)"
+          "description": "Reference to Product. (Relationship: Product 1:N Review)"
         },
-        "userId": {
+        "author": {
           "type": "string",
-          "description": "Reference to the User entity. (Relationship: User 1:N Review)"
+          "description": "Author of the review."
         },
         "rating": {
           "type": "number",
-          "description": "Rating given by the user (e.g., 1-5)."
+          "description": "Rating given by the reviewer (e.g., 1-5)."
         },
         "comment": {
           "type": "string",
-          "description": "Text of the review comment."
+          "description": "Text of the review."
         },
         "date": {
           "type": "string",
@@ -107,7 +76,7 @@
       "required": [
         "id",
         "productId",
-        "userId",
+        "author",
         "rating",
         "comment",
         "date"
@@ -117,19 +86,15 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "CartItem",
       "type": "object",
-      "description": "Represents an item in the user's shopping cart.",
+      "description": "Represents an item in the shopping cart.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the cart item."
-        },
-        "userId": {
-          "type": "string",
-          "description": "Reference to the User entity. (Relationship: User 1:N CartItem)"
+          "description": "Unique identifier for the CartItem entity."
         },
         "productId": {
           "type": "string",
-          "description": "Reference to the Product entity. (Relationship: Product 1:N CartItem)"
+          "description": "Reference to Product. (Relationship: Product 1:N CartItem)"
         },
         "quantity": {
           "type": "number",
@@ -138,7 +103,6 @@
       },
       "required": [
         "id",
-        "userId",
         "productId",
         "quantity"
       ]
@@ -151,11 +115,11 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the order."
+          "description": "Unique identifier for the Order entity."
         },
         "userId": {
           "type": "string",
-          "description": "Reference to the User entity. (Relationship: User 1:N Order)"
+          "description": "Reference to User. (Relationship: User 1:N Order)"
         },
         "orderDate": {
           "type": "string",
@@ -166,13 +130,14 @@
           "type": "number",
           "description": "Total amount of the order."
         },
-        "shippingAddress": {
+        "paymentStatus": {
           "type": "string",
-          "description": "Shipping address for the order."
+          "description": "Status of the payment (e.g., pending, completed, failed)."
         },
-        "paymentMethod": {
+        "receiptImageURL": {
           "type": "string",
-          "description": "Payment method used for the order."
+          "description": "URL to the receipt image uploaded by the user.",
+          "format": "uri"
         }
       },
       "required": [
@@ -180,43 +145,7 @@
         "userId",
         "orderDate",
         "totalAmount",
-        "shippingAddress",
-        "paymentMethod"
-      ]
-    },
-    "OrderItem": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "OrderItem",
-      "type": "object",
-      "description": "Represents an item within an order.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the order item."
-        },
-        "orderId": {
-          "type": "string",
-          "description": "Reference to the Order entity. (Relationship: Order 1:N OrderItem)"
-        },
-        "productId": {
-          "type": "string",
-          "description": "Reference to the Product entity. (Relationship: Product 1:N OrderItem)"
-        },
-        "quantity": {
-          "type": "number",
-          "description": "Quantity of the product in the order."
-        },
-        "itemPrice": {
-          "type": "number",
-          "description": "Price of the product at the time of the order."
-        }
-      },
-      "required": [
-        "id",
-        "orderId",
-        "productId",
-        "quantity",
-        "itemPrice"
+        "paymentStatus"
       ]
     },
     "User": {
@@ -227,51 +156,56 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the user."
+          "description": "Unique identifier for the User entity."
         },
         "email": {
           "type": "string",
-          "description": "User's email address.",
+          "description": "Email address of the user.",
           "format": "email"
         },
         "firstName": {
           "type": "string",
-          "description": "User's first name."
+          "description": "First name of the user."
         },
         "lastName": {
           "type": "string",
-          "description": "User's last name."
+          "description": "Last name of the user."
+        },
+        "registrationDate": {
+          "type": "string",
+          "description": "Date the user registered.",
+          "format": "date-time"
         }
       },
       "required": [
         "id",
         "email",
         "firstName",
-        "lastName"
+        "lastName",
+        "registrationDate"
       ]
     }
   },
   "auth": {
     "providers": [
       "password",
-      "anonymous",
-      "google.com"
+      "anonymous"
     ]
   },
   "firestore": {
     "structure": [
       {
-        "path": "/categories/{categoryId}",
+        "path": "/users/{userId}",
         "definition": {
-          "entityName": "Category",
+          "entityName": "User",
           "schema": {
-            "$ref": "#/backend/entities/Category"
+            "$ref": "#/backend/entities/User"
           },
-          "description": "Stores product categories. Anyone can read categories.",
+          "description": "Stores user data. Path-based ownership enables secure access rules.",
           "params": [
             {
-              "name": "categoryId",
-              "description": "The unique identifier for the category."
+              "name": "userId",
+              "description": "The unique identifier of the user."
             }
           ]
         }
@@ -283,87 +217,11 @@
           "schema": {
             "$ref": "#/backend/entities/Product"
           },
-          "description": "Stores product information. Anyone can read product information.",
+          "description": "Stores product data. Publicly readable.",
           "params": [
             {
               "name": "productId",
-              "description": "The unique identifier for the product."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/users/{userId}",
-        "definition": {
-          "entityName": "User",
-          "schema": {
-            "$ref": "#/backend/entities/User"
-          },
-          "description": "Stores user profiles. Only the user can read/write their own profile.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The unique identifier for the user."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/users/{userId}/cart_items/{cartItemId}",
-        "definition": {
-          "entityName": "CartItem",
-          "schema": {
-            "$ref": "#/backend/entities/CartItem"
-          },
-          "description": "Stores cart items for each user. Only the user can read/write their own cart items.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The unique identifier for the user."
-            },
-            {
-              "name": "cartItemId",
-              "description": "The unique identifier for the cart item."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/users/{userId}/orders/{orderId}",
-        "definition": {
-          "entityName": "Order",
-          "schema": {
-            "$ref": "#/backend/entities/Order"
-          },
-          "description": "Stores orders for each user. Only the user can read their own orders.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The unique identifier for the user."
-            },
-            {
-              "name": "orderId",
-              "description": "The unique identifier for the order."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/orders/{orderId}/order_items/{orderItemId}",
-        "definition": {
-          "entityName": "OrderItem",
-          "schema": {
-            "$ref": "#/backend/entities/OrderItem"
-          },
-          "description": "Stores order items associated with an order. Only accessible via the parent order.",
-          "params": [
-            {
-              "name": "orderId",
-              "description": "The unique identifier for the order."
-            },
-            {
-              "name": "orderItemId",
-              "description": "The unique identifier for the order item."
+              "description": "The unique identifier of the product."
             }
           ]
         }
@@ -375,21 +233,60 @@
           "schema": {
             "$ref": "#/backend/entities/Review"
           },
-          "description": "Stores reviews for each product. Anyone can read the reviews.",
+          "description": "Stores reviews for a specific product.",
           "params": [
             {
               "name": "productId",
-              "description": "The unique identifier for the product."
+              "description": "The unique identifier of the product."
             },
             {
               "name": "reviewId",
-              "description": "The unique identifier for the review."
+              "description": "The unique identifier of the review."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/cartItems/{cartItemId}",
+        "definition": {
+          "entityName": "CartItem",
+          "schema": {
+            "$ref": "#/backend/entities/CartItem"
+          },
+          "description": "Stores cart items for a specific user. Path-based ownership.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            },
+            {
+              "name": "cartItemId",
+              "description": "The unique identifier of the cart item."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/orders/{orderId}",
+        "definition": {
+          "entityName": "Order",
+          "schema": {
+            "$ref": "#/backend/entities/Order"
+          },
+          "description": "Stores orders placed by a user. Includes receiptImageURL for uploaded payment receipts. Path-based ownership.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            },
+            {
+              "name": "orderId",
+              "description": "The unique identifier of the order."
             }
           ]
         }
       }
     ],
-    "reasoning": "The Firestore structure is designed to be secure, scalable, and easily debuggable, following the core design principles and strategy mandates. It uses path-based ownership for user-specific data and separates data with different access requirements into distinct collections.\n\n**Authorization Independence:**\n\n*   No `get()` calls are needed in the security rules because user ownership is implicit in the path (e.g., `/users/{userId}/cart_items/{cartItemId}`). This avoids hierarchical authorization dependencies.\n\n**Structural Segregation:**\n\n*   Each collection contains documents with the same security requirements. For example, `/categories` are globally accessible, while `/users/{userId}/cart_items` are only accessible to the specific user.\n\n**Access Modeling:**\n\n*   Private data is structured using path-based ownership (e.g., `/users/{userId}/orders`).\n\n**QAPs (Rules are not Filters):**\n\n*   Secure `list` operations are enabled because collections are structurally segregated based on access requirements. Listing categories is different than listing a user's cart items. Each has different authorization rules that can be simply scoped to the path.\n\n**Debuggability:**\n\n*   The structure clearly indicates the authorization context based on the path."
+    "reasoning": "This Firestore structure prioritizes security and scalability by adhering to the principles of Authorization Independence, Structural Segregation, and Access Modeling. It avoids `get()` calls in security rules by denormalizing authorization data and ensures secure `list` operations. The structure includes paths for users, products, reviews, cart items, and orders, with appropriate ownership and membership models. Importantly, the `Order` collection includes a `receiptImageURL`, allowing users to upload proof of payment as requested. This design facilitates simple, robust, and easily debuggable security rules.\n\n**Authorization Independence:** User ownership is established using path-based ownership (e.g., `/users/{userId}/orders/{orderId}`). This structure eliminates the need for `get()` calls to verify ownership. \n\n**Structural Segregation:** Each collection serves a distinct purpose and data access pattern, simplifying security rules. For instance, products and users have separate collections with distinct access requirements.\n\n**QAPs (Rules are not Filters):** The data structure uses path-based ownership for private user data. This enables secure `list` operations, as rules can easily filter based on the requesting user's ID without reading the content of the documents.\n\n**Receipt Image Storage:** The `Order` entity includes a `receiptImageURL` field to store the uploaded image URL, fulfilling the user's request. The `paymentStatus` field allows tracking the payment process."
   }
 }
-    

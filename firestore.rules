@@ -1,104 +1,99 @@
 /**
- * Core Philosophy: This ruleset establishes a hybrid security model for an e-commerce platform.
- * It provides public read-only access to catalog data (products, categories, and reviews) while
- * enforcing a strict user-ownership model for all personal user data (profiles, shopping carts, orders).
- * This allows anonymous users to browse the catalog freely but requires authentication for any
- * action that involves personal data or transactions.
+ * Core Philosophy: This ruleset enforces a strict user-ownership model. All private user data,
+ * such as cart items and orders, is nested under a user-specific path (/users/{userId}),
+ * guaranteeing that only the authenticated owner can access their information. Publicly
+ * accessible data, like the product catalog and reviews, is stored in separate top-level
+ * collections with distinct, more open read permissions.
  *
- * Data Structure:
- * - Public data is stored in top-level collections like `/products` and `/categories`.
- * - Product-specific public data, like reviews, is nested under the relevant product: `/products/{productId}/reviews`.
- * - All private user data is strictly segregated and nested under a path dedicated to that user: `/users/{userId}`.
- *   This includes subcollections for `/cart_items` and `/orders`.
+ * Data Structure: The data is organized into two main categories:
+ * 1. User-Private Data: Stored under `/users/{userId}/...`, this includes collections like
+ *    `cartItems` and `orders`. Access is strictly controlled by the `userId` in the path.
+ * 2. Public Data: Top-level collections like `/products` store information that is
+ *    readable by anyone, authenticated or not. Writes to this data are disabled from
+ *    the client-side, implying they are managed by a trusted backend service.
  *
  * Key Security Decisions:
- * - Admin-Only Writes: All catalog data (products, categories) is read-only for clients.
- *   These collections must be managed by a trusted backend server or admin SDK.
- * - User-Generated Content: Users can create, update, and delete their own product reviews.
- *   Ownership is enforced via a `userId` field on each review document.
- * - Immutable Orders: Once an order is created by a user, it cannot be modified or deleted by the client.
- *   This ensures data integrity for historical transactions.
- * - No User Listing: The top-level `/users` collection cannot be listed by any client to protect user privacy.
- * - Unsecurable Path: The `/orders/{orderId}/order_items` path is locked down entirely. The structure is
- *   unsecurable because it's impossible to link an `order_item` back to a user owner without performing
- *   a cross-collection query, which is not supported in security rules. This collection should be
- *   nested under `/users/{userId}/orders/{orderId}` to be secure.
+ * - User Isolation: A user can only ever read or write documents within their own
+ *   `/users/{userId}` data tree. They cannot see or modify another user's data.
+ * - No User Listing: It is not possible for any client to list all documents in the
+ *   `/users` collection, protecting user privacy.
+ * - Write Integrity: For user-owned documents that contain a `userId` field (like `Order`),
+ *   rules enforce that this field matches the path on creation and is immutable on update,
+ *   ensuring relational data integrity.
+ * - Secure Defaults: Collections intended for administrative control (like `/products`)
+ *   are made read-only from the client, preventing unauthorized modifications. User account
+ *   documents (`/users/{userId}`) are protected from accidental client-side deletion.
  *
- * Denormalization for Authorization:
- * - Path-Based Ownership: The primary authorization mechanism is path-based. Any document under `/users/{userId}/...`
- *   inherits ownership from the `userId` in the path, enabling fast, simple rules without extra database reads (`get` calls).
- * - Embedded Ownership: For public collections with user-generated content (e.g., `/products/.../reviews`), an ownership field
- *   (e.g., `userId`) is denormalized directly onto the document. This allows rules to verify ownership for writes
- *   (`resource.data.userId == request.auth.uid`) without needing to read a separate document.
+ * Denormalization for Authorization: This ruleset heavily relies on "path-based ownership"
+ * (e.g., `/users/{userId}/orders/{orderId}`). This structural denormalization places the
+ * owner's ID directly in the document path, allowing for extremely fast and simple
+ * security rules like `isOwner(userId)` without needing any slow or costly `get()` calls
+ * to other documents for verification.
+ *
+ * Structural Segregation: Private data (`/users/{userId}/...`) is kept entirely separate
+ * from public data (`/products`). This clear separation prevents private information from
+ * ever being accidentally exposed in a public list query and simplifies the rules for
+ * each collection.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    //-------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     // Helper Functions
-    //-------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /**
-     * Checks if the user is authenticated.
+     * Checks if a user is authenticated.
      */
     function isSignedIn() {
       return request.auth != null;
     }
 
     /**
-     * Checks if the authenticated user's UID matches the provided userId.
-     * This is the core function for enforcing data ownership.
+     * Checks if the currently authenticated user's UID matches the provided userId.
+     * This is the core function for enforcing document and path ownership.
      */
     function isOwner(userId) {
       return isSignedIn() && request.auth.uid == userId;
     }
 
     /**
-     * Checks for ownership on an existing document. Used for update/delete.
-     * Prevents operations on documents that do not exist.
+     * Verifies ownership for an existing document. Used for safe updates and deletes.
+     * CRITICAL: Prevents operations on non-existent documents.
      */
     function isExistingOwner(userId) {
       return isOwner(userId) && resource != null;
     }
 
-    /**
-     * Validates that the incoming document's userId matches the path owner.
-     * Enforces relational integrity on document creation.
-     */
-    function incomingDataMatchesOwner(userId) {
-      return request.resource.data.userId == userId;
-    }
+    // ------------------------------------------------------------------------
+    // Collection Rules
+    // ------------------------------------------------------------------------
 
     /**
-     * Validates that critical relational IDs are not being changed on update.
+     * @description Manages user profile documents. A user can create their own profile
+     *   and is the only one who can read or update it. Listing all users is forbidden.
+     * @path /users/{userId}
+     * @allow (create) An authenticated user with UID 'user_123' creates their own
+     *   document at `/users/user_123`.
+     * @deny (get) User 'user_456' attempts to read the document at `/users/user_123`.
+     * @principle Restricts access to a user's own data tree and enforces self-creation.
      */
-    function ownerIdIsImmutable() {
-      return request.resource.data.userId == resource.data.userId;
-    }
-
-
-    /**
-     * @description Publicly readable product categories. Writes are disabled from clients.
-     * @path /categories/{categoryId}
-     * @allow (get) An unauthenticated user can read a specific category.
-     * @deny (create) Any user attempting to create a new category.
-     * @principle Segregates public data into a read-only collection for all users.
-     */
-    match /categories/{categoryId} {
-      allow get: if true;
-      allow list: if true;
-      allow create: if false;
-      allow update: if false;
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
       allow delete: if false;
     }
 
     /**
-     * @description Publicly readable product data. Writes are disabled from clients.
+     * @description The public product catalog. All data is publicly readable by anyone,
+     *   including unauthenticated users. All write operations are disabled from the client.
      * @path /products/{productId}
-     * @allow (get) An unauthenticated user can read a specific product's details.
-     * @deny (create) Any user attempting to create a new product.
-     * @principle Segregates public data into a read-only collection for all users.
+     * @allow (get) Any user (signed-in or anonymous) can read a product document.
+     * @deny (create) Any user attempts to create a new product document.
+     * @principle Provides public read access while protecting data integrity by disallowing client writes.
      */
     match /products/{productId} {
       allow get: if true;
@@ -109,83 +104,53 @@ service cloud.firestore {
     }
 
     /**
-     * @description Product reviews are public to read, but a user can only create, update, or delete their own reviews.
+     * @description Product reviews. Anyone can read reviews. Signed-in users can create
+     *   reviews for any product and can only edit or delete their own reviews.
      * @path /products/{productId}/reviews/{reviewId}
-     * @allow (create) auth.uid='user123' creates a review with { userId: 'user123', productId: 'prodABC' }.
-     * @deny (update) auth.uid='user456' tries to update a review where the existing `userId` is 'user123'.
-     * @principle Implements the "Public Read, Owner-Only Write" pattern using a denormalized `userId` field.
+     * @allow (create) Signed-in user 'user_123' creates a review where the `author` field is 'user_123'.
+     * @deny (update) User 'user_456' tries to update a review written by 'user_123'.
+     * @principle Enforces document ownership for writes while allowing public reads.
      */
     match /products/{productId}/reviews/{reviewId} {
       allow get: if true;
       allow list: if true;
-      allow create: if isSignedIn()
-                      && request.resource.data.userId == request.auth.uid
-                      && request.resource.data.productId == productId;
-      allow update: if isSignedIn()
-                      && resource.data.userId == request.auth.uid
-                      && request.resource.data.userId == resource.data.userId
-                      && request.resource.data.productId == resource.data.productId;
-      allow delete: if isSignedIn() && resource != null && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.author == request.auth.uid;
+      allow update: if resource != null && isOwner(resource.data.author) && request.resource.data.author == resource.data.author;
+      allow delete: if resource != null && isOwner(resource.data.author);
     }
 
     /**
-     * @description A user's own profile document.
-     * @path /users/{userId}
-     * @allow (create) auth.uid='user123' creates their own profile at /users/user123.
-     * @deny (get) auth.uid='user456' tries to read /users/user123.
-     * @deny (list) Any user tries to list the /users collection.
-     * @principle Restricts access to a user's own data tree and prevents user enumeration.
+     * @description A user's shopping cart items. Only the user who owns the cart
+     *   can create, read, update, or delete items within it.
+     * @path /users/{userId}/cartItems/{cartItemId}
+     * @allow (list) User 'user_123' lists all documents in their own cart at `/users/user_123/cartItems`.
+     * @deny (get) User 'user_456' attempts to read a cart item at `/users/user_123/cartItems/item_abc`.
+     * @principle Path-based ownership ensures a user's private data is completely isolated.
      */
-    match /users/{userId} {
-      allow get: if isOwner(userId);
-      allow list: if false; // Explicitly deny listing all users
-      allow create: if isOwner(userId) && request.resource.data.id == userId;
-      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
-      allow delete: if isExistingOwner(userId);
-    }
-
-    /**
-     * @description A user's private shopping cart.
-     * @path /users/{userId}/cart_items/{cartItemId}
-     * @allow (create) auth.uid='user123' adds an item to their own cart at /users/user123/cart_items/...
-     * @deny (get) auth.uid='user456' tries to read an item from user123's cart.
-     * @principle Enforces strict document ownership within a user's private data subcollection.
-     */
-    match /users/{userId}/cart_items/{cartItemId} {
+    match /users/{userId}/cartItems/{cartItemId} {
       allow get: if isOwner(userId);
       allow list: if isOwner(userId);
-      allow create: if isOwner(userId) && incomingDataMatchesOwner(userId);
-      allow update: if isExistingOwner(userId) && ownerIdIsImmutable();
+      allow create: if isOwner(userId);
+      allow update: if isExistingOwner(userId);
       allow delete: if isExistingOwner(userId);
     }
 
     /**
-     * @description A user's private order history. Orders are immutable from the client once created.
+     * @description A user's order history. Only the user who placed the orders can view or
+     *   modify them. Ensures relational integrity by matching the document's `userId` field
+     *   with the `userId` in the path.
      * @path /users/{userId}/orders/{orderId}
-     * @allow (create) auth.uid='user123' creates an order in their own history at /users/user123/orders/...
-     * @deny (update) auth.uid='user123' tries to update an order they already placed.
-     * @principle Enforces ownership and ensures the integrity of historical transaction data by disallowing client modifications.
+     * @allow (create) User 'user_123' creates an order at `/users/user_123/orders/{orderId}` and
+     *   the document data includes `"userId": "user_123"`.
+     * @deny (create) User 'user_123' creates an order where the document's `userId` field is 'user_456'.
+     * @principle Path-based ownership combined with internal field validation ensures data integrity.
      */
     match /users/{userId}/orders/{orderId} {
       allow get: if isOwner(userId);
       allow list: if isOwner(userId);
-      allow create: if isOwner(userId) && incomingDataMatchesOwner(userId);
-      allow update: if false; // Orders are immutable
-      allow delete: if false; // Orders cannot be deleted
-    }
-
-    /**
-     * @description CRITICAL: This path is insecure by design and is completely locked down.
-     * @path /orders/{orderId}/order_items/{orderItemId}
-     * @allow (none) All operations are denied.
-     * @deny (get) Any user attempts to read an order item.
-     * @principle Prevents access to a collection where ownership cannot be securely determined. The rules cannot
-     *           verify which user owns the parent order of an item at this path. To fix this, nest order_items
-     *           under the user's order: /users/{userId}/orders/{orderId}/order_items/{orderItemId}.
-     */
-    match /orders/{orderId}/order_items/{orderItemId} {
-      allow read: if false;
-      allow write: if false;
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
     }
   }
 }
