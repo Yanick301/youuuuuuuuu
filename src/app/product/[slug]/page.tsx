@@ -3,9 +3,8 @@
 
 import { notFound, useParams } from 'next/navigation';
 import { Star } from 'lucide-react';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 
-import { getProductsByCategory, getProductBySlug } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -45,7 +44,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     return query(collection(firestore, 'products'), where('slug', '==', slug), limit(1));
   }, [firestore, slug]);
 
-  const { data: productData, isLoading: isProductLoading } = useCollection<Product>(productQuery as any);
+  const { data: productData, isLoading: isProductLoading } = useCollection<Product>(productQuery);
   const product = useMemo(() => (productData && productData.length > 0 ? productData[0] : null), [productData]);
 
   const relatedProductsQuery = useMemoFirebase(() => {
@@ -53,16 +52,14 @@ export default function ProductPage({ params }: ProductPageProps) {
     return query(collection(firestore, 'products'), where('category', '==', product.category), where('id', '!=', product.id), limit(4));
   }, [firestore, product]);
 
-  const { data: relatedProducts, isLoading: areRelatedLoading } = useCollection<Product>(relatedProductsQuery as any);
+  const { data: relatedProducts, isLoading: areRelatedLoading } = useCollection<Product>(relatedProductsQuery);
 
-  useEffect(() => {
-    if (!isProductLoading && !product) {
-      notFound();
-    }
-  }, [isProductLoading, product]);
+  if (isProductLoading) {
+    return <div className="container mx-auto px-4 py-12 text-center">Chargement du produit...</div>;
+  }
   
-  if (isProductLoading || !product) {
-    return <div className="text-center py-12">Chargement du produit...</div>;
+  if (!product) {
+    notFound();
   }
   
   const averageRating = product.reviews && product.reviews.length > 0 ? product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length : 0;
@@ -247,3 +244,5 @@ export default function ProductPage({ params }: ProductPageProps) {
     </div>
   );
 }
+
+    
