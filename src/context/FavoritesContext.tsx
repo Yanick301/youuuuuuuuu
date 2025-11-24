@@ -23,6 +23,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<string[]>([]);
 
   useEffect(() => {
+    // This code now runs only on the client
     try {
       const storedFavorites = localStorage.getItem('atelier-luxe-favorites');
       if (storedFavorites) {
@@ -31,7 +32,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Failed to load favorites from localStorage', error);
     }
-  }, []);
+  }, []); // Empty dependency array ensures this runs once on mount
 
   const updateLocalStorage = (updatedFavorites: string[]) => {
     try {

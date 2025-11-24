@@ -14,23 +14,24 @@ type CartContextType = {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const getInitialCart = (): CartItem[] => {
-  if (typeof window === 'undefined') {
-    return [];
-  }
-  try {
-    const storedCart = localStorage.getItem('ezcentials-cart');
-    return storedCart ? JSON.parse(storedCart) : [];
-  } catch (error) {
-    console.error('Failed to parse cart from localStorage', error);
-    return [];
-  }
-};
-
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>(getInitialCart);
+  const [cart, setCart] = useState<CartItem[]>([]);
 
   useEffect(() => {
+    // This code now runs only on the client
+    try {
+      const storedCart = localStorage.getItem('ezcentials-cart');
+      if (storedCart) {
+        setCart(JSON.parse(storedCart));
+      }
+    } catch (error) {
+      console.error('Failed to parse cart from localStorage', error);
+      setCart([]);
+    }
+  }, []); // Empty dependency array ensures this runs once on mount
+
+  useEffect(() => {
+    // This effect runs whenever the cart changes, but only on the client
     try {
       localStorage.setItem('ezcentials-cart', JSON.stringify(cart));
     } catch (error) {

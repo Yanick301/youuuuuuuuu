@@ -13,6 +13,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState('de');
 
   useEffect(() => {
+    // This code now runs only on the client
     const storedLang = localStorage.getItem('ezcentials-lang');
     if (storedLang && ['de', 'fr', 'en'].includes(storedLang)) {
       setLanguageState(storedLang);
@@ -21,10 +22,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         if (['de', 'fr', 'en'].includes(browserLang)) {
             setLanguageState(browserLang);
         } else {
-            setLanguageState('de');
+            setLanguageState('de'); // Default language
         }
     }
-  }, []);
+  }, []); // Empty dependency array ensures this runs once on mount
 
   const setLanguage = (lang: string) => {
     if (['de', 'fr', 'en'].includes(lang)) {
