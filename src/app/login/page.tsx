@@ -106,7 +106,7 @@ export default function LoginPage() {
                             <FormItem>
                                 <FormLabel><TranslatedText fr="Email">Email</TranslatedText></FormLabel>
                                 <FormControl>
-                                <Input type="email" placeholder="votre@email.com" {...field} className="border-0 bg-input" />
+                                <Input type="email" {...field} className="border-0 bg-input" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -121,7 +121,7 @@ export default function LoginPage() {
                                     <FormLabel><TranslatedText fr="Mot de passe">Mot de passe</TranslatedText></FormLabel>
                                 </div>
                                 <FormControl>
-                                <Input type="password" placeholder="********" {...field} className="border-0 bg-input" />
+                                <Input type="password" {...field} className="border-0 bg-input" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

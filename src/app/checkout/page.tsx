@@ -108,7 +108,7 @@ export default function CheckoutPage() {
                         <FormItem>
                           <FormLabel><TranslatedText fr="Nom complet">Vollständiger Name</TranslatedText></FormLabel>
                           <FormControl>
-                            <Input placeholder="Jane Doe" {...field} />
+                            <Input {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -123,7 +123,7 @@ export default function CheckoutPage() {
                             <FormItem>
                             <FormLabel><TranslatedText fr="Email">Email</TranslatedText></FormLabel>
                             <FormControl>
-                                <Input type="email" placeholder="sie@beispiel.com" {...field} />
+                                <Input type="email" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -138,7 +138,7 @@ export default function CheckoutPage() {
                             <FormItem>
                             <FormLabel><TranslatedText fr="Adresse">Adresse</TranslatedText></FormLabel>
                             <FormControl>
-                                <Input placeholder="Hauptstraße 123" {...field} />
+                                <Input {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -153,7 +153,7 @@ export default function CheckoutPage() {
                             <FormItem>
                             <FormLabel><TranslatedText fr="Ville">Stadt</TranslatedText></FormLabel>
                             <FormControl>
-                                <Input placeholder="Musterstadt" {...field} />
+                                <Input {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -168,7 +168,7 @@ export default function CheckoutPage() {
                             <FormItem>
                             <FormLabel><TranslatedText fr="Code postal">PLZ / Postleitzahl</TranslatedText></FormLabel>
                             <FormControl>
-                                <Input placeholder="12345" {...field} />
+                                <Input {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -183,7 +183,7 @@ export default function CheckoutPage() {
                             <FormItem>
                             <FormLabel><TranslatedText fr="Pays">Land</TranslatedText></FormLabel>
                             <FormControl>
-                                <Input placeholder="Deutschland" {...field} />
+                                <Input {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>

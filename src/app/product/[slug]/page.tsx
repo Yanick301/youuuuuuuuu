@@ -191,7 +191,6 @@ export default function ProductPage({ params }: ProductPageProps) {
                                 id="comment"
                                 value={newReviewComment}
                                 onChange={(e) => setNewReviewComment(e.target.value)}
-                                placeholder={language === 'fr' ? "Partagez vos impressions..." : "Teilen Sie Ihre Gedanken..."}
                                 rows={4}
                             />
                         </div>

@@ -73,7 +73,6 @@ export function SearchDialog() {
             <Input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="z.B. 'Wollmantel'"
                 aria-label="Suche"
                 className="text-base"
             />

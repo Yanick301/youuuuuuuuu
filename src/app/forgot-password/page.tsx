@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -85,7 +86,7 @@ export default function ForgotPasswordPage() {
                             <FormItem>
                                 <FormLabel><TranslatedText fr="Email">Email</TranslatedText></FormLabel>
                                 <FormControl>
-                                    <Input type="email" placeholder="m@example.com" {...field} />
+                                    <Input type="email" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
