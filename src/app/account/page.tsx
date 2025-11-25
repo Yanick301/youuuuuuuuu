@@ -9,12 +9,12 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useUser, useAuth } from '@/firebase';
+import { useUser, useAuth, useStorage } from '@/firebase';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Heart, ListOrdered, User, Camera, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { updateProfile } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,7 @@ import { useLanguage } from '@/context/LanguageContext';
 export default function AccountPage() {
   const { user } = useUser();
   const auth = useAuth();
+  const storage = useStorage();
   const { toast } = useToast();
   const { language } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -42,12 +43,11 @@ export default function AccountPage() {
   };
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || event.target.files.length === 0 || !user) {
+    if (!event.target.files || event.target.files.length === 0 || !user || !storage) {
       return;
     }
     
     const file = event.target.files[0];
-    const storage = getStorage();
     setIsUploading(true);
 
     try {

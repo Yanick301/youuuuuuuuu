@@ -24,6 +24,7 @@ import {
   useFirestore,
   useUser,
   useMemoFirebase,
+  useStorage,
 } from '@/firebase';
 import {
   collection,
@@ -38,7 +39,6 @@ import { format } from 'date-fns';
 import { fr, de, enUS } from 'date-fns/locale';
 import { useLanguage } from '@/context/LanguageContext';
 import {
-  getStorage,
   ref as storageRef,
   uploadBytes,
   getDownloadURL,
@@ -70,7 +70,7 @@ export default function OrdersPage() {
   const { user } = useUser();
   const firestore = useFirestore();
   const { language } = useLanguage();
-  const storage = getStorage();
+  const storage = useStorage();
   const { toast } = useToast();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
