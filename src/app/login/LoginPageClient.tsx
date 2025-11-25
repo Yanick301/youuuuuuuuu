@@ -69,20 +69,32 @@ export default function LoginPageClient() {
     const userRef = doc(firestore, 'userProfiles', user.uid);
     const userDoc = await getDoc(userRef);
 
+    let profileData: any = {};
+    let mustUpdate = false;
+
     if (!userDoc.exists()) {
-      let profileData: any = {
+      profileData = {
           id: user.uid,
           email: user.email,
           firstName: user.displayName?.split(' ')[0] || '',
           lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
           registrationDate: serverTimestamp(),
       };
+      mustUpdate = true;
+    } else {
+      profileData = userDoc.data();
+    }
 
-      if (user.email === 'ezcentials@gmail.com') {
+    // Ensure admin status is correctly set on every login for the admin account
+    if (user.email === 'ezcentials@gmail.com') {
+      if (!profileData.isAdmin) {
         profileData.isAdmin = true;
+        mustUpdate = true;
       }
-      
-      await setDoc(userRef, profileData);
+    }
+    
+    if (mustUpdate) {
+        await setDoc(userRef, profileData, { merge: true });
     }
   };
 
