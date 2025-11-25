@@ -3,33 +3,40 @@
 
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { user, isUserLoading, profile, isProfileLoading } = useUser();
+  const { user, profile, isUserLoading, isProfileLoading } = useUser();
   const router = useRouter();
+  const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
+    // Wait until both user and profile loading are complete
     if (isUserLoading || isProfileLoading) {
-      return; // Wait for everything to load
+      return;
     }
-    
-    // If no user or user is not an admin, redirect
-    if (!user || !profile?.isAdmin) {
-      router.push('/login');
-    }
-  }, [user, isUserLoading, profile, isProfileLoading, router]);
 
-  // While loading or if user is not authorized (before effective redirection)
-  if (isUserLoading || isProfileLoading || !user || !profile || !profile.isAdmin) {
+    // Once loading is done, check for admin status
+    if (!profile?.isAdmin) {
+      router.push('/login');
+    } else {
+      // Mark auth as checked if user is an admin
+      setAuthChecked(true);
+    }
+  }, [user, profile, isUserLoading, isProfileLoading, router]);
+
+  // If auth hasn't been checked yet, show a loading state
+  if (!authChecked) {
     return (
       <div className="container mx-auto flex min-h-[80vh] flex-col items-center justify-center px-4 text-center">
         <Loader2 className="h-12 w-12 animate-spin text-primary" />
         <p className="mt-4 text-lg text-muted-foreground">Vérification de l'accès...</p>
-         {!isUserLoading && !isProfileLoading && (!user || !profile?.isAdmin) && (
+        
+        {/* Show access denied message only after loading is complete and access is denied */}
+        {!isUserLoading && !isProfileLoading && !profile?.isAdmin && (
             <div className='mt-8'>
                 <p className='text-destructive font-semibold'>Accès non autorisé.</p>
                 <p className='text-sm text-muted-foreground'>Vous allez être redirigé vers la page de connexion.</p>
@@ -42,6 +49,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  // If the user is an admin
+  // If auth has been checked and user is an admin, render the children
   return <div>{children}</div>;
 }
