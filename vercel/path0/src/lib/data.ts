@@ -7,6 +7,7 @@ export const categories: Category[] = [
   { id: 'cat-3', name: 'Accessoires', name_fr: 'Accessoires', name_en: 'Accessories', slug: 'accessories', imageId: 'accessories-category' },
   { id: 'cat-5', name: 'Schuhe', name_fr: 'Chaussures', name_en: 'Shoes', slug: 'shoes', imageId: 'shoes-category' },
   { id: 'cat-4', name: 'Winterkleidung', name_fr: 'Vêtements d\'hiver', name_en: 'Winter Clothing', slug: 'winter-clothing', imageId: 'winter-category' },
+  { id: 'cat-6', name: 'Sport', name_fr: 'Sport', name_en: 'Sport', slug: 'sport', imageId: 'sport-category' },
 ];
 
 export const products: Product[] = [
@@ -55,7 +56,7 @@ export const products: Product[] = [
     description: 'Eine luxuriöse Pulloverkleid aus reinem Kaschmir, für eine komfortable und warme Eleganz. Seine lockere Passform und die Weichheit des Materials machen es zu einem Kokon des Luxus für den Winter.',
     description_fr: 'Une robe pull luxueuse en pur cachemire, pour une élégance confortable et chaleureuse. Sa coupe décontractée et la douceur de sa maille en font un cocon de luxe pour l\'hiver.',
     description_en: 'A luxurious sweater dress in pure cashmere, for comfortable and warm elegance. Its relaxed fit and the softness of its knit make it a cocoon of luxury for the winter.',
-    category: 'winter-clothing',
+    category: 'womens-clothing',
     images: ['robe-pull-en-cachemire-max-mara'],
     reviews: [
       { author: 'Elodie', rating: 5, comment: 'Incroyablement douce et confortable, tout en restant très chic.' },
@@ -120,7 +121,7 @@ export const products: Product[] = [
     description: 'Eine romantische und moderne Silhouette. Dieser Pullover mit U-Boot-Ausschnitt zeichnet sich durch seine voluminösen Ballonärmel aus und verleiht jedem Outfit einen Hauch von Couture.',
     description_fr: 'Une silhouette romantique et moderne. Ce pull à col bateau se distingue par ses manches ballon volumineuses, apportant une touche couture à n\'importe quelle tenue.',
     description_en: 'A romantic and modern silhouette. This boatneck sweater is distinguished by its voluminous balloon sleeves, bringing a couture touch to any outfit.',
-    category: 'winter-clothing',
+    category: 'womens-clothing',
     images: ['pull-col-bateau-manches-ballon-chloe'],
     reviews: [
       { author: 'Emma', rating: 5, comment: 'Les manches sont magnifiques, c\'est une pièce très originale.' },
@@ -655,7 +656,7 @@ export const products: Product[] = [
     description: 'Der lässige Luxus in seiner reinsten Form. Dieser Cardigan mit Reißverschluss aus reinem Kaschmir ist unglaublich weich und vielseitig und kann allein oder als Schicht getragen werden.',
     description_fr: 'Le luxe décontracté à son paroxysme. Ce cardigan zippé en pur cachemire est d\'une douceur et d\'une polyvalence inégalées, à porter seul ou en superposition.',
     description_en: 'Casual luxury at its finest. This pure cashmere zip-up cardigan is incredibly soft and versatile, to be worn alone or as a layer.',
-    category: 'winter-clothing',
+    category: 'mens-clothing',
     images: ['cardigan-zippe-cachemire-brunello-cucinelli'],
     reviews: [
         { author: 'Gaspard', rating: 5, comment: 'Une pièce d\'une qualité exceptionnelle. Le prix est justifié.'}
@@ -735,7 +736,7 @@ export const products: Product[] = [
     description: 'Ein zeitloser Klassiker neu interpretiert. Dieser Pullover mit Zopfmuster ist aus weicher Wolle gefertigt und verfügt über die für Paul Smith typischen subtilen Farbakzente.',
     description_fr: 'Un classique intemporel revisité. Ce pull à torsades est confectionné dans une laine douce et présente les touches de couleur subtiles signatures de Paul Smith.',
     description_en: 'A timeless classic revisited. This cable-knit sweater is made of soft wool and features the subtle color touches signature of Paul Smith.',
-    category: 'winter-clothing',
+    category: 'mens-clothing',
     images: ['pull-torsade-paul-smith'],
     reviews: [
         { author: 'Adrien', rating: 5, comment: 'Très beau pull, la petite touche de couleur fait toute la différence.'}
@@ -767,108 +768,10 @@ export const products: Product[] = [
     description: 'Eine schicke und funktionale Schicht. Diese ärmellose Weste aus dem ikonischen Nylon von Prada verleiht jedem Outfit einen Hauch von modernem und anspruchsvollem Luxus.',
     description_fr: 'Une couche chic et fonctionnelle. Ce gilet sans manches, en nylon iconique de Prada, ajoute une touche de luxe moderne et sophistiqué à n\'importe quelle tenue.',
     description_en: 'A chic and functional layer. This sleeveless vest, in Prada\'s iconic nylon, adds a touch of modern and sophisticated luxury to any outfit.',
-    category: 'winter-clothing',
+    category: 'mens-clothing',
     images: ['gilet-sans-manches-prada'],
     reviews: [
         { author: 'David', rating: 5, comment: 'Très polyvalent. Je le porte sur une chemise ou sous un manteau.'}
-    ]
-  },
-  {
-    id: 'acc-1',
-    name: 'Chrono Luxe Uhr',
-    name_fr: 'Montre Chrono Luxe',
-    name_en: 'Chrono Luxe Watch',
-    slug: 'montre-acier-inoxydable-noire-chrono-luxe',
-    price: 310,
-    description: 'Eine kühne Ästhetik für das Handgelenk. Diese Chronographenuhr aus mattschwarzem Edelstahl ist ein Symbol für moderne Raffinesse. Sie vereint anspruchsvolle Funktionalität mit einem entschieden urbanen und kraftvollen Design.',
-    description_fr: 'Une esthétique audacieuse pour le poignet. Cette montre chronographe en acier inoxydable noir mat est un symbole de sophistication moderne. Elle allie une fonctionnalité pointue à un design résolument urbain et puissant.',
-    description_en: 'A bold aesthetic for the wrist. This matte black stainless steel chronograph watch is a symbol of modern sophistication. It combines sharp functionality with a resolutely urban and powerful design.',
-    category: 'accessories',
-    images: ['montre-acier-inoxydable-noire-chrono-luxe'],
-    reviews: [
-        { author: 'Marc', rating: 5, comment: 'Superbe montre, très classe et agréable à porter.' },
-        { author: 'David', rating: 5, comment: 'Le noir mat est magnifique. Elle ne quitte plus mon poignet.'}
-    ]
-  },
-  {
-    id: 'acc-3',
-    name: 'Heritage Classic Uhr',
-    name_fr: 'Montre Heritage Classique',
-    name_en: 'Heritage Classic Watch',
-    slug: 'montre-cuir-brun-heritage-classique',
-    price: 260,
-    description: 'Eine Hommage an die zeitlose Uhrmacherkunst. Diese Uhr mit ihrem braunen Lederarmband, das mit der Zeit eine wunderschöne Patina entwickelt, und ihrem minimalistischen Zifferblatt verkörpert eine unaufdringliche und ewige Eleganz.',
-    description_fr: 'Un hommage à l\'horlogerie intemporelle. Cette montre, avec son bracelet en cuir brun qui se patinera superbement avec le temps et son cadran épuré, incarne une élégance discrète et éternelle.',
-    description_en: 'A tribute to timeless watchmaking. This watch, with its brown leather strap that will develop a beautiful patina over time and its minimalist dial, embodies a discreet and eternal elegance.',
-    category: 'accessories',
-    images: ['montre-cuir-brun-heritage-classique'],
-    reviews: [
-        { author: 'Jean', rating: 5, comment: 'Magnifique et très agréable à porter. Un classique.' },
-        { author: 'Pierre', rating: 5, comment: 'Le cuir est de très belle qualité.'}
-    ]
-  },
-  {
-    id: 'acc-4',
-    name: 'Blue Vision Uhr',
-    name_fr: 'Montre Blue Vision',
-    name_en: 'Blue Vision Watch',
-    slug: 'montre-metallique-argent-blue-vision',
-    price: 210,
-    description: 'Fesseln Sie die Blicke mit dem tiefblauen Zifferblatt dieser Uhr, das an einen mitternächtlichen Himmel erinnert. Eingefasst in poliertes silbernes Metall, ist sie ein Schmuckstück von moderner und fesselnder Eleganz.',
-    description_fr: 'Capturez les regards avec le cadran bleu profond de cette montre, évoquant un ciel de minuit. Enchâssée dans un métal argenté poli, c\'est un bijou d\'une élégance moderne et captivante.',
-    description_en: 'Capture gazes with the deep blue dial of this watch, reminiscent of a midnight sky. Encased in polished silver metal, it is a jewel of modern and captivating elegance.',
-    category: 'accessories',
-    images: ['montre-metallique-argent-blue-vision'],
-    reviews: [
-        { author: 'Daniel', rating: 5, comment: 'Le cadran bleu est tout simplement hypnotique.'}
-    ]
-  },
-  {
-    id: 'acc-6',
-    name: 'Executive Elite Uhr',
-    name_fr: 'Montre Executive Elite',
-    name_en: 'Executive Elite Watch',
-    slug: 'montre-cadran-or-rose-executive-elite',
-    price: 380,
-    description: 'Für den Mann, der an der Spitze steht. Die sanften und warmen Töne des Roségold-Zifferblatts verleihen dieser prestigeträchtigen Uhr eine moderne und anspruchsvolle Note. Ein Symbol für Erfolg und raffinierten Geschmack.',
-    description_fr: 'Pour l\'homme qui est au sommet. Les tons doux et chauds du cadran en or rose confèrent à cette montre de prestige une touche de modernité et d\'exigence. Un symbole de réussite et de goût raffiné.',
-    description_en: 'For the man at the top. The soft and warm tones of the rose gold dial give this prestigious watch a touch of modernity and sophistication. A symbol of success and refined taste.',
-    category: 'accessories',
-    images: ['montre-cadran-or-rose-executive-elite'],
-    reviews: [
-        { author: 'Charles', rating: 5, comment: 'Une montre qui impose le respect. Finitions impeccables.'}
-    ]
-  },
-  {
-    id: 'acc-8',
-    name: 'Nordic Luxe Wollmütze',
-    name_fr: 'Bonnet en laine Nordic Luxe',
-    name_en: 'Nordic Luxe Wool Beanie',
-    slug: 'bonnet-laine-torsadee-noir-nordic-luxe',
-    price: 80,
-    description: 'Wärme und Textur für Ihre Wintertage. Diese Mütze aus reiner Wolle mit Zopfstrickmuster bietet einen schicken und gemütlichen Stil. Ein unverzichtbares Accessoire, um der Kälte mit nordischer Eleganz zu trotzen.',
-    description_fr: 'De la chaleur et de la texture pour vos journées d\'hiver. Ce bonnet en pure laine, au tricot torsadé, offre un style chic et douillet. Un accessoire indispensable pour affronter le froid avec une élégance nordique.',
-    description_en: 'Warmth and texture for your winter days. This pure wool beanie with a cable knit pattern offers a chic and cozy style. An essential accessory to face the cold with Nordic elegance.',
-    category: 'accessories',
-    images: ['bonnet-laine-torsadee-noir-nordic-luxe'],
-    reviews: [
-        { author: 'Elsa', rating: 5, comment: 'Très chaud et la laine ne gratte pas. J\'adore !'}
-    ]
-  },
-  {
-    id: 'acc-9',
-    name: 'Winter Essential Mütze',
-    name_fr: 'Bonnet Winter Essential',
-    name_en: 'Winter Essential Beanie',
-    slug: 'bonnet-epais-gris-winter-essential',
-    price: 80,
-    description: 'Schlichtheit und Funktionalität. Diese dicke Mütze in neutralem Grau ist das unverzichtbare Accessoire, das sich leicht mit all Ihren Wintermänteln kombinieren lässt, um stilvoll warm zu bleiben.',
-    description_fr: 'La simplicité et l\'efficacité. Ce bonnet épais d\'un gris neutre est l\'accessoire essentiel qui s\'associe facilement à tous vos manteaux d\'hiver pour rester au chaud avec style.',
-    description_en: 'Simplicity and efficiency. This thick, neutral grey beanie is the essential accessory that easily pairs with all your winter coats to stay warm in style.',
-    category: 'accessories',
-    images: ['bonnet-epais-gris-winter-essential'],
-    reviews: [
-        { author: 'Martin', rating: 5, comment: 'Simple, chaud, efficace. Exactement ce que je cherchais.'}
     ]
   },
   {
@@ -905,22 +808,6 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 'acc-12',
-    name: 'Urban Knit Mütze',
-    name_fr: 'Bonnet Urban Knit',
-    name_en: 'Urban Knit Beanie',
-    slug: 'bonnet-streetwear-a-revers-urban-knit',
-    price: 80,
-    description: 'Das Markenzeichen des urbanen Stils. Diese Mütze mit ihrem charakteristischen Umschlag ist das unverzichtbare Accessoire, um jedem lässigen Outfit einen trendigen und modernen Streetwear-Touch zu verleihen.',
-    description_fr: 'La marque de fabrique du style urbain. Ce bonnet à revers caractéristique est l\'accessoire indispensable pour ajouter une touche streetwear tendance et moderne à n\'importe quelle tenue décontractée.',
-    description_en: 'The hallmark of urban style. This cuffed beanie is the essential accessory to add a trendy and modern streetwear touch to any casual outfit.',
-    category: 'accessories',
-    images: ['bonnet-streetwear-a-revers-urban-knit'],
-    reviews: [
-        { author: 'Dylan', rating: 5, comment: 'Style parfait, je le porte tout le temps.'}
-    ]
-  },
-  {
     id: 'acc-13',
     name: 'Tech Gloves',
     name_fr: 'Gants Tech Gloves',
@@ -935,151 +822,6 @@ export const products: Product[] = [
     images: ['gants-tactiles-thermiques-tech-gloves'],
     reviews: [
         { author: 'Laura', rating: 5, comment: 'Enfin des gants qui fonctionnent vraiment avec mon téléphone !'}
-    ]
-  },
-  {
-    id: 'acc-14',
-    name: 'Slimfold Premium Portemonnaie',
-    name_fr: 'Portefeuille Slimfold Premium',
-    name_en: 'Slimfold Premium Wallet',
-    slug: 'portefeuille-cuir-veritable-slimfold-premium',
-    price: 85,
-    description: 'Eleganz in Ihrer Tasche. Dieses schlanke Portemonnaie aus echtem Leder ist so konzipiert, dass es sich diskret in Ihre Tasche schmiegt und gleichzeitig Ihre wichtigsten Karten und Geldscheine mit Raffinesse organisiert.',
-    description_fr: 'L\'élégance dans votre poche. Ce portefeuille slim en cuir véritable est conçu pour se glisser discrètement dans votre poche tout en organisant vos cartes et billets essentiels avec raffinement.',
-    description_en: 'Elegance in your pocket. This slim genuine leather wallet is designed to discreetly slip into your pocket while organizing your essential cards and cash with refinement.',
-    category: 'accessories',
-    images: ['portefeuille-cuir-veritable-slimfold-premium'],
-    reviews: [
-        { author: 'Vincent', rating: 5, comment: 'Très fin et le cuir est de grande qualité. Parfait.'}
-    ]
-  },
-  {
-    id: 'acc-15',
-    name: 'Executive Umhängetasche',
-    name_fr: 'Sacoche bandoulière Executive',
-    name_en: 'Executive Crossbody Bag',
-    slug: 'sacoche-bandouliere-cuir-premium-executive-bag',
-    price: 240,
-    description: 'Der ideale Partner für den modernen Geschäftsmann. Diese Umhängetasche aus hochwertigem Leder vereint Funktionalität und Eleganz. Ihre durchdachten Fächer ermöglichen es Ihnen, Ihre täglichen Essentials mit Stil zu organisieren.',
-    description_fr: 'Le partenaire idéal de l\'homme d\'affaires moderne. Cette sacoche en bandoulière, fabriquée dans un cuir de première qualité, allie fonctionnalité et élégance. Ses compartiments bien pensés vous permettent d\'organiser vos essentiels quotidiens avec style.',
-    description_en: 'The ideal partner for the modern businessman. This premium leather crossbody bag combines functionality and elegance. Its well-thought-out compartments allow you to organize your daily essentials with style.',
-    category: 'accessories',
-    images: ['sacoche-bandouliere-cuir-premium-executive-bag'],
-    reviews: [
-        { author: 'Alexandre', rating: 5, comment: 'Taille parfaite et très professionnelle. Je recommande.'}
-    ]
-  },
-  {
-    id: 'acc-16',
-    name: 'Golden Lady Uhr',
-    name_fr: 'Montre Golden Lady',
-    name_en: 'Golden Lady Watch',
-    slug: 'montre-elegante-doree-golden-lady',
-    price: 330,
-    description: 'Ein Schmuckstück, das die Zeit anzeigt. Diese vergoldete Uhr ist eine Ode an die Weiblichkeit. Ihr strahlendes Finish und ihr raffiniertes Design machen sie zum perfekten Accessoire, um jedes Outfit mit einem Hauch von Glamour zu erleuchten.',
-    description_fr: 'Un bijou qui donne l\'heure. Cette montre plaquée or est une ode à la féminité. Sa finition éclatante et son design raffiné en font l\'accessoire parfait pour illuminer chaque tenue d\'une touche de glamour.',
-    description_en: 'A jewel that tells time. This gold-plated watch is an ode to femininity. Its radiant finish and refined design make it the perfect accessory to illuminate any outfit with a touch of glamour.',
-    category: 'accessories',
-    images: ['montre-elegante-doree-golden-lady'],
-    reviews: [
-        { author: 'Marie', rating: 5, comment: 'Absolument magnifique, je l\'adore ! Elle est encore plus belle en vrai.' },
-        { author: 'Juliette', rating: 5, comment: 'Un vrai bijou. Je reçois des compliments à chaque fois que je la porte.'}
-    ]
-  },
-  {
-    id: 'acc-17',
-    name: 'Silver Pure Uhr',
-    name_fr: 'Montre Silver Pure',
-    name_en: 'Silver Pure Watch',
-    slug: 'montre-argentee-minimaliste-silver-pure',
-    price: 240,
-    description: 'Die Kunst der Schlichtheit. Diese minimalistische, versilberte Uhr verkörpert reine und zeitlose Eleganz. Ihr schlichtes Design und ihre makellose Verarbeitung machen sie zu einem vielseitigen Accessoire für jeden Anlass.',
-    description_fr: 'L\'art de la simplicité. Cette montre minimaliste en métal argenté incarne une élégance pure et intemporelle. Son design épuré et sa finition impeccable en font un accessoire polyvalent pour toutes les occasions.',
-    description_en: 'The art of simplicity. This minimalist silver-plated watch embodies pure and timeless elegance. Its clean design and flawless finish make it a versatile accessory for any occasion.',
-    category: 'accessories',
-    images: ['montre-argentee-minimaliste-silver-pure'],
-    reviews: [
-      { author: 'Clara', rating: 5, comment: 'Simple, élégante, parfaite. C\'est exactement ce que je voulais.'}
-    ]
-  },
-  {
-    id: 'acc-18',
-    name: 'Soft Elegance Uhr',
-    name_fr: 'Montre Soft Elegance',
-    name_en: 'Soft Elegance Watch',
-    slug: 'montre-cuir-beige-soft-elegance',
-    price: 210,
-    description: 'Eine sanfte und raffinierte Note für Ihr Handgelenk. Das Armband aus weichem beigem Leder und das schlichte Zifferblatt dieser Uhr schaffen eine Harmonie von subtiler und femininer Eleganz.',
-    description_fr: 'Une touche de douceur et de raffinement pour votre poignet. Le bracelet en cuir beige souple et le cadran épuré de cette montre créent une harmonie d\'élégance subtile et féminine.',
-    description_en: 'A touch of softness and refinement for your wrist. The soft beige leather strap and the clean dial of this watch create a harmony of subtle and feminine elegance.',
-    category: 'accessories',
-    images: ['montre-cuir-beige-soft-elegance'],
-    reviews: [
-        { author: 'Audrey', rating: 5, comment: 'La couleur est très douce et la montre est très confortable.'}
-    ]
-  },
-  {
-    id: 'acc-19',
-    name: 'Rose Queen Uhr',
-    name_fr: 'Montre Rose Queen',
-    name_en: 'Rose Queen Watch',
-    slug: 'montre-rose-gold-maille-milanaise-rose-queen',
-    price: 280,
-    description: 'Die Königin der Uhren an Ihrem Handgelenk. Das Milanaise-Armband aus Roségold schmiegt sich elegant an die Haut, während das funkelnde Zifferblatt bei jeder Bewegung das Licht einfängt. Eine Uhr für die moderne Königin.',
-    description_fr: 'La reine des montres à votre poignet. Son bracelet en maille milanaise couleur or rose épouse élégamment la peau, tandis que son cadran étincelant capture la lumière à chaque mouvement. Une montre pour la reine moderne.',
-    description_en: 'The queen of watches on your wrist. Its rose gold milanese mesh strap elegantly hugs the skin, while its sparkling dial captures the light with every movement. A watch for the modern queen.',
-    category: 'accessories',
-    images: ['montre-rose-gold-maille-milanaise-rose-queen'],
-    reviews: [
-        { author: 'Manon', rating: 5, comment: 'Je suis amoureuse de cette montre. Le bracelet est magnifique.'}
-    ]
-  },
-  {
-    id: 'acc-20',
-    name: 'Cozy Glam Mütze',
-    name_fr: 'Bonnet Cozy Glam',
-    name_en: 'Cozy Glam Beanie',
-    slug: 'bonnet-laine-pompon-fourrure-synthetique-cozy-glam',
-    price: 80,
-    description: 'Vereinen Sie Wärme und Glamour. Diese Wollmütze ist mit einem weichen Bommel aus hochwertigem Kunstpelz versehen, der Ihrem Winterlook einen Hauch von verspieltem Luxus verleiht.',
-    description_fr: 'Alliez chaleur et glamour. Ce bonnet en laine est surmonté d\'un pompon doux en fausse fourrure de haute qualité, ajoutant une touche de luxe ludique à votre look d\'hiver.',
-    description_en: 'Combine warmth and glamour. This wool beanie is topped with a soft, high-quality faux fur pom-pom, adding a touch of playful luxury to your winter look.',
-    category: 'accessories',
-    images: ['bonnet-laine-pompon-fourrure-synthetique-cozy-glam'],
-    reviews: [
-        { author: 'Jessica', rating: 5, comment: 'Très doux et le pompon est adorable !'}
-    ]
-  },
-  {
-    id: 'acc-21',
-    name: 'Urban Chic Mütze',
-    name_fr: 'Bonnet Urban Chic',
-    name_en: 'Urban Chic Beanie',
-    slug: 'bonnet-long-oversize-urban-chic',
-    price: 80,
-    description: 'Für einen lässigen und trendigen Stil. Diese lange Oversize-Mütze kann auf verschiedene Arten getragen werden, um Ihren urbanen und schicken Look zu vervollkommnen. Ein starkes Stück für einen selbstbewussten Stil.',
-    description_fr: 'Pour un style décontracté et tendance. Ce bonnet long et oversize peut être porté de différentes manières pour parfaire votre look urbain et chic. Une pièce forte pour un style affirmé.',
-    description_en: 'For a casual and trendy style. This long and oversized beanie can be worn in different ways to perfect your urban and chic look. A strong piece for an assertive style.',
-    category: 'accessories',
-    images: ['bonnet-long-oversize-urban-chic'],
-    reviews: [
-        { author: 'Mathieu', rating: 4, comment: 'Bonnet sympa, le style oversize est cool.'}
-    ]
-  },
-  {
-    id: 'acc-22',
-    name: 'Winter Pearl Mütze',
-    name_fr: 'Bonnet Winter Pearl',
-    name_en: 'Winter Pearl Beanie',
-    slug: 'bonnet-tricote-perle-winter-pearl',
-    price: 80,
-    description: 'Ein Hauch von Zartheit im Herzen des Winters. Diese gestrickte Mütze ist subtil mit kleinen Perlen verziert, die einen Hauch von Licht und winterlicher Poesie in Ihre Garderobe bringen.',
-    description_fr: 'Une touche de délicatesse au cœur de l\'hiver. Ce bonnet tricoté est subtilement orné de petites perles, apportant un éclat de lumière et une poésie hivernale à votre garde-robe.',
-    description_en: 'A touch of delicacy in the heart of winter. This knitted beanie is subtly adorned with small pearls, bringing a splash of light and winter poetry to your wardrobe.',
-    category: 'accessories',
-    images: ['bonnet-tricote-perle-winter-pearl'],
-    reviews: [
-        { author: 'Amélie', rating: 5, comment: 'Très original et féminin. J\'aime beaucoup les petites perles.'}
     ]
   },
   {
@@ -1117,38 +859,6 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 'acc-25',
-    name: 'Elegant Wrap Stola',
-    name_fr: 'Châle Elegant Wrap',
-    name_en: 'Elegant Wrap Shawl',
-    slug: 'chale-hiver-motif-elegant-elegant-wrap',
-    price: 95,
-    description: 'Mehr als nur ein Accessoire, ein Statement. Diese große Winterstola mit ihrem raffinierten und eleganten Muster wertet jedes Outfit auf, vom einfachen Mantel bis zum Abendkleid.',
-    description_fr: 'Plus qu\'un accessoire, une déclaration de style. Ce grand châle d\'hiver, avec son motif raffiné et élégant, sublime n\'importe quelle tenue, du simple manteau à la robe de soirée.',
-    description_en: 'More than an accessory, a style statement. This large winter shawl, with its refined and elegant pattern, enhances any outfit, from a simple coat to an evening dress.',
-    category: 'accessories',
-    images: ['chale-hiver-motif-elegant-elegant-wrap'],
-    reviews: [
-        { author: 'Béatrice', rating: 5, comment: 'Les motifs sont superbes et il est très grand et enveloppant.'}
-    ]
-  },
-  {
-    id: 'acc-26',
-    name: 'Cashmere Touch Foulard',
-    name_fr: 'Foulard Cashmere Touch',
-    name_en: 'Cashmere Touch Scarf',
-    slug: 'foulard-cachemire-imprime-cashmere-touch',
-    price: 150,
-    description: 'Die Weichheit von Kaschmir, die Kühnheit eines Drucks. Dieser Schal aus einem Kaschmirgemisch bietet ein luxuriöses Gefühl und einen Hauch von Farbe, um Ihre Looks in der Zwischensaison aufzuwerten.',
-    description_fr: 'La douceur du cachemire, l\'audace d\'un imprimé. Ce foulard en mélange de cachemire offre un toucher luxueux et une touche de couleur pour rehausser vos looks de mi-saison.',
-    description_en: 'The softness of cashmere, the boldness of a print. This cashmere blend scarf offers a luxurious feel and a touch of color to enhance your mid-season looks.',
-    category: 'accessories',
-    images: ['foulard-cachemire-imprime-cashmere-touch'],
-    reviews: [
-        { author: 'Diane', rating: 5, comment: 'Très doux et les couleurs sont magnifiques.'}
-    ]
-  },
-  {
     id: 'acc-27',
     name: 'Lady Warm Handschuhe',
     name_fr: 'Gants Lady Warm',
@@ -1163,54 +873,6 @@ export const products: Product[] = [
     images: ['gants-cuir-doubles-polaire-lady-warm'],
     reviews: [
         { author: 'Hélène', rating: 5, comment: 'Très chauds et le cuir est d\'une grande souplesse. Parfaits.'}
-    ]
-  },
-  {
-    id: 'acc-28',
-    name: 'Mini Glam Handtasche',
-    name_fr: 'Petit sac à main Mini Glam',
-    name_en: 'Mini Glam Handbag',
-    slug: 'petit-sac-a-main-chic-mini-glam',
-    price: 310,
-    description: 'Das unverzichtbare Accessoire für Ihre Abende. Diese schicke Minitasche mit ihren goldenen Details ist so konzipiert, dass sie Ihre wichtigsten Dinge aufnimmt und Ihrem Abendoutfit einen Hauch von Glamour verleiht.',
-    description_fr: 'L\'accessoire indispensable de vos soirées. Ce mini sac chic, avec ses détails dorés, est conçu pour contenir juste l\'essentiel et ajouter une touche de glamour à votre tenue de soirée.',
-    description_en: 'The essential accessory for your evenings. This chic mini bag, with its golden details, is designed to hold just the essentials and add a touch of glamour to your evening outfit.',
-    category: 'accessories',
-    images: ['petit-sac-a-main-chic-mini-glam'],
-    reviews: [
-        { author: 'Camille', rating: 5, comment: 'Adorable et juste assez grand pour mon téléphone et mon rouge à lèvres.'}
-    ]
-  },
-  {
-    id: 'acc-29',
-    name: 'Shine Drop Ohrringe',
-    name_fr: 'Boucles d\'oreilles Shine Drop',
-    name_en: 'Shine Drop Earrings',
-    slug: 'boucles-oreilles-pendantes-argentees-shine-drop',
-    price: 125,
-    description: 'Ein Tropfen Licht, um Ihr Gesicht zu erhellen. Diese hängenden Ohrringe aus poliertem Silber fangen das Licht bei jeder Bewegung ein und verleihen Ihrem Look einen subtilen und raffinierten Glanz.',
-    description_fr: 'Une goutte de lumière pour illuminer votre visage. Ces boucles d\'oreilles pendantes en argent poli capturent la lumière à chaque mouvement, ajoutant un éclat subtil et raffiné à votre allure.',
-    description_en: 'A drop of light to illuminate your face. These dangling polished silver earrings capture the light with every movement, adding a subtle and refined sparkle to your look.',
-    category: 'accessories',
-    images: ['boucles-oreilles-pendantes-argentees-shine-drop'],
-    reviews: [
-        { author: 'Marion', rating: 5, comment: 'Elles sont magnifiques et très légères à porter.'}
-    ]
-  },
-  {
-    id: 'acc-30',
-    name: 'Shine Night Clutch',
-    name_fr: 'Pochette Shine Night',
-    name_en: 'Shine Night Clutch',
-    slug: 'pochette-soiree-shine-night-premium',
-    price: 170,
-    description: 'Die perfekte Ergänzung zu Ihrem Abendkleid. Diese Clutch mit ihrem funkelnden Finish und ihrer eleganten Struktur ist so konzipiert, dass Sie Ihre wichtigsten Dinge aufnehmen und gleichzeitig ein modisches Statement setzen.',
-    description_fr: 'Le complément parfait de votre robe de soirée. Cette pochette à la finition scintillante et à la structure élégante est conçue pour contenir vos essentiels tout en étant une déclaration de mode à part entière.',
-    description_en: 'The perfect complement to your evening gown. This clutch with its sparkling finish and elegant structure is designed to hold your essentials while being a fashion statement in its own right.',
-    category: 'accessories',
-    images: ['pochette-soiree-shine-night-premium'],
-    reviews: [
-        { author: 'Eva', rating: 5, comment: 'Parfaite pour un mariage. J\'ai reçu beaucoup de compliments.'}
     ]
   },
   {
@@ -1272,146 +934,6 @@ export const products: Product[] = [
     category: 'winter-clothing',
     images: ['pull-col-roule-laine-merinos-paul-smith'],
     reviews: []
-  },
-  {
-    id: 'acc-31',
-    name: 'Sac Iconique en Cuir',
-    name_fr: 'Sac Iconique en Cuir',
-    name_en: 'Iconic Leather Bag',
-    slug: 'sac-iconique-cuir-femme',
-    price: 1200,
-    description: 'Mehr als nur eine Tasche, eine Legende. Dieses ikonische Stück aus genarbtem Kalbsleder ist ein Symbol für zeitlose Eleganz. Seine strukturierte Silhouette und die goldenen Details machen es zu einem sofort erkennbaren Meisterwerk.',
-    description_fr: 'Plus qu\'un sac, une légende. Cette pièce iconique en cuir de veau grainé est un symbole d\'élégance intemporelle. Sa silhouette structurée et ses détails dorés en font un chef-d\'œuvre reconnaissable entre tous.',
-    description_en: 'More than a bag, a legend. This iconic piece in grained calfskin is a symbol of timeless elegance. Its structured silhouette and gold details make it an instantly recognizable masterpiece.',
-    category: 'accessories',
-    images: ['sac-cuir-luxe'],
-    reviews: [{ author: 'Charlotte', rating: 5, comment: 'Un rêve devenu réalité. La qualité est incomparable.' }]
-  },
-  {
-    id: 'acc-32',
-    name: 'Ceinture en Cuir Logo',
-    name_fr: 'Ceinture en Cuir Logo',
-    name_en: 'Leather Logo Belt',
-    slug: 'ceinture-cuir-logo-femme',
-    price: 350,
-    description: 'Strukturieren Sie Ihre Silhouette mit diesem Statement-Accessoire. Diese Ledergürtel mit ihrer ikonischen Metallschnalle ist der perfekte Weg, um eine Taille zu betonen und jedem Outfit einen Hauch von Luxus zu verleihen.',
-    description_fr: 'Structurez votre silhouette avec cet accessoire statement. Cette ceinture en cuir, ornée de sa boucle métallique iconique, est le moyen idéal de marquer une taille et d\'ajouter une touche de luxe à n\'importe quelle tenue.',
-    description_en: 'Structure your silhouette with this statement accessory. This leather belt, adorned with its iconic metal buckle, is the perfect way to cinch a waist and add a touch of luxury to any outfit.',
-    category: 'accessories',
-    images: ['ceinture-cuir-logo'],
-    reviews: [{ author: 'Inès', rating: 5, comment: 'Elle transforme une simple robe. Indispensable.' }]
-  },
-  {
-    id: 'acc-33',
-    name: 'Carré de Soie Imprimé',
-    name_fr: 'Carré de Soie Imprimé',
-    name_en: 'Printed Silk Scarf',
-    slug: 'carre-soie-imprime-femme',
-    price: 250,
-    description: 'Ein Hauch von Farbe und Weichheit um den Hals. Dieses Carré aus reiner Seide ist mit einem kühnen und künstlerischen Muster verziert und ist ein vielseitiges Accessoire, das unendlich gebunden werden kann.',
-    description_fr: 'Une touche de couleur et de douceur autour du cou. Ce carré de pure soie, orné d\'un motif audacieux et artistique, est un accessoire polyvalent qui se noue à l\'infini.',
-    description_en: 'A touch of color and softness around the neck. This pure silk square, adorned with a bold and artistic pattern, is a versatile accessory that can be tied endlessly.',
-    category: 'accessories',
-    images: ['carre-de-soie'],
-    reviews: [{ author: 'Léa', rating: 5, comment: 'Les couleurs sont vibrantes, la soie est magnifique.' }]
-  },
-  {
-    id: 'acc-34',
-    name: 'Lunettes de Soleil Oeil de Chat',
-    name_fr: 'Lunettes de Soleil Oeil de Chat',
-    name_en: 'Cat-Eye Sunglasses',
-    slug: 'lunettes-soleil-oeil-chat-femme',
-    price: 290,
-    description: 'Ein geheimnisvoller und glamouröser Blick. Diese Sonnenbrille mit ihrer femininen Cat-Eye-Form ist das ultimative Accessoire, um einen Look mit einem Hauch von Hollywood-Diva zu vervollständigen.',
-    description_fr: 'Un regard mystérieux et glamour. Ces lunettes de soleil, avec leur forme œil de chat féminine, sont l\'accessoire ultime pour finir un look avec une touche de diva hollywoodienne.',
-    description_en: 'A mysterious and glamorous look. These sunglasses, with their feminine cat-eye shape, are the ultimate accessory to finish a look with a touch of Hollywood diva.',
-    category: 'accessories',
-    images: ['lunettes-soleil-cat-eye'],
-    reviews: [{ author: 'Manon', rating: 5, comment: 'Elles me donnent une allure incroyable !' }]
-  },
-  {
-    id: 'acc-35',
-    name: 'Porte-cartes en Cuir Matelassé',
-    name_fr: 'Porte-cartes en Cuir Matelassé',
-    name_en: 'Quilted Leather Cardholder',
-    slug: 'porte-cartes-cuir-matelasse-femme',
-    price: 220,
-    description: 'Ein kleines Stück Luxus für den Alltag. Dieser Kartenhalter aus gestepptem Leder ist sowohl praktisch als auch elegant. Seine kompakte Größe ermöglicht es ihm, sich in die kleinste Tasche zu schieben.',
-    description_fr: 'Un petit bout de luxe au quotidien. Ce porte-cartes en cuir matelassé est aussi pratique qu\'élégant. Sa taille compacte lui permet de se glisser dans le plus petit des sacs.',
-    description_en: 'A little piece of everyday luxury. This quilted leather cardholder is as practical as it is elegant. Its compact size allows it to slip into the smallest of bags.',
-    category: 'accessories',
-    images: ['porte-cartes-cuir'],
-    reviews: [{ author: 'Chloé', rating: 5, comment: 'Très chic et très pratique pour ne pas s\'encombrer.' }]
-  },
-  {
-    id: 'acc-36',
-    name: 'Broche Logo Cristaux',
-    name_fr: 'Broche Logo Cristaux',
-    name_en: 'Crystal Logo Brooch',
-    slug: 'broche-logo-cristaux-femme',
-    price: 410,
-    description: 'Der letzte Schliff. Diese mit funkelnden Kristallen besetzte Broche in Form des Logos des Hauses ist ein Schmuckstück, das einen Mantelkragen oder einen einfachen Pullover sofort aufwertet.',
-    description_fr: 'La touche finale. Cette broche sertie de cristaux étincelants, reprenant le logo de la maison, est un bijou qui rehausse instantanément un col de manteau ou un simple pull.',
-    description_en: 'The final touch. This sparkling crystal-set brooch, featuring the house logo, is a piece of jewelry that instantly enhances a coat collar or a simple sweater.',
-    category: 'accessories',
-    images: ['broche-logo-cristaux'],
-    reviews: [{ author: 'Juliette', rating: 5, comment: 'Sublime, elle ajoute une touche d\'éclat incroyable.' }]
-  },
-  {
-    id: 'acc-37',
-    name: 'Serre-tête en Velours Rembourré',
-    name_fr: 'Serre-tête en Velours Rembourré',
-    name_en: 'Padded Velvet Headband',
-    slug: 'serre-tete-velours-femme',
-    price: 320,
-    description: 'Ein königliches Accessoire. Dieses gepolsterte Samt-Haarreif verleiht jeder Frisur eine königliche und modische Dimension. Ein starkes Stück, das einen Look strukturiert.',
-    description_fr: 'Un accessoire royal. Ce serre-tête en velours rembourré donne une dimension royale et tendance à n\'importe quelle coiffure. Une pièce forte qui structure un look.',
-    description_en: 'A royal accessory. This padded velvet headband gives a regal and trendy dimension to any hairstyle. A strong piece that structures a look.',
-    category: 'accessories',
-    images: ['serre-tete-velours'],
-    reviews: [{ author: 'Alice', rating: 5, comment: 'Je me sens comme une princesse moderne. J\'adore !' }]
-  },
-  {
-    id: 'acc-38',
-    name: 'Sac seau en cuir',
-    name_fr: 'Sac seau en cuir',
-    name_en: 'Leather Bucket Bag',
-    slug: 'sac-seau-cuir-femme',
-    price: 850,
-    description: 'Die perfekte Kombination aus Lässigkeit und Raffinesse. Diese Beuteltasche aus weichem Leder bietet ein überraschend großes Volumen in einem modernen und schlichten Design.',
-    description_fr: 'L\'alliance parfaite de la décontraction et du raffinement. Ce sac seau en cuir souple offre un volume surprenant dans un design moderne et épuré.',
-    description_en: 'The perfect combination of casualness and refinement. This soft leather bucket bag offers surprising volume in a modern and clean design.',
-    category: 'accessories',
-    images: ['sac-seau-cuir'],
-    reviews: [{ author: 'Emma', rating: 5, comment: 'Très pratique et le cuir est magnifique.' }]
-  },
-  {
-    id: 'acc-39',
-    name: 'Manchette en métal doré',
-    name_fr: 'Manchette en métal doré',
-    name_en: 'Gold-Tone Cuff',
-    slug: 'manchette-metal-dore-femme',
-    price: 480,
-    description: 'Ein skulpturales Schmuckstück für das Handgelenk. Diese breite Manschette aus vergoldetem Metall ist ein kühnes Statement, das allein getragen werden kann, um einen kraftvollen und modernen Look zu schaffen.',
-    description_fr: 'Un bijou sculptural pour le poignet. Cette manchette large en métal doré est une déclaration audacieuse qui se porte seule pour un look puissant et moderne.',
-    description_en: 'A sculptural piece of jewelry for the wrist. This wide gold-tone cuff is a bold statement that can be worn alone for a powerful and modern look.',
-    category: 'accessories',
-    images: ['manchette-metal-dore'],
-    reviews: [{ author: 'Olivia', rating: 5, comment: 'Spectaculaire. Elle habille n\'importe quelle tenue.' }]
-  },
-  {
-    id: 'acc-40',
-    name: 'Étui à rouge à lèvres',
-    name_fr: 'Étui à rouge à lèvres',
-    name_en: 'Lipstick Case',
-    slug: 'etui-rouge-a-levres-femme',
-    price: 190,
-    description: 'Das ultimative schicke Accessoire. Dieses Lippenstift-Etui aus luxuriösem Leder, das an einer goldenen Kette hängt, ist mehr als nur Aufbewahrung, es ist ein Schmuckstück für sich.',
-    description_fr: 'L\'accessoire chic ultime. Cet étui à rouge à lèvres en cuir luxueux, suspendu à une chaîne dorée, est plus qu\'un rangement, c\'est un bijou à part entière.',
-    description_en: 'The ultimate chic accessory. This luxurious leather lipstick case, suspended from a gold chain, is more than just storage, it is a piece of jewelry in its own right.',
-    category: 'accessories',
-    images: ['etui-rouge-a-levres'],
-    reviews: [{ author: 'Victoria', rating: 5, comment: 'C\'est l\'accessoire le plus mignon et le plus chic que je possède.' }]
   },
   {
     id: 'prod-80',
@@ -1628,6 +1150,401 @@ export const products: Product[] = [
     category: 'winter-clothing',
     images: ['bogner-fire-ice-ski-parka'],
     reviews: []
+  },
+  {
+    id: 'sport-101',
+    name: 'Adidas by Stella McCartney Veste',
+    name_fr: 'Veste Adidas by Stella McCartney',
+    name_en: 'Adidas by Stella McCartney Jacket',
+    slug: 'adidas-stella-mccartney-veste',
+    price: 280,
+    description: 'Eine technische und schicke Jacke, perfekt für das Training bei kühlem Wetter, die Leistung und Stil vereint.',
+    description_fr: 'Une veste technique et chic, parfaite pour les entraînements par temps frais, alliant performance et style.',
+    description_en: 'A technical and chic jacket, perfect for cool weather training, combining performance and style.',
+    category: 'sport',
+    images: ['adidas-stella-mccartney-veste'],
+    reviews: []
+  },
+  {
+    id: 'sport-102',
+    name: 'Adidas by Stella McCartney Legging',
+    name_fr: 'Legging Adidas by Stella McCartney',
+    name_en: 'Adidas by Stella McCartney Legging',
+    slug: 'adidas-stella-mccartney-legging',
+    price: 150,
+    description: 'Hochleistungs-Leggings mit schmeichelhaftem Schnitt für optimale Bewegungsfreiheit.',
+    description_fr: 'Un legging haute performance avec une coupe flatteuse pour une liberté de mouvement optimale.',
+    description_en: 'High-performance leggings with a flattering cut for optimal freedom of movement.',
+    category: 'sport',
+    images: ['adidas-stella-mccartney-legging'],
+    reviews: []
+  },
+  {
+    id: 'sport-103',
+    name: 'Alo Yoga Veste Zippée',
+    name_fr: 'Veste Zippée Alo Yoga',
+    name_en: 'Alo Yoga Zip Jacket',
+    slug: 'alo-yoga-veste-zippee',
+    price: 180,
+    description: 'Eine weiche und bequeme Reißverschlussjacke, ideal zum Aufwärmen oder für einen lässigen Look nach dem Yoga.',
+    description_fr: 'Une veste zippée douce et confortable, idéale pour l\'échauffement ou pour un look décontracté post-yoga.',
+    description_en: 'A soft and comfortable zip jacket, ideal for warm-ups or for a casual post-yoga look.',
+    category: 'sport',
+    images: ['alo-yoga-veste-zippee'],
+    reviews: []
+  },
+  {
+    id: 'sport-104',
+    name: 'Alo Yoga Haut Entraînement',
+    name_fr: 'Haut d\'Entraînement Alo Yoga',
+    name_en: 'Alo Yoga Training Top',
+    slug: 'alo-yoga-haut-entrainement',
+    price: 90,
+    description: 'Ein atmungsaktives und stilvolles Trainingsoberteil, das für Komfort bei intensivsten Sitzungen entwickelt wurde.',
+    description_fr: 'Un haut d\'entraînement respirant et stylé, conçu pour le confort pendant les sessions les plus intenses.',
+    description_en: 'A breathable and stylish training top, designed for comfort during the most intense sessions.',
+    category: 'sport',
+    images: ['alo-yoga-haut-entrainement'],
+    reviews: []
+  },
+  {
+    id: 'sport-105',
+    name: 'HAUTE Motion Fleece Polaire',
+    name_fr: 'Polaire HAUTE Motion Fleece',
+    name_en: 'HAUTE Motion Fleece',
+    slug: 'haute-motion-fleece-polaire',
+    price: 220,
+    description: 'Ein luxuriöses Fleece für optimale Wärme, perfekt für Outdoor-Aktivitäten oder einen urbanen Winterlook.',
+    description_fr: 'Un polaire luxueux pour une chaleur optimale, parfait pour les activités de plein air ou un look urbain en hiver.',
+    description_en: 'A luxurious fleece for optimal warmth, perfect for outdoor activities or an urban winter look.',
+    category: 'sport',
+    images: ['haute-motion-fleece-polaire'],
+    reviews: []
+  },
+  {
+    id: 'sport-106',
+    name: 'HAUTE Legging Nomad',
+    name_fr: 'Legging Nomad HAUTE',
+    name_en: 'HAUTE Nomad Legging',
+    slug: 'haute-legging-nomad',
+    price: 130,
+    description: 'Technische Leggings mit modernem Design, die unübertroffenen Komfort und außergewöhnliche Haltbarkeit bieten.',
+    description_fr: 'Un legging technique au design moderne, offrant un confort inégalé et une durabilité exceptionnelle.',
+    description_en: 'Technical leggings with a modern design, offering unmatched comfort and exceptional durability.',
+    category: 'sport',
+    images: ['haute-legging-nomad'],
+    reviews: []
+  },
+  {
+    id: 'sport-107',
+    name: 'Loewe x On Brassière Sport',
+    name_fr: 'Brassière de Sport Loewe x On',
+    name_en: 'Loewe x On Sports Bra',
+    slug: 'loewe-on-brassiere-sport',
+    price: 190,
+    description: 'Die perfekte Kombination aus Luxus und Leistung, dieser Sport-BH bietet optimalen Halt mit einem Hauch von High-Fashion.',
+    description_fr: 'L\'alliance parfaite du luxe et de la performance, cette brassière de sport offre un maintien optimal avec une touche haute-couture.',
+    description_en: 'The perfect blend of luxury and performance, this sports bra offers optimal support with a high-fashion touch.',
+    category: 'sport',
+    images: ['loewe-on-brassiere-sport'],
+    reviews: []
+  },
+  {
+    id: 'sport-108',
+    name: 'Loewe x On Legging Actif',
+    name_fr: 'Legging Actif Loewe x On',
+    name_en: 'Loewe x On Active Legging',
+    slug: 'loewe-on-legging-actif',
+    price: 250,
+    description: 'Kombinieren Sie Stil und Funktion mit diesen Leggings, die aus der Zusammenarbeit zwischen Loewe und On hervorgegangen sind.',
+    description_fr: 'Associez style et fonctionnalité avec ce legging issu de la collaboration entre Loewe et On.',
+    description_en: 'Combine style and functionality with these leggings from the collaboration between Loewe and On.',
+    category: 'sport',
+    images: ['loewe-on-legging-actif'],
+    reviews: []
+  },
+  {
+    id: 'sport-109',
+    name: 'Loewe x On Storm Active Jacket',
+    name_fr: 'Veste Active Storm Loewe x On',
+    name_en: 'Loewe x On Storm Active Jacket',
+    slug: 'loewe-on-storm-active-jacket',
+    price: 450,
+    description: 'Eine technische Jacke, die für alle Bedingungen konzipiert wurde und Sie vor den Elementen schützt, ohne den Stil zu beeinträchtigen.',
+    description_fr: 'Une veste technique conçue pour toutes les conditions, vous protégeant des éléments sans compromis sur le style.',
+    description_en: 'A technical jacket designed for all conditions, protecting you from the elements without compromising on style.',
+    category: 'sport',
+    images: ['loewe-on-storm-active-jacket'],
+    reviews: []
+  },
+  {
+    id: 'sport-110',
+    name: 'Under Armour Halo Bonded Legging',
+    name_fr: 'Legging Halo Bonded Under Armour',
+    name_en: 'Under Armour Halo Bonded Legging',
+    slug: 'under-armour-halo-bonded-legging',
+    price: 110,
+    description: 'Innovatives Design für ein Gefühl wie eine zweite Haut und absoluten Komfort während des Trainings.',
+    description_fr: 'Un design innovant pour une sensation de seconde peau et un confort absolu pendant l\'effort.',
+    description_en: 'An innovative design for a second-skin feel and absolute comfort during exercise.',
+    category: 'sport',
+    images: ['under-armour-halo-bonded-legging'],
+    reviews: []
+  },
+  {
+    id: 'sport-111',
+    name: 'Diesel Sport Track Jacket',
+    name_fr: 'Veste de Survetement Diesel Sport',
+    name_en: 'Diesel Sport Track Jacket',
+    slug: 'diesel-sport-track-jacket',
+    price: 210,
+    description: 'Eine Trainingsjacke mit Retro-Look und modernem Touch, perfekt für einen sportlichen und trendigen Stil.',
+    description_fr: 'Une veste de survêtement au look rétro avec une touche moderne, parfaite pour un style sportif et tendance.',
+    description_en: 'A retro-look track jacket with a modern twist, perfect for a sporty and trendy style.',
+    category: 'sport',
+    images: ['diesel-sport-track-jacket'],
+    reviews: []
+  },
+  {
+    id: 'sport-112',
+    name: 'Nagnata Laine Combinaison Yoga',
+    name_fr: 'Combinaison de Yoga en Laine Nagnata',
+    name_en: 'Nagnata Wool Yoga Jumpsuit',
+    slug: 'nagnata-laine-combinaison-yoga',
+    price: 350,
+    description: 'Eine elegante und bequeme Yoga-Kombination aus Merinowolle für eine luxuriöse Praxis.',
+    description_fr: 'Une combinaison de yoga élégante et confortable en laine mérinos pour une pratique luxueuse.',
+    description_en: 'An elegant and comfortable merino wool yoga jumpsuit for a luxurious practice.',
+    category: 'sport',
+    images: ['nagnata-laine-combinaison-yoga'],
+    reviews: []
+  },
+  {
+    id: 'sport-113',
+    name: 'Lululemon Veste Premium',
+    name_fr: 'Veste Premium Lululemon',
+    name_en: 'Lululemon Premium Jacket',
+    slug: 'lululemon-veste-premium',
+    price: 250,
+    description: 'Eine hochwertige Jacke, die Leistung und Ästhetik für einen anspruchsvollen sportlichen Look vereint.',
+    description_fr: 'Une veste de qualité supérieure qui combine performance et esthétique pour un look sportif sophistiqué.',
+    description_en: 'A premium jacket that combines performance and aesthetics for a sophisticated sporty look.',
+    category: 'sport',
+    images: ['lululemon-veste-premium'],
+    reviews: []
+  },
+  {
+    id: 'sport-114',
+    name: 'Peak Performance Tech Jacket',
+    name_fr: 'Veste Technique Peak Performance',
+    name_en: 'Peak Performance Tech Jacket',
+    slug: 'peak-performance-tech-jacket',
+    price: 300,
+    description: 'Eine technische Jacke für Outdoor-Abenteuer, die optimalen Schutz und große Bewegungsfreiheit bietet.',
+    description_fr: 'Une veste technique pour les aventures en plein air, offrant une protection optimale et une grande liberté de mouvement.',
+    description_en: 'A technical jacket for outdoor adventures, offering optimal protection and great freedom of movement.',
+    category: 'sport',
+    images: ['peak-performance-tech-jacket'],
+    reviews: []
+  },
+  {
+    id: 'sport-115',
+    name: 'Craft Running Tech Shirt',
+    name_fr: 'T-shirt Technique de Course Craft',
+    name_en: 'Craft Running Tech Shirt',
+    slug: 'craft-running-tech-shirt',
+    price: 75,
+    description: 'Ein technisches Lauf-T-Shirt für maximale Leistung, das Atmungsaktivität und Komfort gewährleistet.',
+    description_fr: 'Un t-shirt de course technique pour une performance maximale, assurant respirabilité et confort.',
+    description_en: 'A technical running shirt for maximum performance, ensuring breathability and comfort.',
+    category: 'sport',
+    images: ['craft-running-tech-shirt'],
+    reviews: []
+  },
+  {
+    id: 'sport-116',
+    name: 'Gore Wear Cycling Jersey',
+    name_fr: 'Maillot de Cyclisme Gore Wear',
+    name_en: 'Gore Wear Cycling Jersey',
+    slug: 'gore-wear-cycling-jersey',
+    price: 160,
+    description: 'Ein professionelles Radtrikot für anspruchsvolle Radfahrer, das Aerodynamik und Komfort vereint.',
+    description_fr: 'Un maillot de cyclisme professionnel pour les cyclistes exigeants, alliant aérodynamisme et confort.',
+    description_en: 'A professional cycling jersey for demanding cyclists, combining aerodynamics and comfort.',
+    category: 'sport',
+    images: ['gore-wear-cycling-jersey'],
+    reviews: []
+  },
+  {
+    id: 'sport-117',
+    name: 'Satisfy Running Short',
+    name_fr: 'Short de Course Satisfy',
+    name_en: 'Satisfy Running Short',
+    slug: 'satisfy-running-short',
+    price: 140,
+    description: 'Laufshorts mit minimalistischem Design und technischen Stoffen für ein unvergleichliches Lauferlebnis.',
+    description_fr: 'Un short de course au design minimaliste et aux tissus techniques pour une expérience de course inégalée.',
+    description_en: 'Running shorts with a minimalist design and technical fabrics for an unparalleled running experience.',
+    category: 'sport',
+    images: ['satisfy-running-short'],
+    reviews: []
+  },
+  {
+    id: 'sport-118',
+    name: 'Bogner Ski Parka',
+    name_fr: 'Parka de Ski Bogner',
+    name_en: 'Bogner Ski Parka',
+    slug: 'bogner-ski-parka',
+    price: 1200,
+    description: 'Ein High-End-Skiparka, der Eleganz und Leistung für einen tadellosen Stil auf der Piste vereint.',
+    description_fr: 'Une parka de ski haut de gamme qui allie élégance et performance pour un style impeccable sur les pistes.',
+    description_en: 'A high-end ski parka that combines elegance and performance for an impeccable style on the slopes.',
+    category: 'sport',
+    images: ['bogner-ski-parka'],
+    reviews: []
+  },
+  {
+    id: 'shoe-1',
+    name: 'Sorel Caribou Stiefel',
+    name_fr: 'Bottes Sorel Caribou',
+    name_en: 'Sorel Caribou Boots',
+    slug: 'sorel-caribou',
+    price: 180,
+    oldPrice: 220,
+    description: 'Der ikonische Stiefel, um den härtesten Wintern zu trotzen. Wasserdicht und isoliert für optimalen Komfort.',
+    description_fr: 'La botte iconique pour affronter les hivers les plus rudes. Imperméable et isolée pour un confort optimal.',
+    description_en: 'The iconic boot to face the harshest winters. Waterproof and insulated for optimal comfort.',
+    category: 'shoes',
+    images: ['Sorel_Caribou'],
+    reviews: []
+  },
+  {
+    id: 'shoe-2',
+    name: 'Sorel Caribou Horizon GTX',
+    name_fr: 'Sorel Caribou Horizon GTX',
+    name_en: 'Sorel Caribou Horizon GTX',
+    slug: 'sorel-caribou-horizon-gtx',
+    price: 240,
+    description: 'Die moderne Version des Caribou mit GORE-TEX-Technologie für verbesserte Atmungsaktivität und Wasserdichtigkeit.',
+    description_fr: 'La version moderne de la Caribou, avec la technologie GORE-TEX pour une respirabilité et une imperméabilité accrues.',
+    description_en: 'The modern version of the Caribou, with GORE-TEX technology for increased breathability and waterproofing.',
+    category: 'shoes',
+    images: ['Sorel_Caribou_Horizon_GTX'],
+    reviews: []
+  },
+  {
+    id: 'shoe-3',
+    name: 'Sorel 1964 PAC',
+    name_fr: 'Sorel 1964 PAC',
+    name_en: 'Sorel 1964 PAC',
+    slug: 'sorel-1964-pac',
+    price: 160,
+    description: 'Ein klassischer und vielseitiger Winterstiefel, der Stil und Funktionalität für den täglichen Gebrauch vereint.',
+    description_fr: 'Une botte d\'hiver classique et polyvalente, alliant style et fonctionnalité pour un usage quotidien.',
+    description_en: 'A classic and versatile winter boot, combining style and functionality for daily use.',
+    category: 'shoes',
+    images: ['Sorel_1964_PAC'],
+    reviews: []
+  },
+  {
+    id: 'shoe-4',
+    name: 'Salomon X Ultra Snow Pilot',
+    name_fr: 'Salomon X Ultra Snow Pilot',
+    name_en: 'Salomon X Ultra Snow Pilot',
+    slug: 'salomon-x-ultra-snow-pilot',
+    price: 190,
+    oldPrice: 230,
+    description: 'Leichter und agiler Stiefel für Winterwanderungen, der Grip und Wärme bietet.',
+    description_fr: 'Botte légère et agile pour la randonnée hivernale, offrant adhérence et chaleur.',
+    description_en: 'Lightweight and agile boot for winter hiking, offering grip and warmth.',
+    category: 'shoes',
+    images: ['Salomon_X_Ultra_Snow_Pilot'],
+    reviews: []
+  },
+  {
+    id: 'shoe-5',
+    name: 'Columbia Bugaboot III',
+    name_fr: 'Columbia Bugaboot III',
+    name_en: 'Columbia Bugaboot III',
+    slug: 'columbia-bugaboot-iii',
+    price: 130,
+    description: 'Ein robuster und zuverlässiger Stiefel für extreme Kälte, mit Omni-Heat-Technologie.',
+    description_fr: 'Une botte robuste et fiable pour le grand froid, dotée de la technologie Omni-Heat.',
+    description_en: 'A robust and reliable boot for extreme cold, featuring Omni-Heat technology.',
+    category: 'shoes',
+    images: ['Columbia_Bugaboot_III'],
+    reviews: []
+  },
+  {
+    id: 'shoe-6',
+    name: 'The North Face Chilkat V 400',
+    name_fr: 'The North Face Chilkat V 400',
+    name_en: 'The North Face Chilkat V 400',
+    slug: 'the-north-face-chilkat-v-400',
+    price: 150,
+    description: 'Hochleistungs-Winterstiefel mit überlegenem Grip und Isolierung für anspruchsvolles Gelände.',
+    description_fr: 'Botte d\'hiver haute performance avec une adhérence et une isolation supérieures pour les terrains difficiles.',
+    description_en: 'High-performance winter boot with superior grip and insulation for challenging terrains.',
+    category: 'shoes',
+    images: ['The_North_Face_Chilkat_V_400'],
+    reviews: []
+  },
+  {
+    id: 'shoe-7',
+    name: 'Baffin Impact',
+    name_fr: 'Baffin Impact',
+    name_en: 'Baffin Impact',
+    slug: 'baffin-impact',
+    price: 300,
+    description: 'Entwickelt für arktische Bedingungen, bietet dieser Stiefel extremen Schutz bis -100°C.',
+    description_fr: 'Conçue pour les conditions arctiques, cette botte offre une protection extrême jusqu\'à -100°C.',
+    description_en: 'Designed for arctic conditions, this boot offers extreme protection down to -100°C.',
+    category: 'shoes',
+    images: ['Baffin_Impact'],
+    reviews: []
+  },
+  {
+    id: 'shoe-8',
+    name: 'Merrell Thermo Chill 2 Mid',
+    name_fr: 'Merrell Thermo Chill 2 Mid',
+    name_en: 'Merrell Thermo Chill 2 Mid',
+    slug: 'merrell-thermo-chill-2-mid',
+    price: 140,
+    oldPrice: 170,
+    description: 'Ein vielseitiger Wanderstiefel für den Winter, der Komfort und Schutz vor den Elementen bietet.',
+    description_fr: 'Une botte de randonnée polyvalente pour l\'hiver, offrant confort et protection contre les éléments.',
+    description_en: 'A versatile hiking boot for winter, offering comfort and protection from the elements.',
+    category: 'shoes',
+    images: ['Merrell_Thermo_Chill_2_Mid'],
+    reviews: []
+  },
+  {
+    id: 'shoe-9',
+    name: 'UGG Butte',
+    name_fr: 'UGG Butte',
+    name_en: 'UGG Butte',
+    slug: 'ugg-butte',
+    price: 250,
+    description: 'Die perfekte Kombination aus urbanem Stil und Winterkomfort, mit einem Futter aus reiner Wolle.',
+    description_fr: 'Le mariage parfait entre style urbain et confort hivernal, avec une doublure en laine pure.',
+    description_en: 'The perfect marriage of urban style and winter comfort, with a pure wool lining.',
+    category: 'shoes',
+    images: ['UGG_Butte'],
+    reviews: []
+  },
+  {
+    id: 'shoe-10',
+    name: 'Muck Boot Arctic Ice Tall',
+    name_fr: 'Muck Boot Arctic Ice Tall',
+    name_en: 'Muck Boot Arctic Ice Tall',
+    slug: 'muck-boot-arctic-ice-tall',
+    price: 200,
+    description: 'Hoher Gummistiefel, der für extreme Kälte und nasse Bedingungen entwickelt wurde und einen außergewöhnlichen Grip auf Eis bietet.',
+    description_fr: 'Botte haute en caoutchouc conçue pour le froid extrême et les conditions humides, offrant une adhérence exceptionnelle sur la glace.',
+    description_en: 'High rubber boot designed for extreme cold and wet conditions, offering exceptional grip on ice.',
+    category: 'shoes',
+    images: ['Muck_Boot_Arctic_Ice_Tall'],
+    reviews: []
   }
 ];
 
@@ -1668,18 +1585,25 @@ export function getFeaturedProducts(products: Product[], limit: number = 4): Pro
 }
 
 
-export function getWinterSaleProducts(products: Product[], limit?: number): Product[] {
-  const saleProducts = products.filter(p => (p.category === 'winter-clothing' || p.slug.includes('bonnet')) && p.oldPrice);
+export function getWinterSaleProducts(products: Product[], limit?: number, homepage: boolean = false): Product[] {
+  const saleProducts = products.filter(p => p.oldPrice);
 
-  const parkas = saleProducts.filter(p => p.name_fr.toLowerCase().includes('parka'));
-  const beanies = saleProducts.filter(p => p.slug.includes('bonnet'));
+  if (homepage) {
+    const parkas = saleProducts.filter(p => p.name_fr.toLowerCase().includes('parka')).slice(0, 5);
+    const beanies = saleProducts.filter(p => p.slug.includes('bonnet')).slice(0, 2);
+    const newShoes = saleProducts.filter(p => p.category === 'shoes' && ['shoe-1', 'shoe-4', 'shoe-8'].includes(p.id)).slice(0, 3);
+    // The final list should be 7 items as requested, but the logic creates more. We should slice it.
+    return [...newShoes, ...parkas, ...beanies].slice(0, 7);
+  }
+  
+  const winterClothing = saleProducts.filter(p => p.category === 'winter-clothing');
+  const shoes = saleProducts.filter(p => p.category === 'shoes');
+  const accessories = saleProducts.filter(p => p.category === 'accessories');
 
-  let combined = [...parkas, ...beanies];
+  let combined = [...winterClothing, ...shoes, ...accessories];
 
   if (limit) {
     return combined.slice(0, limit);
   }
   return combined;
 }
-
-

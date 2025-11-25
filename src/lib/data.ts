@@ -4,7 +4,7 @@ import type { Product, Category, Review } from './types';
 export const categories: Category[] = [
   { id: 'cat-1', name: 'Herrenbekleidung', name_fr: 'Vêtements Homme', name_en: 'Men\'s Clothing', slug: 'mens-clothing', imageId: 'mens-category' },
   { id: 'cat-2', name: 'Damenbekleidung', name_fr: 'Vêtements Femme', name_en: 'Women\'s Clothing', slug: 'womens-clothing', imageId: 'womens-category' },
-  { id: 'cat-3', name: 'Accessoires', name_fr: 'Accessoires', name_en: 'Accessories', slug: 'accessories', imageId: 'accessories-category' },
+  { id: 'cat-3', name: 'Accessoires', name_fr: 'Accessoires', name_en: 'Accessories', slug: 'accessories-category' },
   { id: 'cat-5', name: 'Schuhe', name_fr: 'Chaussures', name_en: 'Shoes', slug: 'shoes', imageId: 'shoes-category' },
   { id: 'cat-4', name: 'Winterkleidung', name_fr: 'Vêtements d\'hiver', name_en: 'Winter Clothing', slug: 'winter-clothing', imageId: 'winter-category' },
   { id: 'cat-6', name: 'Sport', name_fr: 'Sport', name_en: 'Sport', slug: 'sport', imageId: 'sport-category' },
@@ -1101,54 +1101,6 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 'acc-28',
-    name: 'Mini Glam Handtasche',
-    name_fr: 'Petit sac à main Mini Glam',
-    name_en: 'Mini Glam Handbag',
-    slug: 'petit-sac-a-main-chic-mini-glam',
-    price: 310,
-    description: 'Das unverzichtbare Accessoire für Ihre Abende. Diese schicke Minitasche mit ihren goldenen Details ist so konzipiert, dass sie Ihre wichtigsten Dinge aufnimmt und Ihrem Abendoutfit einen Hauch von Glamour verleiht.',
-    description_fr: 'L\'accessoire indispensable de vos soirées. Ce mini sac chic, avec ses détails dorés, est conçu pour contenir juste l\'essentiel et ajouter une touche de glamour à votre tenue de soirée.',
-    description_en: 'The essential accessory for your evenings. This chic mini bag, with its golden details, is designed to hold just the essentials and add a touch of glamour to your evening outfit.',
-    category: 'accessories',
-    images: ['petit-sac-a-main-chic-mini-glam'],
-    reviews: [
-        { author: 'Camille', rating: 5, comment: 'Adorable et juste assez grand pour mon téléphone et mon rouge à lèvres.'}
-    ]
-  },
-  {
-    id: 'acc-29',
-    name: 'Shine Drop Ohrringe',
-    name_fr: 'Boucles d\'oreilles Shine Drop',
-    name_en: 'Shine Drop Earrings',
-    slug: 'boucles-oreilles-pendantes-argentees-shine-drop',
-    price: 125,
-    description: 'Ein Tropfen Licht, um Ihr Gesicht zu erhellen. Diese hängenden Ohrringe aus poliertem Silber fangen das Licht bei jeder Bewegung ein und verleihen Ihrem Look einen subtilen und raffinierten Glanz.',
-    description_fr: 'Une goutte de lumière pour illuminer votre visage. Ces boucles d\'oreilles pendantes en argent poli capturent la lumière à chaque mouvement, ajoutant un éclat subtil et raffiné à votre allure.',
-    description_en: 'A drop of light to illuminate your face. These dangling polished silver earrings capture the light with every movement, adding a subtle and refined sparkle to your look.',
-    category: 'accessories',
-    images: ['boucles-oreilles-pendantes-argentees-shine-drop'],
-    reviews: [
-        { author: 'Marion', rating: 5, comment: 'Elles sont magnifiques et très légères à porter.'}
-    ]
-  },
-  {
-    id: 'acc-30',
-    name: 'Shine Night Clutch',
-    name_fr: 'Pochette Shine Night',
-    name_en: 'Shine Night Clutch',
-    slug: 'pochette-soiree-shine-night-premium',
-    price: 170,
-    description: 'Die perfekte Ergänzung zu Ihrem Abendkleid. Diese Clutch mit ihrem funkelnden Finish und ihrer eleganten Struktur ist so konzipiert, dass Sie Ihre wichtigsten Dinge aufnehmen und gleichzeitig ein modisches Statement setzen.',
-    description_fr: 'Le complément parfait de votre robe de soirée. Cette pochette à la finition scintillante et à la structure élégante est conçue pour contenir vos essentiels tout en étant une déclaration de mode à part entière.',
-    description_en: 'The perfect complement to your evening gown. This clutch with its sparkling finish and elegant structure is designed to hold your essentials while being a fashion statement in its own right.',
-    category: 'accessories',
-    images: ['pochette-soiree-shine-night-premium'],
-    reviews: [
-        { author: 'Eva', rating: 5, comment: 'Parfaite pour un mariage. J\'ai reçu beaucoup de compliments.'}
-    ]
-  },
-  {
     id: 'prod-71',
     name: 'Manteau Long en Laine',
     name_fr: 'Manteau Long en Laine',
@@ -1865,6 +1817,7 @@ export function getWinterSaleProducts(products: Product[], limit?: number, homep
     const parkas = saleProducts.filter(p => p.name_fr.toLowerCase().includes('parka')).slice(0, 5);
     const beanies = saleProducts.filter(p => p.slug.includes('bonnet')).slice(0, 2);
     const newShoes = saleProducts.filter(p => p.category === 'shoes' && ['shoe-1', 'shoe-4', 'shoe-8'].includes(p.id)).slice(0, 3);
+    // The final list should be 7 items as requested, but the logic creates more. We should slice it.
     return [...newShoes, ...parkas, ...beanies].slice(0, 7);
   }
   
@@ -1879,5 +1832,3 @@ export function getWinterSaleProducts(products: Product[], limit?: number, homep
   }
   return combined;
 }
-
-    
