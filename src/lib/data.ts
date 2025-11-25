@@ -775,72 +775,6 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 'acc-1',
-    name: 'Chrono Luxe Uhr',
-    name_fr: 'Montre Chrono Luxe',
-    name_en: 'Chrono Luxe Watch',
-    slug: 'montre-acier-inoxydable-noire-chrono-luxe',
-    price: 310,
-    description: 'Eine kühne Ästhetik für das Handgelenk. Diese Chronographenuhr aus mattschwarzem Edelstahl ist ein Symbol für moderne Raffinesse. Sie vereint anspruchsvolle Funktionalität mit einem entschieden urbanen und kraftvollen Design.',
-    description_fr: 'Une esthétique audacieuse pour le poignet. Cette montre chronographe en acier inoxydable noir mat est un symbole de sophistication moderne. Elle allie une fonctionnalité pointue à un design résolument urbain et puissant.',
-    description_en: 'A bold aesthetic for the wrist. This matte black stainless steel chronograph watch is a symbol of modern sophistication. It combines sharp functionality with a resolutely urban and powerful design.',
-    category: 'accessories',
-    images: ['montre-acier-inoxydable-noire-chrono-luxe'],
-    reviews: [
-        { author: 'Marc', rating: 5, comment: 'Superbe montre, très classe et agréable à porter.' },
-        { author: 'David', rating: 5, comment: 'Le noir mat est magnifique. Elle ne quitte plus mon poignet.'}
-    ]
-  },
-  {
-    id: 'acc-3',
-    name: 'Heritage Classic Uhr',
-    name_fr: 'Montre Heritage Classique',
-    name_en: 'Heritage Classic Watch',
-    slug: 'montre-cuir-brun-heritage-classique',
-    price: 260,
-    description: 'Eine Hommage an die zeitlose Uhrmacherkunst. Diese Uhr mit ihrem braunen Lederarmband, das mit der Zeit eine wunderschöne Patina entwickelt, und ihrem minimalistischen Zifferblatt verkörpert eine unaufdringliche und ewige Eleganz.',
-    description_fr: 'Un hommage à l\'horlogerie intemporelle. Cette montre, avec son bracelet en cuir brun qui se patinera superbement avec le temps et son cadran épuré, incarne une élégance discrète et éternelle.',
-    description_en: 'A tribute to timeless watchmaking. This watch, with its brown leather strap that will develop a beautiful patina over time and its minimalist dial, embodies a discreet and eternal elegance.',
-    category: 'accessories',
-    images: ['montre-cuir-brun-heritage-classique'],
-    reviews: [
-        { author: 'Jean', rating: 5, comment: 'Magnifique et très agréable à porter. Un classique.' },
-        { author: 'Pierre', rating: 5, comment: 'Le cuir est de très belle qualité.'}
-    ]
-  },
-  {
-    id: 'acc-4',
-    name: 'Blue Vision Uhr',
-    name_fr: 'Montre Blue Vision',
-    name_en: 'Blue Vision Watch',
-    slug: 'montre-metallique-argent-blue-vision',
-    price: 210,
-    description: 'Fesseln Sie die Blicke mit dem tiefblauen Zifferblatt dieser Uhr, das an einen mitternächtlichen Himmel erinnert. Eingefasst in poliertes silbernes Metall, ist sie ein Schmuckstück von moderner und fesselnder Eleganz.',
-    description_fr: 'Capturez les regards avec le cadran bleu profond de cette montre, évoquant un ciel de minuit. Enchâssée dans un métal argenté poli, c\'est un bijou d\'une élégance moderne et captivante.',
-    description_en: 'Capture gazes with the deep blue dial of this watch, reminiscent of a midnight sky. Encased in polished silver metal, it is a jewel of modern and captivating elegance.',
-    category: 'accessories',
-    images: ['montre-metallique-argent-blue-vision'],
-    reviews: [
-        { author: 'Daniel', rating: 5, comment: 'Le cadran bleu est tout simplement hypnotique.'}
-    ]
-  },
-  {
-    id: 'acc-6',
-    name: 'Executive Elite Uhr',
-    name_fr: 'Montre Executive Elite',
-    name_en: 'Executive Elite Watch',
-    slug: 'montre-cadran-or-rose-executive-elite',
-    price: 380,
-    description: 'Für den Mann, der an der Spitze steht. Die sanften und warmen Töne des Roségold-Zifferblatts verleihen dieser prestigeträchtigen Uhr eine moderne und anspruchsvolle Note. Ein Symbol für Erfolg und raffinierten Geschmack.',
-    description_fr: 'Pour l\'homme qui est au sommet. Les tons doux et chauds du cadran en or rose confèrent à cette montre de prestige une touche de modernité et d\'exigence. Un symbole de réussite et de goût raffiné.',
-    description_en: 'For the man at the top. The soft and warm tones of the rose gold dial give this prestigious watch a touch of modernity and sophistication. A symbol of success and refined taste.',
-    category: 'accessories',
-    images: ['montre-cadran-or-rose-executive-elite'],
-    reviews: [
-        { author: 'Charles', rating: 5, comment: 'Une montre qui impose le respect. Finitions impeccables.'}
-    ]
-  },
-  {
     id: 'acc-8',
     name: 'Nordic Luxe Wollmütze',
     name_fr: 'Bonnet en laine Nordic Luxe',
@@ -1930,7 +1864,8 @@ export function getWinterSaleProducts(products: Product[], limit?: number, homep
   if (homepage) {
     const parkas = saleProducts.filter(p => p.name_fr.toLowerCase().includes('parka')).slice(0, 5);
     const beanies = saleProducts.filter(p => p.slug.includes('bonnet')).slice(0, 2);
-    return [...parkas, ...beanies];
+    const newShoes = saleProducts.filter(p => p.category === 'shoes' && ['shoe-1', 'shoe-4', 'shoe-8'].includes(p.id)).slice(0, 3);
+    return [...newShoes, ...parkas, ...beanies].slice(0, 7);
   }
   
   const winterClothing = saleProducts.filter(p => p.category === 'winter-clothing');
