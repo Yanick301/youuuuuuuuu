@@ -91,7 +91,8 @@ export default function LoginPageClient() {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
       await handleUserCreation(userCredential);
       
-      const isAdmin = userCredential.user.email === ADMIN_EMAIL;
+      const userDoc = await getDoc(doc(firestore, 'userProfiles', userCredential.user.uid));
+      const isAdmin = userDoc.exists() && userDoc.data().isAdmin;
       
       if (isAdmin) {
         toast({
@@ -126,7 +127,8 @@ export default function LoginPageClient() {
         const userCredential = await signInWithPopup(auth, provider);
         await handleUserCreation(userCredential);
 
-        const isAdmin = userCredential.user.email === ADMIN_EMAIL;
+        const userDoc = await getDoc(doc(firestore, 'userProfiles', userCredential.user.uid));
+        const isAdmin = userDoc.exists() && userDoc.data().isAdmin;
         
         if (isAdmin) {
             toast({
@@ -231,3 +233,5 @@ export default function LoginPageClient() {
     </div>
   );
 }
+
+    

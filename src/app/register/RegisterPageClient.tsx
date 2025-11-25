@@ -136,12 +136,23 @@ export default function RegisterPageClient() {
         const provider = new GoogleAuthProvider();
         const userCredential = await signInWithPopup(auth, provider);
         await handleUserCreation(userCredential);
-        toast({
-            title: language === 'fr' ? 'Connexion réussie' : language === 'en' ? 'Login Successful' : 'Anmeldung erfolgreich',
-            description: language === 'fr' ? 'Bienvenue !' : language === 'en' ? 'Welcome!' : 'Willkommen!',
-        });
-        const redirectUrl = searchParams.get('redirect') || '/account';
-        router.push(redirectUrl);
+        
+        const userDoc = await getDoc(doc(firestore, 'userProfiles', userCredential.user.uid));
+        const isAdmin = userDoc.exists() && userDoc.data().isAdmin;
+
+        if (isAdmin) {
+            toast({
+                title: 'Bienvenue cher administrateur',
+            });
+            router.push('/admin/dashboard');
+        } else {
+            toast({
+                title: language === 'fr' ? 'Connexion réussie' : language === 'en' ? 'Login Successful' : 'Anmeldung erfolgreich',
+                description: language === 'fr' ? 'Bienvenue !' : language === 'en' ? 'Welcome!' : 'Willkommen!',
+            });
+            const redirectUrl = searchParams.get('redirect') || '/account';
+            router.push(redirectUrl);
+        }
     } catch (error: any) {
         toast({
             variant: 'destructive',
@@ -236,3 +247,5 @@ export default function RegisterPageClient() {
     </div>
   );
 }
+
+    
