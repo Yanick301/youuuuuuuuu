@@ -396,12 +396,6 @@ export default function OrdersPage() {
                         </TranslatedText>
                         </p>
                      </div>
-                      <Button asChild variant="outline" size="sm" className="bg-white">
-                          <Link href={`/order-validation/${order.id}`} target="_blank">
-                                <ExternalLink className="mr-2 h-4 w-4" />
-                                <TranslatedText fr="Lien de validation administrateur" en="Admin Validation Link">Admin-Validierungslink</TranslatedText>
-                          </Link>
-                      </Button>
                   </div>
                 )}
                 {order.paymentStatus === 'completed' && (

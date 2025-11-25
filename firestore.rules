@@ -32,7 +32,7 @@ service cloud.firestore {
       // A user can update their own order, for example to change its status
       allow update: if request.auth != null && request.auth.uid == userId;
       // An admin can read or update any order
-      allow get, list: if isAdmin();
+      allow get, list, update: if isAdmin();
     }
 
     // Admins can list all orders across all users for the dashboard
