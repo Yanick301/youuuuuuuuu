@@ -947,7 +947,7 @@ export const products: Product[] = [
     description_fr: 'Une parka urbaine qui allie chaleur et style, avec une silhouette ajustée et une protection jusqu\'à -20°C.',
     description_en: 'An urban parka that combines warmth and style, with a slim silhouette and protection down to -20°C.',
     category: 'winter-clothing',
-    images: ['canada-goose-macmillan-parka'],
+    images: ['Canada_Goose_MacMillan_Parka'],
     reviews: []
   },
   {
@@ -961,7 +961,7 @@ export const products: Product[] = [
     description_fr: 'Parka matelassé de luxe, garni de duvet, offrant un confort inégalé et un style iconique.',
     description_en: 'Luxurious quilted parka, filled with down, offering unmatched comfort and iconic style.',
     category: 'winter-clothing',
-    images: ['moncler-quilted-hooded-parka'],
+    images: ['Moncler_Quilted_Hooded_Parka'],
     reviews: []
   },
   {
@@ -976,7 +976,7 @@ export const products: Product[] = [
     description_fr: 'Une parka robuste conçue pour le froid extrême, avec une finition déperlante et une luxueuse garniture en fourrure.',
     description_en: 'A robust parka designed for extreme cold, with a water-repellent finish and luxurious fur trim.',
     category: 'winter-clothing',
-    images: ['moose-knuckles-everest-parka'],
+    images: ['Moose_Knuckles_Everest_Parka'],
     reviews: []
   },
   {
@@ -990,7 +990,7 @@ export const products: Product[] = [
     description_fr: 'L\'iconique Arctic Parka, symbole de résistance et de chaleur, parfait pour les hivers les plus rigoureux.',
     description_en: 'The iconic Arctic Parka, a symbol of resistance and warmth, perfect for the harshest winters.',
     category: 'winter-clothing',
-    images: ['woolrich-arctic-parka'],
+    images: ['Woolrich_Arctic_Parka'],
     reviews: []
   },
   {
@@ -1004,7 +1004,7 @@ export const products: Product[] = [
     description_fr: 'Une parka légère et imperméable qui allie fonctionnalité et style urbain avec des détails techniques.',
     description_en: 'A lightweight and waterproof parka that combines functionality and urban style with technical details.',
     category: 'winter-clothing',
-    images: ['parajumpers-easy-waterproof-parka'],
+    images: ['Parajumpers_Easy_Waterproof_Parka'],
     reviews: []
   },
   {
@@ -1019,7 +1019,7 @@ export const products: Product[] = [
     description_fr: 'Une parka élégante et minimaliste offrant la protection du GORE-TEX et la chaleur du duvet d\'oie.',
     description_en: 'An elegant, minimalist parka offering GORE-TEX protection and the warmth of goose down.',
     category: 'winter-clothing',
-    images: ['arcteryx-patera-down-parka'],
+    images: ['ArcTeryx_Patera_Down_Parka'],
     reviews: []
   },
   {
@@ -1033,7 +1033,7 @@ export const products: Product[] = [
     description_fr: 'Une parka en duvet légère et compressible, conçue pour offrir de la chaleur sans l\'encombrement.',
     description_en: 'A lightweight and compressible down parka, designed to provide warmth without the bulk.',
     category: 'winter-clothing',
-    images: ['the-north-face-hydrenalite-down-parka'],
+    images: ['The_North_Face_Hydrenalite_Down_Parka'],
     reviews: []
   },
   {
@@ -1047,7 +1047,7 @@ export const products: Product[] = [
     description_fr: 'Une parka qui combine l\'héritage motocycliste de Belstaff avec des matériaux modernes résistants aux intempéries.',
     description_en: 'A parka that combines Belstaff\'s motorcycling heritage with modern, weather-resistant materials.',
     category: 'winter-clothing',
-    images: ['belstaff-pendulum-parka'],
+    images: ['Belstaff_Pendulum_Parka'],
     reviews: []
   },
   {
@@ -1062,7 +1062,7 @@ export const products: Product[] = [
     description_fr: 'Une parka d\'expédition longue et extrêmement chaude, conçue pour les conditions arctiques.',
     description_en: 'A long and extremely warm expedition parka, designed for arctic conditions.',
     category: 'winter-clothing',
-    images: ['fjallraven-expedition-long-down-parka'],
+    images: ['Fjallraven_Expedition_Long_Down_Parka'],
     reviews: []
   },
   {
@@ -1076,7 +1076,7 @@ export const products: Product[] = [
     description_fr: 'L\'iconique veste anorak, réinventée avec une isolation améliorée et des détails modernes.',
     description_en: 'The iconic anorak jacket, reinvented with improved insulation and modern details.',
     category: 'winter-clothing',
-    images: ['napapijri-skidoo-2-0-parka'],
+    images: ['Napapijri_Skidoo_2_0_Parka'],
     reviews: []
   },
   {
@@ -1090,7 +1090,7 @@ export const products: Product[] = [
     description_fr: 'Une parka 3-en-1 polyvalente avec une couche extérieure imperméable en GORE-TEX et une veste en duvet amovible.',
     description_en: 'A versatile 3-in-1 parka with a waterproof GORE-TEX outer layer and a removable down jacket.',
     category: 'winter-clothing',
-    images: ['patagonia-frozen-range-3-in-1-parka'],
+    images: ['Patagonia_Frozen_Range_3_in_1_Parka'],
     reviews: []
   },
   {
@@ -1105,7 +1105,7 @@ export const products: Product[] = [
     description_fr: 'Une parka en duvet minimaliste et oversize, alliant le design scandinave à la fonctionnalité.',
     description_en: 'A minimalist and oversized down parka, combining Scandinavian design with functionality.',
     category: 'winter-clothing',
-    images: ['acne-studios-down-parka'],
+    images: ['Acne_Studios_Down_Parka'],
     reviews: []
   },
   {
@@ -1119,7 +1119,7 @@ export const products: Product[] = [
     description_fr: 'Une parka technique fabriquée en tissu Cordura indéchirable, traitée pour être déperlante et garnie de duvet de haute qualité.',
     description_en: 'A technical parka made from ripstop Cordura fabric, treated to be water-repellent and filled with high-quality down.',
     category: 'winter-clothing',
-    images: ['stone-island-cordura-ripstop-down-parka'],
+    images: ['Stone_Island_Cordura_Ripstop_Down_Parka'],
     reviews: []
   },
   {
@@ -1133,7 +1133,7 @@ export const products: Product[] = [
     description_fr: 'Une parka élégante et fonctionnelle, avec un traitement Teflon déperlant et un col en fourrure amovible.',
     description_en: 'An elegant and functional parka, with a water-repellent Teflon treatment and a detachable fur collar.',
     category: 'winter-clothing',
-    images: ['peuterey-kasa-down-parka'],
+    images: ['Peuterey_Kasa_Down_Parka'],
     reviews: []
   },
   {
@@ -1148,7 +1148,7 @@ export const products: Product[] = [
     description_fr: 'Une parka de ski haute performance qui combine style et caractéristiques techniques pour une performance optimale sur les pistes.',
     description_en: 'A high-performance ski parka that combines style and technical features for optimal performance on the slopes.',
     category: 'winter-clothing',
-    images: ['bogner-fire-ice-ski-parka'],
+    images: ['Bogner_Fire_Ice_Ski_Parka'],
     reviews: []
   },
   {
@@ -1162,7 +1162,7 @@ export const products: Product[] = [
     description_fr: 'Une veste technique et chic, parfaite pour les entraînements par temps frais, alliant performance et style.',
     description_en: 'A technical and chic jacket, perfect for cool weather training, combining performance and style.',
     category: 'sport',
-    images: ['adidas-stella-mccartney-veste'],
+    images: ['Adidas_by_Stella_McCartney_Veste'],
     reviews: []
   },
   {
@@ -1176,7 +1176,7 @@ export const products: Product[] = [
     description_fr: 'Un legging haute performance avec une coupe flatteuse pour une liberté de mouvement optimale.',
     description_en: 'High-performance leggings with a flattering cut for optimal freedom of movement.',
     category: 'sport',
-    images: ['adidas-stella-mccartney-legging'],
+    images: ['Adidas_by_Stella_McCartney_Legging'],
     reviews: []
   },
   {
@@ -1190,7 +1190,7 @@ export const products: Product[] = [
     description_fr: 'Une veste zippée douce et confortable, idéale pour l\'échauffement ou pour un look décontracté post-yoga.',
     description_en: 'A soft and comfortable zip jacket, ideal for warm-ups or for a casual post-yoga look.',
     category: 'sport',
-    images: ['alo-yoga-veste-zippee'],
+    images: ['Alo_Yoga_Veste_Zippee'],
     reviews: []
   },
   {
@@ -1204,7 +1204,7 @@ export const products: Product[] = [
     description_fr: 'Un haut d\'entraînement respirant et stylé, conçu pour le confort pendant les sessions les plus intenses.',
     description_en: 'A breathable and stylish training top, designed for comfort during the most intense sessions.',
     category: 'sport',
-    images: ['alo-yoga-haut-entrainement'],
+    images: ['Alo_Yoga_Haut_Entrainement'],
     reviews: []
   },
   {
@@ -1218,7 +1218,7 @@ export const products: Product[] = [
     description_fr: 'Un polaire luxueux pour une chaleur optimale, parfait pour les activités de plein air ou un look urbain en hiver.',
     description_en: 'A luxurious fleece for optimal warmth, perfect for outdoor activities or an urban winter look.',
     category: 'sport',
-    images: ['haute-motion-fleece-polaire'],
+    images: ['HAUTE_Motion_Fleece_Polaire'],
     reviews: []
   },
   {
@@ -1232,7 +1232,7 @@ export const products: Product[] = [
     description_fr: 'Un legging technique au design moderne, offrant un confort inégalé et une durabilité exceptionnelle.',
     description_en: 'Technical leggings with a modern design, offering unmatched comfort and exceptional durability.',
     category: 'sport',
-    images: ['haute-legging-nomad'],
+    images: ['HAUTE_Legging_Nomad'],
     reviews: []
   },
   {
@@ -1246,7 +1246,7 @@ export const products: Product[] = [
     description_fr: 'L\'alliance parfaite du luxe et de la performance, cette brassière de sport offre un maintien optimal avec une touche haute-couture.',
     description_en: 'The perfect blend of luxury and performance, this sports bra offers optimal support with a high-fashion touch.',
     category: 'sport',
-    images: ['loewe-on-brassiere-sport'],
+    images: ['Loewe_On_Brassiere_Sport'],
     reviews: []
   },
   {
@@ -1260,7 +1260,7 @@ export const products: Product[] = [
     description_fr: 'Associez style et fonctionnalité avec ce legging issu de la collaboration entre Loewe et On.',
     description_en: 'Combine style and functionality with these leggings from the collaboration between Loewe and On.',
     category: 'sport',
-    images: ['loewe-on-legging-actif'],
+    images: ['Loewe_On_Legging_Actif'],
     reviews: []
   },
   {
@@ -1274,7 +1274,7 @@ export const products: Product[] = [
     description_fr: 'Une veste technique conçue pour toutes les conditions, vous protégeant des éléments sans compromis sur le style.',
     description_en: 'A technical jacket designed for all conditions, protecting you from the elements without compromising on style.',
     category: 'sport',
-    images: ['loewe-on-storm-active-jacket'],
+    images: ['Loewe_On_Storm_Active_Jacket'],
     reviews: []
   },
   {
@@ -1288,7 +1288,7 @@ export const products: Product[] = [
     description_fr: 'Un design innovant pour une sensation de seconde peau et un confort absolu pendant l\'effort.',
     description_en: 'An innovative design for a second-skin feel and absolute comfort during exercise.',
     category: 'sport',
-    images: ['under-armour-halo-bonded-legging'],
+    images: ['Under_Armour_Halo_Bonded_Legging'],
     reviews: []
   },
   {
@@ -1302,7 +1302,7 @@ export const products: Product[] = [
     description_fr: 'Une veste de survêtement au look rétro avec une touche moderne, parfaite pour un style sportif et tendance.',
     description_en: 'A retro-look track jacket with a modern twist, perfect for a sporty and trendy style.',
     category: 'sport',
-    images: ['diesel-sport-track-jacket'],
+    images: ['Diesel_Sport_Track_Jacket'],
     reviews: []
   },
   {
@@ -1316,7 +1316,7 @@ export const products: Product[] = [
     description_fr: 'Une combinaison de yoga élégante et confortable en laine mérinos pour une pratique luxueuse.',
     description_en: 'An elegant and comfortable merino wool yoga jumpsuit for a luxurious practice.',
     category: 'sport',
-    images: ['nagnata-laine-combinaison-yoga'],
+    images: ['Nagnata_Laine_Combinaison_Yoga'],
     reviews: []
   },
   {
@@ -1330,7 +1330,7 @@ export const products: Product[] = [
     description_fr: 'Une veste de qualité supérieure qui combine performance et esthétique pour un look sportif sophistiqué.',
     description_en: 'A premium jacket that combines performance and aesthetics for a sophisticated sporty look.',
     category: 'sport',
-    images: ['lululemon-veste-premium'],
+    images: ['Lululemon_Veste_Premium'],
     reviews: []
   },
   {
@@ -1344,7 +1344,7 @@ export const products: Product[] = [
     description_fr: 'Une veste technique pour les aventures en plein air, offrant une protection optimale et une grande liberté de mouvement.',
     description_en: 'A technical jacket for outdoor adventures, offering optimal protection and great freedom of movement.',
     category: 'sport',
-    images: ['peak-performance-tech-jacket'],
+    images: ['Peak_Performance_Tech_Jacket'],
     reviews: []
   },
   {
@@ -1358,7 +1358,7 @@ export const products: Product[] = [
     description_fr: 'Un t-shirt de course technique pour une performance maximale, assurant respirabilité et confort.',
     description_en: 'A technical running shirt for maximum performance, ensuring breathability and comfort.',
     category: 'sport',
-    images: ['craft-running-tech-shirt'],
+    images: ['Craft_Running_Tech_Shirt'],
     reviews: []
   },
   {
@@ -1372,7 +1372,7 @@ export const products: Product[] = [
     description_fr: 'Un maillot de cyclisme professionnel pour les cyclistes exigeants, alliant aérodynamisme et confort.',
     description_en: 'A professional cycling jersey for demanding cyclists, combining aerodynamics and comfort.',
     category: 'sport',
-    images: ['gore-wear-cycling-jersey'],
+    images: ['Gore_Wear_Cycling_Jersey'],
     reviews: []
   },
   {
@@ -1386,7 +1386,7 @@ export const products: Product[] = [
     description_fr: 'Un short de course au design minimaliste et aux tissus techniques pour une expérience de course inégalée.',
     description_en: 'Running shorts with a minimalist design and technical fabrics for an unparalleled running experience.',
     category: 'sport',
-    images: ['satisfy-running-short'],
+    images: ['Satisfy_Running_Short'],
     reviews: []
   },
   {
@@ -1400,7 +1400,7 @@ export const products: Product[] = [
     description_fr: 'Une parka de ski haut de gamme qui allie élégance et performance pour un style impeccable sur les pistes.',
     description_en: 'A high-end ski parka that combines elegance and performance for an impeccable style on the slopes.',
     category: 'sport',
-    images: ['bogner-ski-parka'],
+    images: ['Bogner_Ski_Parka'],
     reviews: []
   },
   {

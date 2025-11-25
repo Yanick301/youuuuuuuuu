@@ -58,44 +58,9 @@
       "imageHint": "arctic parka"
     },
     {
-      "id": "manteau-cachemire-loro-piana-homme",
-      "imageUrl": "/images/products/manteau-cachemire-loro-piana-homme.jpg",
-      "imageHint": "cashmere coat"
-    },
-    {
-      "id": "blouson-shearling-saint-laurent",
-      "imageUrl": "/images/products/blouson-shearling-saint-laurent.jpg",
-      "imageHint": "shearling jacket"
-    },
-    {
       "id": "pull-col-roule-laine-merinos-paul-smith",
       "imageUrl": "/images/products/parka/pull-col-roule-laine-merinos-paul-smith.jpg",
       "imageHint": "turtleneck sweater"
-    },
-    {
-      "id": "surchemise-doublee-acne-studios-homme",
-      "imageUrl": "/images/products/surchemise-doublee-acne-studios-homme.jpg",
-      "imageHint": "lined overshirt"
-    },
-    {
-      "id": "doudoune-sans-manche-polo-ralph-lauren",
-      "imageUrl": "/images/products/doudoune-sans-manche-polo-ralph-lauren.jpg",
-      "imageHint": "vest puffer"
-    },
-    {
-      "id": "manteau-trench-double-burberry",
-      "imageUrl": "/images/products/manteau-trench-double-burberry.jpg",
-      "imageHint": "trench coat"
-    },
-    {
-      "id": "pull-torsade-epais-dior-homme",
-      "imageUrl": "/images/products/pull-torsade-epais-dior-homme.jpg",
-      "imageHint": "cable-knit sweater"
-    },
-    {
-      "id": "veste-technique-impermeable-tnf-black-series",
-      "imageUrl": "/images/products/veste-technique-impermeable-tnf-black-series.jpg",
-      "imageHint": "technical jacket"
     },
     {
       "id": "robe-midi-en-soie-gucci",
@@ -106,101 +71,6 @@
       "id": "blazer-croise-balmain",
       "imageUrl": "/images/products/blazer-croise-balmain.jpg",
       "imageHint": "double-breasted blazer"
-    },
-    {
-      "id": "pull-col-roule-cachemire-loro-piana-femme",
-      "imageUrl": "/images/products/pull-col-roule-cachemire-loro-piana-femme.jpg",
-      "imageHint": "cashmere turtleneck"
-    },
-    {
-      "id": "pantalon-large-en-laine-max-mara",
-      "imageUrl": "/images/products/pantalon-large-en-laine-max-mara.jpg",
-      "imageHint": "wool trousers"
-    },
-    {
-      "id": "jean-slim-premium-diesel",
-      "imageUrl": "/images/products/jean-slim-premium-diesel.jpg",
-      "imageHint": "slim jeans"
-    },
-    {
-      "id": "chemisier-en-soie-imprimee-saint-laurent",
-      "imageUrl": "/images/products/chemisier-en-soie-imprimee-saint-laurent.jpg",
-      "imageHint": "printed blouse"
-    },
-    {
-      "id": "robe-courte-en-laine-prada",
-      "imageUrl": "/images/products/robe-courte-en-laine-prada.jpg",
-      "imageHint": "wool dress"
-    },
-    {
-      "id": "manteau-long-en-cachemire-max-mara",
-      "imageUrl": "/images/products/manteau-long-en-cachemire-max-mara.jpg",
-      "imageHint": "cashmere coat"
-    },
-    {
-      "id": "veste-courte-matelassee-moncler",
-      "imageUrl": "/images/products/veste-courte-matelassee-moncler.jpg",
-      "imageHint": "quilted jacket"
-    },
-    {
-      "id": "pull-oversize-torsade-chloe",
-      "imageUrl": "/images/products/pull-oversize-torsade-chloe.jpg",
-      "imageHint": "oversize sweater"
-    },
-    {
-      "id": "jupe-crayon-en-laine-hugo-boss",
-      "imageUrl": "/images/products/jupe-crayon-en-laine-hugo-boss.jpg",
-      "imageHint": "pencil skirt"
-    },
-    {
-      "id": "robe-longue-plissee-valentino",
-      "imageUrl": "/images/products/robe-longue-plissee-valentino.jpg",
-      "imageHint": "pleated dress"
-    },
-    {
-      "id": "chemise-en-coton-premium-burberry",
-      "imageUrl": "/images/products/chemise-en-coton-premium-burberry.jpg",
-      "imageHint": "cotton shirt"
-    },
-    {
-      "id": "robe-portefeuille-en-soie-diane-von-furstenberg",
-      "imageUrl": "/images/products/robe-portefeuille-en-soie-diane-von-furstenberg.jpg",
-      "imageHint": "wrap dress"
-    },
-    {
-      "id": "pantalon-tailleur-dior-femme",
-      "imageUrl": "/images/products/pantalon-tailleur-dior-femme.jpg",
-      "imageHint": "tailored trousers"
-    },
-    {
-      "id": "pull-col-bateau-ralph-lauren",
-      "imageUrl": "/images/products/pull-col-bateau-ralph-lauren.jpg",
-      "imageHint": "boatneck sweater"
-    },
-    {
-      "id": "cardigan-long-en-cachemire-brunello-cucinelli",
-      "imageUrl": "/images/products/cardigan-long-en-cachemire-brunello-cucinelli.jpg",
-      "imageHint": "cashmere cardigan"
-    },
-    {
-      "id": "robe-asymetrique-givenchy",
-      "imageUrl": "/images/products/robe-asymetrique-givenchy.jpg",
-      "imageHint": "asymmetrical dress"
-    },
-    {
-      "id": "blouse-satinee-stella-mccartney",
-      "imageUrl": "/images/products/blouse-satinee-stella-mccartney.jpg",
-      "imageHint": "satin blouse"
-    },
-    {
-      "id": "combinaison-pantalon-balenciaga",
-      "imageUrl": "/images/products/combinaison-pantalon-balenciaga.jpg",
-      "imageHint": "jumpsuit"
-    },
-    {
-      "id": "manteau-oversize-acne-studios",
-      "imageUrl": "/images/products/manteau-oversize-acne-studios.jpg",
-      "imageHint": "oversize coat"
     },
     {
       "id": "robe-pull-en-cachemire-max-mara",
@@ -593,218 +463,218 @@
       "imageHint": "lipstick case"
     },
     {
-      "id": "canada-goose-macmillan-parka",
+      "id": "Canada_Goose_MacMillan_Parka",
       "imageUrl": "/images/products/parka/Canada_Goose_MacMillan_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "moncler-quilted-hooded-parka",
+      "id": "Moncler_Quilted_Hooded_Parka",
       "imageUrl": "/images/products/parka/Moncler_Quilted_Hooded_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "moose-knuckles-everest-parka",
+      "id": "Moose_Knuckles_Everest_Parka",
       "imageUrl": "/images/products/parka/Moose_Knuckles_Everest_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "woolrich-arctic-parka",
+      "id": "Woolrich_Arctic_Parka",
       "imageUrl": "/images/products/parka/Woolrich_Arctic_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "parajumpers-easy-waterproof-parka",
+      "id": "Parajumpers_Easy_Waterproof_Parka",
       "imageUrl": "/images/products/parka/Parajumpers_Easy_Waterproof_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "arcteryx-patera-down-parka",
+      "id": "ArcTeryx_Patera_Down_Parka",
       "imageUrl": "/images/products/parka/ArcTeryx_Patera_Down_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "the-north-face-hydrenalite-down-parka",
+      "id": "The_North_Face_Hydrenalite_Down_Parka",
       "imageUrl": "/images/products/parka/The_North_Face_Hydrenalite_Down_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "belstaff-pendulum-parka",
+      "id": "Belstaff_Pendulum_Parka",
       "imageUrl": "/images/products/parka/Belstaff_Pendulum_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "fjallraven-expedition-long-down-parka",
+      "id": "Fjallraven_Expedition_Long_Down_Parka",
       "imageUrl": "/images/products/parka/Fjallraven_Expedition_Long_Down_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "napapijri-skidoo-2-0-parka",
+      "id": "Napapijri_Skidoo_2_0_Parka",
       "imageUrl": "/images/products/parka/Napapijri_Skidoo_2_0_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "patagonia-frozen-range-3-in-1-parka",
+      "id": "Patagonia_Frozen_Range_3_in_1_Parka",
       "imageUrl": "/images/products/parka/Patagonia_Frozen_Range_3_in_1_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "acne-studios-down-parka",
+      "id": "Acne_Studios_Down_Parka",
       "imageUrl": "/images/products/parka/Acne_Studios_Down_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "stone-island-cordura-ripstop-down-parka",
+      "id": "Stone_Island_Cordura_Ripstop_Down_Parka",
       "imageUrl": "/images/products/parka/Stone_Island_Cordura_Ripstop_Down_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "peuterey-kasa-down-parka",
+      "id": "Peuterey_Kasa_Down_Parka",
       "imageUrl": "/images/products/parka/Peuterey_Kasa_Down_Parka.jpg",
       "imageHint": "winter parka"
     },
     {
-      "id": "bogner-fire-ice-ski-parka",
+      "id": "Bogner_Fire_Ice_Ski_Parka",
       "imageUrl": "/images/products/parka/Bogner_Fire_Ice_Ski_Parka.jpg",
       "imageHint": "ski parka"
     },
     {
-      "id": "adidas-stella-mccartney-veste",
+      "id": "Adidas_by_Stella_McCartney_Veste",
       "imageUrl": "/images/products/sport/Adidas_by_Stella_McCartney_Veste.jpg",
       "imageHint": "sport jacket"
     },
     {
-      "id": "adidas-stella-mccartney-legging",
+      "id": "Adidas_by_Stella_McCartney_Legging",
       "imageUrl": "/images/products/sport/Adidas_by_Stella_McCartney_Legging.jpg",
       "imageHint": "sport legging"
     },
     {
-      "id": "alo-yoga-veste-zippee",
+      "id": "Alo_Yoga_Veste_Zippee",
       "imageUrl": "/images/products/sport/Alo_Yoga_Veste_Zippee.jpg",
       "imageHint": "yoga jacket"
     },
     {
-      "id": "alo-yoga-haut-entrainement",
+      "id": "Alo_Yoga_Haut_Entrainement",
       "imageUrl": "/images/products/sport/Alo_Yoga_Haut_Entrainement.jpg",
       "imageHint": "training top"
     },
     {
-      "id": "haute-motion-fleece-polaire",
+      "id": "HAUTE_Motion_Fleece_Polaire",
       "imageUrl": "/images/products/sport/HAUTE_Motion_Fleece_Polaire.jpg",
       "imageHint": "fleece jacket"
     },
     {
-      "id": "haute-legging-nomad",
+      "id": "HAUTE_Legging_Nomad",
       "imageUrl": "/images/products/sport/HAUTE_Legging_Nomad.jpg",
       "imageHint": "sport legging"
     },
     {
-      "id": "loewe-on-brassiere-sport",
+      "id": "Loewe_On_Brassiere_Sport",
       "imageUrl": "/images/products/sport/Loewe_On_Brassiere_Sport.jpg",
       "imageHint": "sport bra"
     },
     {
-      "id": "loewe-on-legging-actif",
+      "id": "Loewe_On_Legging_Actif",
       "imageUrl": "/images/products/sport/Loewe_On_Legging_Actif.jpg",
       "imageHint": "active legging"
     },
     {
-      "id": "loewe-on-storm-active-jacket",
+      "id": "Loewe_On_Storm_Active_Jacket",
       "imageUrl": "/images/products/sport/Loewe_On_Storm_Active_Jacket.jpg",
       "imageHint": "active jacket"
     },
     {
-      "id": "under-armour-halo-bonded-legging",
+      "id": "Under_Armour_Halo_Bonded_Legging",
       "imageUrl": "/images/products/sport/Under_Armour_Halo_Bonded_Legging.jpg",
       "imageHint": "sport legging"
     },
     {
-      "id": "diesel-sport-track-jacket",
+      "id": "Diesel_Sport_Track_Jacket",
       "imageUrl": "/images/products/sport/Diesel_Sport_Track_Jacket.jpg",
       "imageHint": "track jacket"
     },
     {
-      "id": "nagnata-laine-combinaison-yoga",
+      "id": "Nagnata_Laine_Combinaison_Yoga",
       "imageUrl": "/images/products/sport/Nagnata_Laine_Combinaison_Yoga.jpg",
       "imageHint": "yoga jumpsuit"
     },
     {
-      "id": "lululemon-veste-premium",
+      "id": "Lululemon_Veste_Premium",
       "imageUrl": "/images/products/sport/Lululemon_Veste_Premium.jpg",
       "imageHint": "premium jacket"
     },
     {
-      "id": "peak-performance-tech-jacket",
+      "id": "Peak_Performance_Tech_Jacket",
       "imageUrl": "/images/products/sport/Peak_Performance_Tech_Jacket.jpg",
       "imageHint": "tech jacket"
     },
     {
-      "id": "craft-running-tech-shirt",
+      "id": "Craft_Running_Tech_Shirt",
       "imageUrl": "/images/products/sport/Craft_Running_Tech_Shirt.jpg",
       "imageHint": "running shirt"
     },
     {
-      "id": "gore-wear-cycling-jersey",
+      "id": "Gore_Wear_Cycling_Jersey",
       "imageUrl": "/images/products/sport/Gore_Wear_Cycling_Jersey.jpg",
       "imageHint": "cycling jersey"
     },
     {
-      "id": "satisfy-running-short",
+      "id": "Satisfy_Running_Short",
       "imageUrl": "/images/products/sport/Satisfy_Running_Short.jpg",
       "imageHint": "running shorts"
     },
     {
-      "id": "bogner-ski-parka",
+      "id": "Bogner_Ski_Parka",
       "imageUrl": "/images/products/sport/Bogner_Ski_Parka.jpg",
       "imageHint": "ski parka"
     },
     {
       "id": "Sorel_Caribou",
-      "imageUrl": "/images/products/Sorel_Caribou.jpg",
+      "imageUrl": "/images/products/shoes/Sorel_Caribou.jpg",
       "imageHint": "winter boots"
     },
     {
       "id": "Sorel_Caribou_Horizon_GTX",
-      "imageUrl": "/images/products/Sorel_Caribou_Horizon_GTX.jpg",
+      "imageUrl": "/images/products/shoes/Sorel_Caribou_Horizon_GTX.jpg",
       "imageHint": "winter boots"
     },
     {
       "id": "Sorel_1964_PAC",
-      "imageUrl": "/images/products/Sorel_1964_PAC.jpg",
+      "imageUrl": "/images/products/shoes/Sorel_1964_PAC.jpg",
       "imageHint": "winter boots"
     },
     {
       "id": "Salomon_X_Ultra_Snow_Pilot",
-      "imageUrl": "/images/products/Salomon_X_Ultra_Snow_Pilot.jpg",
+      "imageUrl": "/images/products/shoes/Salomon_X_Ultra_Snow_Pilot.jpg",
       "imageHint": "snow boots"
     },
     {
       "id": "Columbia_Bugaboot_III",
-      "imageUrl": "/images/products/Columbia_Bugaboot_III.jpg",
+      "imageUrl": "/images/products/shoes/Columbia_Bugaboot_III.jpg",
       "imageHint": "snow boots"
     },
     {
       "id": "The_North_Face_Chilkat_V_400",
-      "imageUrl": "/images/products/The_North_Face_Chilkat_V_400.jpg",
+      "imageUrl": "/images/products/shoes/The_North_Face_Chilkat_V_400.jpg",
       "imageHint": "snow boots"
     },
     {
       "id": "Baffin_Impact",
-      "imageUrl": "/images/products/Baffin_Impact.jpg",
+      "imageUrl": "/images/products/shoes/Baffin_Impact.jpg",
       "imageHint": "arctic boots"
     },
     {
       "id": "Merrell_Thermo_Chill_2_Mid",
-      "imageUrl": "/images/products/Merrell_Thermo_Chill_2_Mid.jpg",
+      "imageUrl": "/images/products/shoes/Merrell_Thermo_Chill_2_Mid.jpg",
       "imageHint": "hiking boots"
     },
     {
       "id": "UGG_Butte",
-      "imageUrl": "/images/products/UGG_Butte.jpg",
+      "imageUrl": "/images/products/shoes/UGG_Butte.jpg",
       "imageHint": "winter boots"
     },
     {
       "id": "Muck_Boot_Arctic_Ice_Tall",
-      "imageUrl": "/images/products/Muck_Boot_Arctic_Ice_Tall.jpg",
+      "imageUrl": "/images/products/shoes/Muck_Boot_Arctic_Ice_Tall.jpg",
       "imageHint": "rubber boots"
     }
   ]
