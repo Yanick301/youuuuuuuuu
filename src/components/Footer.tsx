@@ -43,16 +43,11 @@ export function Footer() {
         { name: 'Karriere', name_fr: 'Carrières', name_en: 'Careers', href: '/careers' },
       ],
     },
-     {
-      title: 'Réseaux sociaux',
-      title_fr: 'Réseaux sociaux',
-      title_en: 'Social Media',
-      isSocial: true,
-      links: [
-        { name: 'Instagram', href: 'https://www.instagram.com/ezcentials_?igsh=MWQ2aTR60WgyYnpvag%3D%3D&utm_source=qr', image: '/images/insta.png' },
-        { name: 'Snapchat', href: 'https://snapchat.com/t/qez0Z1z0', image: '/images/snap.png' },
-      ],
-    },
+  ];
+  
+  const socialLinks = [
+    { name: 'Instagram', href: 'https://www.instagram.com/ezcentials_?igsh=MWQ2aTR60WgyYnpvag%3D%3D&utm_source=qr', image: '/images/insta.png' },
+    { name: 'Snapchat', href: 'https://snapchat.com/t/qez0Z1z0', image: '/images/snap.png' },
   ];
 
   return (
@@ -68,18 +63,31 @@ export function Footer() {
                     <h5 className="font-headline text-lg font-semibold tracking-wider text-white">
                     <TranslatedText fr={section.title_fr} en={section.title_en}>{section.title}</TranslatedText>
                     </h5>
-                    <ul className={`mt-4 space-y-3 ${section.isSocial ? 'flex space-x-4 space-y-0' : ''}`}>
+                    <ul className="mt-4 space-y-3">
                     {section.links.map((link) => (
                         <li key={link.name}>
                           <Link href={link.href} target={link.isExternal ? '_blank' : undefined} rel={link.isExternal ? 'noopener noreferrer' : undefined} className="text-sm text-stone-300 hover:text-white flex items-center gap-2">
-                            {link.image && <img src={link.image} alt={`${link.name} logo`} className="h-6 w-6" />}
-                            {!section.isSocial && <TranslatedText fr={link.name_fr} en={link.name_en}>{link.name}</TranslatedText>}
+                            <TranslatedText fr={link.name_fr} en={link.name_en}>{link.name}</TranslatedText>
                           </Link>
                         </li>
                     ))}
                     </ul>
                 </div>
                 ))}
+                 <div>
+                    <h5 className="font-headline text-lg font-semibold tracking-wider text-white">
+                        <TranslatedText fr="Réseaux sociaux" en="Social Media">Réseaux sociaux</TranslatedText>
+                    </h5>
+                    <ul className="mt-4 flex items-center gap-4">
+                        {socialLinks.map((link) => (
+                            <li key={link.name}>
+                                <a href={link.href} target="_blank" rel="noopener noreferrer" className="block text-sm text-stone-300 transition-all duration-300 ease-in-out hover:scale-110 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
+                                    <img src={link.image} alt={`${link.name} logo`} className="h-7 w-7" />
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
         </div>
         <div className="mt-16 pt-8 border-t border-stone-800 text-center text-sm text-stone-400">
