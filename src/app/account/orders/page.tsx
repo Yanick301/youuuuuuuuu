@@ -111,7 +111,7 @@ export default function OrdersPage() {
               ? 'Please attach your proof of payment to the email that just opened.'
               : 'Bitte hängen Sie Ihren Zahlungsnachweis an die soeben geöffnete E-Mail an.',
         });
-    }).catch(async (firestoreError) => {
+    }).catch(async (serverError) => {
       const permissionError = new FirestorePermissionError({
         path: userOrderRef.path,
         operation: 'update',
