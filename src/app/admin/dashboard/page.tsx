@@ -127,7 +127,7 @@ export default function AdminDashboardPage() {
     );
   }
 
-  const renderOrderList = (orderList: any[], title: React.ReactNode) => {
+  const renderOrderList = (orderList: any[], title: React.ReactNode, type: 'pending' | 'processing' | 'completed') => {
     return (
       <Card>
         <CardHeader>
@@ -170,16 +170,6 @@ export default function AdminDashboardPage() {
                   {order.paymentStatus === 'processing' && (
                     <div className="mt-4 flex flex-wrap gap-2">
                         <Button
-                          asChild
-                          variant="outline"
-                          size="sm"
-                        >
-                            <a href={order.receiptImageURL} target="_blank" rel="noopener noreferrer">
-                                <FileCheck className="mr-2 h-4 w-4" />
-                                Voir le reçu
-                            </a>
-                        </Button>
-                        <Button
                             onClick={() => handleValidatePayment(order.id, order.userId)}
                             disabled={updatingOrderId === order.id}
                             size="sm"
@@ -208,13 +198,13 @@ export default function AdminDashboardPage() {
         <h1 className="mb-8 font-headline text-4xl"><TranslatedText fr="Tableau de Bord Administrateur" en="Admin Dashboard">Tableau de Bord Administrateur</TranslatedText></h1>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             <div className="lg:col-span-1 space-y-8">
-                 {renderOrderList(pendingOrders, <div className="flex items-center gap-2"><AlertCircle className="text-destructive h-5 w-5"/> <TranslatedText fr="Commandes en attente de paiement" en="Pending Payment">Commandes en attente de paiement</TranslatedText></div>)}
+                 {renderOrderList(pendingOrders, <div className="flex items-center gap-2"><AlertCircle className="text-destructive h-5 w-5"/> <TranslatedText fr="Commandes en attente de paiement" en="Pending Payment">Commandes en attente de paiement</TranslatedText></div>, 'pending')}
             </div>
             <div className="lg:col-span-1 space-y-8">
-                {renderOrderList(processingOrders, <div className="flex items-center gap-2"><Clock className="text-blue-500 h-5 w-5"/> <TranslatedText fr="Commandes en attente de validation" en="Pending Validation">Commandes en attente de validation</TranslatedText></div>)}
+                {renderOrderList(processingOrders, <div className="flex items-center gap-2"><Clock className="text-blue-500 h-5 w-5"/> <TranslatedText fr="Commandes en attente de validation" en="Pending Validation">Commandes en attente de validation</TranslatedText></div>, 'processing')}
             </div>
             <div className="lg:col-span-1 space-y-8">
-                {renderOrderList(completedOrders, <div className="flex items-center gap-2"><CheckCircle className="text-green-500 h-5 w-5"/> <TranslatedText fr="Commandes terminées" en="Completed Orders">Commandes terminées</TranslatedText></div>)}
+                {renderOrderList(completedOrders, <div className="flex items-center gap-2"><CheckCircle className="text-green-500 h-5 w-5"/> <TranslatedText fr="Commandes terminées" en="Completed Orders">Commandes terminées</TranslatedText></div>, 'completed')}
             </div>
         </div>
     </div>
