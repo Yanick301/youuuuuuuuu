@@ -4,7 +4,7 @@ import type { Product, Category, Review } from './types';
 export const categories: Category[] = [
   { id: 'cat-1', name: 'Herrenbekleidung', name_fr: 'Vêtements Homme', name_en: 'Men\'s Clothing', slug: 'mens-clothing', imageId: 'mens-category' },
   { id: 'cat-2', name: 'Damenbekleidung', name_fr: 'Vêtements Femme', name_en: 'Women\'s Clothing', slug: 'womens-clothing', imageId: 'womens-category' },
-  { id: 'cat-3', name: 'Accessoires', name_fr: 'Accessoires', name_en: 'Accessories', slug: 'accessories-category' },
+  { id: 'cat-3', name: 'Accessoires', name_fr: 'Accessoires', name_en: 'Accessories', slug: 'accessories', imageId: 'accessories-category' },
   { id: 'cat-5', name: 'Schuhe', name_fr: 'Chaussures', name_en: 'Shoes', slug: 'shoes', imageId: 'shoes-category' },
   { id: 'cat-4', name: 'Winterkleidung', name_fr: 'Vêtements d\'hiver', name_en: 'Winter Clothing', slug: 'winter-clothing', imageId: 'winter-category' },
   { id: 'cat-6', name: 'Sport', name_fr: 'Sport', name_en: 'Sport', slug: 'sport', imageId: 'sport-category' },
@@ -775,38 +775,6 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 'acc-8',
-    name: 'Nordic Luxe Wollmütze',
-    name_fr: 'Bonnet en laine Nordic Luxe',
-    name_en: 'Nordic Luxe Wool Beanie',
-    slug: 'bonnet-laine-torsadee-noir-nordic-luxe',
-    price: 80,
-    description: 'Wärme und Textur für Ihre Wintertage. Diese Mütze aus reiner Wolle mit Zopfstrickmuster bietet einen schicken und gemütlichen Stil. Ein unverzichtbares Accessoire, um der Kälte mit nordischer Eleganz zu trotzen.',
-    description_fr: 'De la chaleur et de la texture pour vos journées d\'hiver. Ce bonnet en pure laine, au tricot torsadé, offre un style chic et douillet. Un accessoire indispensable pour affronter le froid avec une élégance nordique.',
-    description_en: 'Warmth and texture for your winter days. This pure wool beanie with a cable knit pattern offers a chic and cozy style. An essential accessory to face the cold with Nordic elegance.',
-    category: 'accessories',
-    images: ['bonnet-laine-torsadee-noir-nordic-luxe'],
-    reviews: [
-        { author: 'Elsa', rating: 5, comment: 'Très chaud et la laine ne gratte pas. J\'adore !'}
-    ]
-  },
-  {
-    id: 'acc-9',
-    name: 'Winter Essential Mütze',
-    name_fr: 'Bonnet Winter Essential',
-    name_en: 'Winter Essential Beanie',
-    slug: 'bonnet-epais-gris-winter-essential',
-    price: 80,
-    description: 'Schlichtheit und Funktionalität. Diese dicke Mütze in neutralem Grau ist das unverzichtbare Accessoire, das sich leicht mit all Ihren Wintermänteln kombinieren lässt, um stilvoll warm zu bleiben.',
-    description_fr: 'La simplicité et l\'efficacité. Ce bonnet épais d\'un gris neutre est l\'accessoire essentiel qui s\'associe facilement à tous vos manteaux d\'hiver pour rester au chaud avec style.',
-    description_en: 'Simplicity and efficiency. This thick, neutral grey beanie is the essential accessory that easily pairs with all your winter coats to stay warm in style.',
-    category: 'accessories',
-    images: ['bonnet-epais-gris-winter-essential'],
-    reviews: [
-        { author: 'Martin', rating: 5, comment: 'Simple, chaud, efficace. Exactement ce que je cherchais.'}
-    ]
-  },
-  {
     id: 'acc-10',
     name: 'Alpine Soft Schal',
     name_fr: 'Écharpe Alpine Soft',
@@ -840,22 +808,6 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 'acc-12',
-    name: 'Urban Knit Mütze',
-    name_fr: 'Bonnet Urban Knit',
-    name_en: 'Urban Knit Beanie',
-    slug: 'bonnet-streetwear-a-revers-urban-knit',
-    price: 80,
-    description: 'Das Markenzeichen des urbanen Stils. Diese Mütze mit ihrem charakteristischen Umschlag ist das unverzichtbare Accessoire, um jedem lässigen Outfit einen trendigen und modernen Streetwear-Touch zu verleihen.',
-    description_fr: 'La marque de fabrique du style urbain. Ce bonnet à revers caractéristique est l\'accessoire indispensable pour ajouter une touche streetwear tendance et moderne à n\'importe quelle tenue décontractée.',
-    description_en: 'The hallmark of urban style. This cuffed beanie is the essential accessory to add a trendy and modern streetwear touch to any casual outfit.',
-    category: 'accessories',
-    images: ['bonnet-streetwear-a-revers-urban-knit'],
-    reviews: [
-        { author: 'Dylan', rating: 5, comment: 'Style parfait, je le porte tout le temps.'}
-    ]
-  },
-  {
     id: 'acc-13',
     name: 'Tech Gloves',
     name_fr: 'Gants Tech Gloves',
@@ -870,151 +822,6 @@ export const products: Product[] = [
     images: ['gants-tactiles-thermiques-tech-gloves'],
     reviews: [
         { author: 'Laura', rating: 5, comment: 'Enfin des gants qui fonctionnent vraiment avec mon téléphone !'}
-    ]
-  },
-  {
-    id: 'acc-14',
-    name: 'Slimfold Premium Portemonnaie',
-    name_fr: 'Portefeuille Slimfold Premium',
-    name_en: 'Slimfold Premium Wallet',
-    slug: 'portefeuille-cuir-veritable-slimfold-premium',
-    price: 85,
-    description: 'Eleganz in Ihrer Tasche. Dieses schlanke Portemonnaie aus echtem Leder ist so konzipiert, dass es sich diskret in Ihre Tasche schmiegt und gleichzeitig Ihre wichtigsten Karten und Geldscheine mit Raffinesse organisiert.',
-    description_fr: 'L\'élégance dans votre poche. Ce portefeuille slim en cuir véritable est conçu pour se glisser discrètement dans votre poche tout en organisant vos cartes et billets essentiels avec raffinement.',
-    description_en: 'Elegance in your pocket. This slim genuine leather wallet is designed to discreetly slip into your pocket while organizing your essential cards and cash with refinement.',
-    category: 'accessories',
-    images: ['portefeuille-cuir-veritable-slimfold-premium'],
-    reviews: [
-        { author: 'Vincent', rating: 5, comment: 'Très fin et le cuir est de grande qualité. Parfait.'}
-    ]
-  },
-  {
-    id: 'acc-15',
-    name: 'Executive Umhängetasche',
-    name_fr: 'Sacoche bandoulière Executive',
-    name_en: 'Executive Crossbody Bag',
-    slug: 'sacoche-bandouliere-cuir-premium-executive-bag',
-    price: 240,
-    description: 'Der ideale Partner für den modernen Geschäftsmann. Diese Umhängetasche aus hochwertigem Leder vereint Funktionalität und Eleganz. Ihre durchdachten Fächer ermöglichen es Ihnen, Ihre täglichen Essentials mit Stil zu organisieren.',
-    description_fr: 'Le partenaire idéal de l\'homme d\'affaires moderne. Cette sacoche en bandoulière, fabriquée dans un cuir de première qualité, allie fonctionnalité et élégance. Ses compartiments bien pensés vous permettent d\'organiser vos essentiels quotidiens avec style.',
-    description_en: 'The ideal partner for the modern businessman. This premium leather crossbody bag combines functionality and elegance. Its well-thought-out compartments allow you to organize your daily essentials with style.',
-    category: 'accessories',
-    images: ['sacoche-bandouliere-cuir-premium-executive-bag'],
-    reviews: [
-        { author: 'Alexandre', rating: 5, comment: 'Taille parfaite et très professionnelle. Je recommande.'}
-    ]
-  },
-  {
-    id: 'acc-16',
-    name: 'Golden Lady Uhr',
-    name_fr: 'Montre Golden Lady',
-    name_en: 'Golden Lady Watch',
-    slug: 'montre-elegante-doree-golden-lady',
-    price: 330,
-    description: 'Ein Schmuckstück, das die Zeit anzeigt. Diese vergoldete Uhr ist eine Ode an die Weiblichkeit. Ihr strahlendes Finish und ihr raffiniertes Design machen sie zum perfekten Accessoire, um jedes Outfit mit einem Hauch von Glamour zu erleuchten.',
-    description_fr: 'Un bijou qui donne l\'heure. Cette montre plaquée or est une ode à la féminité. Sa finition éclatante et son design raffiné en font l\'accessoire parfait pour illuminer chaque tenue d\'une touche de glamour.',
-    description_en: 'A jewel that tells time. This gold-plated watch is an ode to femininity. Its radiant finish and refined design make it the perfect accessory to illuminate any outfit with a touch of glamour.',
-    category: 'accessories',
-    images: ['montre-elegante-doree-golden-lady'],
-    reviews: [
-        { author: 'Marie', rating: 5, comment: 'Absolument magnifique, je l\'adore ! Elle est encore plus belle en vrai.' },
-        { author: 'Juliette', rating: 5, comment: 'Un vrai bijou. Je reçois des compliments à chaque fois que je la porte.'}
-    ]
-  },
-  {
-    id: 'acc-17',
-    name: 'Silver Pure Uhr',
-    name_fr: 'Montre Silver Pure',
-    name_en: 'Silver Pure Watch',
-    slug: 'montre-argentee-minimaliste-silver-pure',
-    price: 240,
-    description: 'Die Kunst der Schlichtheit. Diese minimalistische, versilberte Uhr verkörpert reine und zeitlose Eleganz. Ihr schlichtes Design und ihre makellose Verarbeitung machen sie zu einem vielseitigen Accessoire für jeden Anlass.',
-    description_fr: 'L\'art de la simplicité. Cette montre minimaliste en métal argenté incarne une élégance pure et intemporelle. Son design épuré et sa finition impeccable en font un accessoire polyvalent pour toutes les occasions.',
-    description_en: 'The art of simplicity. This minimalist silver-plated watch embodies pure and timeless elegance. Its clean design and flawless finish make it a versatile accessory for any occasion.',
-    category: 'accessories',
-    images: ['montre-argentee-minimaliste-silver-pure'],
-    reviews: [
-      { author: 'Clara', rating: 5, comment: 'Simple, élégante, parfaite. C\'est exactement ce que je voulais.'}
-    ]
-  },
-  {
-    id: 'acc-18',
-    name: 'Soft Elegance Uhr',
-    name_fr: 'Montre Soft Elegance',
-    name_en: 'Soft Elegance Watch',
-    slug: 'montre-cuir-beige-soft-elegance',
-    price: 210,
-    description: 'Eine sanfte und raffinierte Note für Ihr Handgelenk. Das Armband aus weichem beigem Leder und das schlichte Zifferblatt dieser Uhr schaffen eine Harmonie von subtiler und femininer Eleganz.',
-    description_fr: 'Une touche de douceur et de raffinement pour votre poignet. Le bracelet en cuir beige souple et le cadran épuré de cette montre créent une harmonie d\'élégance subtile et féminine.',
-    description_en: 'A touch of softness and refinement for your wrist. The soft beige leather strap and the clean dial of this watch create a harmony of subtle and feminine elegance.',
-    category: 'accessories',
-    images: ['montre-cuir-beige-soft-elegance'],
-    reviews: [
-        { author: 'Audrey', rating: 5, comment: 'La couleur est très douce et la montre est très confortable.'}
-    ]
-  },
-  {
-    id: 'acc-19',
-    name: 'Rose Queen Uhr',
-    name_fr: 'Montre Rose Queen',
-    name_en: 'Rose Queen Watch',
-    slug: 'montre-rose-gold-maille-milanaise-rose-queen',
-    price: 280,
-    description: 'Die Königin der Uhren an Ihrem Handgelenk. Das Milanaise-Armband aus Roségold schmiegt sich elegant an die Haut, während das funkelnde Zifferblatt bei jeder Bewegung das Licht einfängt. Eine Uhr für die moderne Königin.',
-    description_fr: 'La reine des montres à votre poignet. Son bracelet en maille milanaise couleur or rose épouse élégamment la peau, tandis que son cadran étincelant capture la lumière à chaque mouvement. Une montre pour la reine moderne.',
-    description_en: 'The queen of watches on your wrist. Its rose gold milanese mesh strap elegantly hugs the skin, while its sparkling dial captures the light with every movement. A watch for the modern queen.',
-    category: 'accessories',
-    images: ['montre-rose-gold-maille-milanaise-rose-queen'],
-    reviews: [
-        { author: 'Manon', rating: 5, comment: 'Je suis amoureuse de cette montre. Le bracelet est magnifique.'}
-    ]
-  },
-  {
-    id: 'acc-20',
-    name: 'Cozy Glam Mütze',
-    name_fr: 'Bonnet Cozy Glam',
-    name_en: 'Cozy Glam Beanie',
-    slug: 'bonnet-laine-pompon-fourrure-synthetique-cozy-glam',
-    price: 80,
-    description: 'Vereinen Sie Wärme und Glamour. Diese Wollmütze ist mit einem weichen Bommel aus hochwertigem Kunstpelz versehen, der Ihrem Winterlook einen Hauch von verspieltem Luxus verleiht.',
-    description_fr: 'Alliez chaleur et glamour. Ce bonnet en laine est surmonté d\'un pompon doux en fausse fourrure de haute qualité, ajoutant une touche de luxe ludique à votre look d\'hiver.',
-    description_en: 'Combine warmth and glamour. This wool beanie is topped with a soft, high-quality faux fur pom-pom, adding a touch of playful luxury to your winter look.',
-    category: 'accessories',
-    images: ['bonnet-laine-pompon-fourrure-synthetique-cozy-glam'],
-    reviews: [
-        { author: 'Jessica', rating: 5, comment: 'Très doux et le pompon est adorable !'}
-    ]
-  },
-  {
-    id: 'acc-21',
-    name: 'Urban Chic Mütze',
-    name_fr: 'Bonnet Urban Chic',
-    name_en: 'Urban Chic Beanie',
-    slug: 'bonnet-long-oversize-urban-chic',
-    price: 80,
-    description: 'Für einen lässigen und trendigen Stil. Diese lange Oversize-Mütze kann auf verschiedene Arten getragen werden, um Ihren urbanen und schicken Look zu vervollkommnen. Ein starkes Stück für einen selbstbewussten Stil.',
-    description_fr: 'Pour un style décontracté et tendance. Ce bonnet long et oversize peut être porté de différentes manières pour parfaire votre look urbain et chic. Une pièce forte pour un style affirmé.',
-    description_en: 'For a casual and trendy style. This long and oversized beanie can be worn in different ways to perfect your urban and chic look. A strong piece for an assertive style.',
-    category: 'accessories',
-    images: ['bonnet-long-oversize-urban-chic'],
-    reviews: [
-        { author: 'Mathieu', rating: 4, comment: 'Bonnet sympa, le style oversize est cool.'}
-    ]
-  },
-  {
-    id: 'acc-22',
-    name: 'Winter Pearl Mütze',
-    name_fr: 'Bonnet Winter Pearl',
-    name_en: 'Winter Pearl Beanie',
-    slug: 'bonnet-tricote-perle-winter-pearl',
-    price: 80,
-    description: 'Ein Hauch von Zartheit im Herzen des Winters. Diese gestrickte Mütze ist subtil mit kleinen Perlen verziert, die einen Hauch von Licht und winterlicher Poesie in Ihre Garderobe bringen.',
-    description_fr: 'Une touche de délicatesse au cœur de l\'hiver. Ce bonnet tricoté est subtilement orné de petites perles, apportant un éclat de lumière et une poésie hivernale à votre garde-robe.',
-    description_en: 'A touch of delicacy in the heart of winter. This knitted beanie is subtly adorned with small pearls, bringing a splash of light and winter poetry to your wardrobe.',
-    category: 'accessories',
-    images: ['bonnet-tricote-perle-winter-pearl'],
-    reviews: [
-        { author: 'Amélie', rating: 5, comment: 'Très original et féminin. J\'aime beaucoup les petites perles.'}
     ]
   },
   {
@@ -1049,38 +856,6 @@ export const products: Product[] = [
     images: ['echarpe-maille-torsadee-warm-plush'],
     reviews: [
         { author: 'Nicolas', rating: 5, comment: 'Écharpe de grande qualité, très chaude et confortable.'}
-    ]
-  },
-  {
-    id: 'acc-25',
-    name: 'Elegant Wrap Stola',
-    name_fr: 'Châle Elegant Wrap',
-    name_en: 'Elegant Wrap Shawl',
-    slug: 'chale-hiver-motif-elegant-elegant-wrap',
-    price: 95,
-    description: 'Mehr als nur ein Accessoire, ein Statement. Diese große Winterstola mit ihrem raffinierten und eleganten Muster wertet jedes Outfit auf, vom einfachen Mantel bis zum Abendkleid.',
-    description_fr: 'Plus qu\'un accessoire, une déclaration de style. Ce grand châle d\'hiver, avec son motif raffiné et élégant, sublime n\'importe quelle tenue, du simple manteau à la robe de soirée.',
-    description_en: 'More than an accessory, a style statement. This large winter shawl, with its refined and elegant pattern, enhances any outfit, from a simple coat to an evening dress.',
-    category: 'accessories',
-    images: ['chale-hiver-motif-elegant-elegant-wrap'],
-    reviews: [
-        { author: 'Béatrice', rating: 5, comment: 'Les motifs sont superbes et il est très grand et enveloppant.'}
-    ]
-  },
-  {
-    id: 'acc-26',
-    name: 'Cashmere Touch Foulard',
-    name_fr: 'Foulard Cashmere Touch',
-    name_en: 'Cashmere Touch Scarf',
-    slug: 'foulard-cachemire-imprime-cashmere-touch',
-    price: 150,
-    description: 'Die Weichheit von Kaschmir, die Kühnheit eines Drucks. Dieser Schal aus einem Kaschmirgemisch bietet ein luxuriöses Gefühl und einen Hauch von Farbe, um Ihre Looks in der Zwischensaison aufzuwerten.',
-    description_fr: 'La douceur du cachemire, l\'audace d\'un imprimé. Ce foulard en mélange de cachemire offre un toucher luxueux et une touche de couleur pour rehausser vos looks de mi-saison.',
-    description_en: 'The softness of cashmere, the boldness of a print. This cashmere blend scarf offers a luxurious feel and a touch of color to enhance your mid-season looks.',
-    category: 'accessories',
-    images: ['foulard-cachemire-imprime-cashmere-touch'],
-    reviews: [
-        { author: 'Diane', rating: 5, comment: 'Très doux et les couleurs sont magnifiques.'}
     ]
   },
   {
@@ -1832,3 +1607,5 @@ export function getWinterSaleProducts(products: Product[], limit?: number, homep
   }
   return combined;
 }
+
+    
