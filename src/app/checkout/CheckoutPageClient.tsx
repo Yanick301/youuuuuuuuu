@@ -180,13 +180,9 @@ export default function CheckoutPageClient() {
     
     const userOrderRef = collection(firestore, `userProfiles/${user.uid}/orders`);
 
-    addDoc(userOrderRef, orderData).then(() => {
+    addDoc(userOrderRef, orderData).then((docRef) => {
       clearCart();
-      toast({
-        title: language === 'fr' ? 'Commande Créée' : language === 'en' ? 'Order Created' : 'Bestellung erstellt',
-        description: language === 'fr' ? 'Veuillez maintenant téléverser votre preuve de paiement.' : language === 'en' ? 'Please now upload your proof of payment.' : 'Bitte laden Sie jetzt Ihren Zahlungsnachweis hoch.',
-      });
-      router.push('/account/orders');
+      router.push(`/checkout/confirm-payment?orderId=${docRef.id}`);
     }).catch(async (serverError) => {
       const permissionError = new FirestorePermissionError({
         path: userOrderRef.path,

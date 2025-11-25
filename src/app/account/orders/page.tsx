@@ -25,18 +25,14 @@ import {
   useFirestore,
   useUser,
   useMemoFirebase,
-  errorEmitter,
-  FirestorePermissionError,
 } from '@/firebase';
 import {
   collection,
-  doc,
-  updateDoc,
   query,
   orderBy,
   onSnapshot,
 } from 'firebase/firestore';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { fr, de, enUS } from 'date-fns/locale';
@@ -71,13 +67,7 @@ export default function OrdersPage() {
   const { language } = useLanguage();
   const { toast } = useToast();
   const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
-
-  const [processingOrderId, setProcessingOrderId] = useState<string | null>(
-    null
-  );
-
+  
   const ordersQuery = useMemoFirebase(() => {
     if (!user || !firestore) return null;
 
@@ -123,72 +113,8 @@ export default function OrdersPage() {
     return () => unsubscribe();
   }, [ordersQuery, language, toast, user]);
 
-
-  const handleUploadClick = (orderId: string) => {
-    setSelectedOrderId(orderId);
-    fileInputRef.current?.click();
-  };
-  
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || event.target.files.length === 0 || !user || !firestore || !selectedOrderId) {
-      return;
-    }
-    const file = event.target.files[0];
-    const orderId = selectedOrderId;
-    
-    if (file.size > 1024 * 1024) { // 1MB limit
-        toast({
-            variant: "destructive",
-            title: language === 'fr' ? "Fichier trop volumineux" : language === 'en' ? "File too large" : "Datei zu groß",
-            description: language === 'fr' ? "La taille de l'image ne doit pas dépasser 1 Mo." : language === 'en' ? "Image size should not exceed 1MB." : "Die Bildgröße darf 1 MB nicht überschreiten.",
-        });
-        return;
-    }
-
-    setProcessingOrderId(orderId);
-
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = async () => {
-        const imageDataUri = reader.result as string;
-
-        try {
-            const orderRef = doc(firestore, `userProfiles/${user.uid}/orders`, orderId);
-            updateDoc(orderRef, {
-                receiptImageDataUri: imageDataUri,
-                paymentStatus: 'processing',
-            }).then(() => {
-                router.push('/checkout/thank-you');
-            }).catch(e => {
-                const permissionError = new FirestorePermissionError({
-                    path: orderRef.path,
-                    operation: 'update',
-                    requestResourceData: { paymentStatus: 'processing' }
-                });
-                errorEmitter.emit('permission-error', permissionError);
-                setProcessingOrderId(null);
-            });
-        } catch (error: any) {
-           toast({
-            variant: "destructive",
-            title: language === 'fr' ? "Échec du téléversement" : language === 'en' ? "Upload Failed" : "Upload fehlgeschlagen",
-            description: language === 'fr' ? "Impossible de téléverser le reçu. Veuillez réessayer." : language === 'en' ? "Could not upload receipt. Please try again." : "Beleg konnte nicht hochgeladen werden. Bitte versuchen Sie es erneut.",
-          });
-           setProcessingOrderId(null);
-        } finally {
-            if (fileInputRef.current) {
-                fileInputRef.current.value = '';
-            }
-        }
-    };
-    reader.onerror = (error) => {
-        toast({
-            variant: "destructive",
-            title: language === 'fr' ? "Erreur de lecture" : language === 'en' ? "File Read Error" : "Fehler beim Lesen der Datei",
-            description: language === 'fr' ? "Impossible de lire le fichier sélectionné." : language === 'en' ? "Could not read the selected file." : "Die ausgewählte Datei konnte nicht gelesen werden.",
-        });
-        setProcessingOrderId(null);
-    }
+  const handleUploadReceipt = (orderId: string) => {
+    router.push(`/checkout/confirm-payment?orderId=${orderId}`);
   };
 
   const handleCopyValidationLink = (order: any) => {
@@ -286,13 +212,6 @@ export default function OrdersPage() {
 
   return (
     <div>
-        <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileSelect}
-            className="hidden"
-            accept="image/png, image/jpeg, image/jpg"
-        />
       <h1 className="mb-6 font-headline text-3xl">
         <TranslatedText fr="Historique des commandes" en="Order History">
           Bestellverlauf
@@ -412,15 +331,10 @@ export default function OrdersPage() {
                       </TranslatedText>
                     </p>
                     <Button
-                      onClick={() => handleUploadClick(order.id)}
-                      disabled={processingOrderId === order.id}
+                      onClick={() => handleUploadReceipt(order.id)}
                       variant="destructive"
                     >
-                      {processingOrderId === order.id ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      ) : (
-                        <Upload className="mr-2 h-4 w-4" />
-                      )}
+                      <Upload className="mr-2 h-4 w-4" />
                       <TranslatedText
                         fr="Téléverser le reçu"
                         en="Upload Receipt"
