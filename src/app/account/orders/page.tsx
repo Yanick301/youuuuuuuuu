@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
   ShoppingBag,
-  Upload,
+  Mail,
   CheckCircle,
   Loader2,
   AlertCircle,
@@ -24,7 +24,6 @@ import {
   useFirestore,
   useUser,
   useMemoFirebase,
-  useStorage,
   errorEmitter,
   FirestorePermissionError,
 } from '@/firebase';
@@ -35,17 +34,14 @@ import {
   query,
   orderBy,
 } from 'firebase/firestore';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { fr, de, enUS } from 'date-fns/locale';
 import { useLanguage } from '@/context/LanguageContext';
-import {
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL,
-} from 'firebase/storage';
 import { useToast } from '@/hooks/use-toast';
+
+const ADMIN_EMAIL = 'ezcentials@gmail.com';
 
 const getSafeDate = (order: any): Date => {
   if (!order || !order.orderDate) {
@@ -72,12 +68,9 @@ export default function OrdersPage() {
   const { user } = useUser();
   const firestore = useFirestore();
   const { language } = useLanguage();
-  const storage = useStorage();
   const { toast } = useToast();
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [uploadingOrderId, setUploadingOrderId] = useState<string | null>(null);
-  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [processingOrderId, setProcessingOrderId] = useState<string | null>(null);
 
   const ordersQuery = useMemoFirebase(() => {
     if (!user || !firestore) return null;
@@ -90,53 +83,20 @@ export default function OrdersPage() {
 
   const { data: orders, isLoading } = useCollection(ordersQuery);
 
-  const handleUploadClick = (orderId: string) => {
-    if (uploadingOrderId) return; // Prevent multiple uploads
-    setSelectedOrderId(orderId);
-    fileInputRef.current?.click();
-  };
+  const handleValidatePaymentClick = (order: any) => {
+    if (processingOrderId || !user || !firestore) return;
+    
+    setProcessingOrderId(order.id);
 
-  const handleFileSelect = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (
-      !event.target.files ||
-      event.target.files.length === 0 ||
-      !selectedOrderId ||
-      !user ||
-      !firestore ||
-      !storage
-    ) {
-      return;
-    }
-
-    const file = event.target.files[0];
-    setUploadingOrderId(selectedOrderId);
-    const userOrderRef = doc(firestore, `userProfiles/${user.uid}/orders/${selectedOrderId}`);
-    const filePath = `receipts/${user.uid}/${selectedOrderId}/${file.name}`;
-    const fileRef = storageRef(storage, filePath);
-
-    uploadBytes(fileRef, file)
-      .then((snapshot) => {
-        return getDownloadURL(snapshot.ref);
-      })
-      .then((downloadURL) => {
-        return updateDoc(userOrderRef, {
-          receiptImageURL: downloadURL,
-          paymentStatus: 'processing',
-        }).catch((firestoreError) => {
-          // Create a contextual error for the Firestore update failure
-          const permissionError = new FirestorePermissionError({
-            path: userOrderRef.path,
-            operation: 'update',
-            requestResourceData: { receiptImageURL: downloadURL, paymentStatus: 'processing' },
-          });
-          errorEmitter.emit('permission-error', permissionError);
-          // Propagate the original error to the final catch block
-          throw firestoreError;
-        });
-      })
-      .then(() => {
+    const userOrderRef = doc(firestore, `userProfiles/${user.uid}/orders`, order.id);
+    
+    updateDoc(userOrderRef, {
+      paymentStatus: 'processing',
+    }).then(() => {
+        const subject = encodeURIComponent(`Preuve de Paiement - Commande ${order.id}`);
+        const body = encodeURIComponent(`Bonjour,\n\nVeuillez trouver ci-joint la preuve de paiement pour ma commande N° ${order.id}.\n\nCordialement,\n${user.displayName || ''}`);
+        window.location.href = `mailto:${ADMIN_EMAIL}?subject=${subject}&body=${body}`;
+        
         toast({
           title:
             language === 'fr'
@@ -146,47 +106,21 @@ export default function OrdersPage() {
               : 'Zahlung wird überprüft',
           description:
             language === 'fr'
-              ? 'Votre preuve de paiement a été soumise.'
+              ? "Veuillez joindre votre preuve de paiement à l'e-mail qui s'est ouvert."
               : language === 'en'
-              ? 'Your proof of payment has been submitted.'
-              : 'Ihr Zahlungsnachweis wurde übermittelt.',
+              ? 'Please attach your proof of payment to the email that just opened.'
+              : 'Bitte hängen Sie Ihren Zahlungsnachweis an die soeben geöffnete E-Mail an.',
         });
-      })
-      .catch((error) => {
-        // This will catch errors from uploadBytes, getDownloadURL, or the propagated updateDoc error
-        if (!(error instanceof FirestorePermissionError)) {
-          // If it's not already our specific error, create one for the storage part.
-          const storagePermissionError = new FirestorePermissionError({
-            path: filePath,
-            operation: 'write', // Storage upload is a 'write' operation
-            requestResourceData: { size: file.size, contentType: file.type },
-          });
-          errorEmitter.emit('permission-error', storagePermissionError);
-        }
-        
-        toast({
-          variant: 'destructive',
-          title:
-            language === 'fr'
-              ? 'Erreur de téléversement'
-              : language === 'en'
-              ? 'Upload Error'
-              : 'Upload-Fehler',
-          description:
-            language === 'fr'
-              ? 'Une erreur est survenue. Veuillez vérifier vos permissions et réessayer.'
-              : language === 'en'
-              ? 'An error occurred. Please check your permissions and try again.'
-              : 'Ein Fehler ist aufgetreten. Bitte überprüfen Sie Ihre Berechtigungen und versuchen Sie es erneut.',
-        });
-      })
-      .finally(() => {
-        setUploadingOrderId(null);
-        setSelectedOrderId(null);
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
+    }).catch(async (firestoreError) => {
+      const permissionError = new FirestorePermissionError({
+        path: userOrderRef.path,
+        operation: 'update',
+        requestResourceData: { paymentStatus: 'processing' },
       });
+      errorEmitter.emit('permission-error', permissionError);
+    }).finally(() => {
+        setProcessingOrderId(null);
+    });
   };
 
   const getStatusVariant = (status: string) => {
@@ -275,13 +209,6 @@ export default function OrdersPage() {
 
   return (
     <div>
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileSelect}
-        className="hidden"
-        accept="image/png, image/jpeg, image/gif, application/pdf"
-      />
       <h1 className="mb-6 font-headline text-3xl">
         <TranslatedText fr="Historique des commandes" en="Order History">
           Bestellverlauf
@@ -394,28 +321,28 @@ export default function OrdersPage() {
                     </h4>
                     <p className="my-2 text-sm text-destructive/80">
                       <TranslatedText
-                        fr="Pour finaliser votre commande, veuillez téléverser une preuve de votre virement bancaire."
-                        en="To finalize your order, please upload proof of your bank transfer."
+                        fr="Pour finaliser votre commande, veuillez envoyer une preuve de votre virement bancaire par e-mail."
+                        en="To finalize your order, please email proof of your bank transfer."
                       >
-                        Um Ihre Bestellung abzuschließen, laden Sie bitte einen
-                        Nachweis Ihrer Banküberweisung hoch.
+                        Um Ihre Bestellung abzuschließen, senden Sie bitte einen
+                        Nachweis Ihrer Banküberweisung per E-Mail.
                       </TranslatedText>
                     </p>
                     <Button
-                      onClick={() => handleUploadClick(order.id)}
-                      disabled={uploadingOrderId === order.id}
+                      onClick={() => handleValidatePaymentClick(order)}
+                      disabled={processingOrderId === order.id}
                       variant="destructive"
                     >
-                      {uploadingOrderId === order.id ? (
+                      {processingOrderId === order.id ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       ) : (
-                        <Upload className="mr-2 h-4 w-4" />
+                        <Mail className="mr-2 h-4 w-4" />
                       )}
                       <TranslatedText
-                        fr="Téléverser le reçu"
-                        en="Upload Receipt"
+                        fr="Envoyer la preuve par e-mail"
+                        en="Email Proof of Payment"
                       >
-                        Beleg hochladen
+                        Nachweis per E-Mail senden
                       </TranslatedText>
                     </Button>
                   </div>
@@ -446,19 +373,6 @@ export default function OrdersPage() {
                         </TranslatedText>
                       </p>
                     </div>
-                    {order.receiptImageURL && (
-                      <a
-                        href={order.receiptImageURL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-2 text-xs underline"
-                      >
-                        <FileCheck className="mr-2 h-3 w-3 inline-block" />
-                        <TranslatedText fr="Voir le reçu" en="View receipt">
-                          Beleg anzeigen
-                        </TranslatedText>
-                      </a>
-                    )}
                   </div>
                 )}
               </CardContent>
