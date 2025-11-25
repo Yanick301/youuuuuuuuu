@@ -49,7 +49,7 @@
     },
     {
       "id": "doudoune-matelassee-moncler",
-      "imageUrl": "/images/products/parka/doudoune-matelassee-moncler.jpg",
+      "imageUrl": "/images/products/parka/doudoune-matlassee-moncler.jpg",
       "imageHint": "puffer jacket"
     },
     {
@@ -458,6 +458,16 @@
       "imageHint": "tech gloves"
     },
     {
+      "id": "portefeuille-cuir-veritable-slimfold-premium",
+      "imageUrl": "/images/products/portefeuille-cuir-veritable-slimfold-premium.jpg",
+      "imageHint": "leather wallet"
+    },
+    {
+      "id": "sacoche-bandouliere-cuir-premium-executive-bag",
+      "imageUrl": "/images/products/sacoche-bandouliere-cuir-premium-executive-bag.jpg",
+      "imageHint": "leather bag"
+    },
+    {
       "id": "montre-elegante-doree-golden-lady",
       "imageUrl": "/images/products/montre-elegante-doree-golden-lady.jpg",
       "imageHint": "gold watch"
@@ -518,9 +528,69 @@
       "imageHint": "leather gloves"
     },
     {
+      "id": "petit-sac-a-main-chic-mini-glam",
+      "imageUrl": "/images/products/petit-sac-a-main-chic-mini-glam.jpg",
+      "imageHint": "handbag"
+    },
+    {
+      "id": "boucles-oreilles-pendantes-argentees-shine-drop",
+      "imageUrl": "/images/products/boucles-oreilles-pendantes-argentees-shine-drop.jpg",
+      "imageHint": "silver earrings"
+    },
+    {
       "id": "pochette-soiree-shine-night-premium",
       "imageUrl": "/images/products/pochette-soiree-shine-night-premium.jpg",
       "imageHint": "evening clutch"
+    },
+    {
+      "id": "sac-cuir-luxe",
+      "imageUrl": "/images/products/sac-cuir-luxe.jpg",
+      "imageHint": "leather bag"
+    },
+    {
+      "id": "ceinture-cuir-logo",
+      "imageUrl": "/images/products/ceinture-cuir-logo.jpg",
+      "imageHint": "leather belt"
+    },
+    {
+      "id": "carre-de-soie",
+      "imageUrl": "/images/products/carre-de-soie.jpg",
+      "imageHint": "silk scarf"
+    },
+    {
+      "id": "lunettes-soleil-cat-eye",
+      "imageUrl": "/images/products/lunettes-soleil-cat-eye.jpg",
+      "imageHint": "cat eye sunglasses"
+    },
+    {
+      "id": "porte-cartes-cuir",
+      "imageUrl": "/images/products/porte-cartes-cuir.jpg",
+      "imageHint": "leather cardholder"
+    },
+    {
+      "id": "broche-logo-cristaux",
+      "imageUrl": "/images/products/broche-logo-cristaux.jpg",
+      "imageHint": "crystal brooch"
+    },
+    {
+      "id": "serre-tete-velours",
+      "imageUrl": "/images/products/serre-tete-velours.jpg",
+      "imageHint": "velvet headband"
+    },
+    {
+      "id": "sac-seau-cuir",
+      "imageUrl": "/images/products/sac-seau-cuir.jpg",
+      "imageHint": "leather bucket bag"
+    },
+    {
+      "id": "manchette-metal-dore",
+      "imageUrl": "/images/products/manchette-metal-dore.jpg",
+      "imageHint": "gold cuff"
+    },
+    {
+      "id": "etui-rouge-a-levres",
+      "imageUrl": "/images/products/etui-rouge-a-levres.jpg",
+      "imageHint": "lipstick case"
     },
     {
       "id": "canada-goose-macmillan-parka",
