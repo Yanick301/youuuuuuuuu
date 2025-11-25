@@ -9,25 +9,34 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /products/{productId} {
       allow read: if true;
-      allow write: if false;
+      allow write: if false; // Products are managed in code, not by users
     }
 
     match /products/{productId}/reviews/{reviewId} {
       allow read: if true;
-      allow create, update, delete: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      allow create: if request.auth != null;
     }
 
     match /userProfiles/{userId} {
+      // Users can read and write their own profile
       allow read, write: if request.auth != null && request.auth.uid == userId;
+      // Admins can read any user profile
+      allow get: if isAdmin();
     }
     
     match /userProfiles/{userId}/orders/{orderId} {
-      // Admins can list any order, users can list their own.
-      allow list: if isAdmin() || (request.auth != null && request.auth.uid == userId);
-      // Users can read and create their own orders. Admins can read any order.
-      allow read, create: if (request.auth != null && request.auth.uid == userId) || isAdmin();
-      // Admins can update any order. Users can update their own order only to set the paymentStatus to 'processing'.
-      allow update: if isAdmin() || (request.auth != null && request.auth.uid == userId && request.resource.data.paymentStatus == 'processing');
+      // A user can create and read their own orders
+      allow create, read: if request.auth != null && request.auth.uid == userId;
+      // A user can update their own order to set payment status and receipt
+      allow update: if request.auth != null && request.auth.uid == userId;
+
+      // Admins can perform any action on any order
+      allow list, get, update: if isAdmin();
+    }
+
+    // Deprecated, no access
+    match /cartItems/{cartItemId} {
+      allow read, write: if false;
     }
   }
 }

@@ -26,7 +26,6 @@ import {
   useMemoFirebase,
   errorEmitter,
   FirestorePermissionError,
-  useStorage,
 } from '@/firebase';
 import {
   collection,
@@ -34,15 +33,14 @@ import {
   updateDoc,
   query,
   orderBy,
+  onSnapshot,
 } from 'firebase/firestore';
-import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useState, useEffect, useRef } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { fr, de, enUS } from 'date-fns/locale';
 import { useLanguage } from '@/context/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
-import { onSnapshot } from 'firebase/firestore';
 
 const getSafeDate = (order: any): Date => {
   if (!order || !order.orderDate) {
@@ -68,7 +66,6 @@ const getSafeDate = (order: any): Date => {
 export default function OrdersPage() {
   const { user } = useUser();
   const firestore = useFirestore();
-  const storage = useStorage();
   const { language } = useLanguage();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -128,63 +125,73 @@ export default function OrdersPage() {
     setSelectedOrderId(orderId);
     fileInputRef.current?.click();
   };
-
+  
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || event.target.files.length === 0 || !user || !firestore || !storage || !selectedOrderId) {
+    if (!event.target.files || event.target.files.length === 0 || !user || !firestore || !selectedOrderId) {
       return;
     }
     const file = event.target.files[0];
     const orderId = selectedOrderId;
     
+    // Check file size (e.g., limit to 1MB)
+    if (file.size > 1024 * 1024) {
+        toast({
+            variant: "destructive",
+            title: "Fichier trop volumineux",
+            description: "La taille de l'image ne doit pas dépasser 1 Mo."
+        });
+        return;
+    }
+
     setProcessingOrderId(orderId);
 
-    const filePath = `receipts/${user.uid}/${orderId}/${file.name}`;
-    const fileRef = storageRef(storage, filePath);
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+        const imageDataUri = reader.result as string;
 
-    try {
-      await uploadBytes(fileRef, file);
-      const downloadURL = await getDownloadURL(fileRef);
+        try {
+            const orderRef = doc(firestore, `userProfiles/${user.uid}/orders`, orderId);
+            await updateDoc(orderRef, {
+                receiptImageDataUri: imageDataUri,
+                paymentStatus: 'processing',
+            });
+          
+            toast({
+                title: "Reçu téléversé",
+                description: "Votre preuve de paiement a été envoyée pour validation."
+            });
 
-      const orderRef = doc(firestore, `userProfiles/${user.uid}/orders`, orderId);
-      await updateDoc(orderRef, {
-        receiptImageURL: downloadURL,
-        paymentStatus: 'processing',
-      });
-      
-      toast({
-        title: "Reçu téléversé",
-        description: "Votre preuve de paiement a été envoyée pour validation."
-      });
-
-    } catch (error: any) {
-        console.error("Upload failed:", error);
-        
-        let permissionError;
-        if (error.code && error.code.includes('storage')) {
-             permissionError = new FirestorePermissionError({
-                path: filePath,
-                operation: 'write', 
-             });
-        } else {
-            permissionError = new FirestorePermissionError({
+        } catch (error: any) {
+            console.error("Upload failed:", error);
+            const permissionError = new FirestorePermissionError({
                 path: `userProfiles/${user.uid}/orders/${orderId}`,
                 operation: 'update',
                 requestResourceData: { paymentStatus: 'processing' }
             });
-        }
-        errorEmitter.emit('permission-error', permissionError);
+            errorEmitter.emit('permission-error', permissionError);
 
-       toast({
-        variant: "destructive",
-        title: "Échec du téléversement",
-        description: "Impossible de téléverser le reçu. Veuillez vérifier vos permissions et réessayer.",
-      });
-    } finally {
-        setProcessingOrderId(null);
-        setSelectedOrderId(null);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
+           toast({
+            variant: "destructive",
+            title: "Échec du téléversement",
+            description: "Impossible de téléverser le reçu. Veuillez réessayer.",
+          });
+        } finally {
+            setProcessingOrderId(null);
+            setSelectedOrderId(null);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
         }
+    };
+    reader.onerror = (error) => {
+        console.error("File reading failed:", error);
+        toast({
+            variant: "destructive",
+            title: "Erreur de lecture",
+            description: "Impossible de lire le fichier sélectionné."
+        });
+        setProcessingOrderId(null);
     }
   };
 

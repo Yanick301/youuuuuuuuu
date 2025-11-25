@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "Product": {
@@ -121,7 +122,7 @@
     "Order": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Order",
-      "type": "object",
+      "type":_a"object",
       "description": "Represents an order placed by a user.",
       "properties": {
         "id": {
@@ -144,6 +145,10 @@
         "status": {
           "type": "string",
           "description": "The status of the order (e.g., pending, processing, shipped, completed)."
+        },
+        "receiptImageDataUri": {
+            "type": "string",
+            "description": "A Base64 encoded data URI of the user's payment receipt image."
         },
         "orderItemIds": {
           "type": "array",
@@ -211,6 +216,10 @@
           "description": "The user's email address.",
           "format": "email"
         },
+         "isAdmin": {
+          "type": "boolean",
+          "description": "Indicates if the user has administrative privileges."
+        },
         "firstName": {
           "type": "string",
           "description": "The user's first name."
@@ -237,16 +246,15 @@
       },
       "required": [
         "id",
-        "email",
-        "firstName",
-        "lastName"
+        "email"
       ]
     }
   },
   "auth": {
     "providers": [
       "password",
-      "anonymous"
+      "anonymous",
+      "google.com"
     ]
   },
   "firestore": {
@@ -266,25 +274,26 @@
       "schema": {
         "$ref": "#/backend/entities/UserProfile"
       },
-      "description": "Stores user profile information. Only the authenticated user can read/write their own profile."
+      "description": "Stores user profile information. Only the authenticated user can read/write their own profile. Admins can read any profile."
     },
     "/userProfiles/{userId}/orders/{orderId}": {
       "schema": {
         "$ref": "#/backend/entities/Order"
       },
-      "description": "Stores order information for a user. A user can only access their own orders."
+      "description": "Stores order information for a user. A user can only access their own orders. Admins can read/update any order."
     },
     "/cartItems/{cartItemId}": {
       "schema": {
         "$ref": "#/backend/entities/CartItem"
       },
-      "description": "Stores cart items for each user.  The 'userId' field within the document data MUST match the document ID.  This enforces that only the user owning a specific cart item can access/modify it."
+      "description": "This collection is deprecated and no longer in use."
     }
   },
   "storage": {
-    "/receipts/{userId}/{orderId}/{fileName}": {
-      "description": "Users can upload a receipt for an order they placed.",
+    "/profile-pictures/{userId}/{fileName}": {
+      "description": "Users can upload their own profile pictures.",
       "rules": {
+        "read": "true",
         "write": "request.auth != null && request.auth.uid == userId"
       }
     }

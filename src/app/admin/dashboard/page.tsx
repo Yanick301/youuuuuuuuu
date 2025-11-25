@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -14,7 +15,6 @@ import {
   getDocs,
   doc,
   updateDoc,
-  orderBy,
 } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import {
@@ -32,6 +32,7 @@ import {
   Ban,
   AlertTriangle,
   Users,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
@@ -47,7 +48,7 @@ type Order = {
   totalAmount: number;
   orderDate: any;
   paymentStatus: string;
-  receiptImageURL?: string;
+  receiptImageDataUri?: string;
 };
 
 const getSafeDate = (order: any): Date => {
@@ -217,19 +218,20 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
 
-                {order.receiptImageURL ? (
+                {order.receiptImageDataUri ? (
                   <div className="space-y-2">
                     <h4 className="font-semibold text-sm">Preuve de Paiement</h4>
-                    <Link href={order.receiptImageURL} target="_blank" rel="noopener noreferrer" className="block overflow-hidden rounded-lg border hover:opacity-80 transition-opacity">
+                    <Link href={order.receiptImageDataUri} target="_blank" rel="noopener noreferrer" className="block overflow-hidden rounded-lg border hover:opacity-80 transition-opacity">
                       <img
-                        src={order.receiptImageURL}
+                        src={order.receiptImageDataUri}
                         alt="Preuve de paiement"
-                        className="h-auto w-full"
+                        className="h-auto w-full object-contain max-h-60"
                       />
                     </Link>
                   </div>
                 ) : (
-                  <div className="rounded-md border border-dashed border-amber-500 bg-amber-50 p-4 text-center text-sm text-amber-800">
+                  <div className="rounded-md border border-dashed border-amber-500 bg-amber-50 p-4 text-center text-sm text-amber-800 flex items-center justify-center gap-2">
+                    <ImageIcon className="h-4 w-4" />
                     <p>Aucune preuve de paiement n'a été téléversée.</p>
                   </div>
                 )}
@@ -249,7 +251,7 @@ export default function AdminDashboardPage() {
                 </Button>
                 <Button
                   onClick={() => handleUpdateStatus(order.id, order.userId, 'completed')}
-                  disabled={!order.receiptImageURL || isProcessing === order.id}
+                  disabled={!order.receiptImageDataUri || isProcessing === order.id}
                   className="bg-green-600 hover:bg-green-700"
                 >
                   {isProcessing === order.id ? (
