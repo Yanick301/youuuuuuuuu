@@ -115,8 +115,8 @@ export default function OrdersPage() {
       const filePath = `receipts/${user.uid}/${selectedOrderId}/${file.name}`;
       const fileRef = storageRef(storage, filePath);
 
-      const uploadResult = await uploadBytes(fileRef, file);
-      const downloadURL = await getDownloadURL(uploadResult.ref);
+      await uploadBytes(fileRef, file);
+      const downloadURL = await getDownloadURL(fileRef);
       
       const userOrderRef = doc(
         firestore,

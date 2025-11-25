@@ -54,8 +54,8 @@ export default function AccountPage() {
       const filePath = `profile-pictures/${user.uid}/${file.name}`;
       const fileRef = storageRef(storage, filePath);
       
-      const uploadResult = await uploadBytes(fileRef, file);
-      const downloadURL = await getDownloadURL(uploadResult.ref);
+      await uploadBytes(fileRef, file);
+      const downloadURL = await getDownloadURL(fileRef);
 
       await updateProfile(user, { photoURL: downloadURL });
       
