@@ -3,7 +3,7 @@ import type { Product, Category, Review } from './types';
 
 export const categories: Category[] = [
   { id: 'cat-1', name: 'Herrenbekleidung', name_fr: 'Vêtements Homme', name_en: 'Men\'s Clothing', slug: 'mens-clothing', imageId: 'mens-category' },
-  { id: 'cat-2', name: 'Damenbekleidung', name_fr: 'Vêtements Femme', name_en: 'Women\'s Clothing', slug: 'womens-category', imageId: 'womens-category' },
+  { id: 'cat-2', name: 'Damenbekleidung', name_fr: 'Vêtements Femme', name_en: 'Women\'s Clothing', slug: 'womens-clothing', imageId: 'womens-category' },
   { id: 'cat-3', name: 'Accessoires', name_fr: 'Accessoires', name_en: 'Accessories', slug: 'accessories', imageId: 'accessories-category' },
   { id: 'cat-5', name: 'Schuhe', name_fr: 'Chaussures', name_en: 'Shoes', slug: 'shoes', imageId: 'shoes-category' },
   { id: 'cat-4', name: 'Winterkleidung', name_fr: 'Vêtements d\'hiver', name_en: 'Winter Clothing', slug: 'winter-clothing', imageId: 'winter-category' },
