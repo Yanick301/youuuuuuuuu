@@ -19,6 +19,7 @@ import {
   AlertCircle,
   FileCheck,
   Ban,
+  ExternalLink,
 } from 'lucide-react';
 import {
   useCollection,
@@ -383,10 +384,10 @@ export default function OrdersPage() {
                   </div>
                 )}
                  {order.paymentStatus === 'processing' && (
-                  <div className="mt-6 flex flex-col items-center justify-center gap-2 rounded-md bg-blue-50 p-4 text-sm font-semibold text-blue-700">
-                     <div className='flex items-center'>
+                  <div className="mt-6 flex flex-col items-center justify-center gap-4 rounded-md border-2 border-dashed border-blue-200 bg-blue-50/50 p-4">
+                     <div className='flex items-center text-blue-800'>
                         <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        <p>
+                        <p className="font-semibold">
                         <TranslatedText
                             fr="Paiement en cours de vérification"
                             en="Payment under review"
@@ -395,8 +396,9 @@ export default function OrdersPage() {
                         </TranslatedText>
                         </p>
                      </div>
-                      <Button asChild variant="link" size="sm">
+                      <Button asChild variant="outline" size="sm" className="bg-white">
                           <Link href={`/order-validation/${order.id}`} target="_blank">
+                                <ExternalLink className="mr-2 h-4 w-4" />
                                 <TranslatedText fr="Lien de validation administrateur" en="Admin Validation Link">Admin-Validierungslink</TranslatedText>
                           </Link>
                       </Button>
