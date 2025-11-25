@@ -41,8 +41,6 @@ import { fr, de, enUS } from 'date-fns/locale';
 import { useLanguage } from '@/context/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 
-const ADMIN_EMAIL = 'ezcentials@gmail.com';
-
 const getSafeDate = (order: any): Date => {
   if (!order || !order.orderDate) {
     return new Date();
@@ -70,7 +68,9 @@ export default function OrdersPage() {
   const { language } = useLanguage();
   const { toast } = useToast();
 
-  const [processingOrderId, setProcessingOrderId] = useState<string | null>(null);
+  const [processingOrderId, setProcessingOrderId] = useState<string | null>(
+    null
+  );
 
   const ordersQuery = useMemoFirebase(() => {
     if (!user || !firestore) return null;
@@ -83,44 +83,47 @@ export default function OrdersPage() {
 
   const { data: orders, isLoading } = useCollection(ordersQuery);
 
-  const handleValidatePaymentClick = (order: any) => {
+  const handleConfirmPayment = (orderId: string) => {
     if (processingOrderId || !user || !firestore) return;
-    
-    setProcessingOrderId(order.id);
 
-    const userOrderRef = doc(firestore, `userProfiles/${user.uid}/orders`, order.id);
-    
+    setProcessingOrderId(orderId);
+
+    const userOrderRef = doc(
+      firestore,
+      `userProfiles/${user.uid}/orders`,
+      orderId
+    );
+
     updateDoc(userOrderRef, {
       paymentStatus: 'processing',
-    }).then(() => {
-        const subject = encodeURIComponent(`Preuve de Paiement - Commande ${order.id}`);
-        const body = encodeURIComponent(`Bonjour,\n\nVeuillez trouver ci-joint la preuve de paiement pour ma commande N° ${order.id}.\n\nCordialement,\n${user.displayName || ''}`);
-        window.location.href = `mailto:${ADMIN_EMAIL}?subject=${subject}&body=${body}`;
-        
+    })
+      .then(() => {
         toast({
           title:
             language === 'fr'
-              ? 'Paiement en cours de validation'
+              ? 'Confirmation reçue'
               : language === 'en'
-              ? 'Payment Under Review'
-              : 'Zahlung wird überprüft',
+              ? 'Confirmation Received'
+              : 'Bestätigung erhalten',
           description:
             language === 'fr'
-              ? "Veuillez joindre votre preuve de paiement à l'e-mail qui s'est ouvert."
+              ? 'Votre commande est en cours de traitement par nos équipes.'
               : language === 'en'
-              ? 'Please attach your proof of payment to the email that just opened.'
-              : 'Bitte hängen Sie Ihren Zahlungsnachweis an die soeben geöffnete E-Mail an.',
+              ? 'Your order is being processed by our team.'
+              : 'Ihre Bestellung wird von unserem Team bearbeitet.',
         });
-    }).catch(async (serverError) => {
-      const permissionError = new FirestorePermissionError({
-        path: userOrderRef.path,
-        operation: 'update',
-        requestResourceData: { paymentStatus: 'processing' },
-      });
-      errorEmitter.emit('permission-error', permissionError);
-    }).finally(() => {
+      })
+      .catch(async (serverError) => {
+        const permissionError = new FirestorePermissionError({
+          path: userOrderRef.path,
+          operation: 'update',
+          requestResourceData: { paymentStatus: 'processing' },
+        });
+        errorEmitter.emit('permission-error', permissionError);
+      })
+      .finally(() => {
         setProcessingOrderId(null);
-    });
+      });
   };
 
   const getStatusVariant = (status: string) => {
@@ -313,36 +316,37 @@ export default function OrdersPage() {
                   <div className="mt-6 rounded-md bg-destructive/10 p-6 pt-6 text-center">
                     <h4 className="font-semibold text-destructive">
                       <TranslatedText
-                        fr="Action requise : valider votre paiement"
-                        en="Action Required: Validate Your Payment"
+                        fr="Action requise : Confirmer votre paiement"
+                        en="Action Required: Confirm Your Payment"
                       >
                         Aktion erforderlich: Zahlung bestätigen
                       </TranslatedText>
                     </h4>
                     <p className="my-2 text-sm text-destructive/80">
                       <TranslatedText
-                        fr="Pour finaliser votre commande, veuillez envoyer une preuve de votre virement bancaire par e-mail."
-                        en="To finalize your order, please email proof of your bank transfer."
+                        fr="Pour finaliser votre commande, veuillez effectuer le virement bancaire puis cliquez sur le bouton ci-dessous."
+                        en="To finalize your order, please make the bank transfer then click the button below."
                       >
-                        Um Ihre Bestellung abzuschließen, senden Sie bitte einen
-                        Nachweis Ihrer Banküberweisung per E-Mail.
+                        Um Ihre Bestellung abzuschließen, führen Sie bitte die
+                        Banküberweisung durch und klicken Sie dann auf die
+                        Schaltfläche unten.
                       </TranslatedText>
                     </p>
                     <Button
-                      onClick={() => handleValidatePaymentClick(order)}
+                      onClick={() => handleConfirmPayment(order.id)}
                       disabled={processingOrderId === order.id}
                       variant="destructive"
                     >
                       {processingOrderId === order.id ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       ) : (
-                        <Mail className="mr-2 h-4 w-4" />
+                        <CheckCircle className="mr-2 h-4 w-4" />
                       )}
                       <TranslatedText
-                        fr="Envoyer la preuve par e-mail"
-                        en="Email Proof of Payment"
+                        fr="J'ai effectué le virement"
+                        en="I Have Made the Transfer"
                       >
-                        Nachweis per E-Mail senden
+                        Ich habe die Überweisung getätigt
                       </TranslatedText>
                     </Button>
                   </div>

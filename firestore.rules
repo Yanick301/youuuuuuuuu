@@ -29,13 +29,15 @@ service cloud.firestore {
     match /userProfiles/{userId}/orders/{orderId} {
       // A user can read and create their own orders
       allow read, create: if request.auth != null && request.auth.uid == userId;
+      // A user can update their own order, for example to change its status
+      allow update: if request.auth != null && request.auth.uid == userId;
       // An admin can read or update any order
-      allow get, list, update: if isAdmin();
+      allow get, list: if isAdmin();
     }
 
     // Admins can list all orders across all users for the dashboard
     match /{path=**}/orders/{orderId} {
-       allow list: if isAdmin();
+       allow list, update: if isAdmin();
     }
   }
 }
