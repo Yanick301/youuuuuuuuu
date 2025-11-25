@@ -93,11 +93,14 @@ export default function AdminDashboardPage() {
         setIsLoading(false);
       },
       (err) => {
-        console.error(err);
-        setError('Failed to fetch orders. Check Firestore rules.');
+        // This error is generic. A more specific one will be thrown by the global listener.
+        console.error("Dashboard onSnapshot error:", err);
+        setError('Failed to fetch orders. You may not have the required permissions.');
         setIsLoading(false);
+        
+        // Create and emit a detailed permission error for the development overlay
         const permissionError = new FirestorePermissionError({
-            path: 'orders', // This is a collection group query
+            path: 'orders', // This is a collection group query on 'orders'
             operation: 'list',
         });
         errorEmitter.emit('permission-error', permissionError);
