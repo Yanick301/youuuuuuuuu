@@ -15,10 +15,11 @@ import {
 import { CollectionHighlight } from '@/components/CollectionHighlight';
 import { categories } from '@/lib/data';
 import { useMemo } from 'react';
+import { Award, Leaf, Truck } from 'lucide-react';
 
 export default function HomePage() {
   const saleProducts = useMemo(() => {
-    return getWinterSaleProducts(products, 7, true);
+    return getWinterSaleProducts(products, 8, true);
   }, []);
 
   return (
@@ -77,15 +78,32 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="relative h-[50vh] bg-cover bg-center text-white" style={{backgroundImage: "url('/images/products/hiver.jpg')"}}>
+        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="container relative z-10 mx-auto flex h-full flex-col items-center justify-center px-4 text-center">
+            <p className="text-sm uppercase tracking-widest animate-fade-in-up"><TranslatedText fr="Jusqu'à -40%" en="Up to -40%">Bis zu -40%</TranslatedText></p>
+            <h2 className="mt-4 font-headline text-5xl md:text-7xl animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                <TranslatedText fr="Soldes d'Hiver" en="Winter Sale">Winter-Schlussverkauf</TranslatedText>
+            </h2>
+            <p className="mt-6 max-w-xl text-lg text-white/90 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                 <TranslatedText fr="Embrassez l'élégance de la saison avec des pièces d'exception à des prix irrésistibles." en="Embrace the elegance of the season with exceptional pieces at irresistible prices.">Umfassen Sie die Eleganz der Saison mit außergewöhnlichen Stücken zu unwiderstehlichen Preisen.</TranslatedText>
+            </p>
+            <Button size="lg" asChild className="mt-8 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+                <Link href="/products/winter-clothing"><TranslatedText fr="Découvrir les Offres" en="Discover the Offers">Angebote entdecken</TranslatedText></Link>
+            </Button>
+        </div>
+      </section>
+
+
       <section className="w-full bg-muted/50 py-16 lg:py-24">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <h2 className="font-headline text-3xl md:text-5xl text-foreground">
-              <TranslatedText fr="Promotions de Fin d'Année" en="End of Year Promotions">Endjahresaktionen</TranslatedText>
+              <TranslatedText fr="Notre Sélection en Promotion" en="Our Sale Selection">Unsere Auswahl im Angebot</TranslatedText>
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
-              <TranslatedText fr="Profitez de nos offres exclusives sur la collection d'hiver. L'élégance intemporelle à prix réduit." en="Take advantage of our exclusive offers on the winter collection. Timeless elegance at a reduced price.">
-                Profitieren Sie von unseren exklusiven Angeboten für die Winterkollektion. Zeitlose Eleganz zum reduzierten Preis.
+              <TranslatedText fr="Profitez de nos offres exclusives sur une sélection d'articles. L'élégance intemporelle à prix réduit." en="Take advantage of our exclusive offers on a selection of items. Timeless elegance at a reduced price.">
+                Profitieren Sie von unseren exklusiven Angeboten für eine Auswahl an Artikeln. Zeitlose Eleganz zum reduzierten Preis.
               </TranslatedText>
             </p>
           </div>
@@ -118,8 +136,8 @@ export default function HomePage() {
         imageIds={[
           'manteau-long-laine-hugo-boss',
           'doudoune-matelassee-moncler',
-          'parka-arctic-canada-goose',
           'pull-col-roule-laine-merinos-paul-smith',
+           'robe-pull-en-cachemire-max-mara'
         ]}
         primaryActionLink="/products/winter-clothing"
         primaryActionText={<TranslatedText fr="Voir la Collection" en="View the Collection">Kollektion ansehen</TranslatedText>}
@@ -127,6 +145,43 @@ export default function HomePage() {
         secondaryActionText={<TranslatedText fr="Explorer" en="Explore">Erkunden</TranslatedText>}
       />
 
+       <section className="bg-background py-16 lg:py-24">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="text-center">
+            <h2 className="font-headline text-3xl md:text-5xl text-foreground">
+                <TranslatedText fr="L'Expérience EZCENTIALS" en="The EZCENTIALS Experience">Das EZCENTIALS Erlebnis</TranslatedText>
+            </h2>
+            <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
+                <TranslatedText fr="Plus qu'une marque, une promesse de qualité, de durabilité et d'élégance." en="More than a brand, a promise of quality, sustainability, and elegance.">Mehr als eine Marke, ein Versprechen von Qualität, Nachhaltigkeit und Eleganz.</TranslatedText>
+            </p>
+          </div>
+          <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="flex flex-col items-center text-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Award className="h-8 w-8" />
+              </div>
+              <h3 className="mt-6 text-xl font-semibold"><TranslatedText fr="Savoir-Faire d'Exception" en="Exceptional Craftsmanship">Außergewöhnliche Handwerkskunst</TranslatedText></h3>
+              <p className="mt-2 text-muted-foreground"><TranslatedText fr="Des pièces conçues par les meilleurs artisans." en="Pieces designed by the best artisans.">Stücke, die von den besten Handwerkern entworfen wurden.</TranslatedText></p>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Leaf className="h-8 w-8" />
+              </div>
+              <h3 className="mt-6 text-xl font-semibold"><TranslatedText fr="Matériaux Durables" en="Sustainable Materials">Nachhaltige Materialien</TranslatedText></h3>
+              <p className="mt-2 text-muted-foreground"><TranslatedText fr="Des tissus nobles et respectueux de l'environnement." en="Noble and environmentally friendly fabrics.">Edle und umweltfreundliche Stoffe.</TranslatedText></p>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Truck className="h-8 w-8" />
+              </div>
+              <h3 className="mt-6 text-xl font-semibold"><TranslatedText fr="Service Client Dédié" en="Dedicated Customer Service">Engagierter Kundenservice</TranslatedText></h3>
+              <p className="mt-2 text-muted-foreground"><TranslatedText fr="Une équipe à votre écoute pour une expérience parfaite." en="A team at your service for a perfect experience.">Ein Team, das Ihnen für ein perfektes Erlebnis zur Verfügung steht.</TranslatedText></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
+
