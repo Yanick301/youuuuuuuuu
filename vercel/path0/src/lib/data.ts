@@ -906,21 +906,6 @@ export const products: Product[] = [
     reviews: []
   },
   {
-    id: 'prod-73',
-    name: 'Parka Arctic',
-    name_fr: 'Parka Arctic',
-    name_en: 'Arctic Parka',
-    slug: 'parka-arctic-canada-goose',
-    price: 550,
-    oldPrice: 650,
-    description: 'Ein extrem warmer Parka, entworfen, um den härtesten Wintern standzuhalten. Mit der Qualität von Canada Goose.',
-    description_fr: 'Une parka extrêmement chaude conçue pour résister aux hivers les plus rudes. La qualité Canada Goose.',
-    description_en: 'An extremely warm parka designed to withstand the harshest winters. Canada Goose quality.',
-    category: 'winter-clothing',
-    images: ['parka-arctic-canada-goose'],
-    reviews: []
-  },
-  {
     id: 'prod-74',
     name: 'Pull Col Roulé Laine Merinos',
     name_fr: 'Pull Col Roulé Laine Merinos',
