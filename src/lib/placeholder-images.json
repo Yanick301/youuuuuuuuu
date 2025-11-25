@@ -278,36 +278,6 @@
       "imageHint": "leather sandals"
     },
     {
-      "id": "bonnet-laine-torsadee-noir-nordic-luxe",
-      "imageUrl": "/images/products/bonnet-laine-torsadee-noir-nordic-luxe.jpg",
-      "imageHint": "wool beanie"
-    },
-    {
-      "id": "bonnet-epais-gris-winter-essential",
-      "imageUrl": "/images/products/bonnet-epais-gris-winter-essential.jpg",
-      "imageHint": "grey beanie"
-    },
-    {
-      "id": "echarpe-laine-vierge-premium-alpine-soft",
-      "imageUrl": "/images/products/echarpe-laine-vierge-premium-alpine-soft.jpg",
-      "imageHint": "wool scarf"
-    },
-    {
-      "id": "snood-polaire-winter-shield-premium",
-      "imageUrl": "/images/products/snood-polaire-winter-shield-premium.jpg",
-      "imageHint": "fleece snood"
-    },
-    {
-      "id": "bonnet-streetwear-a-revers-urban-knit",
-      "imageUrl": "/images/products/bonnet-streetwear-a-revers-urban-knit.jpg",
-      "imageHint": "streetwear beanie"
-    },
-    {
-      "id": "gants-tactiles-thermiques-tech-gloves",
-      "imageUrl": "/images/products/gants-tactiles-thermiques-tech-gloves.jpg",
-      "imageHint": "tech gloves"
-    },
-    {
       "id": "portefeuille-cuir-veritable-slimfold-premium",
       "imageUrl": "/images/products/portefeuille-cuir-veritable-slimfold-premium.jpg",
       "imageHint": "leather wallet"
@@ -318,31 +288,6 @@
       "imageHint": "leather bag"
     },
     {
-      "id": "bonnet-laine-pompon-fourrure-synthetique-cozy-glam",
-      "imageUrl": "/images/products/bonnet-laine-pompon-fourrure-synthetique-cozy-glam.jpg",
-      "imageHint": "pompom beanie"
-    },
-    {
-      "id": "bonnet-long-oversize-urban-chic",
-      "imageUrl": "/images/products/bonnet-long-oversize-urban-chic.jpg",
-      "imageHint": "oversize beanie"
-    },
-    {
-      "id": "bonnet-tricote-perle-winter-pearl",
-      "imageUrl": "/images/products/bonnet-tricote-perle-winter-pearl.jpg",
-      "imageHint": "pearl beanie"
-    },
-    {
-      "id": "echarpe-oversize-fausse-fourrure-luxe-soft",
-      "imageUrl": "/images/products/echarpe-oversize-fausse-fourrure-luxe-soft.jpg",
-      "imageHint": "fur scarf"
-    },
-    {
-      "id": "echarpe-maille-torsadee-warm-plush",
-      "imageUrl": "/images/products/echarpe-maille-torsadee-warm-plush.jpg",
-      "imageHint": "knit scarf"
-    },
-    {
       "id": "chale-hiver-motif-elegant-elegant-wrap",
       "imageUrl": "/images/products/chale-hiver-motif-elegant-elegant-wrap.jpg",
       "imageHint": "elegant shawl"
@@ -351,11 +296,6 @@
       "id": "foulard-cachemire-imprime-cashmere-touch",
       "imageUrl": "/images/products/foulard-cachemire-imprime-cashmere-touch.jpg",
       "imageHint": "cashmere scarf"
-    },
-    {
-      "id": "gants-cuir-doubles-polaire-lady-warm",
-      "imageUrl": "/images/products/gants-cuir-doubles-polaire-lady-warm.jpg",
-      "imageHint": "leather gloves"
     },
     {
       "id": "petit-sac-a-main-chic-mini-glam",
