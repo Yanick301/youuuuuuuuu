@@ -8,6 +8,7 @@ import { AddToCartButton } from './cart/AddToCartButton';
 import { Star } from 'lucide-react';
 import { ProductCardActions } from './ProductCardActions';
 import { Badge } from './ui/badge';
+import { cn } from '@/lib/utils';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -54,7 +55,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </p>
             <div className="mt-2 flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className={`h-4 w-4 ${i < Math.floor(averageRating) ? 'text-yellow-500 fill-yellow-500' : 'text-muted'}`} />
+                <Star key={i} className={cn('h-4 w-4', i < Math.floor(averageRating) ? 'text-yellow-500 fill-yellow-500' : 'text-muted')} />
               ))}
               <span className="text-xs text-muted-foreground ml-1">({product.reviews?.length || 0})</span>
             </div>
