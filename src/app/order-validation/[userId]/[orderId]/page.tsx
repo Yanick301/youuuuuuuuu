@@ -5,8 +5,6 @@ import {
   useFirestore,
   useDoc,
   useMemoFirebase,
-  errorEmitter,
-  FirestorePermissionError,
 } from '@/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useParams, useRouter } from 'next/navigation';
@@ -52,16 +50,18 @@ const getSafeDate = (order: any): Date => {
 export default function OrderValidationPage() {
   const params = useParams();
   const router = useRouter();
-  const { userId, orderId } = params as { userId: string; orderId: string };
+  // The user ID is no longer in the path
+  const { orderId } = params as { orderId: string };
   const firestore = useFirestore();
   const { toast } = useToast();
   const { language } = useLanguage();
   const [isProcessing, setIsProcessing] = useState<string | null>(null);
 
   const orderRef = useMemoFirebase(() => {
-    if (!firestore || !userId || !orderId) return null;
-    return doc(firestore, `userProfiles/${userId}/orders/${orderId}`);
-  }, [firestore, userId, orderId]);
+    if (!firestore || !orderId) return null;
+    // The collection is now top-level 'orders'
+    return doc(firestore, `orders`, orderId);
+  }, [firestore, orderId]);
 
   const { data: order, isLoading, error } = useDoc<Order>(orderRef);
   
@@ -83,12 +83,11 @@ export default function OrderValidationPage() {
         }
       })
       .catch((e) => {
-        // This is a public page, so we can't emit a permission error as we aren't logged in as admin
         console.error(e);
         toast({
           variant: 'destructive',
           title: 'Erreur',
-          description: "Impossible de mettre à jour le statut de la commande.",
+          description: "Impossible de mettre à jour le statut de la commande. Vous n'avez peut-être pas les autorisations nécessaires.",
         })
       })
       .finally(() => setIsProcessing(null));

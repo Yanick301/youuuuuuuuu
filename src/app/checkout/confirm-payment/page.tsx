@@ -61,9 +61,9 @@ function ConfirmPaymentPageClient() {
   const { language } = useLanguage();
 
   const orderRef = useMemoFirebase(() => {
-    if (!firestore || !user || !orderId) return null;
-    return doc(firestore, `userProfiles/${user.uid}/orders`, orderId);
-  }, [firestore, user, orderId]);
+    if (!firestore || !orderId) return null;
+    return doc(firestore, `orders`, orderId);
+  }, [firestore, orderId]);
 
   const { data: order, isLoading: isOrderLoading, error } = useDoc<Order>(orderRef);
 
@@ -72,16 +72,16 @@ function ConfirmPaymentPageClient() {
   };
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || event.target.files.length === 0 || !user || !firestore || !orderId) {
+    if (!event.target.files || event.target.files.length === 0 || !firestore || !orderId) {
       return;
     }
     const file = event.target.files[0];
     
-    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+    if (file.size > 1 * 1024 * 1024) { // 1MB limit
         toast({
             variant: "destructive",
             title: language === 'fr' ? "Fichier trop volumineux" : language === 'en' ? "File too large" : "Datei zu groß",
-            description: language === 'fr' ? "La taille de l'image ne doit pas dépasser 5 Mo." : language === 'en' ? "Image size should not exceed 5MB." : "Die Bildgröße darf 5 MB nicht überschreiten.",
+            description: language === 'fr' ? "La taille de l'image doit être inférieure à 1 Mo." : language === 'en' ? "Image size must be less than 1MB." : "Die Bildgröße muss weniger als 1 MB betragen.",
         });
         return;
     }
@@ -93,8 +93,8 @@ function ConfirmPaymentPageClient() {
     reader.onload = async () => {
         const dataUrl = reader.result as string;
         try {
-            const currentOrderRef = doc(firestore, `userProfiles/${user.uid}/orders`, orderId);
-            await updateDoc(currentOrderRef, {
+            if (!orderRef) return;
+            await updateDoc(orderRef, {
                 receiptImageUrl: dataUrl,
                 paymentStatus: 'processing',
             });

@@ -31,6 +31,7 @@ import {
   query,
   orderBy,
   onSnapshot,
+  where,
 } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -72,7 +73,8 @@ export default function OrdersPage() {
     if (!user || !firestore) return null;
 
     return query(
-      collection(firestore, `userProfiles/${user.uid}/orders`),
+      collection(firestore, `orders`),
+      where('userId', '==', user.uid),
       orderBy('orderDate', 'desc')
     );
   }, [firestore, user]);
@@ -118,7 +120,7 @@ export default function OrdersPage() {
   };
 
   const handleCopyValidationLink = (order: any) => {
-    const url = `${window.location.origin}/order-validation/${order.userId}/${order.id}`;
+    const url = `${window.location.origin}/order-validation/${order.id}`;
     navigator.clipboard.writeText(url).then(() => {
         toast({
             title: language === 'fr' ? 'Lien copié' : language === 'en' ? 'Link Copied' : 'Link kopiert',
@@ -357,10 +359,6 @@ export default function OrdersPage() {
                         </TranslatedText>
                         </p>
                      </div>
-                     <Button variant="secondary" onClick={() => handleCopyValidationLink(order)}>
-                        <LinkIcon className="mr-2 h-4 w-4" />
-                        <TranslatedText fr="Copier le lien de validation" en="Copy Validation Link">Validierungslink kopieren</TranslatedText>
-                     </Button>
                   </div>
                 )}
                 {order.paymentStatus === 'completed' && (

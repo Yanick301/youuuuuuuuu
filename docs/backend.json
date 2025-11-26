@@ -113,7 +113,7 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Order",
       "type": "object",
-      "description": "Represents an order placed by a user, stored as a subcollection under userProfiles. The receipt image is stored as a Base64 string directly in the document.",
+      "description": "Represents an order placed by a user. Orders are stored in a top-level 'orders' collection.",
       "properties": {
         "id": {
           "type": "string",
@@ -222,7 +222,7 @@
       "schema": {
         "$ref": "#/entities/Product"
       },
-      "description": "Stores product information. Accessible to all users for reading."
+      "description": "Stores product information. Accessible to all users for reading. Writable only by admins."
     },
     "/products/{productId}/reviews/{reviewId}": {
       "schema": {
@@ -236,17 +236,17 @@
       },
       "description": "Stores user profile information. Only the authenticated user can read/write their own profile. Admins can read any profile."
     },
-    "/userProfiles/{userId}/orders/{orderId}": {
+    "/orders/{orderId}": {
       "schema": {
         "$ref": "#/entities/Order"
       },
-      "description": "Stores order information for a user. Any authenticated user can create their own order. Only admins can read, list, and update order statuses."
+      "description": "Stores all order information. Any authenticated user can create their own order. Only admins can read, list, and update order statuses."
     },
     "/userProfiles/{userId}/cartItems/{productId}": {
       "schema": {
         "$ref": "#/entities/CartItem"
       },
-      "description": "Stores items in a user's shopping cart. Only the authenticated user can read/write their own cart items."
+      "description": "DEPRECATED: Stores items in a user's shopping cart. Only the authenticated user can read/write their own cart items."
     }
   },
   "storage": {

@@ -175,17 +175,17 @@ export default function CheckoutPageClient() {
         totalAmount: total,
         orderDate: serverTimestamp(),
         paymentStatus: 'pending',
-        receiptImageURL: '',
+        receiptImageUrl: '',
     };
     
-    const userOrderRef = collection(firestore, `userProfiles/${user.uid}/orders`);
+    const ordersCollectionRef = collection(firestore, `orders`);
 
-    addDoc(userOrderRef, orderData).then((docRef) => {
+    addDoc(ordersCollectionRef, orderData).then((docRef) => {
       clearCart();
       router.push(`/checkout/confirm-payment?orderId=${docRef.id}`);
     }).catch(async (serverError) => {
       const permissionError = new FirestorePermissionError({
-        path: userOrderRef.path,
+        path: ordersCollectionRef.path,
         operation: 'create',
         requestResourceData: orderData,
       });

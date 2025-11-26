@@ -9,7 +9,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /products/{productId} {
       allow read: if true;
-      allow write: if false; // Products are managed in code, not by users
+      allow write: if isAdmin();
     }
 
     match /products/{productId}/reviews/{reviewId} {
@@ -24,28 +24,23 @@ service cloud.firestore {
       allow get: if isAdmin();
     }
     
-    match /userProfiles/{userId}/orders/{orderId} {
-      // Anyone can create an order for their own user profile.
-      allow create: if request.auth != null && request.auth.uid == userId
-                    && request.resource.data.receiptImageUrl.size() < 1048576; // 1MB limit
+    match /orders/{orderId} {
+      // Anyone can create an order.
+      allow create: if request.resource.data.receiptImageUrl.size() < 1048576; // 1MB limit
 
-      // An admin can read, list or delete any order.
-      allow get, list, delete: if isAdmin();
-
-      // Only an admin can update an order, and they can only change the paymentStatus.
-      allow update: if isAdmin() && request.resource.data.keys().hasOnly(['paymentStatus']);
+      // An admin can read, list, delete, or update any order.
+      allow read, list, delete, update: if isAdmin();
     }
 
-    // CartItems are now managed inside the user's profile, this is deprecated
+    // Deprecated collections - no access
+    match /userProfiles/{userId}/orders/{orderId} {
+      allow read, write, delete: if false;
+    }
+    match /userProfiles/{userId}/cartItems/{productId} {
+      allow read, write, delete: if false;
+    }
     match /cartItems/{cartItemId} {
       allow read, write: if false;
     }
-
-    // This rule is for the collection group query in the admin dashboard
-    match /{path=**}/orders/{orderId} {
-        allow list: if isAdmin();
-    }
   }
 }
-
-    
