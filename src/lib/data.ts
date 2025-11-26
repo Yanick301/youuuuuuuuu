@@ -775,108 +775,7 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 'acc-10',
-    name: 'Alpine Soft Schal',
-    name_fr: 'Écharpe Alpine Soft',
-    name_en: 'Alpine Soft Scarf',
-    slug: 'echarpe-laine-vierge-premium-alpine-soft',
-    price: 70,
-    oldPrice: 85,
-    description: 'Hüllen Sie sich in einen Kokon aus Weichheit. Dieser Schal aus reiner Schurwolle bietet eine unvergleichliche Wärme und ein Gefühl von zartem Luxus auf der Haut. Das perfekte Accessoire für die kältesten Tage.',
-    description_fr: 'Enveloppez-vous dans un cocon de douceur. Cette écharpe en pure laine vierge offre une chaleur inégalée et une sensation de luxe délicat contre la peau. L\'accessoire parfait pour les jours les plus froids.',
-    description_en: 'Wrap yourself in a cocoon of softness. This pure virgin wool scarf offers unparalleled warmth and a feeling of delicate luxury against the skin. The perfect accessory for the coldest days.',
-    category: 'accessories',
-    images: ['echarpe-laine-vierge-premium-alpine-soft'],
-    reviews: [
-        { author: 'Isabelle', rating: 5, comment: 'Une douceur incroyable, c\'est comme un câlin.'}
-    ]
-  },
-  {
-    id: 'acc-11',
-    name: 'Winter Shield Snood',
-    name_fr: 'Snood Winter Shield',
-    name_en: 'Winter Shield Snood',
-    slug: 'snood-polaire-winter-shield-premium',
-    price: 40,
-    description: 'Eine moderne und praktische Alternative zum Schal. Dieser Fleece-Snood bietet optimalen Schutz vor Wind und Kälte und bewahrt dabei einen klaren und urbanen Stil. Perfekt für Ihre Outdoor-Aktivitäten.',
-    description_fr: 'Une alternative moderne et pratique à l\'écharpe. Ce snood en polaire offre une protection optimale contre le vent et le froid, tout en conservant un style épuré et urbain. Parfait pour vos activités extérieures.',
-    description_en: 'A modern and practical alternative to the scarf. This fleece snood offers optimal protection against wind and cold, while maintaining a clean and urban style. Perfect for your outdoor activities.',
-    category: 'accessories',
-    images: ['snood-polaire-winter-shield-premium'],
-    reviews: [
-        { author: 'Romain', rating: 5, comment: 'Très pratique et bien plus chaud que je ne le pensais.'}
-    ]
-  },
-  {
-    id: 'acc-13',
-    name: 'Tech Gloves',
-    name_fr: 'Gants Tech Gloves',
-    name_en: 'Tech Gloves',
-    slug: 'gants-tactiles-thermiques-tech-gloves',
-    price: 45,
-    oldPrice: 55,
-    description: 'Kombinieren Sie Wärme und Konnektivität. Diese Thermohandschuhe sind mit einer speziellen Technologie ausgestattet, mit der Sie Ihre Touchscreens bedienen können, ohne sie ausziehen zu müssen. Nie wieder kalte Hände, um in Verbindung zu bleiben.',
-    description_fr: 'Alliez chaleur et connectivité. Ces gants thermiques sont dotés d\'une technologie spécifique vous permettant d\'utiliser vos écrans tactiles sans les retirer. Ne plus jamais avoir froid aux mains pour rester connecté.',
-    description_en: 'Combine warmth and connectivity. These thermal gloves are equipped with a special technology that allows you to use your touch screens without taking them off. Never have cold hands to stay connected again.',
-    category: 'accessories',
-    images: ['gants-tactiles-thermiques-tech-gloves'],
-    reviews: [
-        { author: 'Laura', rating: 5, comment: 'Enfin des gants qui fonctionnent vraiment avec mon téléphone !'}
-    ]
-  },
-  {
-    id: 'acc-23',
-    name: 'Luxe Soft Schal',
-    name_fr: 'Écharpe Luxe Soft',
-    name_en: 'Luxe Soft Scarf',
-    slug: 'echarpe-oversize-fausse-fourrure-luxe-soft',
-    price: 95,
-    oldPrice: 110,
-    description: 'Hüllen Sie sich in extremen Luxus. Dieser Oversize-Schal aus hochwertigem Kunstpelz bietet eine unvergleichliche Weichheit und einen Hauch von opulentem Glamour für Ihre Winteroutfits.',
-    description_fr: 'Drapez-vous dans un luxe extrême. Cette écharpe oversize en fausse fourrure de haute qualité offre une douceur inégalée et une touche de glamour opulent à vos tenues d\'hiver.',
-    description_en: 'Drape yourself in extreme luxury. This oversized scarf in high-quality faux fur offers unparalleled softness and a touch of opulent glamour to your winter outfits.',
-    category: 'accessories',
-    images: ['echarpe-oversize-fausse-fourrure-luxe-soft'],
-    reviews: [
-        { author: 'Caroline', rating: 5, comment: 'Incroyablement douce et luxueuse. C\'est magnifique.'}
-    ]
-  },
-  {
-    id: 'acc-24',
-    name: 'Warm Plush Schal',
-    name_fr: 'Écharpe Warm Plush',
-    name_en: 'Warm Plush Scarf',
-    slug: 'echarpe-maille-torsadee-warm-plush',
-    price: 70,
-    oldPrice: 85,
-    description: 'Die zeitlose Eleganz von Zopfstrick. Dieser dicke und weiche Schal umhüllt Sie mit stilvoller Wärme. Seine reiche Textur und großzügigen Abmessungen machen ihn zum perfekten Verbündeten gegen die Winterkälte.',
-    description_fr: 'L\'élégance intemporelle de la maille torsadée. Cette écharpe épaisse et moelleuse vous enveloppe de chaleur avec style. Sa texture riche et ses dimensions généreuses en font l\'alliée parfaite contre le froid hivernal.',
-    description_en: 'The timeless elegance of cable knit. This thick and soft scarf envelops you in warmth with style. Its rich texture and generous dimensions make it the perfect ally against the winter cold.',
-    category: 'accessories',
-    images: ['echarpe-maille-torsadee-warm-plush'],
-    reviews: [
-        { author: 'Nicolas', rating: 5, comment: 'Écharpe de grande qualité, très chaude et confortable.'}
-    ]
-  },
-  {
-    id: 'acc-27',
-    name: 'Lady Warm Handschuhe',
-    name_fr: 'Gants Lady Warm',
-    name_en: 'Lady Warm Gloves',
-    slug: 'gants-cuir-doubles-polaire-lady-warm',
-    price: 55,
-    oldPrice: 65,
-    description: 'Die perfekte Allianz zwischen Eleganz und Komfort. Diese Handschuhe aus geschmeidigem Leder sind mit einem weichen Fleece gefüttert, um Ihre Hände warm zu halten, ohne auf einen raffinierten Stil zu verzichten.',
-    description_fr: 'L\'alliance parfaite entre l\'élégance et le confort. Ces gants en cuir souple sont doublés d\'une polaire douce pour garder vos mains au chaud sans sacrifier un style raffiné.',
-    description_en: 'The perfect alliance between elegance and comfort. These supple leather gloves are lined with soft fleece to keep your hands warm without sacrificing a refined style.',
-    category: 'accessories',
-    images: ['gants-cuir-doubles-polaire-lady-warm'],
-    reviews: [
-        { author: 'Hélène', rating: 5, comment: 'Très chauds et le cuir est d\'une grande souplesse. Parfaits.'}
-    ]
-  },
-  {
-    id: 'prod-71',
+    id: 'manteau-long-laine-hugo-boss',
     name: 'Manteau Long en Laine',
     name_fr: 'Manteau Long en Laine',
     name_en: 'Long Wool Coat',
@@ -891,7 +790,7 @@ export const products: Product[] = [
     reviews: []
   },
   {
-    id: 'prod-72',
+    id: 'doudoune-matelassee-moncler',
     name: 'Doudoune Matelassée',
     name_fr: 'Doudoune Matelassée',
     name_en: 'Quilted Down Jacket',
@@ -906,7 +805,7 @@ export const products: Product[] = [
     reviews: []
   },
   {
-    id: 'prod-74',
+    id: 'pull-col-roule-laine-merinos-paul-smith',
     name: 'Pull Col Roulé Laine Merinos',
     name_fr: 'Pull Col Roulé Laine Merinos',
     name_en: 'Merino Wool Turtleneck Sweater',

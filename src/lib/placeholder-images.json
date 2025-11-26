@@ -278,6 +278,21 @@
       "imageHint": "leather sandals"
     },
     {
+      "id": "manteau-long-laine-hugo-boss",
+      "imageUrl": "/images/products/manteau-long-laine-hugo-boss.jpg",
+      "imageHint": "wool coat"
+    },
+    {
+      "id": "doudoune-matelassee-moncler",
+      "imageUrl": "/images/products/doudoune-matelassee-moncler.jpg",
+      "imageHint": "quilted jacket"
+    },
+    {
+      "id": "pull-col-roule-laine-merinos-paul-smith",
+      "imageUrl": "/images/products/pull-col-roule-laine-merinos-paul-smith.jpg",
+      "imageHint": "turtleneck sweater"
+    },
+    {
       "id": "Canada_Goose_MacMillan_Parka",
       "imageUrl": "/images/products/Canada_Goose_MacMillan_Parka.jpg",
       "imageHint": "winter parka"
