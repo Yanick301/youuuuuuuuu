@@ -1,4 +1,5 @@
 
+
 'use client';
 import Link from 'next/link';
 
@@ -19,7 +20,7 @@ import { Award, Leaf, Truck } from 'lucide-react';
 
 export default function HomePage() {
   const saleProducts = useMemo(() => {
-    // We want 8 products in total on the homepage sale section
+    // We want 9 products in total on the homepage sale section
     return getWinterSaleProducts(products, 9, true);
   }, []);
 

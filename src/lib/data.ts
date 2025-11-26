@@ -1,4 +1,5 @@
 
+
 import type { Product, Category, Review } from './types';
 
 export const categories: Category[] = [
@@ -1910,44 +1911,17 @@ export function getFeaturedProducts(products: Product[], limit: number = 4): Pro
 
 
 export function getWinterSaleProducts(products: Product[], limit?: number, homepage: boolean = false): Product[] {
-  const saleProducts = products.filter(p => p.oldPrice);
+  const saleProducts = products
+    .filter(p => p.oldPrice)
+    .sort((a, b) => a.id.localeCompare(b.id)); // Sort for deterministic results
 
-  if (homepage) {
-    // This logic is flawed. It's hardcoding IDs and not including new products.
-    // I will rewrite this to be dynamic.
-    const prioritySlugs = [
-      'sac-de-couchage-alpin-20c', 'sac-de-couchage-confort-5c', // 2 sleeping bags
-      'sac-hiver-matelasse', // 1 winter bag
-      'sorel-caribou', 'salomon-x-ultra-snow-pilot', 'merrell-thermo-chill-2-mid', // 3 shoes
-    ];
-    
-    // Get new products first
-    const newSaleItems = saleProducts.filter(p => prioritySlugs.includes(p.slug));
-    
-    // Get other parkas on sale to fill the list
-    const otherSaleParkas = saleProducts.filter(p => 
-        !prioritySlugs.includes(p.slug) && 
-        (p.name_fr.toLowerCase().includes('parka') || p.category === 'winter-clothing')
-    );
-
-    // Combine them and ensure no duplicates
-    const combined = [...newSaleItems, ...otherSaleParkas];
-    const uniqueProducts = Array.from(new Map(combined.map(p => [p.id, p])).values());
-
-
-    return limit ? uniqueProducts.slice(0, limit) : uniqueProducts;
+  if (homepage && limit) {
+    return saleProducts.slice(0, limit);
   }
   
-  const winterClothing = saleProducts.filter(p => p.category === 'winter-clothing');
-  const shoes = saleProducts.filter(p => p.category === 'shoes');
-  const accessories = saleProducts.filter(p => p.category === 'accessories');
-
-  let combined = [...winterClothing, ...shoes, ...accessories];
-
   if (limit) {
-    return combined.slice(0, limit);
+    return saleProducts.slice(0, limit);
   }
-  return combined;
-}
 
-    
+  return saleProducts;
+}
