@@ -1589,6 +1589,63 @@ export const products: Product[] = [
     images: ['sac_de_couchage4'],
     reviews: [],
   },
+  {
+    id: 'prod-105',
+    name: 'Gepolsterte Wintertasche',
+    name_fr: 'Sac d\'hiver matelassé',
+    name_en: 'Quilted Winter Bag',
+    slug: 'sac-hiver-matelasse',
+    price: 180,
+    oldPrice: 220,
+    description: 'Eine schicke und funktionale Tasche für den Winter, mit einer weichen Polsterung, um Ihre Sachen warm zu halten.',
+    description_fr: 'Un sac chic et fonctionnel pour l\'hiver, avec un rembourrage doux pour garder vos affaires au chaud.',
+    description_en: 'A chic and functional bag for the winter, with soft padding to keep your belongings warm.',
+    category: 'winter-clothing',
+    images: ['sac_hiver1'],
+    reviews: [],
+  },
+  {
+    id: 'prod-106',
+    name: 'Explorer Winterrucksack',
+    name_fr: 'Sac à dos d\'hiver Explorer',
+    name_en: 'Explorer Winter Backpack',
+    slug: 'sac-a-dos-hiver-explorer',
+    price: 250,
+    description: 'Ein robuster und geräumiger Rucksack, der für Winterabenteuer konzipiert wurde, mit mehreren Fächern und wasserdichten Materialien.',
+    description_fr: 'Un sac à dos robuste et spacieux conçu pour les aventures hivernales, avec de multiples compartiments et des matériaux résistants à l\'eau.',
+    description_en: 'A sturdy and spacious backpack designed for winter adventures, with multiple compartments and water-resistant materials.',
+    category: 'winter-clothing',
+    images: ['sac_hiver2'],
+    reviews: [],
+  },
+  {
+    id: 'prod-107',
+    name: 'Luxuriöse Woll-Tragetasche',
+    name_fr: 'Cabas en laine de luxe',
+    name_en: 'Luxury Wool Tote Bag',
+    slug: 'cabas-laine-luxe',
+    price: 320,
+    description: 'Eine elegante Tragetasche aus hochwertiger Wolle, perfekt für einen raffinierten Winterlook.',
+    description_fr: 'Un sac cabas élégant en laine de haute qualité, parfait pour un look hivernal sophistiqué.',
+    description_en: 'An elegant tote bag made of high-quality wool, perfect for a sophisticated winter look.',
+    category: 'winter-clothing',
+    images: ['sac_hiver3'],
+    reviews: [],
+  },
+  {
+    id: 'prod-108',
+    name: 'Kompakte Umhängetasche für den Winter',
+    name_fr: 'Sac bandoulière compact d\'hiver',
+    name_en: 'Compact Winter Crossbody Bag',
+    slug: 'sac-bandouliere-hiver-compact',
+    price: 150,
+    description: 'Eine kleine und praktische Umhängetasche, ideal, um das Nötigste im Winter stilvoll bei sich zu tragen.',
+    description_fr: 'Un petit sac bandoulière pratique, idéal pour transporter vos essentiels avec style pendant l\'hiver.',
+    description_en: 'A small and practical crossbody bag, ideal for carrying your essentials in style during the winter.',
+    category: 'winter-clothing',
+    images: ['sac_hiver4'],
+    reviews: [],
+  },
 ];
 
 
@@ -1632,23 +1689,20 @@ export function getWinterSaleProducts(products: Product[], limit?: number, homep
   const saleProducts = products.filter(p => p.oldPrice);
 
   if (homepage) {
-    // Keep existing logic and add the new sleeping bags
-    const existingHomepageSale = products.filter(p => 
-        ['prod-82', 'prod-85', 'prod-88', 'prod-91', 'prod-94', 'shoe-1', 'shoe-4', 'shoe-8'].includes(p.id)
-    );
-    
-    const newSleepingBagsOnSale = saleProducts.filter(p => p.slug.startsWith('sac-de-couchage') && p.oldPrice).slice(0, 2);
-    
-    // Combine and ensure no duplicates, then limit
-    const combined = [...existingHomepageSale, ...newSleepingBagsOnSale];
-    const uniqueIds = new Set();
-    const uniqueProducts = combined.filter(element => {
-        const isDuplicate = uniqueIds.has(element.id);
-        uniqueIds.add(element.id);
-        return !isDuplicate;
-    });
+    // Define the list of product IDs to feature on the homepage
+    const homepageProductIds = [
+        'prod-82', 'prod-85', 'prod-88', 'prod-91', 'prod-94', 
+        'shoe-1', 'shoe-4', 'shoe-8',
+        'prod-102', 'prod-104',
+        'prod-105' // The new winter bag
+    ];
 
-    return uniqueProducts.slice(0, limit);
+    const featuredProducts = products
+        .filter(p => homepageProductIds.includes(p.id))
+        // Ensure the order is consistent by sorting
+        .sort((a, b) => homepageProductIds.indexOf(a.id) - homepageProductIds.indexOf(b.id));
+
+    return limit ? featuredProducts.slice(0, limit) : featuredProducts;
   }
   
   const winterClothing = saleProducts.filter(p => p.category === 'winter-clothing');
@@ -1662,5 +1716,3 @@ export function getWinterSaleProducts(products: Product[], limit?: number, homep
   }
   return combined;
 }
-
-    

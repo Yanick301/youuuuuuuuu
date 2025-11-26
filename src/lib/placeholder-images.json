@@ -901,6 +901,26 @@
       "id": "sac_de_couchage4",
       "imageUrl": "/images/products/sac_de_couchage4.jpg",
       "imageHint": "sleeping bag"
+    },
+    {
+      "id": "sac_hiver1",
+      "imageUrl": "/images/products/sac_hiver1.jpg",
+      "imageHint": "winter bag"
+    },
+    {
+      "id": "sac_hiver2",
+      "imageUrl": "/images/products/sac_hiver2.jpg",
+      "imageHint": "winter backpack"
+    },
+    {
+      "id": "sac_hiver3",
+      "imageUrl": "/images/products/sac_hiver3.jpg",
+      "imageHint": "wool tote"
+    },
+    {
+      "id": "sac_hiver4",
+      "imageUrl": "/images/products/sac_hiver4.jpg",
+      "imageHint": "crossbody bag"
     }
   ]
 }
