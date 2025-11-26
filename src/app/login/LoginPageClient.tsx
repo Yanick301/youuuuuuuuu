@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useAuth, useFirestore } from '@/firebase';
+import { useAuth, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { signInWithEmailAndPassword, type UserCredential } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -65,37 +65,49 @@ export default function LoginPageClient() {
     if (!user || !firestore) return false;
 
     const userRef = doc(firestore, 'userProfiles', user.uid);
-    const userDoc = await getDoc(userRef);
-
-    let profileData: any = {};
-    let mustUpdate = false;
     let isAdmin = false;
 
-    if (!userDoc.exists()) {
-      profileData = {
-          id: user.uid,
-          email: user.email,
-          firstName: user.displayName?.split(' ')[0] || '',
-          lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
-          registrationDate: serverTimestamp(),
-          isAdmin: false, // Default to false
-      };
-      mustUpdate = true;
-    } else {
-      profileData = userDoc.data();
-    }
+    try {
+        const userDoc = await getDoc(userRef);
 
-    // Ensure admin status is correctly set on every login for the admin account
-    if (user.email === 'ezcentials@gmail.com') {
-      isAdmin = true;
-      if (profileData.isAdmin !== true) {
-        profileData.isAdmin = true;
-        mustUpdate = true;
-      }
-    }
-    
-    if (mustUpdate) {
-        await setDoc(userRef, profileData, { merge: true });
+        let profileData: any = {};
+        let mustUpdate = false;
+
+        if (!userDoc.exists()) {
+            profileData = {
+                id: user.uid,
+                email: user.email,
+                firstName: user.displayName?.split(' ')[0] || '',
+                lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
+                registrationDate: serverTimestamp(),
+                isAdmin: false, // Default to false
+            };
+            mustUpdate = true;
+        } else {
+            profileData = userDoc.data();
+        }
+
+        // Ensure admin status is correctly set on every login for the admin account
+        if (user.email === 'ezcentials@gmail.com') {
+            isAdmin = true;
+            if (profileData.isAdmin !== true) {
+                profileData.isAdmin = true;
+                mustUpdate = true;
+            }
+        }
+        
+        if (mustUpdate) {
+            await setDoc(userRef, profileData, { merge: true });
+        }
+    } catch (e) {
+        // This is a read error, less likely but possible
+        const permissionError = new FirestorePermissionError({
+            path: userRef.path,
+            operation: 'get',
+        });
+        errorEmitter.emit('permission-error', permissionError);
+        // Re-throw to be caught by the outer try/catch
+        throw e;
     }
     
     return isAdmin;
@@ -104,7 +116,20 @@ export default function LoginPageClient() {
   const onSubmit: SubmitHandler<z.infer<typeof currentSchema>> = async (data) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
-      const isAdmin = await handleUserCreation(userCredential);
+      const isAdmin = await handleUserCreation(userCredential).catch((e) => {
+          // This specifically catches failures within handleUserCreation,
+          // including our re-thrown permission error.
+          // The most likely error here is the setDoc failing.
+          const userRef = doc(firestore, 'userProfiles', userCredential.user.uid);
+          const permissionError = new FirestorePermissionError({
+                path: userRef.path,
+                operation: 'write', // Assuming failure is on setDoc
+                requestResourceData: { isAdmin: true } // The data we tried to set
+          });
+          errorEmitter.emit('permission-error', permissionError);
+          // We return false for isAdmin to prevent redirection to a dashboard that will fail
+          return false;
+      });
       
       toast({
           title: language === 'fr' ? 'Connexion réussie' : language === 'en' ? 'Login Successful' : 'Anmeldung erfolgreich',
@@ -116,6 +141,16 @@ export default function LoginPageClient() {
       router.refresh();
 
     } catch (error: any) {
+      if (error instanceof FirestorePermissionError) {
+         // Error is already emitted, just show a toast
+          toast({
+            variant: 'destructive',
+            title: 'Erreur de Permission',
+            description: 'Impossible de mettre à jour le profil utilisateur.',
+          });
+          return;
+      }
+        
       const errorMessage = error.code === 'auth/invalid-credential' 
         ? (language === 'fr' ? 'Email ou mot de passe incorrect.' : language === 'en' ? 'Incorrect email or password.' : 'Falsche E-Mail oder falsches Passwort.')
         : (language === 'fr' ? 'Une erreur est survenue lors de la connexion.' : language === 'en' ? 'An error occurred during login.' : 'Bei der Anmeldung ist ein Fehler aufgetreten.');
