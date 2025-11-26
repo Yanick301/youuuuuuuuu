@@ -663,118 +663,6 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 'prod-61',
-    name: 'Long Wool Coat',
-    name_fr: 'Manteau Long en Laine',
-    name_en: 'Long Wool Coat',
-    slug: 'manteau-long-laine-max-mara-homme',
-    price: 900,
-    description: 'Eine imposante und zeitlose Silhouette. Dieser lange Mantel aus reiner Schurwolle bietet eine elegante Struktur und eine unvergleichliche Wärme für einen makellosen Winterstil.',
-    description_fr: 'Une silhouette imposante et intemporelle. Ce long manteau en pure laine vierge offre une structure élégante et une chaleur inégalée pour un style hivernal impeccable.',
-    description_en: 'An imposing and timeless silhouette. This long coat in pure virgin wool offers an elegant structure and unparalleled warmth for an impeccable winter style.',
-    category: 'winter-clothing',
-    images: ['manteau-long-laine-max-mara-homme'],
-    reviews: [
-        { author: 'Augustin', rating: 5, comment: 'La coupe est majestueuse. Un manteau pour la vie.'}
-    ]
-  },
-  {
-    id: 'prod-62',
-    name: 'Denim Jacket',
-    name_fr: 'Veste en Jean',
-    name_en: 'Denim Jacket',
-    slug: 'veste-denim-levis-made-crafted',
-    price: 190,
-    description: 'Die Ikone der amerikanischen Garderobe, neu interpretiert. Diese Jacke aus hochwertigem Denim ist eine Hommage an das Erbe von Levi\'s mit einer modernen Passform und hochwertigen Oberflächen.',
-    description_fr: 'L\'icône du vestiaire américain, réinventée. Cette veste en denim de première qualité rend hommage à l\'héritage Levi\'s avec une coupe moderne et des finitions haut de gamme.',
-    description_en: 'The icon of the American wardrobe, reinvented. This premium denim jacket pays homage to the Levi\'s heritage with a modern cut and high-end finishes.',
-    category: 'mens-clothing',
-    images: ['veste-denim-levis-made-crafted'],
-    reviews: [
-        { author: 'Oscar', rating: 5, comment: 'Une veste en jean parfaite. Ni trop large, ni trop serrée.'}
-    ]
-  },
-  {
-    id: 'prod-63',
-    name: 'Tailored Trousers',
-    name_fr: 'Pantalon de Costume',
-    name_en: 'Tailored Trousers',
-    slug: 'pantalon-tailleur-dior-homme',
-    price: 490,
-    description: 'Die Essenz der Schneiderkunst. Diese Hose mit perfektem Fall und makellosem Schnitt ist das Fundament einer eleganten Garderobe, die sowohl im Büro als auch bei formellen Anlässen getragen werden kann.',
-    description_fr: 'L\'essence du savoir-faire tailleur. Ce pantalon au tombé parfait et à la coupe impeccable est le fondement d\'une garde-robe élégante, à porter au bureau comme lors d\'événements formels.',
-    description_en: 'The essence of tailoring expertise. These trousers with a perfect drape and impeccable cut are the foundation of an elegant wardrobe, to be worn at the office as well as at formal events.',
-    category: 'mens-clothing',
-    images: ['pantalon-tailleur-dior-homme'],
-    reviews: [
-        { author: 'Victor', rating: 5, comment: 'La coupe est absolument parfaite.'}
-    ]
-  },
-  {
-    id: 'prod-65',
-    name: 'Quilted Jacket',
-    name_fr: 'Veste Matelassée',
-    name_en: 'Quilted Jacket',
-    slug: 'veste-matelassee-barbour-international',
-    price: 240,
-    description: 'Die britische Eleganz in einer Outdoor-Version. Diese gesteppte Jacke ist leicht, warm und unglaublich vielseitig und ideal für einen Ausflug aufs Land oder einen Spaziergang in der Stadt.',
-    description_fr: 'L\'élégance britannique en version outdoor. Cette veste matelassée est légère, chaude et incroyablement polyvalente, idéale pour une escapade à la campagne ou une balade en ville.',
-    description_en: 'British elegance in an outdoor version. This quilted jacket is lightweight, warm, and incredibly versatile, ideal for a countryside getaway or a city stroll.',
-    category: 'mens-clothing',
-    images: ['veste-matelassee-barbour-international'],
-    reviews: [
-        { author: 'Louis', rating: 5, comment: 'Un classique. Toujours élégant et très pratique.'}
-    ]
-  },
-  {
-    id: 'prod-66',
-    name: 'Cable-Knit Sweater',
-    name_fr: 'Pull Torsadé',
-    name_en: 'Cable-Knit Sweater',
-    slug: 'pull-torsade-paul-smith',
-    price: 180,
-    description: 'Ein zeitloser Klassiker neu interpretiert. Dieser Pullover mit Zopfmuster ist aus weicher Wolle gefertigt und verfügt über die für Paul Smith typischen subtilen Farbakzente.',
-    description_fr: 'Un classique intemporel revisité. Ce pull à torsades est confectionné dans une laine douce et présente les touches de couleur subtiles signatures de Paul Smith.',
-    description_en: 'A timeless classic revisited. This cable-knit sweater is made of soft wool and features the subtle color touches signature of Paul Smith.',
-    category: 'mens-clothing',
-    images: ['pull-torsade-paul-smith'],
-    reviews: [
-        { author: 'Adrien', rating: 5, comment: 'Très beau pull, la petite touche de couleur fait toute la différence.'}
-    ]
-  },
-  {
-    id: 'prod-67',
-    name: 'Logo T-Shirt',
-    name_fr: 'T-shirt Logo',
-    name_en: 'Logo T-Shirt',
-    slug: 't-shirt-logo-givenchy',
-    price: 270,
-    description: 'Ein starkes Statement. Dieses T-Shirt mit dem ikonischen Givenchy-Logo ist ein Muss für Liebhaber des urbanen Luxus, das einen einfachen Look sofort aufwertet.',
-    description_fr: 'Une affirmation de style forte. Ce t-shirt arborant le logo iconique de Givenchy est un must-have pour les amateurs de luxe urbain, rehaussant instantanément un look simple.',
-    description_en: 'A strong style statement. This t-shirt featuring the iconic Givenchy logo is a must-have for lovers of urban luxury, instantly elevating a simple look.',
-    category: 'mens-clothing',
-    images: ['t-shirt-logo-givenchy'],
-    reviews: [
-        { author: 'Mehdi', rating: 5, comment: 'Le logo est imposant mais classe. Tissu de grande qualité.'}
-    ]
-  },
-  {
-    id: 'prod-70',
-    name: 'Sleeveless Vest',
-    name_fr: 'Gilet Sans Manches',
-    name_en: 'Sleeveless Vest',
-    slug: 'gilet-sans-manches-prada',
-    price: 580,
-    description: 'Eine schicke und funktionale Schicht. Diese ärmellose Weste aus dem ikonischen Nylon von Prada verleiht jedem Outfit einen Hauch von modernem und anspruchsvollem Luxus.',
-    description_fr: 'Une couche chic et fonctionnelle. Ce gilet sans manches, en nylon iconique de Prada, ajoute une touche de luxe moderne et sophistiqué à n\'importe quelle tenue.',
-    description_en: 'A chic and functional layer. This sleeveless vest, in Prada\'s iconic nylon, adds a touch of modern and sophisticated luxury to any outfit.',
-    category: 'mens-clothing',
-    images: ['gilet-sans-manches-prada'],
-    reviews: [
-        { author: 'David', rating: 5, comment: 'Très polyvalent. Je le porte sur une chemise ou sous un manteau.'}
-    ]
-  },
-  {
     id: 'manteau-long-laine-hugo-boss',
     name: 'Manteau Long en Laine',
     name_fr: 'Manteau Long en Laine',
@@ -1431,7 +1319,7 @@ export const products: Product[] = [
     reviews: []
   },
   {
-    id: 'prod-101',
+    id: 'sac_de_couchage1',
     name: 'Expeditions-Schlafsack -10°C',
     name_fr: 'Sac de Couchage Expédition -10°C',
     name_en: 'Expedition Sleeping Bag -10°C',
@@ -1445,7 +1333,7 @@ export const products: Product[] = [
     reviews: [],
   },
   {
-    id: 'prod-102',
+    id: 'sac_de_couchage2',
     name: 'Alpin-Schlafsack -20°C',
     name_fr: 'Sac de Couchage Alpin -20°C',
     name_en: 'Alpine Sleeping Bag -20°C',
@@ -1460,7 +1348,7 @@ export const products: Product[] = [
     reviews: [],
   },
   {
-    id: 'prod-103',
+    id: 'sac_de_couchage3',
     name: 'Trekking-Schlafsack 0°C',
     name_fr: 'Sac de Couchage Trekking 0°C',
     name_en: 'Trekking Sleeping Bag 0°C',
@@ -1474,7 +1362,7 @@ export const products: Product[] = [
     reviews: [],
   },
   {
-    id: 'prod-104',
+    id: 'sac_de_couchage4',
     name: 'Komfort-Schlafsack 5°C',
     name_fr: 'Sac de Couchage Confort 5°C',
     name_en: 'Comfort Sleeping Bag 5°C',
@@ -1489,7 +1377,7 @@ export const products: Product[] = [
     reviews: [],
   },
   {
-    id: 'prod-105',
+    id: 'sac_hiver1',
     name: 'Gepolsterte Wintertasche',
     name_fr: 'Sac d\'hiver matelassé',
     name_en: 'Quilted Winter Bag',
@@ -1504,7 +1392,7 @@ export const products: Product[] = [
     reviews: [],
   },
   {
-    id: 'prod-106',
+    id: 'sac_hiver2',
     name: 'Explorer Winterrucksack',
     name_fr: 'Sac à dos d\'hiver Explorer',
     name_en: 'Explorer Winter Backpack',
@@ -1518,7 +1406,7 @@ export const products: Product[] = [
     reviews: [],
   },
   {
-    id: 'prod-107',
+    id: 'sac_hiver3',
     name: 'Luxuriöse Woll-Tragetasche',
     name_fr: 'Cabas en laine de luxe',
     name_en: 'Luxury Wool Tote Bag',
@@ -1532,7 +1420,7 @@ export const products: Product[] = [
     reviews: [],
   },
   {
-    id: 'prod-108',
+    id: 'sac_hiver4',
     name: 'Kompakte Umhängetasche für den Winter',
     name_fr: 'Sac bandoulière compact d\'hiver',
     name_en: 'Compact Winter Crossbody Bag',
@@ -1545,7 +1433,7 @@ export const products: Product[] = [
     images: ['sac_hiver4'],
     reviews: [],
   },
-  {
+    {
     id: 'acc-101',
     name: 'Silikon-Sportuhr',
     name_fr: 'Montre Sport en Silicone',
@@ -1816,7 +1704,7 @@ export const products: Product[] = [
     name: 'Elegant Wrap Winterschal',
     name_fr: 'Châle d\'Hiver Elegant Wrap',
     name_en: 'Elegant Wrap Winter Shawl',
-    slug: 'chale-hiver-motif-elegant-elegant-wrap',
+    slug: 'chale-hiver-motif-elegant-elegant-wrap-bis',
     price: 110,
     description: 'Ein großer, eleganter Schal mit einem raffinierten Muster, perfekt, um sich stilvoll einzuwickeln.',
     description_fr: 'Un grand châle élégant avec un motif sophistiqué, parfait pour s\'envelopper de style.',
@@ -1830,7 +1718,7 @@ export const products: Product[] = [
     name: 'Cashmere Touch bedruckter Schal',
     name_fr: 'Foulard Imprimé Cashmere Touch',
     name_en: 'Cashmere Touch Printed Scarf',
-    slug: 'foulard-cachemire-imprime-cashmere-touch',
+    slug: 'foulard-cachemire-imprime-cashmere-touch-bis',
     price: 130,
     description: 'Ein luxuriöser Kaschmirschal mit einem eleganten Aufdruck, der jedem Outfit einen Hauch von Farbe verleiht.',
     description_fr: 'Un foulard luxueux au toucher cachemire avec un imprimé élégant pour ajouter une touche de couleur à n\'importe quelle tenue.',
@@ -1844,7 +1732,7 @@ export const products: Product[] = [
     name: 'Mini Glam Schicke Handtasche',
     name_fr: 'Petite Sac à Main Chic Mini Glam',
     name_en: 'Mini Glam Chic Handbag',
-    slug: 'petit-sac-a-main-chic-mini-glam',
+    slug: 'petit-sac-a-main-chic-mini-glam-bis',
     price: 220,
     description: 'Eine kleine, aber glamouröse Handtasche, um Ihre Essentials mit Eleganz zu tragen.',
     description_fr: 'Un petit sac à main glamour mais compact pour transporter vos essentiels avec élégance.',
@@ -1858,7 +1746,7 @@ export const products: Product[] = [
     name: 'Shine Drop Silberne Ohrhänger',
     name_fr: 'Boucles d\'Oreilles Pendantes Shine Drop',
     name_en: 'Shine Drop Dangle Earrings',
-    slug: 'boucles-oreilles-pendantes-argentees-shine-drop',
+    slug: 'boucles-oreilles-pendantes-argentees-shine-drop-bis',
     price: 85,
     description: 'Funkelnde silberne Ohrhänger, um Ihren Look zu erhellen.',
     description_fr: 'Des boucles d\'oreilles pendantes et scintillantes en argent pour illuminer votre look.',
@@ -1872,7 +1760,7 @@ export const products: Product[] = [
     name: 'Shine Night Abendclutch',
     name_fr: 'Pochette de Soirée Shine Night',
     name_en: 'Shine Night Evening Clutch',
-    slug: 'pochette-soiree-shine-night-premium',
+    slug: 'pochette-soiree-shine-night-premium-bis',
     price: 150,
     description: 'Eine Premium-Clutch, um bei Ihren eleganten Abenden zu glänzen.',
     description_fr: 'Une pochette de soirée premium pour briller lors de vos événements chics.',
@@ -2061,3 +1949,5 @@ export function getWinterSaleProducts(products: Product[], limit?: number, homep
   }
   return combined;
 }
+
+    
