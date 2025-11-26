@@ -7,7 +7,6 @@ import { Firestore } from 'firebase/firestore';
 import { Auth, User, onAuthStateChanged } from 'firebase/auth';
 import { FirebaseStorage } from 'firebase/storage';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener'
-import type { UserProfile, WithId } from './auth/use-user';
 
 interface FirebaseProviderProps {
   children: ReactNode;
@@ -44,14 +43,6 @@ export interface FirebaseServicesAndUser {
   auth: Auth;
   storage: FirebaseStorage;
   user: User | null;
-  isUserLoading: boolean;
-  userError: Error | null;
-}
-
-// Return type for useUser() - specific to user auth state
-export interface UserHookResult { // Renamed from UserAuthHookResult for consistency if desired, or keep as UserAuthHookResult
-  user: User | null;
-  profile: WithId<UserProfile> | null;
   isUserLoading: boolean;
   userError: Error | null;
 }

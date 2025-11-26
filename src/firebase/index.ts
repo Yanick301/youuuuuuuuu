@@ -30,12 +30,24 @@ export function getSdks(firebaseApp: FirebaseApp) {
   };
 }
 
-export * from './provider';
-export * from './client-provider';
-export * from './firestore/use-collection';
-export * from './firestore/use-doc';
-export * from './auth/use-user';
+// Explicitly export from each module to avoid conflicts
+export {
+  FirebaseProvider,
+  useFirebase,
+  useAuth,
+  useFirestore,
+  useStorage,
+  useFirebaseApp,
+  useMemoFirebase,
+  type FirebaseContextState,
+  type FirebaseServicesAndUser
+} from './provider';
+
+export { FirebaseClientProvider } from './client-provider';
+export { useCollection, type UseCollectionResult, type WithId as WithCollectionId } from './firestore/use-collection';
+export { useDoc, type UseDocResult, type WithId as WithDocId } from './firestore/use-doc';
+export { useUser, type UserProfile, type WithId as WithUserId, type UserHookResult } from './auth/use-user';
 export * from './non-blocking-updates';
 export * from './non-blocking-login';
-export * from './errors';
-export * from './error-emitter';
+export { FirestorePermissionError } from './errors';
+export { errorEmitter, type AppEvents } from './error-emitter';
