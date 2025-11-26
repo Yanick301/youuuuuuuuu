@@ -6,6 +6,7 @@ import {
   useMemoFirebase,
   errorEmitter,
   FirestorePermissionError,
+  useUser,
 } from '@/firebase';
 import {
   collectionGroup,
@@ -33,6 +34,7 @@ import {
   User,
   Euro,
   ImageIcon,
+  ShieldAlert,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
@@ -41,6 +43,7 @@ import { fr, de, enUS } from 'date-fns/locale';
 import { useState, useEffect } from 'react';
 import { TranslatedText } from '@/components/TranslatedText';
 import { useLanguage } from '@/context/LanguageContext';
+import { useAdminMode } from '@/context/AdminModeContext';
 
 type Order = {
   id: string;
@@ -67,6 +70,8 @@ export default function AdminDashboardPage() {
   const firestore = useFirestore();
   const { toast } = useToast();
   const { language } = useLanguage();
+  const { isFullyAdmin } = useAdminMode();
+
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -75,16 +80,18 @@ export default function AdminDashboardPage() {
   const locale = language === 'fr' ? fr : language === 'en' ? enUS : de;
 
   const ordersQuery = useMemoFirebase(() => {
-    if (!firestore) return null;
+    // Only create the query if we are fully admin and firestore is available
+    if (!isFullyAdmin || !firestore) return null;
 
     return query(
       collectionGroup(firestore, 'orders'),
       where('paymentStatus', '==', 'processing')
     );
-  }, [firestore]);
+  }, [firestore, isFullyAdmin]);
 
 
   useEffect(() => {
+    // If the query is null (because we're not admin), don't do anything.
     if (!ordersQuery) {
         setIsLoading(false);
         return;
@@ -108,7 +115,6 @@ export default function AdminDashboardPage() {
         });
         errorEmitter.emit('permission-error', permissionError);
         
-        // We set a user-facing error message, but the detailed error is now thrown globally
         setError('Failed to fetch orders. You may not have the required permissions.');
         setIsLoading(false);
       }
@@ -144,6 +150,21 @@ export default function AdminDashboardPage() {
       })
       .finally(() => setIsProcessing(null));
   };
+  
+  if (!isFullyAdmin) {
+    return (
+      <div className="container mx-auto flex min-h-[80vh] flex-col items-center justify-center px-4 text-center">
+        <ShieldAlert className="h-16 w-16 text-amber-500" />
+        <h2 className="mt-6 font-headline text-3xl">
+          <TranslatedText fr="Mode Admin Verrouillé" en="Admin Mode Locked">Admin-Modus gesperrt</TranslatedText>
+        </h2>
+        <p className="mt-2 text-muted-foreground">
+          <TranslatedText fr="Veuillez activer le mode administrateur pour voir ce contenu." en="Please activate admin mode to view this content.">Bitte aktivieren Sie den Admin-Modus, um diesen Inhalt anzuzeigen.</TranslatedText>
+        </p>
+      </div>
+    );
+  }
+
 
   if (isLoading) {
     return (
@@ -277,4 +298,3 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-

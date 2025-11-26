@@ -1,3 +1,4 @@
+
 'use client';
 
 import { createContext, useContext, useState, ReactNode, useCallback }from 'react';
@@ -31,7 +32,7 @@ export function AdminModeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // True only if the user profile has isAdmin and the secret code has been entered
-  const isFullyAdmin = profile?.isAdmin === true && isAdminMode;
+  const isFullyAdmin = !!profile?.isAdmin && isAdminMode;
 
   return (
     <AdminModeContext.Provider value={{ isAdminMode, activateAdminMode, deactivateAdminMode, isFullyAdmin }}>

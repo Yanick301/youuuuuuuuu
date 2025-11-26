@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useAuth, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
+import { useAuth, useFirestore, errorEmitter, FirestorePermissionError, useFirebase } from '@/firebase';
 import { signInWithEmailAndPassword, type UserCredential } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -43,8 +43,7 @@ const loginSchemaEN = z.object({
 
 
 export default function LoginPageClient() {
-  const auth = useAuth();
-  const firestore = useFirestore();
+  const { auth, firestore } = useFirebase();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -114,6 +113,7 @@ export default function LoginPageClient() {
   };
 
   const onSubmit: SubmitHandler<z.infer<typeof currentSchema>> = async (data) => {
+    if (!auth) return;
     try {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
       const isAdmin = await handleUserCreation(userCredential).catch((e) => {

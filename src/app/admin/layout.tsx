@@ -13,24 +13,30 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, profile, isLoading } = useUser();
-  const { isFullyAdmin } = useAdminMode();
+  const { user, profile, isLoading: isUserLoading } = useUser();
+  const { isFullyAdmin, isAdminMode } = useAdminMode();
   const router = useRouter();
 
   useEffect(() => {
-    // Wait until loading is fully complete before making any decisions
-    if (isLoading) {
+    // Wait until user loading is complete before making any decisions
+    if (isUserLoading) {
       return;
     }
 
-    // After loading, if there's no user, or the user is not a full admin, redirect.
-    if (!user || !isFullyAdmin) {
+    // After loading, if there's no user, or the user profile isn't an admin, redirect.
+    if (!user || !profile?.isAdmin) {
       router.replace('/login');
+      return;
     }
-  }, [user, isFullyAdmin, isLoading, router]);
+    
+    // If the user IS an admin but hasn't entered the secret code, keep them on a waiting screen or redirect.
+    // For this case, we allow them to stay on the page, but content will be hidden by the page itself.
+    // The main check for isFullyAdmin will be done on the page component.
 
-  // While loading, show a full-screen loader.
-  if (isLoading) {
+  }, [user, profile, isUserLoading, router, isAdminMode]);
+
+  // While loading user/profile data, show a full-screen loader.
+  if (isUserLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
@@ -41,12 +47,13 @@ export default function AdminLayout({
     );
   }
 
-  // If loading is complete and user is a full admin, show the content.
-  if (user && isFullyAdmin) {
+  // If loading is complete and user is an admin (profile-wise), show the content.
+  // The page itself will handle the `isAdminMode` check.
+  if (user && profile?.isAdmin) {
     return <>{children}</>;
   }
 
-  // Otherwise, show a loading/redirecting screen as a fallback
+  // Fallback for unauthorized access while not loading
   return (
     <div className="flex h-screen w-full items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-4">
