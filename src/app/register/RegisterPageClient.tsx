@@ -12,7 +12,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { Separator } from '@/components/ui/separator';
 import { useAuth, useFirestore } from '@/firebase';
 import { createUserWithEmailAndPassword, updateProfile, type UserCredential, sendEmailVerification } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
@@ -83,6 +82,7 @@ export default function RegisterPageClient() {
             firstName: displayName?.split(' ')[0] || '',
             lastName: displayName?.split(' ').slice(1).join(' ') || '',
             registrationDate: serverTimestamp(),
+            isAdmin: false // Default to false
         };
 
         // If the registering user is the admin, set isAdmin to true
@@ -199,3 +199,5 @@ export default function RegisterPageClient() {
     </div>
   );
 }
+
+    

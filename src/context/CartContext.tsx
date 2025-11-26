@@ -5,7 +5,7 @@ import { createContext, useContext, useState, type ReactNode, useEffect, useCall
 import type { CartItem, Product } from '@/lib/types';
 import { useUser, useFirestore } from '@/firebase';
 import { collection, doc, getDocs, writeBatch, query, where, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
-import { products as allProducts } from '@/lib/data'; // Assuming products are available for lookup
+import { products as allProducts } from '@/lib/data';
 
 type CartContextType = {
   cart: CartItem[];
@@ -39,59 +39,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return remoteCart;
   }, [firestore]);
   
-  const getCartFromLocalStorage = useCallback(() => {
-    try {
-      const storedCart = localStorage.getItem('ezcentials-cart');
-      return storedCart ? JSON.parse(storedCart) : [];
-    } catch (error) {
-      console.error('Failed to parse cart from localStorage', error);
-      return [];
-    }
-  }, []);
-
-  const syncCarts = useCallback(async (userId: string, localCart: CartItem[]) => {
-      if (!firestore) return localCart;
-
-      const remoteCart = await fetchCartFromFirestore(userId);
-      const mergedCartMap = new Map<string, CartItem>();
-
-      remoteCart.forEach(item => mergedCartMap.set(item.product.id, item));
-      localCart.forEach(localItem => {
-          const existing = mergedCartMap.get(localItem.product.id);
-          if (existing) {
-              // Simple merge: local quantity wins if different
-              if (existing.quantity !== localItem.quantity) {
-                  mergedCartMap.set(localItem.product.id, localItem);
-              }
-          } else {
-              mergedCartMap.set(localItem.product.id, localItem);
-          }
-      });
-      
-      const mergedCart = Array.from(mergedCartMap.values());
-      const batch = writeBatch(firestore);
-      const cartColRef = collection(firestore, 'userProfiles', userId, 'cartItems');
-      
-      // Sync merged cart back to firestore
-      mergedCart.forEach(item => {
-          const docRef = doc(cartColRef, item.product.id);
-          batch.set(docRef, { quantity: item.quantity });
-      });
-
-      // Clear remote items that are not in the merged cart
-      const remoteIds = new Set(remoteCart.map(i => i.product.id));
-      const mergedIds = new Set(mergedCart.map(i => i.product.id));
-      remoteIds.forEach(id => {
-          if (!mergedIds.has(id)) {
-              batch.delete(doc(cartColRef, id));
-          }
-      });
-
-      await batch.commit();
-      localStorage.removeItem('ezcentials-cart');
-      return mergedCart;
-  }, [firestore, fetchCartFromFirestore]);
-
 
   useEffect(() => {
     const loadCart = async () => {
@@ -99,14 +46,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (isUserLoading) return;
 
       if (user && firestore) {
-        const localCart = getCartFromLocalStorage();
-        if (localCart.length > 0) {
-          const syncedCart = await syncCarts(user.uid, localCart);
-          setCart(syncedCart);
-        } else {
-          const remoteCart = await fetchCartFromFirestore(user.uid);
-          setCart(remoteCart);
-        }
+        const remoteCart = await fetchCartFromFirestore(user.uid);
+        setCart(remoteCart);
       } else {
         // Clear cart on logout
         setCart([]);
@@ -115,60 +56,62 @@ export function CartProvider({ children }: { children: ReactNode }) {
     };
 
     loadCart();
-  }, [user, isUserLoading, firestore, getCartFromLocalStorage, fetchCartFromFirestore, syncCarts]);
+  }, [user, isUserLoading, firestore, fetchCartFromFirestore]);
 
 
   const addToCart = useCallback(async (product: Product, quantity: number = 1) => {
+    if (!user || !firestore) {
+        // Handle non-logged-in users if needed, e.g., local storage.
+        // For now, we do nothing if not logged in.
+        return;
+    }
     setCart(prevCart => {
         const existingItemIndex = prevCart.findIndex(item => item.product.id === product.id);
         const newCart = [...prevCart];
+        let newQuantity: number;
         if (existingItemIndex > -1) {
-            newCart[existingItemIndex].quantity += quantity;
+            newQuantity = newCart[existingItemIndex].quantity + quantity;
+            newCart[existingItemIndex].quantity = newQuantity;
         } else {
+            newQuantity = quantity;
             newCart.push({ product, quantity });
         }
 
-        if (user && firestore) {
-            const itemToUpdate = newCart.find(item => item.product.id === product.id)!;
-            const cartItemRef = doc(firestore, 'userProfiles', user.uid, 'cartItems', product.id);
-            setDoc(cartItemRef, { quantity: itemToUpdate.quantity }, { merge: true });
-        }
+        const cartItemRef = doc(firestore, 'userProfiles', user.uid, 'cartItems', product.id);
+        setDoc(cartItemRef, { quantity: newQuantity }, { merge: true });
+        
         return newCart;
     });
   }, [user, firestore]);
 
   const removeFromCart = useCallback(async (productId: string) => {
+    if (!user || !firestore) return;
     setCart(prevCart => prevCart.filter(item => item.product.id !== productId));
-    if (user && firestore) {
-      const cartItemRef = doc(firestore, 'userProfiles', user.uid, 'cartItems', productId);
-      await deleteDoc(cartItemRef);
-    }
+    const cartItemRef = doc(firestore, 'userProfiles', user.uid, 'cartItems', productId);
+    await deleteDoc(cartItemRef);
   }, [user, firestore]);
 
   const updateQuantity = useCallback(async (productId: string, quantity: number) => {
+    if (!user || !firestore) return;
+
     if (quantity <= 0) {
       removeFromCart(productId);
       return;
     }
     setCart(prevCart => prevCart.map(item => item.product.id === productId ? { ...item, quantity } : item));
-    if (user && firestore) {
-       const cartItemRef = doc(firestore, 'userProfiles', user.uid, 'cartItems', productId);
-       await setDoc(cartItemRef, { quantity }, { merge: true });
-    }
+    const cartItemRef = doc(firestore, 'userProfiles', user.uid, 'cartItems', productId);
+    await setDoc(cartItemRef, { quantity }, { merge: true });
   }, [removeFromCart, user, firestore]);
 
   const clearCart = useCallback(async () => {
+    if (!user || !firestore) return;
     setCart([]);
-    if (user && firestore) {
-      const cartColRef = collection(firestore, 'userProfiles', user.uid, 'cartItems');
-      const snapshot = await getDocs(cartColRef);
-      if (!snapshot.empty) {
-          const batch = writeBatch(firestore);
-          snapshot.forEach(doc => batch.delete(doc.ref));
-          await batch.commit();
-      }
-    } else {
-        localStorage.removeItem('ezcentials-cart');
+    const cartColRef = collection(firestore, 'userProfiles', user.uid, 'cartItems');
+    const snapshot = await getDocs(cartColRef);
+    if (!snapshot.empty) {
+        const batch = writeBatch(firestore);
+        snapshot.forEach(doc => batch.delete(doc.ref));
+        await batch.commit();
     }
   }, [user, firestore]);
 
@@ -193,3 +136,5 @@ export function useCart() {
   }
   return context;
 }
+
+    

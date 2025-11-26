@@ -12,7 +12,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { Separator } from '@/components/ui/separator';
 import { useAuth, useFirestore } from '@/firebase';
 import { signInWithEmailAndPassword, type UserCredential } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
@@ -193,3 +192,5 @@ export default function LoginPageClient() {
     </div>
   );
 }
+
+    

@@ -29,10 +29,10 @@ service cloud.firestore {
       allow create: if request.auth != null && request.auth.uid == userId
                     && request.resource.data.receiptImageUrl.size() < 1048576; // 1MB limit
 
-      // An admin can read or delete any order.
-      allow read, delete: if isAdmin();
+      // An admin can read, list or delete any order.
+      allow get, list, delete: if isAdmin();
 
-      // Only an admin can update an order, and they can only change the status.
+      // Only an admin can update an order, and they can only change the paymentStatus.
       allow update: if isAdmin() && request.resource.data.keys().hasOnly(['paymentStatus']);
     }
 
@@ -40,5 +40,12 @@ service cloud.firestore {
     match /cartItems/{cartItemId} {
       allow read, write: if false;
     }
+
+    // This rule is for the collection group query in the admin dashboard
+    match /{path=**}/orders/{orderId} {
+        allow list: if isAdmin();
+    }
   }
 }
+
+    

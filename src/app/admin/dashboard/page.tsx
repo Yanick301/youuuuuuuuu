@@ -49,7 +49,7 @@ type Order = {
   items: any[];
   totalAmount: number;
   orderDate: any;
-  paymentStatus: string;
+  paymentStatus: 'processing' | 'completed' | 'rejected' | 'pending';
   receiptImageUrl?: string;
 };
 
@@ -149,7 +149,7 @@ export default function AdminDashboardPage() {
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-12 w-12 animate-spin text-primary" />
-          <p className="text-muted-foreground">Chargement des commandes en attente...</p>
+          <p className="text-muted-foreground"><TranslatedText fr="Chargement des commandes en attente..." en="Loading pending orders..." >Laden der ausstehenden Bestellungen...</TranslatedText></p>
         </div>
       </div>
     );
@@ -160,7 +160,7 @@ export default function AdminDashboardPage() {
       <div className="container mx-auto flex min-h-[80vh] flex-col items-center justify-center px-4 text-center">
         <AlertTriangle className="h-12 w-12 text-destructive" />
         <p className="mt-4 text-xl font-semibold text-destructive">
-          Erreur de chargement des commandes
+          <TranslatedText fr="Erreur de chargement des commandes" en="Error loading orders">Fehler beim Laden der Bestellungen</TranslatedText>
         </p>
         <p className="text-sm text-muted-foreground">{error}</p>
       </div>
@@ -171,10 +171,10 @@ export default function AdminDashboardPage() {
     <div className="container mx-auto max-w-7xl px-4 py-12">
       <div className="mb-8 flex items-center justify-between">
         <div>
-            <h1 className="font-headline text-4xl">Tableau de Bord Administrateur</h1>
-            <p className="text-muted-foreground">Commandes en attente de validation</p>
+            <h1 className="font-headline text-4xl"><TranslatedText fr="Tableau de Bord Administrateur" en="Admin Dashboard">Admin-Dashboard</TranslatedText></h1>
+            <p className="text-muted-foreground"><TranslatedText fr="Commandes en attente de validation" en="Orders awaiting validation">Bestellungen, die auf Validierung warten</TranslatedText></p>
         </div>
-        <Badge variant={orders.length > 0 ? 'default' : 'secondary'}>{orders.length} en attente</Badge>
+        <Badge variant={orders.length > 0 ? 'default' : 'secondary'}>{orders.length} <TranslatedText fr="en attente" en="pending">ausstehend</TranslatedText></Badge>
       </div>
 
       {orders.length === 0 ? (
@@ -182,10 +182,10 @@ export default function AdminDashboardPage() {
           <CardContent className="flex flex-col items-center justify-center p-20 text-center">
             <FileText className="h-20 w-20 text-muted-foreground" />
             <h3 className="mt-6 text-2xl font-semibold">
-                Aucune commande en attente
+                <TranslatedText fr="Aucune commande en attente" en="No pending orders">Keine ausstehenden Bestellungen</TranslatedText>
             </h3>
             <p className="mt-2 text-muted-foreground">
-                Lorsqu'un client téléversera une preuve de paiement, sa commande apparaîtra ici.
+                <TranslatedText fr="Lorsqu'un client téléversera une preuve de paiement, sa commande apparaîtra ici." en="When a customer uploads proof of payment, their order will appear here.">Wenn ein Kunde einen Zahlungsnachweis hochlädt, wird seine Bestellung hier angezeigt.</TranslatedText>
             </p>
           </CardContent>
         </Card>
@@ -196,14 +196,14 @@ export default function AdminDashboardPage() {
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle className="text-lg">Commande #{order.id.substring(0, 7)}</CardTitle>
+                    <CardTitle className="text-lg"><TranslatedText fr="Commande" en="Order">Bestellung</TranslatedText> #{order.id.substring(0, 7)}</CardTitle>
                     <CardDescription>
                       {format(getSafeDate(order), 'PPP p', { locale })}
                     </CardDescription>
                   </div>
                    <Badge variant="default" className="bg-blue-600">
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        En traitement
+                        <TranslatedText fr="En traitement" en="Processing">In Bearbeitung</TranslatedText>
                     </Badge>
                 </div>
               </CardHeader>
@@ -222,7 +222,7 @@ export default function AdminDashboardPage() {
 
                 {order.receiptImageUrl ? (
                   <div className="space-y-2">
-                    <h4 className="font-semibold text-sm">Preuve de Paiement</h4>
+                    <h4 className="font-semibold text-sm"><TranslatedText fr="Preuve de Paiement" en="Proof of Payment">Zahlungsnachweis</TranslatedText></h4>
                     <a
                       href={order.receiptImageUrl}
                       target="_blank"
@@ -239,7 +239,7 @@ export default function AdminDashboardPage() {
                 ) : (
                   <div className="rounded-md border border-dashed border-amber-500 bg-amber-50 p-4 text-center text-sm text-amber-800 flex items-center justify-center gap-2">
                     <ImageIcon className="h-4 w-4" />
-                    <p>Aucune preuve de paiement fournie.</p>
+                    <p><TranslatedText fr="Aucune preuve de paiement fournie." en="No proof of payment provided.">Kein Zahlungsnachweis bereitgestellt.</TranslatedText></p>
                   </div>
                 )}
               </CardContent>
@@ -254,7 +254,7 @@ export default function AdminDashboardPage() {
                   ) : (
                     <Ban className="mr-2 h-4 w-4" />
                   )}
-                  Rejeter
+                  <TranslatedText fr="Rejeter" en="Reject">Ablehnen</TranslatedText>
                 </Button>
                 <Button
                   onClick={() => handleUpdateStatus(order.userId, order.id, 'completed')}
@@ -266,7 +266,7 @@ export default function AdminDashboardPage() {
                   ) : (
                     <CheckCircle className="mr-2 h-4 w-4" />
                   )}
-                  Confirmer
+                  <TranslatedText fr="Confirmer" en="Confirm">Bestätigen</TranslatedText>
                 </Button>
               </CardFooter>
             </Card>
@@ -276,3 +276,5 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+
+    
