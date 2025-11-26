@@ -39,15 +39,23 @@ export {
   useStorage,
   useFirebaseApp,
   useMemoFirebase,
-  type FirebaseContextState,
-  type FirebaseServicesAndUser
 } from './provider';
 
+export type { FirebaseContextState, FirebaseServicesAndUser } from './provider';
+
 export { FirebaseClientProvider } from './client-provider';
-export { useCollection, type UseCollectionResult, type WithId as WithCollectionId } from './firestore/use-collection';
-export { useDoc, type UseDocResult, type WithId as WithDocId } from './firestore/use-doc';
-export { useUser, type UserProfile, type WithId as WithUserId, type UserHookResult } from './auth/use-user';
-export * from './non-blocking-updates';
-export * from './non-blocking-login';
+
+export { useCollection } from './firestore/use-collection';
+export type { UseCollectionResult, WithId as WithCollectionId } from './firestore/use-collection';
+
+export { useDoc } from './firestore/use-doc';
+export type { UseDocResult, WithId as WithDocId } from './firestore/use-doc';
+
+export { useUser } from './auth/use-user';
+export type { UserProfile, WithId as WithUserId, UserHookResult } from './auth/use-user';
+
+export { setDocumentNonBlocking, addDocumentNonBlocking, updateDocumentNonBlocking, deleteDocumentNonBlocking } from './non-blocking-updates';
+export { initiateAnonymousSignIn, initiateEmailSignUp, initiateEmailSignIn } from './non-blocking-login';
+
 export { FirestorePermissionError } from './errors';
 export { errorEmitter, type AppEvents } from './error-emitter';
