@@ -15,14 +15,11 @@ import {
 } from "@/components/ui/carousel"
 import { CollectionHighlight } from '@/components/CollectionHighlight';
 import { categories } from '@/lib/data';
-import { useMemo } from 'react';
 import { Award, Leaf, Truck } from 'lucide-react';
 
 export default function HomePage() {
-  const saleProducts = useMemo(() => {
-    // We want 9 products in total on the homepage sale section
-    return getWinterSaleProducts(products, 9, true);
-  }, []);
+  // We want 9 products in total on the homepage sale section
+  const saleProducts = getWinterSaleProducts(products, 9, true);
 
   return (
     <div className="flex flex-col">

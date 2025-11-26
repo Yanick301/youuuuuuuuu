@@ -1915,10 +1915,6 @@ export function getWinterSaleProducts(products: Product[], limit?: number, homep
     .filter(p => p.oldPrice)
     .sort((a, b) => a.id.localeCompare(b.id)); // Sort for deterministic results
 
-  if (homepage && limit) {
-    return saleProducts.slice(0, limit);
-  }
-  
   if (limit) {
     return saleProducts.slice(0, limit);
   }
