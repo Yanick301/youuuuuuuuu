@@ -33,7 +33,7 @@ export default function LegalNoticePage() {
           <br />
           Adresse : Kurfürstendamm 21, 10719 Berlin, Deutschland
           <br />
-          Email : contact-info@ezcentials.com
+          Email : contact-support@ezcentials.com
           <br />
           USt-IdNr.: DE123456789
           <br />
