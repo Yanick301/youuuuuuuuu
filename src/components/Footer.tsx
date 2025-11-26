@@ -6,6 +6,9 @@ import { useState, useEffect } from 'react';
 import { useAdminMode } from '@/context/AdminModeContext';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/context/LanguageContext';
+import { Shield } from 'lucide-react';
+import { Input } from './ui/input';
+import { cn } from '@/lib/utils';
 
 export function Footer() {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -13,6 +16,8 @@ export function Footer() {
   const [secretCode, setSecretCode] = useState('');
   const { toast } = useToast();
   const { language } = useLanguage();
+  const [isSecretInputVisible, setIsSecretInputVisible] = useState(false);
+
 
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
@@ -32,6 +37,7 @@ export function Footer() {
         });
       }
       setSecretCode('');
+      setIsSecretInputVisible(false);
     }
   }
 
@@ -114,16 +120,28 @@ export function Footer() {
                 </div>
             </div>
         </div>
-        <div className="mt-16 pt-8 border-t border-stone-800 text-center text-sm text-stone-400">
-           <p>&copy; {currentYear} <TranslatedText fr="EZCENTIALS. Tous droits réservés." en="EZCENTIALS. All rights reserved.">EZCENTIALS. Alle Rechte vorbehalten.</TranslatedText></p>
-            <input 
-              type="text" 
-              value={secretCode}
-              onChange={(e) => setSecretCode(e.target.value)}
-              onKeyDown={handleSecretCode}
-              className="absolute bottom-1 left-1 h-1 w-1 opacity-0"
-              aria-label="Secret admin code input"
-            />
+        <div className="mt-16 flex flex-col items-center justify-center gap-2 border-t border-stone-800 pt-8 text-center text-sm text-stone-400">
+           <div className="flex items-center gap-2">
+                <p>&copy; {currentYear} <TranslatedText fr="EZCENTIALS. Tous droits réservés." en="EZCENTIALS. All rights reserved.">EZCENTIALS. Alle Rechte vorbehalten.</TranslatedText></p>
+                <button onClick={() => setIsSecretInputVisible(true)} aria-label="Open admin code input">
+                    <Shield className="h-4 w-4 text-stone-600 hover:text-white transition-colors"/>
+                </button>
+           </div>
+            <div className={cn(
+                "transition-all duration-300 ease-in-out",
+                isSecretInputVisible ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+            )}>
+               <Input 
+                  type="password" 
+                  value={secretCode}
+                  onChange={(e) => setSecretCode(e.target.value)}
+                  onKeyDown={handleSecretCode}
+                  onBlur={() => { setIsSecretInputVisible(false); setSecretCode(''); }}
+                  placeholder="Admin Code"
+                  className="h-8 bg-stone-800 text-white border-stone-700 focus-visible:ring-offset-stone-800"
+                  autoFocus
+                />
+            </div>
         </div>
       </div>
     </footer>
