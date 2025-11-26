@@ -89,26 +89,6 @@
         "date"
       ]
     },
-    "CartItem": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "CartItem",
-      "type": "object",
-      "description": "Represents an item in a user's shopping cart, stored as a subcollection under userProfiles.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "The ID of the product, which is also the document ID for this cart item."
-        },
-        "quantity": {
-          "type": "number",
-          "description": "The quantity of the product in the cart."
-        }
-      },
-      "required": [
-        "id",
-        "quantity"
-      ]
-    },
     "Order": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Order",
@@ -241,12 +221,6 @@
         "$ref": "#/entities/Order"
       },
       "description": "Stores all order information. Any authenticated user can create their own order. Only admins can read, list, and update order statuses."
-    },
-    "/userProfiles/{userId}/cartItems/{productId}": {
-      "schema": {
-        "$ref": "#/entities/CartItem"
-      },
-      "description": "DEPRECATED: Stores items in a user's shopping cart. Only the authenticated user can read/write their own cart items."
     }
   },
   "storage": {
@@ -256,13 +230,6 @@
         "read": "true",
         "write": "request.auth != null && request.auth.uid == userId"
       }
-    },
-    "/receipts/{userId}/{orderId}/{fileName}": {
-        "description": "This path is deprecated. Receipts are now stored in Firestore as Base64 strings.",
-        "rules": {
-            "read": "false",
-            "write": "false"
-        }
     }
   }
 }

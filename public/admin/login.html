@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 flex items-center justify-center h-screen">
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-sm">
+        <h1 class="text-white text-3xl font-bold mb-6 text-center">EZCENTIALS - Admin</h1>
+        <form id="login-form" class="space-y-6">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
+                <input type="email" id="email" required class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-white focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-300">Mot de passe</label>
+                <input type="password" id="password" required class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-white focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Se connecter
+            </button>
+        </form>
+    </div>
+    
+    <script type="module">
+        // IMPORTANT: Replace with your actual Firebase config
+        const firebaseConfig = {
+            "projectId": "studio-8762209881-fa482",
+            "appId": "1:188715334152:web:4c1edd6a3043cd6f806fbd",
+            "apiKey": "AIzaSyDZ2GLM3V8LmtKhwfPj84Yt4DL3lTRT1KI",
+            "authDomain": "studio-8762209881-fa482.firebaseapp.com",
+            "storageBucket": "studio-8762209881-fa482.appspot.com",
+            "measurementId": "",
+            "messagingSenderId": "188715334152"
+        };
+
+        // Initialize Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const loginForm = document.getElementById('login-form');
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    window.location.href = '/admin/index.html';
+                })
+                .catch((error) => {
+                    alert(`Erreur de connexion : ${error.message}`);
+                });
+        });
+    </script>
+</body>
+</html>

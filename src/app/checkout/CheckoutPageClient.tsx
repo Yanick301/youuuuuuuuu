@@ -185,7 +185,7 @@ export default function CheckoutPageClient() {
       router.push(`/checkout/confirm-payment?orderId=${docRef.id}`);
     }).catch(async (serverError) => {
       const permissionError = new FirestorePermissionError({
-        path: ordersCollectionRef.path,
+        path: 'orders',
         operation: 'create',
         requestResourceData: orderData,
       });
