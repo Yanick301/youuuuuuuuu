@@ -743,6 +743,21 @@
       "imageHint": "puffer coat"
     },
     {
+      "id": "manteau-long-laine-hugo-boss",
+      "imageUrl": "/images/products/manteau-long-laine-hugo-boss.jpg",
+      "imageHint": "wool coat"
+    },
+    {
+      "id": "doudoune-matelassee-moncler",
+      "imageUrl": "/images/products/doudoune-matelassee-moncler.jpg",
+      "imageHint": "quilted jacket"
+    },
+    {
+      "id": "pull-col-roule-laine-merinos-paul-smith",
+      "imageUrl": "/images/products/pull-col-roule-laine-merinos-paul-smith.jpg",
+      "imageHint": "turtleneck sweater"
+    },
+    {
       "id": "sac_de_couchage1",
       "imageUrl": "/images/products/sac_de_couchage1.jpg",
       "imageHint": "sleeping bag"
@@ -781,21 +796,6 @@
       "id": "sac_hiver4",
       "imageUrl": "/images/products/sac_hiver4.jpg",
       "imageHint": "crossbody bag"
-    },
-    {
-      "id": "manteau-long-laine-hugo-boss",
-      "imageUrl": "/images/products/manteau-long-laine-hugo-boss.jpg",
-      "imageHint": "wool coat"
-    },
-    {
-      "id": "doudoune-matelassee-moncler",
-      "imageUrl": "/images/products/doudoune-matelassee-moncler.jpg",
-      "imageHint": "quilted jacket"
-    },
-    {
-      "id": "pull-col-roule-laine-merinos-paul-smith",
-      "imageUrl": "/images/products/pull-col-roule-laine-merinos-paul-smith.jpg",
-      "imageHint": "turtleneck sweater"
     },
     {
       "id": "montre-sport-silicone-hydrosport-5-atm",
@@ -875,7 +875,7 @@
     {
       "id": "montre-argentee-minimaliste-silver-pure",
       "imageUrl": "/images/products/montre-argentee-minimaliste-silver-pure.jpg",
-      "imageHint": "silver watch"
+      "imageHint": "minimalist watch"
     },
     {
       "id": "montre-cuir-beige-soft-elegance",
@@ -905,7 +905,7 @@
     {
       "id": "echarpe-oversize-fausse-fourrure-luxe-soft",
       "imageUrl": "/images/products/echarpe-oversize-fausse-fourrure-luxe-soft.jpg",
-      "imageHint": "faux fur scarf"
+      "imageHint": "fur scarf"
     },
     {
       "id": "echarpe-maille-torsadee-warm-plush",
