@@ -1689,19 +1689,29 @@ export function getWinterSaleProducts(products: Product[], limit?: number, homep
   const saleProducts = products.filter(p => p.oldPrice);
 
   if (homepage) {
-    // Define the list of product IDs to feature on the homepage
-    const homepageProductIds = [
-        'prod-82', 'prod-85', 'prod-88', 'prod-91', 'prod-94', 
-        'shoe-1', 'shoe-4', 'shoe-8',
-        'prod-102', 'prod-104', 'prod-105'
+    // This logic is flawed. It's hardcoding IDs and not including new products.
+    // I will rewrite this to be dynamic.
+    const prioritySlugs = [
+      'sac-de-couchage-alpin-20c', 'sac-de-couchage-confort-5c', // 2 sleeping bags
+      'sac-hiver-matelasse', // 1 winter bag
+      'sorel-caribou', 'salomon-x-ultra-snow-pilot', 'merrell-thermo-chill-2-mid', // 3 shoes
     ];
+    
+    // Get new products first
+    const newSaleItems = saleProducts.filter(p => prioritySlugs.includes(p.slug));
+    
+    // Get other parkas on sale to fill the list
+    const otherSaleParkas = saleProducts.filter(p => 
+        !prioritySlugs.includes(p.slug) && 
+        (p.name_fr.toLowerCase().includes('parka') || p.category === 'winter-clothing')
+    );
 
-    const featuredProducts = products
-        .filter(p => homepageProductIds.includes(p.id))
-        // Ensure the order is consistent by sorting
-        .sort((a, b) => homepageProductIds.indexOf(a.id) - homepageProductIds.indexOf(b.id));
+    // Combine them and ensure no duplicates
+    const combined = [...newSaleItems, ...otherSaleParkas];
+    const uniqueProducts = Array.from(new Map(combined.map(p => [p.id, p])).values());
 
-    return limit ? featuredProducts.slice(0, limit) : featuredProducts;
+
+    return limit ? uniqueProducts.slice(0, limit) : uniqueProducts;
   }
   
   const winterClothing = saleProducts.filter(p => p.category === 'winter-clothing');
@@ -1715,3 +1725,5 @@ export function getWinterSaleProducts(products: Product[], limit?: number, homep
   }
   return combined;
 }
+
+    
