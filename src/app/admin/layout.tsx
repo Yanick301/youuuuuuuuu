@@ -2,6 +2,7 @@
 'use client';
 
 import { useUser } from '@/firebase';
+import { useAdminMode } from '@/context/AdminModeContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
@@ -13,6 +14,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const { user, profile, isLoading } = useUser();
+  const { isFullyAdmin } = useAdminMode();
   const router = useRouter();
 
   useEffect(() => {
@@ -21,11 +23,11 @@ export default function AdminLayout({
       return;
     }
 
-    // After loading, if there's no user or the user is not an admin, redirect.
-    if (!user || !profile?.isAdmin) {
+    // After loading, if there's no user, or the user is not a full admin, redirect.
+    if (!user || !isFullyAdmin) {
       router.replace('/login');
     }
-  }, [user, profile, isLoading, router]);
+  }, [user, isFullyAdmin, isLoading, router]);
 
   // While loading, show a full-screen loader.
   if (isLoading) {
@@ -39,22 +41,18 @@ export default function AdminLayout({
     );
   }
 
-  // If loading is complete and user is an admin, show the content.
-  // This prevents flashing the content for non-admins before the redirect.
-  if (user && profile?.isAdmin) {
+  // If loading is complete and user is a full admin, show the content.
+  if (user && isFullyAdmin) {
     return <>{children}</>;
   }
 
   // Otherwise, show a loading/redirecting screen as a fallback
-  // This covers the brief moment before the useEffect redirect kicks in
   return (
     <div className="flex h-screen w-full items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-4">
         <Loader2 className="h-12 w-12 animate-spin text-primary" />
-        <p className="text-muted-foreground"><TranslatedText fr="Redirection..." en="Redirecting...">Weiterleitung...</TranslatedText></p>
+        <p className="text-muted-foreground"><TranslatedText fr="Accès non autorisé. Redirection..." en="Unauthorized. Redirecting...">Zugriff verweigert. Weiterleitung...</TranslatedText></p>
       </div>
     </div>
   );
 }
-
-    

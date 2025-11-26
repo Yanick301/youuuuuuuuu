@@ -3,13 +3,37 @@
 import Link from 'next/link';
 import { TranslatedText } from './TranslatedText';
 import { useState, useEffect } from 'react';
+import { useAdminMode } from '@/context/AdminModeContext';
+import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function Footer() {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const { activateAdminMode } = useAdminMode();
+  const [secretCode, setSecretCode] = useState('');
+  const { toast } = useToast();
+  const { language } = useLanguage();
 
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
   }, []);
+  
+  const handleSecretCode = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      if (activateAdminMode(secretCode)) {
+        toast({
+            title: language === 'fr' ? 'Mode Admin Activé' : language === 'en' ? 'Admin Mode Activated' : 'Admin-Modus aktiviert',
+            description: language === 'fr' ? 'Les fonctionnalités d\'administration sont maintenant visibles.' : language === 'en' ? 'Admin features are now visible.' : 'Admin-Funktionen sind jetzt sichtbar.',
+        });
+      } else {
+         toast({
+            variant: 'destructive',
+            title: language === 'fr' ? 'Code Incorrect' : language === 'en' ? 'Incorrect Code' : 'Falscher Code',
+        });
+      }
+      setSecretCode('');
+    }
+  }
 
   const footerSections = [
     {
@@ -92,6 +116,14 @@ export function Footer() {
         </div>
         <div className="mt-16 pt-8 border-t border-stone-800 text-center text-sm text-stone-400">
            <p>&copy; {currentYear} <TranslatedText fr="EZCENTIALS. Tous droits réservés." en="EZCENTIALS. All rights reserved.">EZCENTIALS. Alle Rechte vorbehalten.</TranslatedText></p>
+            <input 
+              type="text" 
+              value={secretCode}
+              onChange={(e) => setSecretCode(e.target.value)}
+              onKeyDown={handleSecretCode}
+              className="absolute bottom-1 left-1 h-1 w-1 opacity-0"
+              aria-label="Secret admin code input"
+            />
         </div>
       </div>
     </footer>
