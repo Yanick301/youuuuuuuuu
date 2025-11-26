@@ -108,6 +108,7 @@ export default function AdminDashboardPage() {
         });
         errorEmitter.emit('permission-error', permissionError);
         
+        // We set a user-facing error message, but the detailed error is now thrown globally
         setError('Failed to fetch orders. You may not have the required permissions.');
         setIsLoading(false);
       }
@@ -277,4 +278,3 @@ export default function AdminDashboardPage() {
   );
 }
 
-    
