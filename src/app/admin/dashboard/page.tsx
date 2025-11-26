@@ -74,15 +74,23 @@ export default function AdminDashboardPage() {
 
   const locale = language === 'fr' ? fr : language === 'en' ? enUS : de;
 
-  useEffect(() => {
-    if (!firestore) return;
+  const ordersQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
 
-    setIsLoading(true);
-    const ordersQuery = query(
+    return query(
       collectionGroup(firestore, 'orders'),
       where('paymentStatus', '==', 'processing')
     );
+  }, [firestore]);
 
+
+  useEffect(() => {
+    if (!ordersQuery) {
+        setIsLoading(false);
+        return;
+    }
+
+    setIsLoading(true);
     const unsubscribe = onSnapshot(
       ordersQuery,
       (snapshot) => {
@@ -91,24 +99,22 @@ export default function AdminDashboardPage() {
         );
         setOrders(fetchedOrders);
         setIsLoading(false);
+        setError(null);
       },
       (err) => {
-        // This error is generic. A more specific one will be thrown by the global listener.
-        console.error("Dashboard onSnapshot error:", err);
-        setError('Failed to fetch orders. You may not have the required permissions.');
-        setIsLoading(false);
-        
-        // Create and emit a detailed permission error for the development overlay
         const permissionError = new FirestorePermissionError({
-            path: 'orders', // This is a collection group query on 'orders'
+            path: 'orders', // This is a collection group query
             operation: 'list',
         });
         errorEmitter.emit('permission-error', permissionError);
+        
+        setError('Failed to fetch orders. You may not have the required permissions.');
+        setIsLoading(false);
       }
     );
 
     return () => unsubscribe();
-  }, [firestore]);
+  }, [ordersQuery]);
 
   const handleUpdateStatus = (
     userId: string,
@@ -128,12 +134,6 @@ export default function AdminDashboardPage() {
         setOrders(prev => prev.filter(o => o.id !== orderId));
       })
       .catch((e) => {
-        console.error(e);
-        toast({
-          variant: 'destructive',
-          title: 'Erreur',
-          description: "Impossible de mettre à jour le statut de la commande.",
-        });
         const permissionError = new FirestorePermissionError({
             path: orderRef.path,
             operation: 'update',
