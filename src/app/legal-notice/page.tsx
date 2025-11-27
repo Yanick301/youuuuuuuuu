@@ -38,9 +38,9 @@ export default function LegalNoticePage() {
           USt-IdNr.: DE123456789
           <br />
            <TranslatedText fr="Directeur de la publication :" en="Director of Publication:">
-             Geschäftsführerin:
+             Geschäftsführer:
            </TranslatedText>{' '}
-           Sabine Menke
+           LABINSKY sandro
         </p>
 
         <h2 className='text-2xl'>
