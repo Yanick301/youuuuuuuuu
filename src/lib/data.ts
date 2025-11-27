@@ -225,6 +225,96 @@ export const products: Product[] = [
     colors: ['Noir Profond'],
   },
   {
+    id: 'femme-1',
+    name: 'Oversize-Wollmantel',
+    name_fr: 'Manteau en Laine Oversize',
+    name_en: 'Oversize Wool Coat',
+    slug: 'manteau-laine-oversize-isabel-marant',
+    price: 790,
+    oldPrice: 950,
+    description: 'Ein Statement-Mantel mit lockerer, übergroßer Passform aus einer luxuriösen Wollmischung. Perfekt zum Schichten.',
+    description_fr: 'Un manteau affirmé avec une coupe décontractée et oversize, confectionné dans un luxueux mélange de laine. Parfait pour la superposition.',
+    description_en: 'A statement coat with a relaxed, oversized fit, crafted from a luxurious wool blend. Perfect for layering.',
+    category: 'womens-clothing',
+    images: ['femme1'],
+    reviews: [],
+  },
+  {
+    id: 'femme-2',
+    name: 'Trenchcoat mit Gürtel aus Gabardine',
+    name_fr: 'Trench-Coat Ceinturé en Gabardine',
+    name_en: 'Belted Gabardine Trench Coat',
+    slug: 'trench-coat-ceinture-en-gabardine-burberry',
+    price: 1250,
+    oldPrice: 1500,
+    description: 'Der ikonische Trenchcoat, neu interpretiert mit modernen Details. Der Gürtel betont die Taille für eine feminine Silhouette.',
+    description_fr: 'L\'iconique trench-coat, réinterprété avec des détails modernes. Sa ceinture souligne la taille pour une silhouette féminine.',
+    description_en: 'The iconic trench coat, reinterpreted with modern details. Its belt emphasizes the waist for a feminine silhouette.',
+    category: 'womens-clothing',
+    images: ['femme2'],
+    reviews: [],
+  },
+  {
+    id: 'femme-3',
+    name: 'Kurzer Daunenmantel',
+    name_fr: 'Doudoune Courte',
+    name_en: 'Short Down Coat',
+    slug: 'doudoune-courte-moncler',
+    price: 850,
+    oldPrice: 1020,
+    description: 'Kombinieren Sie Wärme und Stil mit diesem kurzen, taillierten Daunenmantel. Ideal für einen schicken urbanen Look im Winter.',
+    description_fr: 'Alliez chaleur et style avec cette doudoune courte et cintrée. Idéale pour un look urbain et chic en hiver.',
+    description_en: 'Combine warmth and style with this short, fitted down coat. Ideal for a chic urban look in winter.',
+    category: 'womens-clothing',
+    images: ['femme3'],
+    reviews: [],
+  },
+  {
+    id: 'femme-4',
+    name: 'Kaschmirmantel mit Schalkragen',
+    name_fr: 'Manteau en Cachemire à Col Châle',
+    name_en: 'Shawl Collar Cashmere Coat',
+    slug: 'manteau-cachemire-col-chale-max-mara',
+    price: 1800,
+    oldPrice: 2200,
+    description: 'Hüllen Sie sich in Luxus mit diesem Mantel aus reinem Kaschmir. Sein Schalkragen verleiht ihm einen Hauch von anspruchsvoller Eleganz.',
+    description_fr: 'Enveloppez-vous de luxe avec ce manteau en pur cachemire. Son col châle ajoute une touche d\'élégance sophistiquée.',
+    description_en: 'Wrap yourself in luxury with this pure cashmere coat. Its shawl collar adds a touch of sophisticated elegance.',
+    category: 'womens-clothing',
+    images: ['femme4'],
+    reviews: [],
+  },
+  {
+    id: 'femme-5',
+    name: 'Mantel aus Kunstpelz',
+    name_fr: 'Manteau en Fausse Fourrure',
+    name_en: 'Faux Fur Coat',
+    slug: 'manteau-fausse-fourrure-stella-mccartney',
+    price: 980,
+    oldPrice: 1150,
+    description: 'Ein glamouröser und ethischer Mantel aus hochwertigem Kunstpelz für einen kühnen und verantwortungsbewussten Look.',
+    description_fr: 'Un manteau glamour et éthique, fabriqué à partir de fausse fourrure de haute qualité pour un look audacieux et responsable.',
+    description_en: 'A glamorous and ethical coat, made from high-quality faux fur for a bold and responsible look.',
+    category: 'womens-clothing',
+    images: ['femme5'],
+    reviews: [],
+  },
+  {
+    id: 'femme-6',
+    name: 'Cape-Mantel aus Wolle',
+    name_fr: 'Manteau Cape en Laine',
+    name_en: 'Wool Cape Coat',
+    slug: 'manteau-cape-en-laine-valentino',
+    price: 1100,
+    oldPrice: 1350,
+    description: 'Eine elegante und originelle Alternative zum klassischen Mantel. Dieser Woll-Cape-Mantel bietet eine dramatische und raffinierte Silhouette.',
+    description_fr: 'Une alternative élégante et originale au manteau classique. Ce manteau-cape en laine offre une silhouette dramatique et sophistiquée.',
+    description_en: 'An elegant and original alternative to the classic coat. This wool cape coat offers a dramatic and sophisticated silhouette.',
+    category: 'womens-clothing',
+    images: ['femme6'],
+    reviews: [],
+  },
+  {
     id: 'prod-30',
     name: 'Slim-Fit Hemd',
     name_fr: 'Chemise Slim-Fit',
@@ -2203,29 +2293,20 @@ export function getWinterSaleProducts(products: Product[], limit?: number): Prod
 
 =======
 export function getWinterSaleProducts(products: Product[], limit?: number, homepage: boolean = false): Product[] {
-  const saleProducts = products.filter(p => p.oldPrice);
+  const saleProducts = products.filter(p => p.oldPrice).sort((a, b) => a.id.localeCompare(b.id));
 
   if (homepage) {
-    const parkas = saleProducts.filter(p => p.name_fr.toLowerCase().includes('parka')).slice(0, 4);
-    const sleepingBags = saleProducts.filter(p => p.name_fr.toLowerCase().includes('sac de couchage')).slice(0, 2);
-    const winterBags = saleProducts.filter(p => p.name_fr.toLowerCase().includes('sac d\'hiver')).slice(0, 1);
-    
-    const selection = [...parkas, ...sleepingBags, ...winterBags];
-    return selection.sort((a,b) => a.id.localeCompare(b.id)).slice(0, limit);
+    return saleProducts.slice(0, 9);
   }
   
-  const winterClothing = saleProducts.filter(p => p.category === 'winter-clothing');
-  const shoes = saleProducts.filter(p => p.category === 'shoes');
-  const accessories = saleProducts.filter(p => p.category === 'accessories');
-
-  let combined = [...winterClothing, ...shoes, ...accessories];
-
   if (limit) {
-    return combined.slice(0, limit);
+    return saleProducts.slice(0, limit);
   }
-  return combined;
+  
+  return saleProducts;
 }
 
     
 >>>>>>> eb79929 (stp pour les produit tendencee mets des parka des sacs de couchage et de)
+
 

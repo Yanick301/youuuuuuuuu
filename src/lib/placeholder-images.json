@@ -116,6 +116,36 @@
       "imageHint": "velvet dress"
     },
     {
+      "id": "femme1",
+      "imageUrl": "/images/products/femme1.jpg",
+      "imageHint": "wool coat"
+    },
+    {
+      "id": "femme2",
+      "imageUrl": "/images/products/femme2.jpg",
+      "imageHint": "trench coat"
+    },
+    {
+      "id": "femme3",
+      "imageUrl": "/images/products/femme3.jpg",
+      "imageHint": "down coat"
+    },
+    {
+      "id": "femme4",
+      "imageUrl": "/images/products/femme4.jpg",
+      "imageHint": "cashmere coat"
+    },
+    {
+      "id": "femme5",
+      "imageUrl": "/images/products/femme5.jpg",
+      "imageHint": "faux fur coat"
+    },
+    {
+      "id": "femme6",
+      "imageUrl": "/images/products/femme6.jpg",
+      "imageHint": "cape coat"
+    },
+    {
       "id": "chemise-slim-fit-tom-ford",
       "imageUrl": "/images/products/chemise-slim-fit-tom-ford.jpg",
       "imageHint": "slim-fit shirt"
