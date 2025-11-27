@@ -141,6 +141,11 @@
       "imageHint": "stretch chino"
     },
     {
+      "id": "pantalon-cargo-noir-homme",
+      "imageUrl": "/images/products/pantalon-cargo-noir-homme.jpg",
+      "imageHint": "black cargo"
+    },
+    {
       "id": "jean-coupe-ajustee-diesel",
       "imageUrl": "/images/products/jean-coupe-ajustee-diesel.jpg",
       "imageHint": "slim-fit jeans"
