@@ -28,6 +28,11 @@ service cloud.firestore {
       allow get: if isAdmin();
     }
     
+    // User can manage their own cart items.
+    match /userProfiles/{userId}/cartItems/{itemId} {
+      allow read, write, delete: if request.auth != null && request.auth.uid == userId;
+    }
+    
     // Orders collection is now at the root.
     match /orders/{orderId} {
       // Anyone can create an order, with validation on the receipt image size.
