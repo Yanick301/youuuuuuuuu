@@ -4,13 +4,15 @@ import { AppProviders } from '@/components/AppProviders';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
-import { FirebaseClientProvider } from '@/firebase/client-provider';
+import { FirebaseClientProvider } from '@/firebase';
+import { AutoLogout } from '@/components/auth/AutoLogout';
 
 
 export const metadata: Metadata = {
   title: 'EZCENTIALS',
   description: 'Understated elegance and sophistication.',
 };
+
 
 export default function RootLayout({
   children,
@@ -30,6 +32,7 @@ export default function RootLayout({
       <body className="font-body antialiased">
         
         <FirebaseClientProvider>
+          <AutoLogout />
           <AppProviders>
             <div className="relative z-10 flex min-h-screen flex-col">
               <Header />
