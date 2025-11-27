@@ -2168,6 +2168,7 @@ export function getFeaturedProducts(products: Product[], limit: number = 4): Pro
 export function getWinterSaleProducts(products: Product[], limit?: number): Product[] {
   const allSaleItems = products.filter(p => p.oldPrice).sort((a, b) => a.id.localeCompare(b.id));
 
+<<<<<<< HEAD
   const featuredItems = new Set<Product>();
 
   // Helper function to add item if it exists and is not already added
@@ -2200,4 +2201,31 @@ export function getWinterSaleProducts(products: Product[], limit?: number): Prod
 
 
 
+=======
+export function getWinterSaleProducts(products: Product[], limit?: number, homepage: boolean = false): Product[] {
+  const saleProducts = products.filter(p => p.oldPrice);
+
+  if (homepage) {
+    const parkas = saleProducts.filter(p => p.name_fr.toLowerCase().includes('parka')).slice(0, 4);
+    const sleepingBags = saleProducts.filter(p => p.name_fr.toLowerCase().includes('sac de couchage')).slice(0, 2);
+    const winterBags = saleProducts.filter(p => p.name_fr.toLowerCase().includes('sac d\'hiver')).slice(0, 1);
+    
+    const selection = [...parkas, ...sleepingBags, ...winterBags];
+    return selection.sort((a,b) => a.id.localeCompare(b.id)).slice(0, limit);
+  }
+  
+  const winterClothing = saleProducts.filter(p => p.category === 'winter-clothing');
+  const shoes = saleProducts.filter(p => p.category === 'shoes');
+  const accessories = saleProducts.filter(p => p.category === 'accessories');
+
+  let combined = [...winterClothing, ...shoes, ...accessories];
+
+  if (limit) {
+    return combined.slice(0, limit);
+  }
+  return combined;
+}
+
+    
+>>>>>>> eb79929 (stp pour les produit tendencee mets des parka des sacs de couchage et de)
 
