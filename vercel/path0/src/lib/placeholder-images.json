@@ -2,6 +2,24 @@
 {
   "placeholderImages": [
     {
+      "id": "manteau-laine-premium",
+      "description": "Premium wool long coat",
+      "imageUrl": "/images/products/manteau-laine-premium.jpg",
+      "imageHint": "wool coat"
+    },
+    {
+      "id": "pull-cachemire-femme",
+      "description": "Cream cashmere sweater",
+      "imageUrl": "/images/products/pull-cachemire-femme.jpg",
+      "imageHint": "cashmere sweater"
+    },
+    {
+      "id": "robe-satinee-noire",
+      "description": "Long black satin dress",
+      "imageUrl": "/images/products/robe-satinee-noire.jpg",
+      "imageHint": "satin dress"
+    },
+    {
       "id": "hero",
       "description": "Hero fashion model",
       "imageUrl": "/images/header.jpg",
@@ -639,6 +657,46 @@
       "imageHint": "rubber boots"
     },
     {
+      "id": "sac_de_couchage1",
+      "imageUrl": "/images/products/sac_de_couchage1.jpg",
+      "imageHint": "sleeping bag"
+    },
+    {
+      "id": "sac_de_couchage2",
+      "imageUrl": "/images/products/sac_de_couchage2.jpg",
+      "imageHint": "sleeping bag"
+    },
+    {
+      "id": "sac_de_couchage3",
+      "imageUrl": "/images/products/sac_de_couchage3.jpg",
+      "imageHint": "sleeping bag"
+    },
+    {
+      "id": "sac_de_couchage4",
+      "imageUrl": "/images/products/sac_de_couchage4.jpg",
+      "imageHint": "sleeping bag"
+    },
+    {
+      "id": "sac_hiver1",
+      "imageUrl": "/images/products/sac_hiver1.jpg",
+      "imageHint": "winter bag"
+    },
+    {
+      "id": "sac_hiver2",
+      "imageUrl": "/images/products/sac_hiver2.jpg",
+      "imageHint": "winter backpack"
+    },
+    {
+      "id": "sac_hiver3",
+      "imageUrl": "/images/products/sac_hiver3.jpg",
+      "imageHint": "wool tote"
+    },
+    {
+      "id": "sac_hiver4",
+      "imageUrl": "/images/products/sac_hiver4.jpg",
+      "imageHint": "crossbody bag"
+    },
+    {
       "id": "montre-acier-inoxydable-noire-chrono-luxe",
       "imageUrl": "/images/products/montre-acier-inoxydable-noire-chrono-luxe.jpg",
       "imageHint": "black watch"
@@ -919,7 +977,7 @@
       "imageHint": "wool cape"
     },
     {
-      "id": "surchemise-matelassee-isabel-marant",
+      "id": "surchemise-matlassee-isabel-marant",
       "imageUrl": "/images/products/surchemise-matlassee-isabel-marant.jpg",
       "imageHint": "quilted overshirt"
     },
@@ -942,6 +1000,36 @@
       "id": "manteau-puffer-xxl-zara-premium",
       "imageUrl": "/images/products/manteau-puffer-xxl-zara-premium.jpg",
       "imageHint": "puffer coat"
+    },
+    {
+      "id": "femme1",
+      "imageUrl": "/images/products/femme1.jpg",
+      "imageHint": "womens coat"
+    },
+    {
+      "id": "femme2",
+      "imageUrl": "/images/products/femme2.jpg",
+      "imageHint": "womens coat"
+    },
+    {
+      "id": "femme3",
+      "imageUrl": "/images/products/femme3.jpg",
+      "imageHint": "womens coat"
+    },
+    {
+      "id": "femme4",
+      "imageUrl": "/images/products/femme4.jpg",
+      "imageHint": "womens coat"
+    },
+    {
+      "id": "femme5",
+      "imageUrl": "/images/products/femme5.jpg",
+      "imageHint": "womens coat"
+    },
+    {
+      "id": "femme6",
+      "imageUrl": "/images/products/femme6.jpg",
+      "imageHint": "womens coat"
     }
   ]
 }

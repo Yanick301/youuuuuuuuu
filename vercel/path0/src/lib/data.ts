@@ -1,4 +1,5 @@
 
+
 import type { Product, Category, Review } from './types';
 
 export const categories: Category[] = [
@@ -11,6 +12,48 @@ export const categories: Category[] = [
 ];
 
 export const products: Product[] = [
+  {
+    id: 'manteau-laine-premium',
+    name: 'Hochwertiger Wollmantel',
+    name_fr: 'Manteau long en laine premium',
+    name_en: 'Premium Wool Long Coat',
+    slug: 'manteau-laine-premium',
+    price: 200,
+    description: 'Ein langer Mantel aus hochwertiger Wolle, der Eleganz und Wärme vereint. Ein zeitloses Stück für Ihre Wintergarderobe.',
+    description_fr: 'Un manteau long en laine de première qualité, alliant élégance et chaleur. Une pièce intemporelle pour votre garde-robe hivernale.',
+    description_en: 'A long coat made of premium wool, combining elegance and warmth. A timeless piece for your winter wardrobe.',
+    category: 'womens-clothing',
+    images: ['manteau-laine-premium'],
+    reviews: [],
+  },
+  {
+    id: 'pull-cachemire-femme',
+    name: 'Cremefarbener 100% Kaschmirpullover',
+    name_fr: 'Pull 100% cachemire crème',
+    name_en: '100% Cream Cashmere Sweater',
+    slug: 'pull-cachemire-femme',
+    price: 200,
+    description: 'Umhüllende Weichheit mit diesem cremefarbenen Pullover aus reinem Kaschmir. Ein luxuriöses Basic für ultimativen Komfort und raffinierten Stil.',
+    description_fr: 'La douceur enveloppante avec ce pull en pur cachemire de couleur crème. Un basique de luxe pour un confort ultime et un style raffiné.',
+    description_en: 'Enveloping softness with this pure cream-colored cashmere sweater. A luxury basic for ultimate comfort and refined style.',
+    category: 'womens-clothing',
+    images: ['pull-cachemire-femme'],
+    reviews: [],
+  },
+  {
+    id: 'robe-satinee-noire',
+    name: 'Langes schwarzes Satinkleid',
+    name_fr: 'Robe longue satinée noire',
+    name_en: 'Long Black Satin Dress',
+    slug: 'robe-satinee-noire',
+    price: 200,
+    description: 'Die Essenz der Eleganz. Dieses lange, fließende Kleid aus schwarzem Satin umhüllt die Silhouette mit Anmut für einen unvergesslichen Auftritt.',
+    description_fr: 'L\'essence même de l\'élégance. Cette robe longue et fluide en satin noir épouse la silhouette avec grâce pour une allure inoubliable.',
+    description_en: 'The very essence of elegance. This long, flowing dress in black satin gracefully hugs the silhouette for an unforgettable look.',
+    category: 'womens-clothing',
+    images: ['robe-satinee-noire'],
+    reviews: [],
+  },
     {
     id: '1',
     name: 'Seiden-Midikleid',
@@ -392,7 +435,7 @@ export const products: Product[] = [
     name_fr: 'Pull Laine Merinos',
     name_en: 'Merino Wool Sweater',
     slug: 'pull-laine-merinos-lacoste',
-    price: 110,
+    price: 160,
     description: 'Die zeitlose Eleganz von Merinowolle. Dieser Pullover bietet unübertroffene Weichheit und natürliche Thermoregulation. Ein Must-Have für eine anspruchsvolle und komfortable Garderobe.',
     description_fr: 'L\'élégance intemporelle de la laine mérinos. Ce pull offre une douceur inégalée et une thermorégulation naturelle. Un indispensable pour une garde-robe sophistiquée et confortable.',
     description_en: 'The timeless elegance of merino wool. This sweater offers unparalleled softness and natural thermoregulation. An essential for a sophisticated and comfortable wardrobe.',
@@ -502,9 +545,9 @@ export const products: Product[] = [
   },
   {
     id: 'prod-50',
-    name: 'Chunky-Derby-Schuhe mit Plateausohle',
-    name_fr: 'Derby chunky à plateforme Street-Luxe',
-    name_en: 'Chunky Platform Derby Shoes',
+    name: 'PRADA Chunky-Derby-Schuhe mit Plateausohle',
+    name_fr: 'Derby chunky à plateforme Street-Luxe PRADA',
+    name_en: 'PRADA Chunky Platform Derby Shoes',
     slug: 'derby-chunky-platform-street-luxe',
     price: 420,
     description: 'Ein kühnes Statement für den modebewussten Mann. Diese Derby-Schuhe kombinieren ein klassisches Obermaterial aus poliertem Leder mit einer imposanten Plateausohle und schaffen so eine avantgardistische Fusion aus Streetwear und Luxus.',
@@ -663,235 +706,7 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 'prod-61',
-    name: 'Long Wool Coat',
-    name_fr: 'Manteau Long en Laine',
-    name_en: 'Long Wool Coat',
-    slug: 'manteau-long-laine-max-mara-homme',
-    price: 900,
-    description: 'Eine imposante und zeitlose Silhouette. Dieser lange Mantel aus reiner Schurwolle bietet eine elegante Struktur und eine unvergleichliche Wärme für einen makellosen Winterstil.',
-    description_fr: 'Une silhouette imposante et intemporelle. Ce long manteau en pure laine vierge offre une structure élégante et une chaleur inégalée pour un style hivernal impeccable.',
-    description_en: 'An imposing and timeless silhouette. This long coat in pure virgin wool offers an elegant structure and unparalleled warmth for an impeccable winter style.',
-    category: 'winter-clothing',
-    images: ['manteau-long-laine-max-mara-homme'],
-    reviews: [
-        { author: 'Augustin', rating: 5, comment: 'La coupe est majestueuse. Un manteau pour la vie.'}
-    ]
-  },
-  {
-    id: 'prod-62',
-    name: 'Denim Jacket',
-    name_fr: 'Veste en Jean',
-    name_en: 'Denim Jacket',
-    slug: 'veste-denim-levis-made-crafted',
-    price: 190,
-    description: 'Die Ikone der amerikanischen Garderobe, neu interpretiert. Diese Jacke aus hochwertigem Denim ist eine Hommage an das Erbe von Levi\'s mit einer modernen Passform und hochwertigen Oberflächen.',
-    description_fr: 'L\'icône du vestiaire américain, réinventée. Cette veste en denim de première qualité rend hommage à l\'héritage Levi\'s avec une coupe moderne et des finitions haut de gamme.',
-    description_en: 'The icon of the American wardrobe, reinvented. This premium denim jacket pays homage to the Levi\'s heritage with a modern cut and high-end finishes.',
-    category: 'mens-clothing',
-    images: ['veste-denim-levis-made-crafted'],
-    reviews: [
-        { author: 'Oscar', rating: 5, comment: 'Une veste en jean parfaite. Ni trop large, ni trop serrée.'}
-    ]
-  },
-  {
-    id: 'prod-63',
-    name: 'Tailored Trousers',
-    name_fr: 'Pantalon de Costume',
-    name_en: 'Tailored Trousers',
-    slug: 'pantalon-tailleur-dior-homme',
-    price: 490,
-    description: 'Die Essenz der Schneiderkunst. Diese Hose mit perfektem Fall und makellosem Schnitt ist das Fundament einer eleganten Garderobe, die sowohl im Büro als auch bei formellen Anlässen getragen werden kann.',
-    description_fr: 'L\'essence du savoir-faire tailleur. Ce pantalon au tombé parfait et à la coupe impeccable est le fondement d\'une garde-robe élégante, à porter au bureau comme lors d\'événements formels.',
-    description_en: 'The essence of tailoring expertise. These trousers with a perfect drape and impeccable cut are the foundation of an elegant wardrobe, to be worn at the office as well as at formal events.',
-    category: 'mens-clothing',
-    images: ['pantalon-tailleur-dior-homme'],
-    reviews: [
-        { author: 'Victor', rating: 5, comment: 'La coupe est absolument parfaite.'}
-    ]
-  },
-  {
-    id: 'prod-65',
-    name: 'Quilted Jacket',
-    name_fr: 'Veste Matelassée',
-    name_en: 'Quilted Jacket',
-    slug: 'veste-matelassee-barbour-international',
-    price: 240,
-    description: 'Die britische Eleganz in einer Outdoor-Version. Diese gesteppte Jacke ist leicht, warm und unglaublich vielseitig und ideal für einen Ausflug aufs Land oder einen Spaziergang in der Stadt.',
-    description_fr: 'L\'élégance britannique en version outdoor. Cette veste matelassée est légère, chaude et incroyablement polyvalente, idéale pour une escapade à la campagne ou une balade en ville.',
-    description_en: 'British elegance in an outdoor version. This quilted jacket is lightweight, warm, and incredibly versatile, ideal for a countryside getaway or a city stroll.',
-    category: 'mens-clothing',
-    images: ['veste-matelassee-barbour-international'],
-    reviews: [
-        { author: 'Louis', rating: 5, comment: 'Un classique. Toujours élégant et très pratique.'}
-    ]
-  },
-  {
-    id: 'prod-66',
-    name: 'Cable-Knit Sweater',
-    name_fr: 'Pull Torsadé',
-    name_en: 'Cable-Knit Sweater',
-    slug: 'pull-torsade-paul-smith',
-    price: 180,
-    description: 'Ein zeitloser Klassiker neu interpretiert. Dieser Pullover mit Zopfmuster ist aus weicher Wolle gefertigt und verfügt über die für Paul Smith typischen subtilen Farbakzente.',
-    description_fr: 'Un classique intemporel revisité. Ce pull à torsades est confectionné dans une laine douce et présente les touches de couleur subtiles signatures de Paul Smith.',
-    description_en: 'A timeless classic revisited. This cable-knit sweater is made of soft wool and features the subtle color touches signature of Paul Smith.',
-    category: 'mens-clothing',
-    images: ['pull-torsade-paul-smith'],
-    reviews: [
-        { author: 'Adrien', rating: 5, comment: 'Très beau pull, la petite touche de couleur fait toute la différence.'}
-    ]
-  },
-  {
-    id: 'prod-67',
-    name: 'Logo T-Shirt',
-    name_fr: 'T-shirt Logo',
-    name_en: 'Logo T-Shirt',
-    slug: 't-shirt-logo-givenchy',
-    price: 270,
-    description: 'Ein starkes Statement. Dieses T-Shirt mit dem ikonischen Givenchy-Logo ist ein Muss für Liebhaber des urbanen Luxus, das einen einfachen Look sofort aufwertet.',
-    description_fr: 'Une affirmation de style forte. Ce t-shirt arborant le logo iconique de Givenchy est un must-have pour les amateurs de luxe urbain, rehaussant instantanément un look simple.',
-    description_en: 'A strong style statement. This t-shirt featuring the iconic Givenchy logo is a must-have for lovers of urban luxury, instantly elevating a simple look.',
-    category: 'mens-clothing',
-    images: ['t-shirt-logo-givenchy'],
-    reviews: [
-        { author: 'Mehdi', rating: 5, comment: 'Le logo est imposant mais classe. Tissu de grande qualité.'}
-    ]
-  },
-  {
-    id: 'prod-70',
-    name: 'Sleeveless Vest',
-    name_fr: 'Gilet Sans Manches',
-    name_en: 'Sleeveless Vest',
-    slug: 'gilet-sans-manches-prada',
-    price: 580,
-    description: 'Eine schicke und funktionale Schicht. Diese ärmellose Weste aus dem ikonischen Nylon von Prada verleiht jedem Outfit einen Hauch von modernem und anspruchsvollem Luxus.',
-    description_fr: 'Une couche chic et fonctionnelle. Ce gilet sans manches, en nylon iconique de Prada, ajoute une touche de luxe moderne et sophistiqué à n\'importe quelle tenue.',
-    description_en: 'A chic and functional layer. This sleeveless vest, in Prada\'s iconic nylon, adds a touch of modern and sophisticated luxury to any outfit.',
-    category: 'mens-clothing',
-    images: ['gilet-sans-manches-prada'],
-    reviews: [
-        { author: 'David', rating: 5, comment: 'Très polyvalent. Je le porte sur une chemise ou sous un manteau.'}
-    ]
-  },
-  {
-    id: 'acc-10',
-    name: 'Alpine Soft Schal',
-    name_fr: 'Écharpe Alpine Soft',
-    name_en: 'Alpine Soft Scarf',
-    slug: 'echarpe-laine-vierge-premium-alpine-soft',
-    price: 70,
-    oldPrice: 85,
-    description: 'Hüllen Sie sich in einen Kokon aus Weichheit. Dieser Schal aus reiner Schurwolle bietet eine unvergleichliche Wärme und ein Gefühl von zartem Luxus auf der Haut. Das perfekte Accessoire für die kältesten Tage.',
-    description_fr: 'Enveloppez-vous dans un cocon de douceur. Cette écharpe en pure laine vierge offre une chaleur inégalée et une sensation de luxe délicat contre la peau. L\'accessoire parfait pour les jours les plus froids.',
-    description_en: 'Wrap yourself in a cocoon of softness. This pure virgin wool scarf offers unparalleled warmth and a feeling of delicate luxury against the skin. The perfect accessory for the coldest days.',
-    category: 'accessories',
-    images: ['echarpe-laine-vierge-premium-alpine-soft'],
-    reviews: [
-        { author: 'Isabelle', rating: 5, comment: 'Une douceur incroyable, c\'est comme un câlin.'}
-    ]
-  },
-  {
-    id: 'acc-11',
-    name: 'Winter Shield Snood',
-    name_fr: 'Snood Winter Shield',
-    name_en: 'Winter Shield Snood',
-    slug: 'snood-polaire-winter-shield-premium',
-    price: 40,
-    description: 'Eine moderne und praktische Alternative zum Schal. Dieser Fleece-Snood bietet optimalen Schutz vor Wind und Kälte und bewahrt dabei einen klaren und urbanen Stil. Perfekt für Ihre Outdoor-Aktivitäten.',
-    description_fr: 'Une alternative moderne et pratique à l\'écharpe. Ce snood en polaire offre une protection optimale contre le vent et le froid, tout en conservant un style épuré et urbain. Parfait pour vos activités extérieures.',
-    description_en: 'A modern and practical alternative to the scarf. This fleece snood offers optimal protection against wind and cold, while maintaining a clean and urban style. Perfect for your outdoor activities.',
-    category: 'accessories',
-    images: ['snood-polaire-winter-shield-premium'],
-    reviews: [
-        { author: 'Romain', rating: 5, comment: 'Très pratique et bien plus chaud que je ne le pensais.'}
-    ]
-  },
-  {
-    id: 'acc-13',
-    name: 'Tech Gloves',
-    name_fr: 'Gants Tech Gloves',
-    name_en: 'Tech Gloves',
-    slug: 'gants-tactiles-thermiques-tech-gloves',
-    price: 45,
-    oldPrice: 55,
-    description: 'Kombinieren Sie Wärme und Konnektivität. Diese Thermohandschuhe sind mit einer speziellen Technologie ausgestattet, mit der Sie Ihre Touchscreens bedienen können, ohne sie ausziehen zu müssen. Nie wieder kalte Hände, um in Verbindung zu bleiben.',
-    description_fr: 'Alliez chaleur et connectivité. Ces gants thermiques sont dotés d\'une technologie spécifique vous permettant d\'utiliser vos écrans tactiles sans les retirer. Ne plus jamais avoir froid aux mains pour rester connecté.',
-    description_en: 'Combine warmth and connectivity. These thermal gloves are equipped with a special technology that allows you to use your touch screens without taking them off. Never have cold hands to stay connected again.',
-    category: 'accessories',
-    images: ['gants-tactiles-thermiques-tech-gloves'],
-    reviews: [
-        { author: 'Laura', rating: 5, comment: 'Enfin des gants qui fonctionnent vraiment avec mon téléphone !'}
-    ]
-  },
-  {
-    id: 'acc-23',
-    name: 'Luxe Soft Schal',
-    name_fr: 'Écharpe Luxe Soft',
-    name_en: 'Luxe Soft Scarf',
-    slug: 'echarpe-oversize-fausse-fourrure-luxe-soft',
-    price: 95,
-    oldPrice: 110,
-    description: 'Hüllen Sie sich in extremen Luxus. Dieser Oversize-Schal aus hochwertigem Kunstpelz bietet eine unvergleichliche Weichheit und einen Hauch von opulentem Glamour für Ihre Winteroutfits.',
-    description_fr: 'Drapez-vous dans un luxe extrême. Cette écharpe oversize en fausse fourrure de haute qualité offre une douceur inégalée et une touche de glamour opulent à vos tenues d\'hiver.',
-    description_en: 'Drape yourself in extreme luxury. This oversized scarf in high-quality faux fur offers unparalleled softness and a touch of opulent glamour to your winter outfits.',
-    category: 'accessories',
-    images: ['echarpe-oversize-fausse-fourrure-luxe-soft'],
-    reviews: [
-        { author: 'Caroline', rating: 5, comment: 'Incroyablement douce et luxueuse. C\'est magnifique.'}
-    ]
-  },
-  {
-    id: 'acc-24',
-    name: 'Warm Plush Schal',
-    name_fr: 'Écharpe Warm Plush',
-    name_en: 'Warm Plush Scarf',
-    slug: 'echarpe-maille-torsadee-warm-plush',
-    price: 70,
-    oldPrice: 85,
-    description: 'Die zeitlose Eleganz von Zopfstrick. Dieser dicke und weiche Schal umhüllt Sie mit stilvoller Wärme. Seine reiche Textur und großzügigen Abmessungen machen ihn zum perfekten Verbündeten gegen die Winterkälte.',
-    description_fr: 'L\'élégance intemporelle de la maille torsadée. Cette écharpe épaisse et moelleuse vous enveloppe de chaleur avec style. Sa texture riche et ses dimensions généreuses en font l\'alliée parfaite contre le froid hivernal.',
-    description_en: 'The timeless elegance of cable knit. This thick and soft scarf envelops you in warmth with style. Its rich texture and generous dimensions make it the perfect ally against the winter cold.',
-    category: 'accessories',
-    images: ['echarpe-maille-torsadee-warm-plush'],
-    reviews: [
-        { author: 'Nicolas', rating: 5, comment: 'Écharpe de grande qualité, très chaude et confortable.'}
-    ]
-  },
-  {
-    id: 'acc-27',
-    name: 'Lady Warm Handschuhe',
-    name_fr: 'Gants Lady Warm',
-    name_en: 'Lady Warm Gloves',
-    slug: 'gants-cuir-doubles-polaire-lady-warm',
-    price: 55,
-    oldPrice: 65,
-    description: 'Die perfekte Allianz zwischen Eleganz und Komfort. Diese Handschuhe aus geschmeidigem Leder sind mit einem weichen Fleece gefüttert, um Ihre Hände warm zu halten, ohne auf einen raffinierten Stil zu verzichten.',
-    description_fr: 'L\'alliance parfaite entre l\'élégance et le confort. Ces gants en cuir souple sont doublés d\'une polaire douce pour garder vos mains au chaud sans sacrifier un style raffiné.',
-    description_en: 'The perfect alliance between elegance and comfort. These supple leather gloves are lined with soft fleece to keep your hands warm without sacrificing a refined style.',
-    category: 'accessories',
-    images: ['gants-cuir-doubles-polaire-lady-warm'],
-    reviews: [
-        { author: 'Hélène', rating: 5, comment: 'Très chauds et le cuir est d\'une grande souplesse. Parfaits.'}
-    ]
-  },
-  {
-    id: 'prod-71',
-    name: 'Manteau Long en Laine',
-    name_fr: 'Manteau Long en Laine',
-    name_en: 'Long Wool Coat',
-    slug: 'manteau-long-laine-hugo-boss',
-    price: 390,
-    oldPrice: 490,
-    description: 'Ein zeitloser Mantel aus hochwertiger Wolle, der Eleganz und Wärme vereint. Perfekt für den Winter.',
-    description_fr: 'Un manteau intemporel en laine de qualité supérieure qui allie élégance et chaleur. Parfait pour l\'hiver.',
-    description_en: 'A timeless coat made of high-quality wool that combines elegance and warmth. Perfect for winter.',
-    category: 'winter-clothing',
-    images: ['manteau-long-laine-hugo-boss'],
-    reviews: []
-  },
-  {
-    id: 'prod-72',
+    id: 'doudoune-matelassee-moncler',
     name: 'Doudoune Matelassée',
     name_fr: 'Doudoune Matelassée',
     name_en: 'Quilted Down Jacket',
@@ -906,7 +721,7 @@ export const products: Product[] = [
     reviews: []
   },
   {
-    id: 'prod-74',
+    id: 'pull-col-roule-laine-merinos-paul-smith',
     name: 'Pull Col Roulé Laine Merinos',
     name_fr: 'Pull Col Roulé Laine Merinos',
     name_en: 'Merino Wool Turtleneck Sweater',
@@ -1553,7 +1368,7 @@ export function getProductsByCategory(products: Product[], categorySlug: string,
     return filteredProducts.slice(0, limit);
   }
 
-  return filteredProducts;
+  return filteredProducts.sort((a, b) => a.id.localeCompare(b.id));;
 }
 
 export function getProductBySlug(products: Product[], slug: string): Product | undefined {
@@ -1570,27 +1385,16 @@ export function getFeaturedProducts(products: Product[], limit: number = 4): Pro
 }
 
 
-export function getWinterSaleProducts(products: Product[], limit?: number, homepage: boolean = false): Product[] {
+export function getWinterSaleProducts(products: Product[], limit?: number): Product[] {
+  // Filter for products that have an oldPrice, indicating they are on sale.
   const saleProducts = products.filter(p => p.oldPrice);
-
-  if (homepage) {
-    const parkas = saleProducts.filter(p => p.name_fr.toLowerCase().includes('parka')).slice(0, 5);
-    const beanies = saleProducts.filter(p => p.slug.includes('bonnet')).slice(0, 2);
-    const newShoes = saleProducts.filter(p => p.category === 'shoes' && ['shoe-1', 'shoe-4', 'shoe-8'].includes(p.id)).slice(0, 3);
-    // The final list should be 7 items as requested, but the logic creates more. We should slice it.
-    return [...newShoes, ...parkas, ...beanies].slice(0, 7);
-  }
   
-  const winterClothing = saleProducts.filter(p => p.category === 'winter-clothing');
-  const shoes = saleProducts.filter(p => p.category === 'shoes');
-  const accessories = saleProducts.filter(p => p.category === 'accessories');
-
-  let combined = [...winterClothing, ...shoes, ...accessories];
+  // Sort the sale products by their ID in a stable manner.
+  saleProducts.sort((a, b) => a.id.localeCompare(b.id));
 
   if (limit) {
-    return combined.slice(0, limit);
+    return saleProducts.slice(0, limit);
   }
-  return combined;
-}
 
-    
+  return saleProducts;
+}
