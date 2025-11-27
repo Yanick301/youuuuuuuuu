@@ -19,11 +19,16 @@ service cloud.firestore {
     // User profiles can only be read and written by their owner.
     match /userProfiles/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
-    }
-    
-    // User can manage their own cart items.
-    match /userProfiles/{userId}/cartItems/{itemId} {
-      allow list, read, write, delete: if request.auth != null && request.auth.uid == userId;
+
+      // User can LIST their own cart items.
+      match /cartItems {
+        allow list: if request.auth != null && request.auth.uid == userId;
+      }
+      
+      // User can manage individual cart items.
+      match /cartItems/{itemId} {
+        allow read, write, delete: if request.auth != null && request.auth.uid == userId;
+      }
     }
     
     // Orders collection is now at the root.
@@ -33,7 +38,7 @@ service cloud.firestore {
       
       // User can upload their own receipt (update), with validation on the receipt image size.
       // User can also view their own order.
-      allow read, update: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow read, update: if request.auth != null && request.auth.uid == resource.data.userId && request.resource.data.receiptImageUrl.size() < 1048576;
     }
   }
 }
