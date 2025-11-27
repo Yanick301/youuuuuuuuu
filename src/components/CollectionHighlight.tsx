@@ -40,7 +40,7 @@ export function CollectionHighlight({
         const image = placeholderImages.find(img => img.id === id);
         if (!image) return null;
         
-        const product = allProducts.find(p => p.slug === id);
+        const product = allProducts.find(p => p.images.includes(id));
         return { ...image, slug: product?.slug };
     }).filter(Boolean);
 
@@ -49,7 +49,7 @@ export function CollectionHighlight({
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
                     <div className="grid grid-cols-2 gap-4">
-                        {images.map((image, index) => (
+                        {images.map((image) => (
                             image && (
                                 <Link key={image.id} href={image.slug ? `/product/${image.slug}` : '#'}>
                                     <div className="aspect-w-1 aspect-h-1 block">
