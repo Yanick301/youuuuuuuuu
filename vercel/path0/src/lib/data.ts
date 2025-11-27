@@ -13,22 +13,6 @@ export const categories: Category[] = [
 
 export const products: Product[] = [
   {
-    id: 'manteau-laine-premium',
-    name: 'Hochwertiger Wollmantel',
-    name_fr: 'Manteau long en laine premium',
-    name_en: 'Premium Wool Long Coat',
-    slug: 'manteau-laine-premium',
-    price: 200,
-    description: 'Ein langer Mantel aus hochwertiger Wolle, der Eleganz und Wärme vereint. Ein zeitloses Stück für Ihre Wintergarderobe.',
-    description_fr: 'Un manteau long en laine de première qualité, alliant élégance et chaleur. Une pièce intemporelle pour votre garde-robe hivernale.',
-    description_en: 'A long coat made of premium wool, combining elegance and warmth. A timeless piece for your winter wardrobe.',
-    category: 'womens-clothing',
-    images: ['manteau-laine-premium'],
-    reviews: [],
-    sizes: ['S', 'M', 'L'],
-    colors: ['Noir', 'Gris'],
-  },
-  {
     id: 'pull-cachemire-femme',
     name: 'Cremefarbener 100% Kaschmirpullover',
     name_fr: 'Pull 100% cachemire crème',
@@ -568,7 +552,9 @@ export const products: Product[] = [
     reviews: [
       { author: 'Alex', rating: 5, comment: 'Très confortables et le cuir est de superbe qualité. Je les porte tous les jours.' },
       { author: 'Luc', rating: 4, comment: 'Elles sont belles, mais demandent un petit temps d\'adaptation.'}
-    ]
+    ],
+    sizes: ['40', '41', '42', '43', '44', '45'],
+    colors: ['Noir', 'Marron'],
   },
   {
     id: 'prod-48',
@@ -585,7 +571,9 @@ export const products: Product[] = [
     reviews: [
       { author: 'Julia', rating: 4, comment: 'J\'adore le style, mais elles nécessitent d\'être "faites" au début.' },
       { author: 'Alice', rating: 5, comment: 'Parfaites pour le bureau comme pour sortir. Très polyvalentes.'}
-    ]
+    ],
+    sizes: ['36', '37', '38', '39', '40'],
+    colors: ['Camel', 'Noir'],
   },
   {
     id: 'prod-49',
@@ -601,12 +589,14 @@ export const products: Product[] = [
     images: ['brogues-perforees-full-brogue-tradition'],
     reviews: [
       { author: 'Guillaume', rating: 5, comment: 'Une qualité de fabrication irréprochable. De vrais souliers de gentleman.' }
-    ]
+    ],
+    sizes: ['41', '42', '43', '44'],
+    colors: ['Marron Foncé', 'Noir'],
   },
   {
     id: 'prod-50',
     name: 'PRADA Chunky-Derby-Schuhe mit Plateausohle',
-    name_fr: 'Derby chunky à plateforme Street-Luxe PRADA',
+    name_fr: 'PRADA Derby chunky à plateforme Street-Luxe',
     name_en: 'PRADA Chunky Platform Derby Shoes',
     slug: 'derby-chunky-platform-street-luxe',
     price: 420,
@@ -618,7 +608,9 @@ export const products: Product[] = [
     reviews: [
       { author: 'Leo', rating: 5, comment: 'Style unique, elles font vraiment leur effet.' },
       { author: 'Maxime', rating: 5, comment: 'Surprenant au début, mais incroyablement confortables.'}
-    ]
+    ],
+    sizes: ['41', '42', '43'],
+    colors: ['Noir'],
   },
   {
     id: 'prod-51',
@@ -634,7 +626,9 @@ export const products: Product[] = [
     images: ['derby-cuir-graine-elite'],
     reviews: [
       { author: 'Sébastien', rating: 5, comment: 'Le cuir grainé est magnifique et la chaussure est très solide.' }
-    ]
+    ],
+    sizes: ['41', '42', '43', '44', '45'],
+    colors: ['Noir', 'Cognac'],
   },
   {
     id: 'prod-52',
@@ -650,7 +644,9 @@ export const products: Product[] = [
     images: ['escarpins-cuir-verni-talon-9-cm-eclipse'],
     reviews: [
       { author: 'Charlotte', rating: 5, comment: 'La cambrure est parfaite. Elles sont sublimes.' }
-    ]
+    ],
+    sizes: ['36', '37', '38', '39', '40', '41'],
+    colors: ['Noir', 'Nude'],
   },
   {
     id: 'prod-53',
@@ -666,7 +662,9 @@ export const products: Product[] = [
     images: ['mocassin-tasseled-suede-club'],
     reviews: [
       { author: 'Arthur', rating: 4, comment: 'Très beaux, mais un peu fragiles sous la pluie.' }
-    ]
+    ],
+    sizes: ['41', '42', '43'],
+    colors: ['Bleu Marine', 'Beige'],
   },
   {
     id: 'prod-54',
@@ -683,7 +681,9 @@ export const products: Product[] = [
     reviews: [
       { author: 'Nina', rating: 5, comment: 'Spectaculaires ! Une véritable œuvre d\'art à mes pieds.' },
       { author: 'Laura', rating: 5, comment: 'Étonnamment confortables pour des chaussures aussi design.'}
-    ]
+    ],
+    sizes: ['37', '38', '39'],
+    colors: ['Fuchsia', 'Noir'],
   },
   {
     id: 'prod-55',
@@ -699,7 +699,9 @@ export const products: Product[] = [
     images: ['richelieu-cousu-main-cuir-patine-souverain'],
     reviews: [
       { author: 'Édouard', rating: 5, comment: 'La patine est magnifique. Des chaussures d\'exception.' }
-    ]
+    ],
+    sizes: ['41', '42', '43', '44'],
+    colors: ['Brun Patiné', 'Bordeaux Patiné'],
   },
   {
     id: 'prod-56',
@@ -715,7 +717,9 @@ export const products: Product[] = [
     images: ['sandales-a-bride-cheville-en-cuir-serenite'],
     reviews: [
       { author: 'Chloé', rating: 5, comment: 'Élégantes, simples et confortables. Parfaites pour l\'été.' }
-    ]
+    ],
+    sizes: ['37', '38', '39', '40'],
+    colors: ['Blanc', 'Cuir Naturel'],
   },
   {
     id: 'prod-58',
@@ -731,7 +735,9 @@ export const products: Product[] = [
     images: ['doudoune-legere-canada-goose'],
     reviews: [
         { author: 'Adam', rating: 5, comment: 'Incroyablement légère et chaude. Parfaite pour la mi-saison.'}
-    ]
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Rouge'],
   },
   {
     id: 'prod-59',
@@ -747,7 +753,9 @@ export const products: Product[] = [
     images: ['parka-expedition-the-north-face-black-series'],
     reviews: [
         { author: 'Xavier', rating: 5, comment: 'Un véritable bouclier contre le froid. Chaque détail est pensé.'}
-    ]
+    ],
+    sizes: ['M', 'L', 'XL'],
+    colors: ['Noir', 'Jaune'],
   },
   {
     id: 'prod-60',
@@ -780,7 +788,9 @@ export const products: Product[] = [
     description_en: 'A light and warm down jacket, ideal for cold days. A classic from Moncler.',
     category: 'winter-clothing',
     images: ['doudoune-matelassee-moncler'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Bleu Marine'],
   },
   {
     id: 'pull-col-roule-laine-merinos-paul-smith',
@@ -795,7 +805,9 @@ export const products: Product[] = [
     description_en: 'A soft and elegant turtleneck sweater in merino wool. An essential for your winter wardrobe.',
     category: 'winter-clothing',
     images: ['pull-col-roule-laine-merinos-paul-smith'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Gris', 'Noir', 'Bordeaux'],
   },
   {
     id: 'prod-80',
@@ -810,7 +822,9 @@ export const products: Product[] = [
     description_en: 'An urban parka that combines warmth and style, with a slim silhouette and protection down to -20°C.',
     category: 'winter-clothing',
     images: ['Canada_Goose_MacMillan_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Graphite', 'Bleu Marine'],
   },
   {
     id: 'prod-81',
@@ -824,7 +838,9 @@ export const products: Product[] = [
     description_en: 'Luxurious quilted parka, filled with down, offering unmatched comfort and iconic style.',
     category: 'winter-clothing',
     images: ['Moncler_Quilted_Hooded_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['0', '1', '2', '3', '4'],
+    colors: ['Noir', 'Blanc'],
   },
   {
     id: 'prod-82',
@@ -839,7 +855,9 @@ export const products: Product[] = [
     description_en: 'A robust parka designed for extreme cold, with a water-repellent finish and luxurious fur trim.',
     category: 'winter-clothing',
     images: ['Moose_Knuckles_Everest_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'prod-83',
@@ -853,7 +871,9 @@ export const products: Product[] = [
     description_en: 'The iconic Arctic Parka, a symbol of resistance and warmth, perfect for the harshest winters.',
     category: 'winter-clothing',
     images: ['Woolrich_Arctic_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Vert Foncé'],
   },
   {
     id: 'prod-84',
@@ -867,7 +887,9 @@ export const products: Product[] = [
     description_en: 'A lightweight and waterproof parka that combines functionality and urban style with technical details.',
     category: 'winter-clothing',
     images: ['Parajumpers_Easy_Waterproof_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Bleu'],
   },
   {
     id: 'prod-85',
@@ -882,7 +904,9 @@ export const products: Product[] = [
     description_en: 'An elegant, minimalist parka offering GORE-TEX protection and the warmth of goose down.',
     category: 'winter-clothing',
     images: ['ArcTeryx_Patera_Down_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['XS', 'S', 'M', 'L'],
+    colors: ['Noir', 'Bordeaux'],
   },
   {
     id: 'prod-86',
@@ -896,7 +920,9 @@ export const products: Product[] = [
     description_en: 'A lightweight and compressible down parka, designed to provide warmth without the bulk.',
     category: 'winter-clothing',
     images: ['The_North_Face_Hydrenalite_Down_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'prod-87',
@@ -910,7 +936,9 @@ export const products: Product[] = [
     description_en: 'A parka that combines Belstaff\'s motorcycling heritage with modern, weather-resistant materials.',
     category: 'winter-clothing',
     images: ['Belstaff_Pendulum_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['48', '50', '52', '54'],
+    colors: ['Noir', 'Vert'],
   },
   {
     id: 'prod-88',
@@ -925,7 +953,9 @@ export const products: Product[] = [
     description_en: 'A long and extremely warm expedition parka, designed for arctic conditions.',
     category: 'winter-clothing',
     images: ['Fjallraven_Expedition_Long_Down_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['XS', 'S', 'M', 'L'],
+    colors: ['Noir', 'Bleu Marine'],
   },
   {
     id: 'prod-89',
@@ -939,7 +969,9 @@ export const products: Product[] = [
     description_en: 'The iconic anorak jacket, reinvented with improved insulation and modern details.',
     category: 'winter-clothing',
     images: ['Napapijri_Skidoo_2_0_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Rouge', 'Bleu'],
   },
   {
     id: 'prod-90',
@@ -953,7 +985,9 @@ export const products: Product[] = [
     description_en: 'A versatile 3-in-1 parka with a waterproof GORE-TEX outer layer and a removable down jacket.',
     category: 'winter-clothing',
     images: ['Patagonia_Frozen_Range_3_in_1_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'prod-91',
@@ -968,7 +1002,9 @@ export const products: Product[] = [
     description_en: 'A minimalist and oversized down parka, combining Scandinavian design with functionality.',
     category: 'winter-clothing',
     images: ['Acne_Studios_Down_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['XS/S', 'M/L'],
+    colors: ['Noir', 'Beige'],
   },
   {
     id: 'prod-92',
@@ -982,7 +1018,9 @@ export const products: Product[] = [
     description_en: 'A technical parka made from ripstop Cordura fabric, treated to be water-repellent and filled with high-quality down.',
     category: 'winter-clothing',
     images: ['Stone_Island_Cordura_Ripstop_Down_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['M', 'L', 'XL'],
+    colors: ['Noir', 'Vert Olive'],
   },
   {
     id: 'prod-93',
@@ -996,7 +1034,9 @@ export const products: Product[] = [
     description_en: 'An elegant and functional parka, with a water-repellent Teflon treatment and a detachable fur collar.',
     category: 'winter-clothing',
     images: ['Peuterey_Kasa_Down_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['40', '42', '44', '46'],
+    colors: ['Noir', 'Bleu Foncé'],
   },
   {
     id: 'prod-94',
@@ -1011,7 +1051,9 @@ export const products: Product[] = [
     description_en: 'A high-performance ski parka that combines style and technical features for optimal performance on the slopes.',
     category: 'winter-clothing',
     images: ['Bogner_Fire_Ice_Ski_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Rouge', 'Noir', 'Blanc'],
   },
   {
     id: 'sport-101',
@@ -1025,7 +1067,9 @@ export const products: Product[] = [
     description_en: 'A technical and chic jacket, perfect for cool weather training, combining performance and style.',
     category: 'sport',
     images: ['Adidas_by_Stella_McCartney_Veste'],
-    reviews: []
+    reviews: [],
+    sizes: ['XS', 'S', 'M', 'L'],
+    colors: ['Noir', 'Blanc'],
   },
   {
     id: 'sport-102',
@@ -1039,7 +1083,9 @@ export const products: Product[] = [
     description_en: 'High-performance leggings with a flattering cut for optimal freedom of movement.',
     category: 'sport',
     images: ['Adidas_by_Stella_McCartney_Legging'],
-    reviews: []
+    reviews: [],
+    sizes: ['XS', 'S', 'M', 'L'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'sport-103',
@@ -1053,7 +1099,9 @@ export const products: Product[] = [
     description_en: 'A soft and comfortable zip jacket, ideal for warm-ups or for a casual post-yoga look.',
     category: 'sport',
     images: ['Alo_Yoga_Veste_Zippee'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Blanc'],
   },
   {
     id: 'sport-104',
@@ -1067,7 +1115,9 @@ export const products: Product[] = [
     description_en: 'A breathable and stylish training top, designed for comfort during the most intense sessions.',
     category: 'sport',
     images: ['Alo_Yoga_Haut_Entrainement'],
-    reviews: []
+    reviews: [],
+    sizes: ['XS', 'S', 'M'],
+    colors: ['Noir', 'Blanc', 'Rose'],
   },
   {
     id: 'sport-105',
@@ -1081,7 +1131,9 @@ export const products: Product[] = [
     description_en: 'A luxurious fleece for optimal warmth, perfect for outdoor activities or an urban winter look.',
     category: 'sport',
     images: ['HAUTE_Motion_Fleece_Polaire'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Crème'],
   },
   {
     id: 'sport-106',
@@ -1095,7 +1147,9 @@ export const products: Product[] = [
     description_en: 'Technical leggings with a modern design, offering unmatched comfort and exceptional durability.',
     category: 'sport',
     images: ['HAUTE_Legging_Nomad'],
-    reviews: []
+    reviews: [],
+    sizes: ['XS', 'S', 'M'],
+    colors: ['Noir', 'Vert Kaki'],
   },
   {
     id: 'sport-107',
@@ -1109,7 +1163,9 @@ export const products: Product[] = [
     description_en: 'The perfect blend of luxury and performance, this sports bra offers optimal support with a high-fashion touch.',
     category: 'sport',
     images: ['Loewe_On_Brassiere_Sport'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Blanc'],
   },
   {
     id: 'sport-108',
@@ -1123,7 +1179,9 @@ export const products: Product[] = [
     description_en: 'Combine style and functionality with these leggings from the collaboration between Loewe and On.',
     category: 'sport',
     images: ['Loewe_On_Legging_Actif'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Orange'],
   },
   {
     id: 'sport-109',
@@ -1137,7 +1195,9 @@ export const products: Product[] = [
     description_en: 'A technical jacket designed for all conditions, protecting you from the elements without compromising on style.',
     category: 'sport',
     images: ['Loewe_On_Storm_Active_Jacket'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Dégradé Bleu', 'Noir'],
   },
   {
     id: 'sport-110',
@@ -1151,7 +1211,9 @@ export const products: Product[] = [
     description_en: 'An innovative design for a second-skin feel and absolute comfort during exercise.',
     category: 'sport',
     images: ['Under_Armour_Halo_Bonded_Legging'],
-    reviews: []
+    reviews: [],
+    sizes: ['XS', 'S', 'M'],
+    colors: ['Gris', 'Noir'],
   },
   {
     id: 'sport-111',
@@ -1165,7 +1227,9 @@ export const products: Product[] = [
     description_en: 'A retro-look track jacket with a modern twist, perfect for a sporty and trendy style.',
     category: 'sport',
     images: ['Diesel_Sport_Track_Jacket'],
-    reviews: []
+    reviews: [],
+    sizes: ['M', 'L', 'XL'],
+    colors: ['Noir/Blanc', 'Rouge/Blanc'],
   },
   {
     id: 'sport-112',
@@ -1179,7 +1243,9 @@ export const products: Product[] = [
     description_en: 'An elegant and comfortable merino wool yoga jumpsuit for a luxurious practice.',
     category: 'sport',
     images: ['Nagnata_Laine_Combinaison_Yoga'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Gris Chiné'],
   },
   {
     id: 'sport-113',
@@ -1193,7 +1259,9 @@ export const products: Product[] = [
     description_en: 'A premium jacket that combines performance and aesthetics for a sophisticated sporty look.',
     category: 'sport',
     images: ['Lululemon_Veste_Premium'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Bleu Nuit'],
   },
   {
     id: 'sport-114',
@@ -1207,7 +1275,9 @@ export const products: Product[] = [
     description_en: 'A technical jacket for outdoor adventures, offering optimal protection and great freedom of movement.',
     category: 'sport',
     images: ['Peak_Performance_Tech_Jacket'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Orange'],
   },
   {
     id: 'sport-115',
@@ -1221,7 +1291,9 @@ export const products: Product[] = [
     description_en: 'A technical running shirt for maximum performance, ensuring breathability and comfort.',
     category: 'sport',
     images: ['Craft_Running_Tech_Shirt'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Blanc', 'Noir'],
   },
   {
     id: 'sport-116',
@@ -1235,7 +1307,9 @@ export const products: Product[] = [
     description_en: 'A professional cycling jersey for demanding cyclists, combining aerodynamics and comfort.',
     category: 'sport',
     images: ['Gore_Wear_Cycling_Jersey'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir/Rouge', 'Bleu/Jaune'],
   },
   {
     id: 'sport-117',
@@ -1249,7 +1323,9 @@ export const products: Product[] = [
     description_en: 'Running shorts with a minimalist design and technical fabrics for an unparalleled running experience.',
     category: 'sport',
     images: ['Satisfy_Running_Short'],
-    reviews: []
+    reviews: [],
+    sizes: ['1', '2', '3', '4'],
+    colors: ['Noir', 'Vert Olive'],
   },
   {
     id: 'sport-118',
@@ -1263,7 +1339,9 @@ export const products: Product[] = [
     description_en: 'A high-end ski parka that combines elegance and performance for an impeccable style on the slopes.',
     category: 'sport',
     images: ['Bogner_Ski_Parka'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Blanc', 'Noir'],
   },
   {
     id: 'shoe-1',
@@ -1278,7 +1356,9 @@ export const products: Product[] = [
     description_en: 'The iconic boot to face the harshest winters. Waterproof and insulated for optimal comfort.',
     category: 'shoes',
     images: ['Sorel_Caribou'],
-    reviews: []
+    reviews: [],
+    sizes: ['40', '41', '42', '43', '44', '45'],
+    colors: ['Marron', 'Noir'],
   },
   {
     id: 'shoe-2',
@@ -1292,7 +1372,9 @@ export const products: Product[] = [
     description_en: 'The modern version of the Caribou, with GORE-TEX technology for increased breathability and waterproofing.',
     category: 'shoes',
     images: ['Sorel_Caribou_Horizon_GTX'],
-    reviews: []
+    reviews: [],
+    sizes: ['41', '42', '43', '44'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'shoe-3',
@@ -1306,7 +1388,9 @@ export const products: Product[] = [
     description_en: 'A classic and versatile winter boot, combining style and functionality for daily use.',
     category: 'shoes',
     images: ['Sorel_1964_PAC'],
-    reviews: []
+    reviews: [],
+    sizes: ['39', '40', '41', '42'],
+    colors: ['Marron', 'Noir'],
   },
   {
     id: 'shoe-4',
@@ -1321,7 +1405,9 @@ export const products: Product[] = [
     description_en: 'Lightweight and agile boot for winter hiking, offering grip and warmth.',
     category: 'shoes',
     images: ['Salomon_X_Ultra_Snow_Pilot'],
-    reviews: []
+    reviews: [],
+    sizes: ['42', '43', '44', '45'],
+    colors: ['Noir', 'Bleu'],
   },
   {
     id: 'shoe-5',
@@ -1335,7 +1421,9 @@ export const products: Product[] = [
     description_en: 'A robust and reliable boot for extreme cold, featuring Omni-Heat technology.',
     category: 'shoes',
     images: ['Columbia_Bugaboot_III'],
-    reviews: []
+    reviews: [],
+    sizes: ['40', '41', '42', '43', '44', '45', '46'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'shoe-6',
@@ -1349,7 +1437,9 @@ export const products: Product[] = [
     description_en: 'High-performance winter boot with superior grip and insulation for challenging terrains.',
     category: 'shoes',
     images: ['The_North_Face_Chilkat_V_400'],
-    reviews: []
+    reviews: [],
+    sizes: ['42', '43', '44', '45'],
+    colors: ['Noir', 'Vert'],
   },
   {
     id: 'shoe-7',
@@ -1363,7 +1453,9 @@ export const products: Product[] = [
     description_en: 'Designed for arctic conditions, this boot offers extreme protection down to -100°C.',
     category: 'shoes',
     images: ['Baffin_Impact'],
-    reviews: []
+    reviews: [],
+    sizes: ['41', '42', '43', '44', '45'],
+    colors: ['Noir'],
   },
   {
     id: 'shoe-8',
@@ -1378,7 +1470,9 @@ export const products: Product[] = [
     description_en: 'A versatile hiking boot for winter, offering comfort and protection from the elements.',
     category: 'shoes',
     images: ['Merrell_Thermo_Chill_2_Mid'],
-    reviews: []
+    reviews: [],
+    sizes: ['41', '42', '43', '44', '45'],
+    colors: ['Noir', 'Marron'],
   },
   {
     id: 'shoe-9',
@@ -1392,7 +1486,9 @@ export const products: Product[] = [
     description_en: 'The perfect marriage of urban style and winter comfort, with a pure wool lining.',
     category: 'shoes',
     images: ['UGG_Butte'],
-    reviews: []
+    reviews: [],
+    sizes: ['41', '42', '43', '44'],
+    colors: ['Noir', 'Marron'],
   },
   {
     id: 'shoe-10',
@@ -1406,7 +1502,9 @@ export const products: Product[] = [
     description_en: 'High rubber boot designed for extreme cold and wet conditions, offering exceptional grip on ice.',
     category: 'shoes',
     images: ['Muck_Boot_Arctic_Ice_Tall'],
-    reviews: []
+    reviews: [],
+    sizes: ['40', '41', '42', '43', '44'],
+    colors: ['Noir'],
   },
   {
     id: 'sac_de_couchage1',
@@ -1421,6 +1519,8 @@ export const products: Product[] = [
     category: 'winter-clothing',
     images: ['sac_de_couchage1'],
     reviews: [],
+    sizes: ['Standard'],
+    colors: ['Rouge'],
   },
   {
     id: 'sac_de_couchage2',
@@ -1436,6 +1536,8 @@ export const products: Product[] = [
     category: 'winter-clothing',
     images: ['sac_de_couchage2'],
     reviews: [],
+    sizes: ['Standard', 'Long'],
+    colors: ['Bleu'],
   },
   {
     id: 'sac_de_couchage3',
@@ -1450,6 +1552,8 @@ export const products: Product[] = [
     category: 'winter-clothing',
     images: ['sac_de_couchage3'],
     reviews: [],
+    sizes: ['Standard'],
+    colors: ['Vert'],
   },
   {
     id: 'sac_de_couchage4',
@@ -1465,6 +1569,8 @@ export const products: Product[] = [
     category: 'winter-clothing',
     images: ['sac_de_couchage4'],
     reviews: [],
+    sizes: ['Standard', 'Large'],
+    colors: ['Gris'],
   },
   {
     id: 'sac_hiver1',
@@ -1480,6 +1586,8 @@ export const products: Product[] = [
     category: 'winter-clothing',
     images: ['sac_hiver1'],
     reviews: [],
+    sizes: ['Unique'],
+    colors: ['Noir', 'Bordeaux'],
   },
   {
     id: 'sac_hiver2',
@@ -1494,6 +1602,8 @@ export const products: Product[] = [
     category: 'winter-clothing',
     images: ['sac_hiver2'],
     reviews: [],
+    sizes: ['30L', '45L'],
+    colors: ['Noir', 'Gris Anthracite'],
   },
   {
     id: 'sac_hiver3',
@@ -1508,6 +1618,8 @@ export const products: Product[] = [
     category: 'winter-clothing',
     images: ['sac_hiver3'],
     reviews: [],
+    sizes: ['Unique'],
+    colors: ['Gris Chiné', 'Noir'],
   },
   {
     id: 'sac_hiver4',
@@ -1522,6 +1634,8 @@ export const products: Product[] = [
     category: 'winter-clothing',
     images: ['sac_hiver4'],
     reviews: [],
+    sizes: ['Unique'],
+    colors: ['Noir', 'Marron'],
   },
     {
     id: 'acc-101',
@@ -1874,7 +1988,9 @@ export const products: Product[] = [
     images: ['echarpe-laine-vierge-premium-alpine-soft'],
     reviews: [
         { author: 'Isabelle', rating: 5, comment: 'Une douceur incroyable, c\'est comme un câlin.'}
-    ]
+    ],
+    sizes: ['Unique'],
+    colors: ['Gris', 'Noir'],
   },
   {
     id: 'acc-11',
@@ -1890,7 +2006,9 @@ export const products: Product[] = [
     images: ['snood-polaire-winter-shield-premium'],
     reviews: [
         { author: 'Romain', rating: 5, comment: 'Très pratique et bien plus chaud que je ne le pensais.'}
-    ]
+    ],
+    sizes: ['Unique'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'acc-13',
@@ -1907,7 +2025,9 @@ export const products: Product[] = [
     images: ['gants-tactiles-thermiques-tech-gloves'],
     reviews: [
         { author: 'Laura', rating: 5, comment: 'Enfin des gants qui fonctionnent vraiment avec mon téléphone !'}
-    ]
+    ],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir'],
   },
   {
     id: 'acc-23',
@@ -1924,7 +2044,9 @@ export const products: Product[] = [
     images: ['echarpe-oversize-fausse-fourrure-luxe-soft'],
     reviews: [
         { author: 'Caroline', rating: 5, comment: 'Incroyablement douce et luxueuse. C\'est magnifique.'}
-    ]
+    ],
+    sizes: ['Unique'],
+    colors: ['Noir', 'Blanc Cassé'],
   },
   {
     id: 'acc-24',
@@ -1941,7 +2063,9 @@ export const products: Product[] = [
     images: ['echarpe-maille-torsadee-warm-plush'],
     reviews: [
         { author: 'Nicolas', rating: 5, comment: 'Écharpe de grande qualité, très chaude et confortable.'}
-    ]
+    ],
+    sizes: ['Unique'],
+    colors: ['Crème', 'Gris Anthracite'],
   },
   {
     id: 'acc-27',
@@ -1958,7 +2082,9 @@ export const products: Product[] = [
     images: ['gants-cuir-doubles-polaire-lady-warm'],
     reviews: [
         { author: 'Hélène', rating: 5, comment: 'Très chauds et le cuir est d\'une grande souplesse. Parfaits.'}
-    ]
+    ],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Marron'],
   },
   {
     id: 'femme1',
@@ -2100,17 +2226,29 @@ export function getFeaturedProducts(products: Product[], limit: number = 4): Pro
     return winterProducts.slice(0, limit);
 }
 
-
 export function getWinterSaleProducts(products: Product[], limit?: number): Product[] {
-  // Filter for products that have an oldPrice, indicating they are on sale.
-  const saleProducts = products.filter(p => p.oldPrice);
-  
-  // Sort the sale products by their ID in a stable manner.
-  saleProducts.sort((a, b) => a.id.localeCompare(b.id));
+  const allSaleItems = products.filter(p => p.oldPrice).sort((a, b) => a.id.localeCompare(b.id));
 
-  if (limit) {
-    return saleProducts.slice(0, limit);
+  const sleepingBag = allSaleItems.find(p => p.slug.includes('sac-de-couchage'));
+  const winterBag = allSaleItems.find(p => p.slug.includes('sac-hiver'));
+
+  const featuredItems = new Set<Product>();
+
+  if (sleepingBag) {
+    featuredItems.add(sleepingBag);
+  }
+  if (winterBag) {
+    featuredItems.add(winterBag);
   }
 
-  return saleProducts;
+  const otherSaleItems = allSaleItems.filter(p => p !== sleepingBag && p !== winterBag);
+
+  for (const item of otherSaleItems) {
+    if (featuredItems.size >= (limit || 9)) {
+      break;
+    }
+    featuredItems.add(item);
+  }
+
+  return Array.from(featuredItems);
 }
