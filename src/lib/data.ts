@@ -393,7 +393,7 @@ export const products: Product[] = [
     name_fr: 'Pull Laine Merinos',
     name_en: 'Merino Wool Sweater',
     slug: 'pull-laine-merinos-lacoste',
-    price: 110,
+    price: 160,
     description: 'Die zeitlose Eleganz von Merinowolle. Dieser Pullover bietet unübertroffene Weichheit und natürliche Thermoregulation. Ein Must-Have für eine anspruchsvolle und komfortable Garderobe.',
     description_fr: 'L\'élégance intemporelle de la laine mérinos. Ce pull offre une douceur inégalée et une thermorégulation naturelle. Un indispensable pour une garde-robe sophistiquée et confortable.',
     description_en: 'The timeless elegance of merino wool. This sweater offers unparalleled softness and natural thermoregulation. An essential for a sophisticated and comfortable wardrobe.',
@@ -662,21 +662,6 @@ export const products: Product[] = [
     reviews: [
         { author: 'Gaspard', rating: 5, comment: 'Une pièce d\'une qualité exceptionnelle. Le prix est justifié.'}
     ]
-  },
-  {
-    id: 'manteau-long-laine-hugo-boss',
-    name: 'Manteau Long en Laine',
-    name_fr: 'Manteau Long en Laine',
-    name_en: 'Long Wool Coat',
-    slug: 'manteau-long-laine-hugo-boss',
-    price: 390,
-    oldPrice: 490,
-    description: 'Ein zeitloser Mantel aus hochwertiger Wolle, der Eleganz und Wärme vereint. Perfekt für den Winter.',
-    description_fr: 'Un manteau intemporel en laine de qualité supérieure qui allie élégance et chaleur. Parfait pour l\'hiver.',
-    description_en: 'A timeless coat made of high-quality wool that combines elegance and warmth. Perfect for winter.',
-    category: 'winter-clothing',
-    images: ['manteau-long-laine-hugo-boss'],
-    reviews: []
   },
   {
     id: 'doudoune-matelassee-moncler',
