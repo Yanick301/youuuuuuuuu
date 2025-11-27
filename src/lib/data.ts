@@ -503,9 +503,9 @@ export const products: Product[] = [
   },
   {
     id: 'prod-50',
-    name: 'Chunky-Derby-Schuhe mit Plateausohle',
-    name_fr: 'Derby chunky à plateforme Street-Luxe',
-    name_en: 'Chunky Platform Derby Shoes',
+    name: 'PRADA Chunky-Derby-Schuhe mit Plateausohle',
+    name_fr: 'Derby chunky à plateforme Street-Luxe PRADA',
+    name_en: 'PRADA Chunky Platform Derby Shoes',
     slug: 'derby-chunky-platform-street-luxe',
     price: 420,
     description: 'Ein kühnes Statement für den modebewussten Mann. Diese Derby-Schuhe kombinieren ein klassisches Obermaterial aus poliertem Leder mit einer imposanten Plateausohle und schaffen so eine avantgardistische Fusion aus Streetwear und Luxus.',
@@ -1873,7 +1873,7 @@ export const products: Product[] = [
   },
   {
     id: 'femme1',
-    name: 'Langer Wollmantel mit Gürtel',
+    name: 'Manteau Long en Laine Ceinturé',
     name_fr: 'Manteau Long en Laine Ceinturé',
     name_en: 'Long Belted Wool Coat',
     slug: 'manteau-long-laine-ceinture-femme1',
@@ -1888,7 +1888,7 @@ export const products: Product[] = [
   },
   {
     id: 'femme2',
-    name: 'Langer Zweireiher-Mantel',
+    name: 'Manteau Long Croisé',
     name_fr: 'Manteau Long Croisé',
     name_en: 'Long Double-Breasted Coat',
     slug: 'manteau-long-croise-femme2',
@@ -1903,7 +1903,7 @@ export const products: Product[] = [
   },
   {
     id: 'femme3',
-    name: 'Langer Kaschmirmantel',
+    name: 'Manteau Long en Cachemire',
     name_fr: 'Manteau Long en Cachemire',
     name_en: 'Long Cashmere Coat',
     slug: 'manteau-long-cachemire-femme3',
@@ -1918,7 +1918,7 @@ export const products: Product[] = [
   },
   {
     id: 'femme4',
-    name: 'Langer Mantel aus Kunstpelz',
+    name: 'Manteau Long en Fausse Fourrure',
     name_fr: 'Manteau Long en Fausse Fourrure',
     name_en: 'Long Faux Fur Coat',
     slug: 'manteau-long-fausse-fourrure-femme4',
@@ -1933,7 +1933,7 @@ export const products: Product[] = [
   },
   {
     id: 'femme5',
-    name: 'Langer Mantel mit Schalkragen',
+    name: 'Manteau Long à Col Châle',
     name_fr: 'Manteau Long à Col Châle',
     name_en: 'Long Shawl Collar Coat',
     slug: 'manteau-long-col-chale-femme5',
@@ -1948,7 +1948,7 @@ export const products: Product[] = [
   },
   {
     id: 'femme6',
-    name: 'Langer Oversize-Mantel',
+    name: 'Manteau Long Oversize',
     name_fr: 'Manteau Long Oversize',
     name_en: 'Long Oversize Coat',
     slug: 'manteau-long-oversize-femme6',
