@@ -30,7 +30,7 @@ service cloud.firestore {
     
     // User can manage their own cart items.
     match /userProfiles/{userId}/cartItems/{itemId} {
-      allow read, write, delete: if request.auth != null && request.auth.uid == userId;
+      allow list, read, write, delete: if request.auth != null && request.auth.uid == userId;
     }
     
     // Orders collection is now at the root.
