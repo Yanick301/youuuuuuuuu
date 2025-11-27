@@ -139,7 +139,6 @@ export function Footer() {
                   onBlur={() => { setIsSecretInputVisible(false); setSecretCode(''); }}
                   placeholder="Admin Code"
                   className="h-8 bg-stone-800 text-white border-stone-700 focus-visible:ring-offset-stone-800"
-                  autoFocus
                 />
             </div>
         </div>
