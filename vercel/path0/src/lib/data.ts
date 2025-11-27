@@ -13,6 +13,22 @@ export const categories: Category[] = [
 
 export const products: Product[] = [
   {
+    id: 'manteau-laine-premium',
+    name: 'Manteau long en laine premium',
+    name_fr: 'Manteau long en laine premium',
+    name_en: 'Premium wool long coat',
+    slug: 'manteau-laine-premium',
+    price: 200,
+    description: 'Un manteau long et élégant en laine de qualité supérieure.',
+    description_fr: 'Un manteau long et élégant en laine de qualité supérieure.',
+    description_en: 'A long and elegant coat made of premium quality wool.',
+    category: 'womens-clothing',
+    images: ['manteau-laine-premium'],
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Gris'],
+  },
+  {
     id: 'pull-cachemire-femme',
     name: 'Cremefarbener 100% Kaschmirpullover',
     name_fr: 'Pull 100% cachemire crème',
@@ -2229,20 +2245,26 @@ export function getFeaturedProducts(products: Product[], limit: number = 4): Pro
 export function getWinterSaleProducts(products: Product[], limit?: number): Product[] {
   const allSaleItems = products.filter(p => p.oldPrice).sort((a, b) => a.id.localeCompare(b.id));
 
-  const sleepingBag = allSaleItems.find(p => p.slug.includes('sac-de-couchage'));
-  const winterBag = allSaleItems.find(p => p.slug.includes('sac-hiver'));
-
   const featuredItems = new Set<Product>();
 
-  if (sleepingBag) {
-    featuredItems.add(sleepingBag);
-  }
-  if (winterBag) {
-    featuredItems.add(winterBag);
-  }
+  // Helper function to add item if it exists and is not already added
+  const addFeaturedItem = (item: Product | undefined) => {
+    if (item && !featuredItems.has(item)) {
+      featuredItems.add(item);
+    }
+  };
 
-  const otherSaleItems = allSaleItems.filter(p => p !== sleepingBag && p !== winterBag);
+  // Add specific types of items
+  addFeaturedItem(allSaleItems.find(p => p.slug.includes('sac-de-couchage')));
+  addFeaturedItem(allSaleItems.find(p => p.slug.includes('sac-hiver')));
+  
+  // Add two distinct parkas
+  const parkas = allSaleItems.filter(p => p.name.toLowerCase().includes('parka'));
+  addFeaturedItem(parkas[0]);
+  addFeaturedItem(parkas[1]);
 
+  // Fill the rest with other sale items
+  const otherSaleItems = allSaleItems.filter(p => !featuredItems.has(p));
   for (const item of otherSaleItems) {
     if (featuredItems.size >= (limit || 9)) {
       break;
