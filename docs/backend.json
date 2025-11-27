@@ -173,10 +173,6 @@
           "description": "The user's email address.",
           "format": "email"
         },
-         "isAdmin": {
-          "type": "boolean",
-          "description": "Indicates if the user has administrative privileges. Set to true for 'ezcentials@gmail.com'."
-        },
         "firstName": {
           "type": "string",
           "description": "The user's first name."
@@ -202,7 +198,7 @@
       "schema": {
         "$ref": "#/entities/Product"
       },
-      "description": "Stores product information. Accessible to all users for reading. Writable only by admins."
+      "description": "Stores product information. Accessible to all users for reading."
     },
     "/products/{productId}/reviews/{reviewId}": {
       "schema": {
@@ -214,13 +210,13 @@
       "schema": {
         "$ref": "#/entities/UserProfile"
       },
-      "description": "Stores user profile information. Only the authenticated user can read/write their own profile. Admins can read any profile."
+      "description": "Stores user profile information. Only the authenticated user can read/write their own profile."
     },
     "/orders/{orderId}": {
       "schema": {
         "$ref": "#/entities/Order"
       },
-      "description": "Stores all order information. Any authenticated user can create their own order. Only admins can read, list, and update order statuses."
+      "description": "Stores all order information. Any authenticated user can create their own order."
     }
   }
 }

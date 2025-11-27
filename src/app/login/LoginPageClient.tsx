@@ -59,43 +59,23 @@ export default function LoginPageClient() {
     },
   });
 
-  const handleUserCreation = async (userCredential: UserCredential): Promise<boolean> => {
+  const handleUserCreation = async (userCredential: UserCredential) => {
     const user = userCredential.user;
-    if (!user || !firestore) return false;
+    if (!user || !firestore) return;
 
     const userRef = doc(firestore, 'userProfiles', user.uid);
-    let isAdmin = false;
-
+    
     try {
         const userDoc = await getDoc(userRef);
 
-        let profileData: any = {};
-        let mustUpdate = false;
-
         if (!userDoc.exists()) {
-            profileData = {
+            const profileData = {
                 id: user.uid,
                 email: user.email,
                 firstName: user.displayName?.split(' ')[0] || '',
                 lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
                 registrationDate: serverTimestamp(),
-                isAdmin: false, // Default to false
             };
-            mustUpdate = true;
-        } else {
-            profileData = userDoc.data();
-        }
-
-        // Ensure admin status is correctly set on every login for the admin account
-        if (user.email === 'ezcentials@gmail.com') {
-            isAdmin = true;
-            if (profileData.isAdmin !== true) {
-                profileData.isAdmin = true;
-                mustUpdate = true;
-            }
-        }
-        
-        if (mustUpdate) {
             await setDoc(userRef, profileData, { merge: true });
         }
     } catch (e) {
@@ -108,27 +88,22 @@ export default function LoginPageClient() {
         // Re-throw to be caught by the outer try/catch
         throw e;
     }
-    
-    return isAdmin;
   };
 
   const onSubmit: SubmitHandler<z.infer<typeof currentSchema>> = async (data) => {
     if (!auth) return;
     try {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
-      const isAdmin = await handleUserCreation(userCredential).catch((e) => {
+      await handleUserCreation(userCredential).catch((e) => {
           // This specifically catches failures within handleUserCreation,
           // including our re-thrown permission error.
           // The most likely error here is the setDoc failing.
           const userRef = doc(firestore, 'userProfiles', userCredential.user.uid);
           const permissionError = new FirestorePermissionError({
                 path: userRef.path,
-                operation: 'write', // Assuming failure is on setDoc
-                requestResourceData: { isAdmin: true } // The data we tried to set
+                operation: 'write', 
           });
           errorEmitter.emit('permission-error', permissionError);
-          // We return false for isAdmin to prevent redirection to a dashboard that will fail
-          return false;
       });
       
       toast({
@@ -136,7 +111,7 @@ export default function LoginPageClient() {
           description: language === 'fr' ? 'Bienvenue à nouveau !' : language === 'en' ? 'Welcome back!' : 'Willkommen zurück!',
       });
       
-      const redirectUrl = isAdmin ? '/admin/dashboard' : searchParams.get('redirect') || '/account';
+      const redirectUrl = searchParams.get('redirect') || '/account';
       router.push(redirectUrl);
       router.refresh();
 

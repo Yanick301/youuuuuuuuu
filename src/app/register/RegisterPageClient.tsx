@@ -15,7 +15,7 @@ import { TranslatedText } from '@/components/TranslatedText';
 import { useAuth, useFirestore } from '@/firebase';
 import { createUserWithEmailAndPassword, updateProfile, type UserCredential, sendEmailVerification } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import {
   Form,
@@ -48,7 +48,6 @@ export default function RegisterPageClient() {
   const auth = useAuth();
   const firestore = useFirestore();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { toast } = useToast();
   const { language } = useLanguage();
 
@@ -82,13 +81,7 @@ export default function RegisterPageClient() {
             firstName: displayName?.split(' ')[0] || '',
             lastName: displayName?.split(' ').slice(1).join(' ') || '',
             registrationDate: serverTimestamp(),
-            isAdmin: false // Default to false
         };
-
-        // If the registering user is the admin, set isAdmin to true
-        if (user.email === 'ezcentials@gmail.com') {
-            profileData.isAdmin = true;
-        }
         
         await setDoc(userRef, profileData);
     }
@@ -103,12 +96,6 @@ export default function RegisterPageClient() {
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
       
       await handleUserCreation(userCredential, data.name);
-      
-      // Admin user does not need email verification
-      if (data.email === 'ezcentials@gmail.com') {
-        router.push('/admin/dashboard');
-        return;
-      }
       
       await sendEmailVerification(userCredential.user);
       toast({

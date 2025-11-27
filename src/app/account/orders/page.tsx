@@ -18,7 +18,6 @@ import {
   AlertCircle,
   Ban,
   Upload,
-  Link as LinkIcon,
 } from 'lucide-react';
 import {
   useCollection,
@@ -30,15 +29,12 @@ import {
   collection,
   query,
   orderBy,
-  onSnapshot,
   where,
 } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { fr, de, enUS } from 'date-fns/locale';
 import { useLanguage } from '@/context/LanguageContext';
-import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 
 const getSafeDate = (order: any): Date => {
@@ -66,7 +62,6 @@ export default function OrdersPage() {
   const { user } = useUser();
   const firestore = useFirestore();
   const { language } = useLanguage();
-  const { toast } = useToast();
   const router = useRouter();
   
   const ordersQuery = useMemoFirebase(() => {
@@ -81,52 +76,8 @@ export default function OrdersPage() {
 
   const { data: orders, isLoading } = useCollection(ordersQuery);
 
-  useEffect(() => {
-    if (!ordersQuery || !user) return;
-
-    const unsubscribe = onSnapshot(ordersQuery, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-            if (change.type === 'modified') {
-                const changedDoc = change.doc.data();
-                const getStatusText = (status: string, lang: string) => {
-                    if (lang === 'fr') {
-                        if (status === 'completed') return 'validé';
-                        if (status === 'rejected') return 'rejeté';
-                    }
-                    if (lang === 'en') {
-                        if (status === 'completed') return 'validated';
-                        if (status === 'rejected') return 'rejected';
-                    }
-                    if (status === 'completed') return 'validiert';
-                    if (status === 'rejected') return 'abgelehnt';
-                    return '';
-                }
-                const statusText = getStatusText(changedDoc.paymentStatus, language);
-                if(statusText) {
-                    toast({
-                        title: language === 'fr' ? 'Mise à jour de la commande' : language === 'en' ? 'Order Update' : 'Bestellaktualisierung',
-                        description: language === 'fr' ? `Votre paiement a été ${statusText}.` : language === 'en' ? `Your payment has been ${statusText}.` : `Ihre Zahlung wurde ${statusText}.`,
-                    });
-                }
-            }
-        });
-    });
-
-    return () => unsubscribe();
-  }, [ordersQuery, language, toast, user]);
-
   const handleUploadReceipt = (orderId: string) => {
     router.push(`/checkout/confirm-payment?orderId=${orderId}`);
-  };
-
-  const handleCopyValidationLink = (order: any) => {
-    const url = `${window.location.origin}/order-validation/${order.id}`;
-    navigator.clipboard.writeText(url).then(() => {
-        toast({
-            title: language === 'fr' ? 'Lien copié' : language === 'en' ? 'Link Copied' : 'Link kopiert',
-            description: language === 'fr' ? 'Le lien de validation a été copié dans le presse-papiers.' : language === 'en' ? 'The validation link has been copied to the clipboard.' : 'Der Validierungslink wurde in die Zwischenablage kopiert.',
-        });
-    });
   };
 
   const getStatusVariant = (status: string) => {

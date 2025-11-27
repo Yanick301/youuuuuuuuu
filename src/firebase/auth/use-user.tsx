@@ -7,7 +7,7 @@ import { useFirebase } from '@/firebase/provider';
 import { doc, onSnapshot } from 'firebase/firestore';
 
 export type UserProfile = {
-  isAdmin?: boolean;
+  // No admin property anymore
   // other profile fields...
 };
 
