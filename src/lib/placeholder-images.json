@@ -1,6 +1,24 @@
 {
   "placeholderImages": [
     {
+      "id": "manteau-laine-premium",
+      "description": "Premium wool long coat",
+      "imageUrl": "/images/products/manteau-laine-premium.jpg",
+      "imageHint": "wool coat"
+    },
+    {
+      "id": "pull-cachemire-femme",
+      "description": "Cream cashmere sweater",
+      "imageUrl": "/images/products/pull-cachemire-femme.jpg",
+      "imageHint": "cashmere sweater"
+    },
+    {
+      "id": "robe-satinee-noire",
+      "description": "Long black satin dress",
+      "imageUrl": "/images/products/robe-satinee-noire.jpg",
+      "imageHint": "satin dress"
+    },
+    {
       "id": "hero",
       "description": "Hero fashion model",
       "imageUrl": "/images/header.jpg",

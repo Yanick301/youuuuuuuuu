@@ -12,6 +12,48 @@ export const categories: Category[] = [
 ];
 
 export const products: Product[] = [
+  {
+    id: 'manteau-laine-premium',
+    name: 'Hochwertiger Wollmantel',
+    name_fr: 'Manteau long en laine premium',
+    name_en: 'Premium Wool Long Coat',
+    slug: 'manteau-laine-premium',
+    price: 200,
+    description: 'Ein langer Mantel aus hochwertiger Wolle, der Eleganz und Wärme vereint. Ein zeitloses Stück für Ihre Wintergarderobe.',
+    description_fr: 'Un manteau long en laine de première qualité, alliant élégance et chaleur. Une pièce intemporelle pour votre garde-robe hivernale.',
+    description_en: 'A long coat made of premium wool, combining elegance and warmth. A timeless piece for your winter wardrobe.',
+    category: 'womens-clothing',
+    images: ['manteau-laine-premium'],
+    reviews: [],
+  },
+  {
+    id: 'pull-cachemire-femme',
+    name: 'Cremefarbener 100% Kaschmirpullover',
+    name_fr: 'Pull 100% cachemire crème',
+    name_en: '100% Cream Cashmere Sweater',
+    slug: 'pull-cachemire-femme',
+    price: 200,
+    description: 'Umhüllende Weichheit mit diesem cremefarbenen Pullover aus reinem Kaschmir. Ein luxuriöses Basic für ultimativen Komfort und raffinierten Stil.',
+    description_fr: 'La douceur enveloppante avec ce pull en pur cachemire de couleur crème. Un basique de luxe pour un confort ultime et un style raffiné.',
+    description_en: 'Enveloping softness with this pure cream-colored cashmere sweater. A luxury basic for ultimate comfort and refined style.',
+    category: 'womens-clothing',
+    images: ['pull-cachemire-femme'],
+    reviews: [],
+  },
+  {
+    id: 'robe-satinee-noire',
+    name: 'Langes schwarzes Satinkleid',
+    name_fr: 'Robe longue satinée noire',
+    name_en: 'Long Black Satin Dress',
+    slug: 'robe-satinee-noire',
+    price: 200,
+    description: 'Die Essenz der Eleganz. Dieses lange, fließende Kleid aus schwarzem Satin umhüllt die Silhouette mit Anmut für einen unvergesslichen Auftritt.',
+    description_fr: 'L\'essence même de l\'élégance. Cette robe longue et fluide en satin noir épouse la silhouette avec grâce pour une allure inoubliable.',
+    description_en: 'The very essence of elegance. This long, flowing dress in black satin gracefully hugs the silhouette for an unforgettable look.',
+    category: 'womens-clothing',
+    images: ['robe-satinee-noire'],
+    reviews: [],
+  },
     {
     id: '1',
     name: 'Seiden-Midikleid',
@@ -1968,7 +2010,7 @@ export function getProductsByCategory(products: Product[], categorySlug: string,
     return filteredProducts.slice(0, limit);
   }
 
-  return filteredProducts;
+  return filteredProducts.sort((a, b) => a.id.localeCompare(b.id));;
 }
 
 export function getProductBySlug(products: Product[], slug: string): Product | undefined {
