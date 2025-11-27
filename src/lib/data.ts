@@ -2001,23 +2001,11 @@ export function getFeaturedProducts(products: Product[], limit: number = 4): Pro
 
 
 export function getWinterSaleProducts(products: Product[], limit?: number): Product[] {
-  // A deterministic list of product IDs for the homepage sale section
-  const homepageSaleProductIds = [
-    'prod-80', // Canada Goose MacMillan Parka
-    'shoe-1',   // Sorel Caribou Boots
-    'prod-32',  // Cashmere Turtleneck Sweater
-    'prod-82',  // Moose Knuckles Everest Parka
-    'acc-13',   // Tech Gloves
-    'prod-94',  // Bogner Fire + Ice Ski Parka
-    'shoe-4',   // Salomon X Ultra Snow Pilot
-    'acc-24',   // Warm Plush Scarf
-    'prod-25'   // Balloon-Sleeve Boatneck Sweater
-  ];
-
-  // Filter for products that are in the specific list
-  const saleProducts = homepageSaleProductIds.map(id => 
-    products.find(p => p.id === id)
-  ).filter((p): p is Product => p !== undefined); // Type guard to filter out undefined results
+  // Filter for products that have an oldPrice, indicating they are on sale.
+  const saleProducts = products.filter(p => p.oldPrice);
+  
+  // Sort the sale products by their ID in a stable manner.
+  saleProducts.sort((a, b) => a.id.localeCompare(b.id));
 
   if (limit) {
     return saleProducts.slice(0, limit);

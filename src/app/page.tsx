@@ -2,7 +2,6 @@
 
 'use client';
 import Link from 'next/link';
-import { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { getWinterSaleProducts, products } from '@/lib/data';
 import { ProductCard } from '@/components/ProductCard';
