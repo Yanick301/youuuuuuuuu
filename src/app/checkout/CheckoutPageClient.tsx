@@ -191,7 +191,7 @@ export default function CheckoutPageClient() {
       });
 
       errorEmitter.emit('permission-error', permissionError);
-
+      // Let the central listener handle the error UI
       setIsSubmitting(false);
     });
 
@@ -317,7 +317,7 @@ export default function CheckoutPageClient() {
                   {cart.map((item) => {
                     const productImage = placeholderImages.find(p => p.id === item.product.images[0]);
                     return (
-                      <li key={item.product.id} className="flex items-center py-4">
+                      <li key={item.id} className="flex items-center py-4">
                         <div className="relative h-16 w-16 overflow-hidden rounded-md border">
                           {productImage && (
                             <img

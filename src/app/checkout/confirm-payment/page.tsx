@@ -100,7 +100,6 @@ function ConfirmPaymentPageClient() {
             });
             router.push('/checkout/thank-you');
         } catch (e: any) {
-            console.error("Update error:", e);
             const permissionError = new FirestorePermissionError({
                 path: orderRef!.path,
                 operation: 'update',
@@ -116,7 +115,6 @@ function ConfirmPaymentPageClient() {
         }
     };
     reader.onerror = (error) => {
-        console.error("File Reader error:", error);
         toast({
             variant: "destructive",
             title: "Erreur de lecture de fichier",

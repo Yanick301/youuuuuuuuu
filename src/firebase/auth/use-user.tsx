@@ -44,7 +44,6 @@ export const useUser = (): UserHookResult => {
         }
       },
       (error) => {
-        console.error("Auth Error:", error);
         setError(error);
         setUser(null);
         setProfile(null);
@@ -78,7 +77,6 @@ export const useUser = (): UserHookResult => {
       setIsProfileLoading(false);
       setError(null);
     }, (err) => {
-      console.error("Firestore Profile Error:", err);
       setError(err);
       setProfile(null);
       setIsProfileLoading(false);
