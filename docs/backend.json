@@ -222,14 +222,5 @@
       },
       "description": "Stores all order information. Any authenticated user can create their own order. Only admins can read, list, and update order statuses."
     }
-  },
-  "storage": {
-    "/profile-pictures/{userId}/{fileName}": {
-      "description": "Users can upload their own profile pictures.",
-      "rules": {
-        "read": "true",
-        "write": "request.auth != null && request.auth.uid == userId"
-      }
-    }
   }
 }

@@ -35,11 +35,15 @@ service cloud.firestore {
     
     // Orders collection is now at the root.
     match /orders/{orderId} {
-      // Anyone can create an order, with validation on the receipt image size.
-      allow create: if request.resource.data.receiptImageUrl.size() < 1048576; // 1MB limit
+      // Anyone can create an order.
+      allow create: if request.auth != null;
+      
+      // User can upload their own receipt (update), with validation on the receipt image size.
+      allow update: if request.auth != null && request.auth.uid == request.resource.data.userId
+                       && request.resource.data.receiptImageUrl.size() < 1048576; // 1MB limit
 
-      // ONLY ADMINS can read, list, update, or delete any order.
-      allow read, update, delete: if isAdmin();
+      // ONLY ADMINS can read, list, and update order statuses for any order.
+      allow read, list, update: if isAdmin();
     }
   }
 }

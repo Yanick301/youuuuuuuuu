@@ -10,13 +10,11 @@ import {
   useMemoFirebase,
   errorEmitter,
   FirestorePermissionError,
-  useStorage,
 } from '@/firebase';
 import {
   doc,
   updateDoc,
 } from 'firebase/firestore';
-import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useState, useRef } from 'react';
 import {
   Card,
@@ -51,13 +49,21 @@ const getSafeDate = (order: any): Date => {
     return new Date(order.orderDate);
 };
 
+// Helper to convert file to Base64
+const toBase64 = (file: File): Promise<string> => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = error => reject(error);
+});
+
+
 function ConfirmPaymentPageClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
   const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
-  const storage = useStorage();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
@@ -75,49 +81,42 @@ function ConfirmPaymentPageClient() {
   };
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || event.target.files.length === 0 || !firestore || !storage || !orderId || !user) {
+    if (!event.target.files || event.target.files.length === 0 || !firestore || !orderId || !user) {
       return;
     }
     const file = event.target.files[0];
     
-    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+    // 1MB limit for Firestore document
+    if (file.size > 1 * 1024 * 1024) { 
         toast({
             variant: "destructive",
             title: language === 'fr' ? "Fichier trop volumineux" : language === 'en' ? "File too large" : "Datei zu groß",
-            description: language === 'fr' ? "La taille de l'image doit être inférieure à 5 Mo." : language === 'en' ? "Image size must be less than 5MB." : "Die Bildgröße muss weniger als 5 MB betragen.",
+            description: language === 'fr' ? "La taille de l'image doit être inférieure à 1 Mo." : language === 'en' ? "Image size must be less than 1MB." : "Die Bildgröße muss weniger als 1 MB betragen.",
         });
         return;
     }
 
     setIsUploading(true);
 
-    const receiptPath = `receipts/${user.uid}/${orderId}/${file.name}`;
-    const receiptStorageRef = storageRef(storage, receiptPath);
-
     try {
         if (!orderRef) return;
         
-        // 1. Upload file to Storage
-        await uploadBytes(receiptStorageRef, file);
-        
-        // 2. Get download URL
-        const downloadURL = await getDownloadURL(receiptStorageRef);
+        // 1. Convert file to Base64 Data URI
+        const base64Image = await toBase64(file);
 
-        // 3. Update Firestore document with the URL
+        // 2. Update Firestore document with the Base64 string
         await updateDoc(orderRef, {
-            receiptImageUrl: downloadURL,
+            receiptImageUrl: base64Image,
             paymentStatus: 'processing',
         });
         
         router.push('/checkout/thank-you');
 
     } catch (e: any) {
-        // This will catch both storage and firestore errors
-        const isStorageError = e.code?.includes('storage/');
-        
+        // This will catch both file reading and firestore errors
         const permissionError = new FirestorePermissionError({
-            path: isStorageError ? receiptStorageRef.fullPath : orderRef!.path,
-            operation: 'write', // Covers both upload and doc update
+            path: orderRef!.path,
+            operation: 'write',
         });
         errorEmitter.emit('permission-error', permissionError);
 
@@ -126,6 +125,7 @@ function ConfirmPaymentPageClient() {
             title: language === 'fr' ? "Échec du téléversement" : language === 'en' ? "Upload Failed" : "Upload fehlgeschlagen",
             description: language === 'fr' ? "Impossible de téléverser le reçu. Veuillez réessayer." : language === 'en' ? "Could not upload receipt. Please try again." : "Beleg konnte nicht hochgeladen werden. Bitte versuchen Sie es erneut.",
         });
+    } finally {
         setIsUploading(false);
     }
   };
