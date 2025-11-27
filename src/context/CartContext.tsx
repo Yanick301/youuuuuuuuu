@@ -45,7 +45,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (localCartJson) {
         const localCart: Omit<CartItem, 'product'>[] = JSON.parse(localCartJson);
         const hydratedCart = localCart.map(item => {
-          const product = allProducts.find(p => p.id === item.id.split('-')[0]);
+          if (!item || !item.id) { // Defensive check
+            return null;
+          }
+          const productId = item.id.split('-')[0];
+          const product = allProducts.find(p => p.id === productId);
           return product ? { ...item, product } : null;
         }).filter((item): item is CartItem => item !== null);
         return hydratedCart;
