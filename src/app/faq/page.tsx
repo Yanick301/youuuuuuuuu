@@ -34,7 +34,7 @@ export default function FaqPage() {
       answer_fr:
         'Une fois votre paiement validé, votre commande est préparée sous 1 à 2 jours ouvrés. La livraison standard prend ensuite généralement 3 à 5 jours ouvrés pour la France et 5 à 10 jours pour l\'international. Nous faisons notre maximum pour vous livrer vos pièces de luxe au plus vite.',
       answer_en:
-        'Once your payment is validated, your order is prepared within 1-2 business days. Standard delivery then usually takes 3-5 business days for the UK and 5-10 business days for international shipments. We do our best to deliver your luxury pieces as quickly as possible.',
+        'Once your payment is validated, your order is prepared within 1-2 business days. Standard delivery then usually takes 3-5 business days for Germany and 5-10 business days for international shipments. We do our best to deliver your luxury pieces as quickly as possible.',
     },
     {
       icon: <Undo className="mr-3 h-5 w-5 text-primary" />,
