@@ -76,7 +76,7 @@ export function UserButton() {
             <Link href="/account/orders"><ListOrdered className="mr-2 h-4 w-4" /> <TranslatedText fr="Mes commandes" en="My Orders">Meine Bestellungen</TranslatedText></Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/account/favorites"><Heart className="mr-2 h-4 w-4" /> <TranslatedText fr="Mes favoris" en="My Favorites">Meine Favoriten</TranslatedText></Link>
+            <Link href="/favorites"><Heart className="mr-2 h-4 w-4" /> <TranslatedText fr="Mes favoris" en="My Favorites">Meine Favoriten</TranslatedText></Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleSignOut}>

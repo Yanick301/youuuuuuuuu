@@ -14,15 +14,21 @@ export default function FavoritesPage() {
   const favoriteProducts = products.filter((p) => favorites.includes(p.id));
 
   return (
-    <div>
+    <div className="container mx-auto px-4 py-12">
         <div className="mb-8">
             <h1 className="mb-2 font-headline text-3xl">
                 <TranslatedText fr="Mes favoris" en="My Favorites">Meine Favoriten</TranslatedText>
             </h1>
-            {user?.displayName && (
+            {user?.displayName ? (
                 <p className="text-lg text-muted-foreground">
                     <TranslatedText fr={`Bienvenue, ${user.displayName}. Voici vos articles précieusement sélectionnés.`} en={`Welcome, ${user.displayName}. Here are your treasured items.`}>
                         Willkommen, {user.displayName}. Hier sind Ihre wertvollen Artikel.
+                    </TranslatedText>
+                </p>
+            ) : (
+                 <p className="text-lg text-muted-foreground">
+                    <TranslatedText fr="Voici vos articles précieusement sélectionnés." en="Here are your treasured items.">
+                        Hier sind Ihre wertvollen Artikel.
                     </TranslatedText>
                 </p>
             )}

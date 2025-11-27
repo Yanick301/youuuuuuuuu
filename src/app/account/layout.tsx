@@ -37,7 +37,7 @@ export default function AccountLayout({
       name: 'Meine Favoriten',
       name_fr: 'Mes favoris',
       name_en: 'My Favorites',
-      href: '/account/favorites',
+      href: '/favorites',
       icon: Heart,
     },
   ];

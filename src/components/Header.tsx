@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Menu } from 'lucide-react';
+import { Menu, Heart } from 'lucide-react';
 import { useState } from 'react';
 
 import { categories } from '@/lib/data';
@@ -115,6 +115,12 @@ export function Header() {
              <LanguageSwitcher />
           </div>
           <SearchDialog />
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/favorites">
+                <Heart className="h-5 w-5" />
+                <span className="sr-only"><TranslatedText fr="Favoris" en="Favorites">Favoriten</TranslatedText></span>
+            </Link>
+          </Button>
           <CartButton />
         </div>
       </div>
