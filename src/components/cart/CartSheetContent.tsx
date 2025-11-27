@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import placeholderImagesData from '@/lib/placeholder-images.json';
 import { TranslatedText } from '../TranslatedText';
 import { SheetClose } from '@/components/ui/sheet';
+import { Badge } from '@/components/ui/badge';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -33,7 +34,7 @@ export function CartSheetContent() {
           {cart.map((item) => {
             const productImage = placeholderImages.find(p => p.id === item.product.images[0]);
             return (
-                <li key={item.product.id} className="flex py-4">
+                <li key={item.id} className="flex py-4">
                   <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border">
                     {productImage && (
                         <img
@@ -53,6 +54,10 @@ export function CartSheetContent() {
                         </h3>
                         <p className="ml-4">€{(item.product.price * item.quantity).toFixed(2)}</p>
                       </div>
+                       <div className="mt-1 flex flex-wrap gap-2 text-sm text-muted-foreground">
+                          {item.size && <Badge variant="outline">Taille: {item.size}</Badge>}
+                          {item.color && <Badge variant="outline">Couleur: {item.color}</Badge>}
+                       </div>
                     </div>
                     <div className="flex flex-1 items-end justify-between text-sm">
                       <div className="flex items-center gap-2">
@@ -60,7 +65,7 @@ export function CartSheetContent() {
                           variant="outline"
                           size="icon"
                           className="h-6 w-6"
-                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
                         >
                           <Minus className="h-3 w-3" />
                         </Button>
@@ -69,7 +74,7 @@ export function CartSheetContent() {
                           variant="outline"
                           size="icon"
                           className="h-6 w-6"
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
                         >
                           <Plus className="h-3 w-3" />
                         </Button>
@@ -80,7 +85,7 @@ export function CartSheetContent() {
                           variant="ghost"
                           type="button"
                           className="font-medium text-destructive hover:text-destructive"
-                          onClick={() => removeFromCart(item.product.id)}
+                          onClick={() => removeFromCart(item.id)}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>

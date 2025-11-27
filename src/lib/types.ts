@@ -18,6 +18,8 @@ export type Product = {
   category: string;
   images: string[];
   reviews: Review[];
+  sizes?: string[];
+  colors?: string[];
 };
 
 export type Category = {
@@ -30,6 +32,9 @@ export type Category = {
 };
 
 export type CartItem = {
+  id: string; // A unique ID for the cart item, e.g., product.id-size-color
   product: Product;
   quantity: number;
+  size?: string;
+  color?: string;
 };

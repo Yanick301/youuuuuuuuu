@@ -25,6 +25,8 @@ export const products: Product[] = [
     category: 'womens-clothing',
     images: ['manteau-laine-premium'],
     reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'pull-cachemire-femme',
@@ -39,6 +41,8 @@ export const products: Product[] = [
     category: 'womens-clothing',
     images: ['pull-cachemire-femme'],
     reviews: [],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Crème', 'Beige'],
   },
   {
     id: 'robe-satinee-noire',
@@ -53,6 +57,8 @@ export const products: Product[] = [
     category: 'womens-clothing',
     images: ['robe-satinee-noire'],
     reviews: [],
+    sizes: ['XS', 'S', 'M'],
+    colors: ['Noir'],
   },
     {
     id: '1',
@@ -70,6 +76,8 @@ export const products: Product[] = [
       { author: 'Sophie', rating: 5, comment: 'Absolument sublime. La qualité de la soie est exceptionnelle.' },
       { author: 'Claire', rating: 4, comment: 'Très chic, mais attention elle taille un peu petit.' },
     ],
+    sizes: ['XS', 'S', 'M', 'L'],
+    colors: ['Rose', 'Vert', 'Noir'],
   },
   {
     id: '2',
@@ -87,6 +95,8 @@ export const products: Product[] = [
       { author: 'Léa', rating: 5, comment: 'La coupe est absolument parfaite et le tissu est magnifique.' },
       { author: 'Inès', rating: 5, comment: 'Un classique instantané. Je me sens puissante en le portant.' },
     ],
+    sizes: ['34', '36', '38', '40'],
+    colors: ['Noir', 'Blanc'],
   },
   {
     id: 'prod-21',
@@ -103,7 +113,9 @@ export const products: Product[] = [
     images: ['robe-pull-en-cachemire-max-mara'],
     reviews: [
       { author: 'Elodie', rating: 5, comment: 'Incroyablement douce et confortable, tout en restant très chic.' },
-    ]
+    ],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Gris', 'Beige'],
   },
   {
     id: 'prod-22',
@@ -119,7 +131,9 @@ export const products: Product[] = [
     images: ['pantalon-en-cuir-saint-laurent'],
     reviews: [
       { author: 'Victoria', rating: 5, comment: 'Un cuir de rêve, souple et confortable. La coupe est parfaite.' },
-    ]
+    ],
+    sizes: ['36', '38', '40'],
+    colors: ['Noir'],
   },
   {
     id: 'prod-23',
@@ -135,7 +149,9 @@ export const products: Product[] = [
     images: ['jupe-plissee-midi-valentino'],
     reviews: [
       { author: 'Olivia', rating: 5, comment: 'Le mouvement de cette jupe est magique. Très élégante.' },
-    ]
+    ],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Rose Poudré', 'Noir'],
   },
   {
     id: 'prod-24',
@@ -151,7 +167,9 @@ export const products: Product[] = [
     images: ['t-shirt-brode-logo-gucci'],
     reviews: [
       { author: 'Anna', rating: 5, comment: 'Même pour un t-shirt, la qualité est incroyable. Très confortable.' },
-    ]
+    ],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    colors: ['Blanc', 'Noir'],
   },
   {
     id: 'prod-25',
@@ -168,7 +186,9 @@ export const products: Product[] = [
     images: ['pull-col-bateau-manches-ballon-chloe'],
     reviews: [
       { author: 'Emma', rating: 5, comment: 'Les manches sont magnifiques, c\'est une pièce très originale.' },
-    ]
+    ],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Crème', 'Bleu Ciel'],
   },
   {
     id: 'prod-26',
@@ -184,7 +204,9 @@ export const products: Product[] = [
     images: ['robe-chemise-oversize-balenciaga'],
     reviews: [
       { author: 'Chloé', rating: 5, comment: 'La coupe est incroyable. Très mode et facile à porter.' },
-    ]
+    ],
+    sizes: ['Taille Unique'],
+    colors: ['Blanc'],
   },
   {
     id: 'prod-27',
@@ -200,7 +222,9 @@ export const products: Product[] = [
     images: ['pantalon-palazzo-en-laine-max-mara'],
     reviews: [
       { author: 'Juliette', rating: 5, comment: 'Le tombé de ce pantalon est juste sublime. Très confortable.' },
-    ]
+    ],
+    sizes: ['36', '38', '40', '42'],
+    colors: ['Gris Anthracite', 'Camel'],
   },
   {
     id: 'prod-28',
@@ -216,7 +240,9 @@ export const products: Product[] = [
     images: ['blazer-satin-saint-laurent'],
     reviews: [
       { author: 'Garance', rating: 5, comment: 'Une pièce d\'exception. La qualité est visible au premier coup d\'œil.' },
-    ]
+    ],
+    sizes: ['36', '38', '40'],
+    colors: ['Noir'],
   },
   {
     id: 'prod-29',
@@ -232,7 +258,9 @@ export const products: Product[] = [
     images: ['robe-longue-en-velours-valentino'],
     reviews: [
       { author: 'Constance', rating: 5, comment: 'Je me suis sentie comme une reine. La robe est spectaculaire.' },
-    ]
+    ],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir Profond'],
   },
   {
     id: 'prod-30',
@@ -249,7 +277,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'Thomas', rating: 5, comment: 'Une qualité de tissu exceptionnelle. Le tombé est parfait.'},
         { author: 'Julien', rating: 5, comment: 'Enfin une chemise qui épouse parfaitement la silhouette.'}
-    ]
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Blanc', 'Bleu Ciel'],
   },
   {
     id: 'prod-31',
@@ -265,7 +295,9 @@ export const products: Product[] = [
     images: ['polo-pique-ralph-lauren'],
     reviews: [
         { author: 'Antoine', rating: 5, comment: 'La qualité est au rendez-vous. Un classique efficace.'}
-    ]
+    ],
+    sizes: ['M', 'L', 'XL', 'XXL'],
+    colors: ['Marine', 'Blanc', 'Rouge'],
   },
   {
     id: 'prod-32',
@@ -283,7 +315,9 @@ export const products: Product[] = [
     reviews: [
         { author: 'François', rating: 5, comment: 'Une douceur incroyable. On ne veut plus le quitter.'},
         { author: 'Paul', rating: 5, comment: 'L\'investissement vaut chaque centime.'}
-    ]
+    ],
+    sizes: ['M', 'L', 'XL'],
+    colors: ['Gris', 'Noir'],
   },
   {
     id: 'prod-33',
@@ -299,7 +333,9 @@ export const products: Product[] = [
     images: ['t-shirt-col-rond-hugo-boss'],
     reviews: [
       { author: 'Luc', rating: 5, comment: 'Un coton d\'une douceur rare. Le meilleur t-shirt que j\'ai jamais eu.'},
-    ]
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Blanc', 'Gris chiné'],
   },
   {
     id: 'prod-34',
@@ -315,7 +351,9 @@ export const products: Product[] = [
     images: ['pantalon-chino-stretch-burberry'],
     reviews: [
       { author: 'Mathieu', rating: 5, comment: 'Très confortable et la coupe est parfaite. Je l\'ai pris en plusieurs couleurs.'},
-    ]
+    ],
+    sizes: ['30', '32', '34', '36'],
+    colors: ['Beige', 'Marine', 'Kaki'],
   },
   {
     id: 'prod-35',
@@ -331,7 +369,9 @@ export const products: Product[] = [
     images: ['jean-coupe-ajustee-diesel'],
     reviews: [
       { author: 'Alex', rating: 5, comment: 'Le meilleur jean que j\'ai jamais porté. La toile est incroyable.'},
-    ]
+    ],
+    sizes: ['29', '30', '31', '32', '33', '34'],
+    colors: ['Brut', 'Délavé'],
   },
   {
     id: 'prod-36',
@@ -347,7 +387,9 @@ export const products: Product[] = [
     images: ['bomber-nylon-moncler'],
     reviews: [
       { author: 'Nico', rating: 5, comment: 'Légère, chaude et incroyablement stylée. Parfaite.'},
-    ]
+    ],
+    sizes: ['M', 'L', 'XL'],
+    colors: ['Noir', 'Vert Militaire'],
   },
   {
     id: 'prod-37',
@@ -363,7 +405,9 @@ export const products: Product[] = [
     images: ['blouson-cuir-saint-laurent'],
     reviews: [
       { author: 'Chris', rating: 5, comment: 'La perfection. Un investissement pour la vie.'},
-    ]
+    ],
+    sizes: ['48', '50', '52'],
+    colors: ['Noir'],
   },
   {
     id: 'prod-38',
@@ -379,7 +423,9 @@ export const products: Product[] = [
     images: ['veste-costume-giorgio-armani'],
     reviews: [
       { author: 'Hugo', rating: 5, comment: 'On sent la qualité et le savoir-faire. C\'est une autre dimension.'},
-    ]
+    ],
+    sizes: ['46', '48', '50', '52', '54'],
+    colors: ['Gris chiné'],
   },
   {
     id: 'prod-39',
@@ -395,7 +441,9 @@ export const products: Product[] = [
     images: ['costume-2-pieces-zegna'],
     reviews: [
       { author: 'Arthur', rating: 5, comment: 'Un costume qui vous transforme. La coupe est exceptionnelle.'},
-    ]
+    ],
+    sizes: ['46R', '48R', '50R', '52L'],
+    colors: ['Bleu Nuit'],
   },
   {
     id: 'prod-40',
@@ -411,7 +459,9 @@ export const products: Product[] = [
     images: ['chemise-soie-versace'],
     reviews: [
         { author: 'Stéphane', rating: 5, comment: 'Pièce maîtresse de ma garde-robe. Les regards se tournent vers moi.'}
-    ]
+    ],
+    sizes: ['M', 'L', 'XL'],
+    colors: ['Imprimé Or et Noir'],
   },
   {
     id: 'prod-42',
@@ -427,7 +477,9 @@ export const products: Product[] = [
     images: ['t-shirt-essential-fear-of-god'],
     reviews: [
       { author: 'Noah', rating: 5, comment: 'La coupe est parfaite. Le tissu est lourd et de grande qualité.'},
-    ]
+    ],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir Délavé', 'Crème'],
   },
   {
     id: 'prod-43',
@@ -443,7 +495,9 @@ export const products: Product[] = [
     images: ['pull-laine-merinos-lacoste'],
     reviews: [
         { author: 'Bastien', rating: 5, comment: 'Doux, chaud et élégant. La qualité Lacoste est au rendez-vous.'}
-    ]
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Gris', 'Bleu Marine', 'Vert Forêt'],
   },
   {
     id: 'prod-44',
@@ -459,7 +513,9 @@ export const products: Product[] = [
     images: ['chemise-oversize-balenciaga'],
     reviews: [
         { author: 'Raphael', rating: 5, comment: 'Une coupe incroyable. Très conceptuel, j\'adore.'}
-    ]
+    ],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Blanc', 'Noir'],
   },
   {
     id: 'prod-45',
@@ -475,7 +531,9 @@ export const products: Product[] = [
     images: ['surchemise-flanelle-acne-studios'],
     reviews: [
         { author: 'Theo', rating: 5, comment: 'Très confortable et la qualité est top.'}
-    ]
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Carreaux Rouge/Noir', 'Carreaux Vert/Bleu'],
   },
   {
     id: 'prod-46',
@@ -491,7 +549,9 @@ export const products: Product[] = [
     images: ['short-cargo-stone-island'],
     reviews: [
         { author: 'Enzo', rating: 5, comment: 'Très bien coupé et le tissu est incroyable.'}
-    ]
+    ],
+    sizes: ['28', '30', '32', '34'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'prod-47',
@@ -703,7 +763,9 @@ export const products: Product[] = [
     images: ['cardigan-zippe-cachemire-brunello-cucinelli'],
     reviews: [
         { author: 'Gaspard', rating: 5, comment: 'Une pièce d\'une qualité exceptionnelle. Le prix est justifié.'}
-    ]
+    ],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Gris', 'Bleu Marine'],
   },
   {
     id: 'doudoune-matelassee-moncler',
@@ -1911,7 +1973,9 @@ export const products: Product[] = [
     description_en: 'A masterpiece of elegance. This long coat in pure wool, with its matching belt, emphasizes the waist for a graceful and timeless silhouette.',
     category: 'womens-clothing',
     images: ['femme1'],
-    reviews: []
+    reviews: [],
+    sizes: ['36', '38', '40', '42'],
+    colors: ['Camel', 'Noir'],
   },
   {
     id: 'femme2',
@@ -1926,7 +1990,9 @@ export const products: Product[] = [
     description_en: 'Structured elegance for this long double-breasted coat. Its clean cut and impressive shoulders provide a powerful and sophisticated look.',
     category: 'womens-clothing',
     images: ['femme2'],
-    reviews: []
+    reviews: [],
+    sizes: ['36', '38', '40'],
+    colors: ['Gris', 'Bleu Marine'],
   },
   {
     id: 'femme3',
@@ -1941,7 +2007,9 @@ export const products: Product[] = [
     description_en: 'Wrap yourself in absolute luxury with this long coat in pure cashmere. Its unparalleled softness and fluid drape are an invitation to comfort and refinement.',
     category: 'womens-clothing',
     images: ['femme3'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Beige'],
   },
   {
     id: 'femme4',
@@ -1956,7 +2024,9 @@ export const products: Product[] = [
     description_en: 'A glamorous and bold look. This long coat in luxurious faux fur promises a spectacular entrance and comforting warmth.',
     category: 'womens-clothing',
     images: ['femme4'],
-    reviews: []
+    reviews: [],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Léopard', 'Noir'],
   },
   {
     id: 'femme5',
@@ -1971,7 +2041,9 @@ export const products: Product[] = [
     description_en: 'An enveloping and refined long coat. Its generous shawl collar and soft wool cloth create a silhouette that is both chic and relaxed.',
     category: 'womens-clothing',
     images: ['femme5'],
-    reviews: []
+    reviews: [],
+    sizes: ['Taille Unique'],
+    colors: ['Gris Perle', 'Crème'],
   },
   {
     id: 'femme6',
@@ -1986,7 +2058,9 @@ export const products: Product[] = [
     description_en: 'A strong fashion statement. This long oversized coat plays with volumes for a modern and avant-garde look, without compromising on comfort and warmth.',
     category: 'womens-clothing',
     images: ['femme6'],
-    reviews: []
+    reviews: [],
+    sizes: ['S/M', 'L/XL'],
+    colors: ['Noir', 'Vert Bouteille'],
   }
 ];
 

@@ -19,8 +19,9 @@ import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/LanguageContext';
 import { getProductBySlug, getProductsByCategory, products as allProducts } from '@/lib/data';
 import type { Review, Product } from '@/lib/types';
-import { useUser } from '@/firebase';
-
+import { useUser, useFirebase } from '@/firebase';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -36,6 +37,9 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [relatedProducts, setRelatedProducts] = useState<ReturnType<typeof getProductsByCategory>>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [selectedSize, setSelectedSize] = useState<string | undefined>();
+  const [selectedColor, setSelectedColor] = useState<string | undefined>();
+
   const { toast } = useToast();
   const { language } = useLanguage();
   const [newReviewRating, setNewReviewRating] = useState(0);
@@ -49,6 +53,12 @@ export default function ProductPage({ params }: ProductPageProps) {
     
     if (foundProduct) {
         setProduct(foundProduct);
+        if (foundProduct.sizes && foundProduct.sizes.length > 0) {
+          setSelectedSize(foundProduct.sizes[0]);
+        }
+        if (foundProduct.colors && foundProduct.colors.length > 0) {
+          setSelectedColor(foundProduct.colors[0]);
+        }
         const related = getProductsByCategory(allProducts, foundProduct.category, 4, foundProduct.id);
         setRelatedProducts(related);
     }
@@ -155,8 +165,57 @@ export default function ProductPage({ params }: ProductPageProps) {
             <TranslatedText fr={product.description_fr} en={product.description_en}>{product.description}</TranslatedText>
           </p>
 
+          <div className="mt-8 space-y-6">
+            {product.sizes && product.sizes.length > 0 && (
+                <div>
+                    <Label className="text-sm font-medium"><TranslatedText fr="Taille" en="Size">Größe</TranslatedText></Label>
+                    <RadioGroup value={selectedSize} onValueChange={setSelectedSize} className="mt-2 flex flex-wrap gap-2">
+                        {product.sizes.map(size => (
+                            <RadioGroupItem key={size} value={size} id={`size-${size}`} className="sr-only" />
+                        ))}
+                        {product.sizes.map(size => (
+                            <Label 
+                                key={size} 
+                                htmlFor={`size-${size}`}
+                                className={cn(
+                                    'flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border text-sm transition-colors',
+                                    selectedSize === size ? 'border-primary bg-primary text-primary-foreground' : 'hover:bg-accent'
+                                )}
+                            >{size}</Label>
+                        ))}
+                    </RadioGroup>
+                </div>
+            )}
+             {product.colors && product.colors.length > 0 && (
+                <div>
+                    <Label className="text-sm font-medium"><TranslatedText fr="Couleur" en="Color">Farbe</TranslatedText></Label>
+                    <RadioGroup value={selectedColor} onValueChange={setSelectedColor} className="mt-2 flex flex-wrap gap-2">
+                         {product.colors.map(color => (
+                            <RadioGroupItem key={color} value={color} id={`color-${color}`} className="sr-only" />
+                        ))}
+                        {product.colors.map(color => (
+                            <Label 
+                                key={color} 
+                                htmlFor={`color-${color}`}
+                                className={cn(
+                                    'flex h-10 cursor-pointer items-center justify-center rounded-md border px-4 text-sm transition-colors',
+                                    selectedColor === color ? 'border-primary bg-primary text-primary-foreground' : 'hover:bg-accent'
+                                )}
+                            >{color}</Label>
+                        ))}
+                    </RadioGroup>
+                </div>
+            )}
+          </div>
+
           <div className="mt-8 flex items-center gap-4">
-            <AddToCartButton product={product} />
+            <AddToCartButton 
+              product={product} 
+              options={{ size: selectedSize, color: selectedColor }}
+              disabled={ (product.sizes && product.sizes.length > 0 && !selectedSize) || (product.colors && product.colors.length > 0 && !selectedColor) }
+            >
+              <TranslatedText fr="Ajouter au panier" en="Add to Cart">In den Warenkorb</TranslatedText>
+            </AddToCartButton>
             <AddToFavoritesButton productId={product.id} />
           </div>
 
@@ -263,6 +322,3 @@ export default function ProductPage({ params }: ProductPageProps) {
     </div>
   );
 }
-
-    
-    
