@@ -76,7 +76,9 @@ export default function PaymentMethodPage() {
       ? shippingSchemaFR
       : language === 'en'
       ? shippingSchemaEN
-      : shippingSchemaDE;
+      : language === 'de'
+      ? shippingSchemaDE
+      : shippingSchemaEN;
 
   const form = useForm<z.infer<typeof currentSchema>>({
     resolver: zodResolver(currentSchema),
@@ -101,8 +103,8 @@ export default function PaymentMethodPage() {
     if (!user || !firestore) {
       toast({
         variant: 'destructive',
-        title: 'Fehler',
-        description: 'Benutzer nicht authentifiziert oder Firestore nicht verfügbar.',
+        title: 'Error',
+        description: 'User not authenticated or Firestore not available.',
       });
       return;
     }
@@ -132,33 +134,49 @@ export default function PaymentMethodPage() {
 
     try {
         const ordersCollectionRef = collection(firestore, 'orders');
-        const docRef = await addDoc(ordersCollectionRef, orderData);
+        const docRef = await addDoc(ordersCollectionRef, orderData)
+          .catch((serverError) => {
+            // Create and emit the contextual error
+            const permissionError = new FirestorePermissionError({
+              path: 'orders',
+              operation: 'create',
+              requestResourceData: orderData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
+
+            // Also inform the user via toast
+            toast({
+                variant: 'destructive',
+                title: 'Permission Error',
+                description: 'Could not create order. Please check Firestore permissions.'
+            });
+
+            // Throw the error to stop further execution in the try block
+            throw permissionError;
+          });
         
         clearCart();
         toast({
-            title: "Commande enregistrée !",
-            description: "Vous allez être redirigé pour finaliser le paiement.",
+            title: "Order Saved!",
+            description: "You will be redirected to finalize payment.",
         });
         
         router.push(`/checkout/confirm-payment?orderId=${docRef.id}`);
 
     } catch (error) {
-        const permissionError = new FirestorePermissionError({
-          path: 'orders',
-          operation: 'create',
-          requestResourceData: orderData,
-        });
-        errorEmitter.emit('permission-error', permissionError);
-
-        toast({
-            variant: "destructive",
-            title: "Erreur de Permission",
-            description: "Impossible de créer la commande. Vérifiez vos permissions Firestore."
-        })
+        // This will catch the re-thrown permissionError and prevent a generic error toast
+        // We only log if it's NOT our custom permission error, as that one is already handled.
+        if (!(error instanceof FirestorePermissionError)) {
+            console.error("An unexpected error occurred:", error);
+            toast({
+                variant: "destructive",
+                title: "An Unexpected Error Occurred",
+                description: "Please try again later."
+            });
+        }
     } finally {
         setIsSubmitting(false);
     }
-
   };
 
   return (
@@ -364,6 +382,5 @@ export default function PaymentMethodPage() {
 
     </div>
   );
-}
 
     
