@@ -33,10 +33,5 @@ service cloud.firestore {
       allow create, read, update: if request.auth != null && request.resource.data.userId == request.auth.uid;
       allow delete: if false; // Users cannot delete orders.
     }
-
-    // Default deny: Disallow any other access to prevent accidental data exposure.
-    match /{document=**} {
-      allow read, write: if false;
-    }
   }
 }
