@@ -14,7 +14,6 @@ import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
 import { useFirebase } from '@/firebase';
 import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -45,7 +44,7 @@ const registerSchemaEN = z.object({
 });
 
 export default function RegisterPageClient() {
-  const { auth, firestore } = useFirebase();
+  const { auth } = useFirebase();
   const router = useRouter();
   const { toast } = useToast();
   const { language } = useLanguage();
@@ -62,11 +61,11 @@ export default function RegisterPageClient() {
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof currentSchema>> = async (data) => {
-    if (!auth || !firestore) {
+    if (!auth) {
       toast({
         variant: "destructive",
         title: "Erreur de configuration",
-        description: "Les services Firebase ne sont pas disponibles.",
+        description: "Le service Firebase Auth n'est pas disponible.",
       });
       return;
     }
@@ -76,24 +75,10 @@ export default function RegisterPageClient() {
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
       const user = userCredential.user;
 
-      // Étape 2 : Mettre à jour le profil de l'utilisateur (nom d'affichage) dans Auth
+      // Étape 2 : Mettre à jour le nom d'affichage dans Auth
       await updateProfile(user, { displayName: data.name });
-
-      // Étape 3 : Créer le document de profil dans Firestore
-      const userProfileRef = doc(firestore, 'userProfiles', user.uid);
-      const profileData = {
-          id: user.uid,
-          email: user.email,
-          firstName: data.name.split(' ')[0] || '',
-          lastName: data.name.split(' ').slice(1).join(' ') || '',
-          isAdmin: false,
-          createdAt: serverTimestamp(),
-      };
       
-      // Cette opération est maintenant autorisée par les règles de sécurité
-      await setDoc(userProfileRef, profileData);
-      
-      // Étape 4 : Envoyer l'e-mail de vérification
+      // Étape 3 : Envoyer l'e-mail de vérification
       await sendEmailVerification(user);
       
       toast({
@@ -101,7 +86,7 @@ export default function RegisterPageClient() {
           description: language === 'fr' ? 'Un lien de vérification a été envoyé à votre adresse e-mail.' : language === 'en' ? 'A verification link has been sent to your email address.' : 'Ein Bestätigungslink wurde an Ihre E-Mail-Adresse gesendet.',
       });
       
-      // Étape 5 : Rediriger l'utilisateur vers la page de vérification
+      // Étape 4 : Rediriger l'utilisateur vers la page de vérification
       router.push('/verify-email');
 
     } catch (error: any) {
