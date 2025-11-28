@@ -23,10 +23,12 @@ service cloud.firestore {
       }
     }
 
-    // User profiles can be created, read, and updated only by their owner.
+    // User profiles can be created by the owner.
+    // They can be read and updated only by their owner.
     // Admins can read any profile but not write to it.
     match /userProfiles/{userId} {
-      allow create, update, read: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow read, update: if request.auth != null && request.auth.uid == userId;
       allow get: if isAdmin();
 
       // Users can only read and write to their own favorites subcollection.

@@ -81,6 +81,7 @@ export default function RegisterPageClient() {
             firstName: displayName?.split(' ')[0] || '',
             lastName: displayName?.split(' ').slice(1).join(' ') || '',
             registrationDate: serverTimestamp(),
+            isAdmin: false,
         };
         
         await setDoc(userRef, profileData);
