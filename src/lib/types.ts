@@ -22,7 +22,6 @@ export type Product = {
   description_en: string;
   category: string;
   images: string[];
-  reviews: Review[];
   sizes?: string[];
   colors?: string[];
 };
@@ -43,3 +42,4 @@ export type CartItem = {
   size?: string;
   color?: string;
 };
+
