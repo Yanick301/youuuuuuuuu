@@ -1,7 +1,8 @@
+
 'use client';
 
 import Link from 'next/link';
-import { Menu, Heart, ShieldCheck } from 'lucide-react';
+import { Menu, Heart, ShoppingCart, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
 
 import { categories } from '@/lib/data';
@@ -9,10 +10,12 @@ import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
+  SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { UserButton } from './auth/UserButton';
+import { UserButton } from '@/components/auth/UserButton';
 import { TranslatedText } from './TranslatedText';
 import { SearchDialog } from './search/SearchDialog';
 import { Separator } from './ui/separator';
@@ -156,6 +159,14 @@ export function Header() {
               </span>
             </Link>
           </Button>
+           <Button variant="ghost" size="icon">
+              <ShoppingCart className="h-5 w-5" />
+              <span className="sr-only">
+                <TranslatedText fr="Panier" en="Cart">
+                  Warenkorb
+                </TranslatedText>
+              </span>
+            </Button>
         </div>
       </div>
     </header>
