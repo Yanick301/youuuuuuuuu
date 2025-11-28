@@ -1,7 +1,12 @@
+
 export type Review = {
-  author: string;
+  id: string;
+  productId: string;
+  userId: string;
+  userName: string;
   rating: number;
   comment: string;
+  createdAt: any; // Can be a Timestamp from Firebase
 };
 
 export type Product = {
