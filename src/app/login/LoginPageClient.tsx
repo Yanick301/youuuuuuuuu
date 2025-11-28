@@ -26,6 +26,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useLanguage } from '@/context/LanguageContext';
+import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 
 
 const loginSchemaFR = z.object({
@@ -48,6 +50,7 @@ export default function LoginPageClient() {
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const { language } = useLanguage();
+  const [showPassword, setShowPassword] = useState(false);
 
   const currentSchema = language === 'fr' ? loginSchemaFR : language === 'en' ? loginSchemaEN : loginSchemaDE;
 
@@ -167,9 +170,21 @@ export default function LoginPageClient() {
                                 <div className="flex items-center justify-between">
                                     <FormLabel><TranslatedText fr="Mot de passe" en="Password">Mot de passe</TranslatedText></FormLabel>
                                 </div>
-                                <FormControl>
-                                <Input type="password" {...field} className="border-0 bg-input" />
-                                </FormControl>
+                                <div className="relative">
+                                    <FormControl>
+                                        <Input type={showPassword ? 'text' : 'password'} {...field} className="border-0 bg-input pr-10" />
+                                    </FormControl>
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="icon"
+                                        className="absolute inset-y-0 right-0 h-full px-3"
+                                        onClick={() => setShowPassword((prev) => !prev)}
+                                    >
+                                        {showPassword ? <EyeOff className="h-4 w-4 text-muted-foreground" /> : <Eye className="h-4 w-4 text-muted-foreground" />}
+                                        <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
+                                    </Button>
+                                </div>
                                 <FormMessage />
                             </FormItem>
                             )}
