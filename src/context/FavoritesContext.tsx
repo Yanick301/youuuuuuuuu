@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -49,7 +50,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   }, []);
   
   const fetchFirestoreFavorites = useCallback(async (userId: string): Promise<string[]> => {
-    if (!firestore) return [];
+    if (!firestore || !userId) return []; // Guard against null userId
     try {
       const favDocRef = doc(firestore, 'userProfiles', userId, 'favorites', 'default');
       const docSnap = await getDoc(favDocRef);
@@ -92,11 +93,15 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const initializeFavorites = async () => {
-      if (isUserLoading) return;
+      // Wait until the user's authentication status is fully resolved.
+      if (isUserLoading) {
+        return;
+      }
       
       setIsFavoritesLoading(true);
       const localFavorites = loadLocalFavorites();
 
+      // If there is a logged-in user, sync with Firestore.
       if (user && firestore) {
         const remoteFavorites = await fetchFirestoreFavorites(user.uid);
         if (localFavorites.length > 0) {
@@ -106,6 +111,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
           setFavorites(remoteFavorites);
         }
       } else {
+        // If no user is logged in, only use local storage.
         setFavorites(localFavorites);
       }
       setIsFavoritesLoading(false);
