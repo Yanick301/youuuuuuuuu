@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/form';
 import { useLanguage } from '@/context/LanguageContext';
 import placeholderImagesData from '@/lib/placeholder-images.json';
-import { useUser, useFirebase } from '@/firebase';
+import { useUser, useFirebase, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -143,11 +143,17 @@ export default function PaymentMethodPage() {
         router.push(`/checkout/confirm-payment?orderId=${docRef.id}`);
 
     } catch (error) {
-        console.error("Error creating order: ", error);
+        const permissionError = new FirestorePermissionError({
+          path: 'orders',
+          operation: 'create',
+          requestResourceData: orderData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+
         toast({
             variant: "destructive",
-            title: "Erreur",
-            description: "Impossible de créer la commande. Veuillez réessayer."
+            title: "Erreur de Permission",
+            description: "Impossible de créer la commande. Vérifiez vos permissions Firestore."
         })
     } finally {
         setIsSubmitting(false);
@@ -359,5 +365,3 @@ export default function PaymentMethodPage() {
     </div>
   );
 }
-
-    
