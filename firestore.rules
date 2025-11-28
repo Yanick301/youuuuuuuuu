@@ -4,38 +4,37 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Products and reviews are public and readable by anyone.
+    // Products and their reviews are public.
     match /products/{productId} {
       allow read: if true;
-      allow write: if false; // Nobody can write to products directly
+      allow write: if false; // Writing to products is not allowed from the client.
 
-      // Only authenticated users can create reviews.
       match /reviews/{reviewId} {
         allow read: if true;
-        allow create: if request.auth != null;
-        allow update, delete: if false; // Reviews are immutable
+        allow create: if request.auth != null; // Only authenticated users can create reviews.
+        allow update, delete: if false; // Reviews are immutable.
       }
     }
 
-    // A user can only read and write to their own profile.
+    // User-specific data is private.
+    // A user can only access their own documents.
     match /userProfiles/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
 
-      // A user can only manage their own favorites document.
-      match /favorites/{docId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
+      // This rule applies to subcollections under userProfiles, like 'favorites'.
+      match /{subcollection}/{docId} {
+         allow read, write: if request.auth != null && request.auth.uid == userId;
       }
     }
-
-    // Orders can be created by any authenticated user for themselves.
-    // They can be read and updated by their owner.
+    
+    // Orders are private.
+    // A user can create, read, and update their own orders.
     match /orders/{orderId} {
-      allow read, update: if request.auth != null && resource.data.userId == request.auth.uid;
-      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
-      allow delete: if false; // Orders cannot be deleted by users.
+      allow create, read, update: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow delete: if false; // Users cannot delete orders.
     }
 
-    // Default deny all other access.
+    // Default deny: Disallow any other access to prevent accidental data exposure.
     match /{document=**} {
       allow read, write: if false;
     }

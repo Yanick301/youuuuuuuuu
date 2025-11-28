@@ -136,7 +136,7 @@ export default function PaymentMethodPage() {
         const ordersCollectionRef = collection(firestore, 'orders');
         const docRef = await addDoc(ordersCollectionRef, orderData)
           .catch((serverError) => {
-            // Create and emit the contextual error
+            console.error("Firestore addDoc error:", serverError);
             const permissionError = new FirestorePermissionError({
               path: 'orders',
               operation: 'create',
@@ -144,18 +144,16 @@ export default function PaymentMethodPage() {
             });
             errorEmitter.emit('permission-error', permissionError);
 
-            // Also inform the user via toast
             toast({
                 variant: 'destructive',
                 title: 'Permission Error',
                 description: 'Could not create order. Please check Firestore permissions.'
             });
-
-            // Throw the error to stop further execution in the try block
             throw permissionError;
           });
         
         clearCart();
+        console.log("Order created successfully with ID:", docRef.id);
         toast({
             title: "Order Saved!",
             description: "You will be redirected to finalize payment.",
@@ -164,10 +162,8 @@ export default function PaymentMethodPage() {
         router.push(`/checkout/confirm-payment?orderId=${docRef.id}`);
 
     } catch (error) {
-        // This will catch the re-thrown permissionError and prevent a generic error toast
-        // We only log if it's NOT our custom permission error, as that one is already handled.
         if (!(error instanceof FirestorePermissionError)) {
-            console.error("An unexpected error occurred:", error);
+            console.error("An unexpected error occurred during order creation:", error);
             toast({
                 variant: "destructive",
                 title: "An Unexpected Error Occurred",
@@ -382,5 +378,4 @@ export default function PaymentMethodPage() {
 
     </div>
   );
-
-    
+}
