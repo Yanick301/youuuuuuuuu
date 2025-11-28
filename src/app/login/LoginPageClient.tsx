@@ -74,6 +74,7 @@ export default function LoginPageClient() {
                 email: user.email,
                 firstName: user.displayName?.split(' ')[0] || '',
                 lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
+                isAdmin: false,
                 registrationDate: serverTimestamp(),
             };
             await setDoc(userRef, profileData, { merge: true });
