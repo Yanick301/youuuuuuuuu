@@ -10,10 +10,8 @@ import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from '@/components/ui/sheet';
 import { UserButton } from '@/components/auth/UserButton';
 import { TranslatedText } from './TranslatedText';
