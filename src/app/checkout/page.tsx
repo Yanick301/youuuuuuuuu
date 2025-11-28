@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useCart } from '@/context/CartContext';
@@ -13,18 +14,26 @@ export default function CheckoutPage() {
   const router = useRouter();
 
   useEffect(() => {
+    // Ne rien faire tant que l'état d'authentification n'est pas résolu.
     if (isUserLoading) {
       return;
     }
+
+    // Une fois le chargement terminé, nous pouvons agir en toute sécurité.
     if (!user) {
+      // Si aucun utilisateur, rediriger vers la page de connexion.
       router.push('/login?redirect=/checkout/payment-method');
     } else if (totalItems === 0) {
+      // Si le panier est vide, renvoyer aux produits.
       router.push('/products/all');
     } else {
-        router.replace('/checkout/payment-method');
+      // Si l'utilisateur est connecté et que le panier n'est pas vide,
+      // procéder en toute sécurité à la page de paiement.
+      router.replace('/checkout/payment-method');
     }
   }, [user, isUserLoading, router, totalItems]);
 
+  // Afficher un écran de chargement pendant que l'état de l'utilisateur est vérifié.
   return (
     <div className="container mx-auto flex min-h-[60vh] flex-col items-center justify-center p-4 text-center">
       <Loader2 className="h-12 w-12 animate-spin text-primary" />
