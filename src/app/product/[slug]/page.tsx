@@ -22,6 +22,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { addDoc, collection, serverTimestamp, query, orderBy } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
+import { useCart } from '@/context/CartContext';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -46,6 +47,7 @@ export default function ProductPage() {
 
   const { user } = useUser();
   const { firestore } = useFirebase();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     setIsLoading(true);
@@ -149,7 +151,13 @@ export default function ProductPage() {
   };
 
   const handleAddToCart = () => {
-    // Placeholder for future cart context logic
+    if (!product) return;
+    addToCart({
+      product,
+      quantity: 1,
+      size: selectedSize,
+      color: selectedColor,
+    });
     toast({
       title: 'Ajouté au panier !',
       description: `${product.name} a été ajouté à votre panier.`,

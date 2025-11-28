@@ -3,14 +3,37 @@
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { TranslatedText } from '@/components/TranslatedText';
-import { ShoppingBag } from 'lucide-react';
+import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import { useCart } from '@/context/CartContext';
+import { DialogClose } from '@radix-ui/react-dialog';
+import placeholderImagesData from '@/lib/placeholder-images.json';
+import { useLanguage } from '@/context/LanguageContext';
+
+const { placeholderImages } = placeholderImagesData;
+
+const SheetClose = ({
+  children,
+  ...props
+}: {
+  children: React.ReactNode;
+}) => (
+  <DialogClose {...props} asChild>
+    {children}
+  </DialogClose>
+);
 
 export function CartSheetContent() {
-  // Placeholder for cart logic
-  const itemCount = 0;
+  const {
+    cartItems,
+    totalItems,
+    subtotal,
+    updateQuantity,
+    removeFromCart,
+  } = useCart();
+  const { language } = useLanguage();
 
-  if (itemCount === 0) {
+  if (totalItems === 0) {
     return (
       <div className="flex h-full flex-col items-center justify-center space-y-6 text-center">
         <div
@@ -24,29 +47,101 @@ export function CartSheetContent() {
             Ihr Warenkorb ist leer
           </TranslatedText>
         </div>
-        <p className="text-muted-foreground">
-          <TranslatedText fr="Ajoutez des articles pour commencer." en="Add items to get started.">
-            Fügen Sie Artikel hinzu, um loszulegen.
-          </TranslatedText>
-        </p>
-        <SheetClose asChild>
-          <Link href="/products/all">
-            <Button>
+        <SheetClose>
+          <Button asChild>
+            <Link href="/products/all">
               <TranslatedText fr="Continuer les achats" en="Continue Shopping">
                 Weiter einkaufen
               </TranslatedText>
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </SheetClose>
       </div>
     );
   }
 
-  // This part will be used when cart items exist
   return (
     <>
-      <ScrollArea className="flex-grow">
-        {/* Cart items will be mapped here */}
+      <ScrollArea className="flex-grow pr-6">
+        <div className="flex flex-col gap-6 py-4">
+          {cartItems.map((item) => {
+            const productImage = placeholderImages.find(
+              (p) => p.id === item.product.images[0]
+            );
+            return (
+              <div key={item.id} className="flex items-start gap-4">
+                <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border">
+                  {productImage && (
+                    <img
+                      src={productImage.imageUrl}
+                      alt={item.product.name}
+                      className="h-full w-full object-cover"
+                    />
+                  )}
+                </div>
+                <div className="flex flex-1 flex-col gap-1">
+                  <div className="flex justify-between">
+                    <h4 className="font-medium">
+                      <Link href={`/product/${item.product.slug}`}>
+                        <SheetClose>
+                          <TranslatedText
+                            fr={item.product.name_fr}
+                            en={item.product.name_en}
+                          >
+                            {item.product.name}
+                          </TranslatedText>
+                        </SheetClose>
+                      </Link>
+                    </h4>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => removeFromCart(item.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    €{item.product.price.toFixed(2)}
+                  </p>
+                  {(item.size || item.color) && (
+                    <p className="text-xs text-muted-foreground">
+                      {item.size} {item.size && item.color && ' / '}{' '}
+                      {item.color}
+                    </p>
+                  )}
+                  <div className="mt-2 flex items-center">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() =>
+                        updateQuantity(item.id, item.quantity - 1)
+                      }
+                      disabled={item.quantity <= 1}
+                    >
+                      <Minus className="h-4 w-4" />
+                    </Button>
+                    <span className="w-10 text-center font-medium">
+                      {item.quantity}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() =>
+                        updateQuantity(item.id, item.quantity + 1)
+                      }
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </ScrollArea>
       <div className="border-t px-6 py-4">
         <div className="flex justify-between text-base font-medium text-foreground">
@@ -55,7 +150,7 @@ export function CartSheetContent() {
               Zwischensumme
             </TranslatedText>
           </p>
-          <p>€0.00</p>
+          <p>€{subtotal.toFixed(2)}</p>
         </div>
         <p className="mt-0.5 text-sm text-muted-foreground">
           <TranslatedText
@@ -66,27 +161,17 @@ export function CartSheetContent() {
           </TranslatedText>
         </p>
         <div className="mt-6">
-          <Button className="w-full">
-            <TranslatedText fr="Passer à la caisse" en="Checkout">
-              Zur Kasse
-            </TranslatedText>
-          </Button>
+          <SheetClose>
+            <Button className="w-full" asChild>
+              <Link href="/checkout">
+                <TranslatedText fr="Passer à la caisse" en="Checkout">
+                  Zur Kasse
+                </TranslatedText>
+              </Link>
+            </Button>
+          </SheetClose>
         </div>
       </div>
     </>
   );
 }
-
-// Helper for closing sheet on navigation
-import { DialogClose } from '@radix-ui/react-dialog';
-
-const SheetClose = ({
-  children,
-  ...props
-}: {
-  children: React.ReactNode;
-}) => (
-  <DialogClose {...props} asChild>
-    {children}
-  </DialogClose>
-);

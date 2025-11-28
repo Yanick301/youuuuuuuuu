@@ -6,12 +6,21 @@ import { Button } from './ui/button';
 import { Eye, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
+import { useCart } from '@/context/CartContext';
 
 export function ProductCardActions({ product }: { product: Product }) {
   const { toast } = useToast();
+  const { addToCart } = useCart();
 
   const handleAddToCart = () => {
-    // Placeholder for future cart context logic
+    const defaultSize = product.sizes ? product.sizes[0] : undefined;
+    const defaultColor = product.colors ? product.colors[0] : undefined;
+    addToCart({
+      product,
+      quantity: 1,
+      size: defaultSize,
+      color: defaultColor,
+    });
     toast({
       title: 'Ajouté au panier !',
       description: `${product.name} a été ajouté à votre panier.`,

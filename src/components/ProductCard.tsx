@@ -4,11 +4,13 @@ import type { Product } from '@/lib/types';
 import placeholderImagesData from '@/lib/placeholder-images.json';
 import { TranslatedText } from './TranslatedText';
 import { AddToFavoritesButton } from './favorites/AddToFavoritesButton';
-import { Star } from 'lucide-react';
+import { Star, ShoppingCart } from 'lucide-react';
 import { ProductCardActions } from './ProductCardActions';
 import { Badge } from './ui/badge';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
+import { useCart } from '@/context/CartContext';
+import { useToast } from '@/hooks/use-toast';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -18,10 +20,25 @@ type ProductCardProps = {
 
 export function ProductCard({ product }: ProductCardProps) {
   const productImage = placeholderImages.find(p => p.id === product.images[0]);
-  // Use a static rating for visual consistency as reviews are loaded on the detail page.
   const averageRating = 5;
   const reviewCount = Math.floor(Math.random() * (25 - 5 + 1)) + 5;
+  const { addToCart } = useCart();
+  const { toast } = useToast();
 
+  const handleAddToCart = () => {
+    const defaultSize = product.sizes ? product.sizes[0] : undefined;
+    const defaultColor = product.colors ? product.colors[0] : undefined;
+    addToCart({
+      product,
+      quantity: 1,
+      size: defaultSize,
+      color: defaultColor,
+    });
+    toast({
+      title: 'Ajouté au panier !',
+      description: `${product.name} a été ajouté à votre panier.`,
+    });
+  };
 
   return (
     <div className="group flex h-full flex-col">
@@ -68,8 +85,9 @@ export function ProductCard({ product }: ProductCardProps) {
                       <p className="text-sm text-muted-foreground line-through">€{product.oldPrice.toFixed(2)}</p>
                   )}
               </div>
-              <Button variant="ghost" size="icon">
-                <TranslatedText fr="Acheter" en="Buy">Kaufen</TranslatedText>
+              <Button variant="outline" size="sm" onClick={handleAddToCart}>
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                <TranslatedText fr="Ajouter" en="Add">Ajouter</TranslatedText>
               </Button>
             </div>
         </div>
