@@ -1,7 +1,7 @@
 
 'use client';
 
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { Star } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 
@@ -28,8 +28,9 @@ import { useRouter } from 'next/navigation';
 const { placeholderImages } = placeholderImagesData;
 
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default function ProductPage() {
+  const params = useParams();
+  const slug = params.slug as string;
   const router = useRouter();
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [relatedProducts, setRelatedProducts] = useState<ReturnType<typeof getProductsByCategory>>([]);
