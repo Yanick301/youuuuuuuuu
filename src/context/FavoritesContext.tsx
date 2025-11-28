@@ -9,8 +9,9 @@ import {
   type ReactNode,
   useCallback,
 } from 'react';
-import { useUser, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { useFirebase } from '@/firebase';
+import { onAuthStateChanged, type User } from 'firebase/auth';
+import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 
 type FavoritesContextType = {
   favorites: string[];
@@ -28,125 +29,116 @@ const LOCAL_STORAGE_FAVORITES_KEY = 'ezcentials-favorites';
 export function FavoritesProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [isFavoritesLoading, setIsFavoritesLoading] = useState(true);
-  const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
+  const { auth, firestore } = useFirebase();
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-  const loadLocalFavorites = useCallback((): string[] => {
+  // Load local favorites from localStorage
+  const loadLocalFavorites = (): string[] => {
     try {
-      const localFavoritesJson = localStorage.getItem(LOCAL_STORAGE_FAVORITES_KEY);
-      return localFavoritesJson ? JSON.parse(localFavoritesJson) : [];
+      const localData = localStorage.getItem(LOCAL_STORAGE_FAVORITES_KEY);
+      return localData ? JSON.parse(localData) : [];
     } catch (error) {
       console.error("Failed to load favorites from local storage:", error);
       return [];
     }
-  }, []);
+  };
 
-  const saveLocalFavorites = useCallback((favoritesToSave: string[]) => {
+  // Save local favorites to localStorage
+  const saveLocalFavorites = (items: string[]) => {
     try {
-      localStorage.setItem(LOCAL_STORAGE_FAVORITES_KEY, JSON.stringify(favoritesToSave));
+      localStorage.setItem(LOCAL_STORAGE_FAVORITES_KEY, JSON.stringify(items));
     } catch (error) {
       console.error("Failed to save favorites to local storage:", error);
     }
-  }, []);
-  
-  const fetchFirestoreFavorites = useCallback(async (userId: string): Promise<string[]> => {
-    if (!firestore || !userId) return []; // Guard against null userId
-    try {
-      const favDocRef = doc(firestore, 'userProfiles', userId, 'favorites', 'default');
-      const docSnap = await getDoc(favDocRef);
-      if (docSnap.exists()) {
-        return docSnap.data().productIds || [];
-      }
-      return [];
-    } catch (e) {
-      const permissionError = new FirestorePermissionError({
-        path: `userProfiles/${userId}/favorites/default`,
-        operation: 'get',
-      });
-      errorEmitter.emit('permission-error', permissionError);
-      return [];
-    }
-  }, [firestore]);
+  };
 
-  const syncFavorites = useCallback(async (localFavorites: string[], remoteFavorites: string[], userId: string) => {
-    if (!firestore) return remoteFavorites;
-    
-    const mergedFavorites = Array.from(new Set([...localFavorites, ...remoteFavorites]));
-
-    try {
-      const favDocRef = doc(firestore, 'userProfiles', userId, 'favorites', 'default');
-      await setDoc(favDocRef, { productIds: mergedFavorites });
-      
-      localStorage.removeItem(LOCAL_STORAGE_FAVORITES_KEY); // Clear local after sync
-      return mergedFavorites;
-    } catch (e) {
-       const permissionError = new FirestorePermissionError({
-          path: `userProfiles/${userId}/favorites/default`,
-          operation: 'write',
-          requestResourceData: { productIds: mergedFavorites }
-       });
-       errorEmitter.emit('permission-error', permissionError);
-       return remoteFavorites;
-    }
-  }, [firestore]);
-
-
+  // The main effect that listens to auth state changes
   useEffect(() => {
-    const initializeFavorites = async () => {
-      // Wait until the user's authentication status is fully resolved.
-      if (isUserLoading) {
-        return;
-      }
-      
-      setIsFavoritesLoading(true);
-      const localFavorites = loadLocalFavorites();
+    if (!auth || !firestore) return;
 
-      // If there is a logged-in user, sync with Firestore.
-      if (user && firestore) {
-        const remoteFavorites = await fetchFirestoreFavorites(user.uid);
-        if (localFavorites.length > 0) {
-          const syncedFavorites = await syncFavorites(localFavorites, remoteFavorites, user.uid);
-          setFavorites(syncedFavorites);
-        } else {
-          setFavorites(remoteFavorites);
+    // Subscribe to auth state changes
+    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
+      setIsFavoritesLoading(true);
+      setCurrentUser(user);
+
+      if (user) {
+        // User is logged in
+        const localFavorites = loadLocalFavorites();
+        const favDocRef = doc(firestore, 'userProfiles', user.uid, 'favorites', 'default');
+        
+        try {
+          const remoteDoc = await getDoc(favDocRef);
+          const remoteFavorites = remoteDoc.exists() ? remoteDoc.data().productIds || [] : [];
+          
+          // Merge local and remote favorites, giving precedence to the combination
+          const mergedFavorites = Array.from(new Set([...localFavorites, ...remoteFavorites]));
+          
+          setFavorites(mergedFavorites);
+
+          // If there were local favorites, sync them to Firestore
+          if (localFavorites.length > 0) {
+            await setDoc(favDocRef, { productIds: mergedFavorites }, { merge: true });
+            localStorage.removeItem(LOCAL_STORAGE_FAVORITES_KEY);
+          }
+
+        } catch (error) {
+          console.error("Error fetching/merging favorites from Firestore:", error);
+          // Fallback to local if remote fetch fails
+          setFavorites(localFavorites);
         }
+
       } else {
-        // If no user is logged in, only use local storage.
-        setFavorites(localFavorites);
+        // User is logged out
+        setFavorites(loadLocalFavorites());
       }
       setIsFavoritesLoading(false);
-    };
-    initializeFavorites();
-  }, [user, isUserLoading, firestore, loadLocalFavorites, fetchFirestoreFavorites, syncFavorites]);
+    });
+
+    return () => unsubscribeAuth(); // Cleanup subscription on unmount
+  }, [auth, firestore]);
+
+
+  // Effect to listen for REAL-TIME updates from Firestore once a user is logged in
+  useEffect(() => {
+    if (!currentUser || !firestore) return;
+
+    const favDocRef = doc(firestore, 'userProfiles', currentUser.uid, 'favorites', 'default');
+    
+    const unsubscribeSnapshot = onSnapshot(favDocRef, (docSnap) => {
+      if (docSnap.exists()) {
+        setFavorites(docSnap.data().productIds || []);
+      } else {
+        setFavorites([]); // Document doesn't exist, so no favorites
+      }
+    }, (error) => {
+        console.error("Error listening to favorites changes:", error);
+    });
+
+    return () => unsubscribeSnapshot(); // Cleanup snapshot listener
+  }, [currentUser, firestore]);
+
 
   const toggleFavorite = useCallback((productId: string) => {
-    setFavorites(prevFavorites => {
-      const isCurrentlyFavorite = prevFavorites.includes(productId);
-      const updatedFavorites = isCurrentlyFavorite
-        ? prevFavorites.filter(id => id !== productId)
-        : [...prevFavorites, productId];
+    const updatedFavorites = favorites.includes(productId)
+      ? favorites.filter(id => id !== productId)
+      : [...favorites, productId];
 
-      if (user && firestore) {
-        const favDocRef = doc(firestore, 'userProfiles', user.uid, 'favorites', 'default');
-        setDoc(favDocRef, { productIds: updatedFavorites }).catch(e => {
-            const permissionError = new FirestorePermissionError({
-                path: favDocRef.path,
-                operation: 'write',
-                requestResourceData: { productIds: updatedFavorites }
-            });
-            errorEmitter.emit('permission-error', permissionError);
-        });
-      } else {
-        saveLocalFavorites(updatedFavorites);
-      }
-      return updatedFavorites;
-    });
-  }, [user, firestore, saveLocalFavorites]);
+    setFavorites(updatedFavorites);
+
+    if (currentUser && firestore) {
+      // Authenticated: update Firestore
+      const favDocRef = doc(firestore, 'userProfiles', currentUser.uid, 'favorites', 'default');
+      setDoc(favDocRef, { productIds: updatedFavorites }).catch(error => {
+        console.error("Failed to update favorites in Firestore:", error);
+      });
+    } else {
+      // Unauthenticated: update localStorage
+      saveLocalFavorites(updatedFavorites);
+    }
+  }, [favorites, currentUser, firestore]);
 
   const isFavorite = useCallback(
-    (productId: string) => {
-      return favorites.includes(productId);
-    },
+    (productId: string) => favorites.includes(productId),
     [favorites]
   );
 
