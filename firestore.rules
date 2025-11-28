@@ -23,8 +23,8 @@ service cloud.firestore {
       }
     }
 
-    // User profiles can be created by the owner.
-    // They can be read and updated only by their owner.
+    // User profiles can only be created by the authenticated user for their own UID.
+    // They can only be read and updated by their owner.
     // Admins can read any profile but not write to it.
     match /userProfiles/{userId} {
       allow create: if request.auth != null && request.auth.uid == userId;

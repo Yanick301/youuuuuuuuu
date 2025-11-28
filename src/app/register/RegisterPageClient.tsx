@@ -12,9 +12,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useAuth, useFirestore, errorEmitter, FirestorePermissionError, useFirebase } from '@/firebase';
-import { createUserWithEmailAndPassword, updateProfile, type UserCredential, sendEmailVerification } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { useFirebase } from '@/firebase';
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -63,11 +63,10 @@ export default function RegisterPageClient() {
 
   const onSubmit: SubmitHandler<z.infer<typeof currentSchema>> = async (data) => {
     if (!auth || !firestore) {
-      console.error("Firebase services not available.");
       toast({
         variant: "destructive",
-        title: "Erreur",
-        description: "Les services Firebase ne sont pas disponibles. Veuillez réessayer plus tard.",
+        title: "Erreur de configuration",
+        description: "Les services Firebase ne sont pas disponibles.",
       });
       return;
     }
@@ -77,29 +76,32 @@ export default function RegisterPageClient() {
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
       const user = userCredential.user;
 
-      // Étape 2 : Mettre à jour le profil de l'utilisateur (nom d'affichage)
+      // Étape 2 : Mettre à jour le profil de l'utilisateur (nom d'affichage) dans Auth
       await updateProfile(user, { displayName: data.name });
 
-      // Étape 3 : SEULEMENT APRÈS la création réussie, créer le document de profil dans Firestore
+      // Étape 3 : Créer le document de profil dans Firestore
       const userProfileRef = doc(firestore, 'userProfiles', user.uid);
       const profileData = {
           id: user.uid,
           email: user.email,
           firstName: data.name.split(' ')[0] || '',
           lastName: data.name.split(' ').slice(1).join(' ') || '',
-          isAdmin: false, // Toujours définir sur false pour la sécurité
+          isAdmin: false,
+          createdAt: serverTimestamp(),
       };
       
-      // La règle de sécurité autorisera cette opération car l'utilisateur est maintenant authentifié
+      // Cette opération est maintenant autorisée par les règles de sécurité
       await setDoc(userProfileRef, profileData);
       
-      // Étape 4 : Envoyer l'e-mail de vérification et informer l'utilisateur
+      // Étape 4 : Envoyer l'e-mail de vérification
       await sendEmailVerification(user);
+      
       toast({
-          title: language === 'fr' ? 'Vérifiez votre e-mail' : language === 'en' ? 'Verify your email' : 'Überprüfen Sie Ihre E-Mail',
+          title: language === 'fr' ? 'Inscription réussie !' : language === 'en' ? 'Registration Successful!' : 'Registrierung erfolgreich!',
           description: language === 'fr' ? 'Un lien de vérification a été envoyé à votre adresse e-mail.' : language === 'en' ? 'A verification link has been sent to your email address.' : 'Ein Bestätigungslink wurde an Ihre E-Mail-Adresse gesendet.',
       });
       
+      // Étape 5 : Rediriger l'utilisateur vers la page de vérification
       router.push('/verify-email');
 
     } catch (error: any) {
@@ -116,7 +118,7 @@ export default function RegisterPageClient() {
            break;
          default:
            errorMessage = language === 'fr' ? 'Une erreur est survenue lors de l\'inscription.' : language === 'en' ? 'An error occurred during registration.' : 'Bei der Registrierung ist ein Fehler aufgetreten.';
-           console.error("Signup error:", error); // Log de l'erreur complète pour le débogage
+           console.error("Signup error:", error);
            break;
        }
       
