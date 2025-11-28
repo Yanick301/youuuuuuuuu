@@ -185,6 +185,10 @@
         "lastName": {
           "type": "string",
           "description": "The user's last name."
+        },
+        "isAdmin": {
+          "type": "boolean",
+          "description": "Indicates if the user has administrative privileges."
         }
       },
       "required": [
@@ -215,13 +219,13 @@
       "schema": {
         "$ref": "#/entities/UserProfile"
       },
-      "description": "Stores user profile information. Only the authenticated user can read/write their own profile."
+      "description": "Stores user profile information. Only the authenticated user can read/write their own profile. Admins have special access."
     },
     "/orders/{orderId}": {
       "schema": {
         "$ref": "#/entities/Order"
       },
-      "description": "Stores all order information. Any authenticated user can create their own order."
+      "description": "Stores all order information. Any authenticated user can create their own order. Admins can read all orders."
     }
   }
 }

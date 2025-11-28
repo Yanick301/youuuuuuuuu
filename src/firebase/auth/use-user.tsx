@@ -7,7 +7,7 @@ import { useFirebase } from '@/firebase/provider';
 import { doc, onSnapshot } from 'firebase/firestore';
 
 export type UserProfile = {
-  // No admin property anymore
+  isAdmin?: boolean;
   // other profile fields...
 };
 
@@ -16,8 +16,9 @@ export type WithId<T> = T & { id: string };
 export interface UserHookResult {
   user: User | null;
   profile: WithId<UserProfile> | null;
-  isLoading: boolean;
+  isUserLoading: boolean;
   error: Error | null;
+  isAdmin: boolean;
 }
 
 export const useUser = (): UserHookResult => {
@@ -85,5 +86,7 @@ export const useUser = (): UserHookResult => {
     return () => unsubscribeProfile();
   }, [user, firestore, isAuthLoading]);
 
-  return { user, profile, isLoading: isAuthLoading || isProfileLoading, error };
+  const isAdmin = profile?.isAdmin === true;
+
+  return { user, profile, isLoading: isAuthLoading || isProfileLoading, error, isAdmin };
 };

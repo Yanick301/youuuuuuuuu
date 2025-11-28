@@ -54,8 +54,5 @@ export type { UseDocResult, WithId as WithDocId } from './firestore/use-doc';
 export { useUser } from './auth/use-user';
 export type { UserProfile, WithId as WithUserId, UserHookResult } from './auth/use-user';
 
-export { setDocumentNonBlocking, addDocumentNonBlocking, updateDocumentNonBlocking, deleteDocumentNonBlocking } from './non-blocking-updates';
-export { initiateAnonymousSignIn, initiateEmailSignUp, initiateEmailSignIn } from './non-blocking-login';
-
 export { FirestorePermissionError } from './errors';
 export { errorEmitter, type AppEvents } from './error-emitter';

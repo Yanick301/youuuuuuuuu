@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Menu, Heart } from 'lucide-react';
+import { Menu, Heart, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
 
 import { categories } from '@/lib/data';
@@ -14,9 +14,11 @@ import { TranslatedText } from './TranslatedText';
 import { SearchDialog } from './search/SearchDialog';
 import { Separator } from './ui/separator';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { useUser } from '@/firebase';
 
 export function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const { isAdmin } = useUser();
 
   const handleLinkClick = () => {
     setIsSheetOpen(false);
@@ -66,6 +68,17 @@ export function Header() {
                             </Link>
                             </li>
                         ))}
+                         {isAdmin && (
+                            <li>
+                                <Link
+                                    href="/admin"
+                                    className="text-xl text-foreground/80 transition-colors hover:text-foreground"
+                                    onClick={handleLinkClick}
+                                >
+                                    Admin
+                                </Link>
+                            </li>
+                        )}
                         </ul>
                     </nav>
                 </main>
@@ -114,6 +127,14 @@ export function Header() {
              <Separator orientation="vertical" className="h-6 mx-2" />
              <LanguageSwitcher />
           </div>
+          {isAdmin && (
+            <Button variant="ghost" size="icon" asChild>
+                <Link href="/admin">
+                    <ShieldCheck className="h-5 w-5 text-primary" />
+                    <span className="sr-only">Admin</span>
+                </Link>
+            </Button>
+          )}
           <SearchDialog />
           <Button variant="ghost" size="icon" asChild>
             <Link href="/favorites">
