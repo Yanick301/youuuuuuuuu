@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
 import { useAuth, useFirestore, errorEmitter, FirestorePermissionError, useFirebase } from '@/firebase';
 import { createUserWithEmailAndPassword, updateProfile, type UserCredential, sendEmailVerification } from 'firebase/auth';
-import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -61,72 +61,65 @@ export default function RegisterPageClient() {
     },
   });
 
-  const handleUserCreation = async (userCredential: UserCredential, name?: string) => {
-    const user = userCredential.user;
-    if (!user || !firestore) return;
-
-    const userRef = doc(firestore, 'userProfiles', user.uid);
-    const userDoc = await getDoc(userRef);
-
-    if (!userDoc.exists()) {
-        const displayName = name || user.displayName;
-        if(displayName && user.displayName !== displayName) {
-          await updateProfile(user, { displayName });
-        }
-        
-        let profileData: any = {
-            id: user.uid,
-            email: user.email,
-            firstName: displayName?.split(' ')[0] || '',
-            lastName: displayName?.split(' ').slice(1).join(' ') || '',
-            registrationDate: serverTimestamp(),
-            isAdmin: false,
-        };
-        
-        try {
-            await setDoc(userRef, profileData);
-        } catch (e) {
-            const permissionError = new FirestorePermissionError({
-                path: userRef.path,
-                operation: 'create',
-                requestResourceData: profileData,
-            });
-            errorEmitter.emit('permission-error', permissionError);
-            throw permissionError; // Re-throw to be caught by the outer try/catch
-        }
-    }
-  };
-
   const onSubmit: SubmitHandler<z.infer<typeof currentSchema>> = async (data) => {
-    if (!auth) {
-      // Handle case where auth is not available
+    if (!auth || !firestore) {
+      console.error("Firebase services not available.");
+      toast({
+        variant: "destructive",
+        title: "Erreur",
+        description: "Les services Firebase ne sont pas disponibles. Veuillez réessayer plus tard.",
+      });
       return;
     }
+
     try {
+      // Étape 1 : Créer l'utilisateur dans Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      const user = userCredential.user;
+
+      // Étape 2 : Mettre à jour le profil de l'utilisateur (nom d'affichage)
+      await updateProfile(user, { displayName: data.name });
+
+      // Étape 3 : SEULEMENT APRÈS la création réussie, créer le document de profil dans Firestore
+      const userProfileRef = doc(firestore, 'userProfiles', user.uid);
+      const profileData = {
+          id: user.uid,
+          email: user.email,
+          firstName: data.name.split(' ')[0] || '',
+          lastName: data.name.split(' ').slice(1).join(' ') || '',
+          isAdmin: false, // Toujours définir sur false pour la sécurité
+      };
       
-      await handleUserCreation(userCredential, data.name);
+      // La règle de sécurité autorisera cette opération car l'utilisateur est maintenant authentifié
+      await setDoc(userProfileRef, profileData);
       
-      await sendEmailVerification(userCredential.user);
+      // Étape 4 : Envoyer l'e-mail de vérification et informer l'utilisateur
+      await sendEmailVerification(user);
       toast({
           title: language === 'fr' ? 'Vérifiez votre e-mail' : language === 'en' ? 'Verify your email' : 'Überprüfen Sie Ihre E-Mail',
           description: language === 'fr' ? 'Un lien de vérification a été envoyé à votre adresse e-mail.' : language === 'en' ? 'A verification link has been sent to your email address.' : 'Ein Bestätigungslink wurde an Ihre E-Mail-Adresse gesendet.',
       });
+      
       router.push('/verify-email');
 
     } catch (error: any) {
-       if (error instanceof FirestorePermissionError) {
-            toast({
-                variant: 'destructive',
-                title: 'Erreur de Permission',
-                description: 'Impossible de créer le profil utilisateur. Vérifiez les règles de sécurité.',
-            });
-            return;
+       let errorMessage: string;
+       switch (error.code) {
+         case 'auth/email-already-in-use':
+           errorMessage = language === 'fr' ? 'Cette adresse e-mail est déjà utilisée.' : language === 'en' ? 'This email address is already in use.' : 'Diese E-Mail-Adresse wird bereits verwendet.';
+           break;
+         case 'auth/weak-password':
+           errorMessage = language === 'fr' ? 'Le mot de passe doit contenir au moins 6 caractères.' : language === 'en' ? 'Password must be at least 6 characters.' : 'Das Passwort muss mindestens 6 Zeichen lang sein.';
+           break;
+        case 'auth/invalid-email':
+           errorMessage = language === 'fr' ? 'L\'adresse e-mail est invalide.' : language === 'en' ? 'The email address is invalid.' : 'Die E-Mail-Adresse ist ungültig.';
+           break;
+         default:
+           errorMessage = language === 'fr' ? 'Une erreur est survenue lors de l\'inscription.' : language === 'en' ? 'An error occurred during registration.' : 'Bei der Registrierung ist ein Fehler aufgetreten.';
+           console.error("Signup error:", error); // Log de l'erreur complète pour le débogage
+           break;
        }
-
-       const errorMessage = error.code === 'auth/email-already-in-use' 
-        ? (language === 'fr' ? 'Cette adresse e-mail est déjà utilisée.' : language === 'en' ? 'This email address is already in use.' : 'Diese E-Mail-Adresse wird bereits verwendet.')
-        : (language === 'fr' ? 'Une erreur est survenue lors de l\'inscription.' : language === 'en' ? 'An error occurred during registration.' : 'Bei der Registrierung ist ein Fehler aufgetreten.');
+      
       toast({
         variant: 'destructive',
         title: language === 'fr' ? 'Échec de l\'inscription' : language === 'en' ? 'Registration Failed' : 'Registrierung fehlgeschlagen',
