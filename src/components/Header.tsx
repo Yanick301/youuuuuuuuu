@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Menu, Heart, ShoppingCart, ShieldCheck } from 'lucide-react';
+import { Menu, Heart, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
 
 import { categories } from '@/lib/data';
@@ -12,6 +12,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetTrigger,
 } from '@/components/ui/sheet';
 import { UserButton } from '@/components/auth/UserButton';
 import { TranslatedText } from './TranslatedText';
@@ -157,14 +158,6 @@ export function Header() {
               </span>
             </Link>
           </Button>
-           <Button variant="ghost" size="icon">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="sr-only">
-                <TranslatedText fr="Panier" en="Cart">
-                  Warenkorb
-                </TranslatedText>
-              </span>
-            </Button>
         </div>
       </div>
     </header>
