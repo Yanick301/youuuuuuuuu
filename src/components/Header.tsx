@@ -135,18 +135,19 @@ export function Header() {
             ))}
           </nav>
           <div className="hidden lg:flex items-center">
+            {isAdmin && (
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/admin">
+                  <ShieldCheck className="h-5 w-5 mr-1" />
+                  Admin
+                </Link>
+              </Button>
+            )}
             <UserButton />
             <Separator orientation="vertical" className="h-6 mx-2" />
             <LanguageSwitcher />
           </div>
-          {isAdmin && (
-            <Button variant="ghost" size="icon" asChild>
-              <Link href="/admin">
-                <ShieldCheck className="h-5 w-5 text-primary" />
-                <span className="sr-only">Admin</span>
-              </Link>
-            </Button>
-          )}
+          
           <SearchDialog />
           <Button variant="ghost" size="icon" asChild>
             <Link href="/favorites">
