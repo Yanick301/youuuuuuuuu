@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useAuth, useFirestore } from '@/firebase';
+import { useAuth, useFirestore, errorEmitter, FirestorePermissionError, useFirebase } from '@/firebase';
 import { createUserWithEmailAndPassword, updateProfile, type UserCredential, sendEmailVerification } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
@@ -45,8 +45,7 @@ const registerSchemaEN = z.object({
 });
 
 export default function RegisterPageClient() {
-  const auth = useAuth();
-  const firestore = useFirestore();
+  const { auth, firestore } = useFirebase();
   const router = useRouter();
   const { toast } = useToast();
   const { language } = useLanguage();
@@ -84,7 +83,17 @@ export default function RegisterPageClient() {
             isAdmin: false,
         };
         
-        await setDoc(userRef, profileData);
+        try {
+            await setDoc(userRef, profileData);
+        } catch (e) {
+            const permissionError = new FirestorePermissionError({
+                path: userRef.path,
+                operation: 'create',
+                requestResourceData: profileData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
+            throw permissionError; // Re-throw to be caught by the outer try/catch
+        }
     }
   };
 
@@ -106,6 +115,15 @@ export default function RegisterPageClient() {
       router.push('/verify-email');
 
     } catch (error: any) {
+       if (error instanceof FirestorePermissionError) {
+            toast({
+                variant: 'destructive',
+                title: 'Erreur de Permission',
+                description: 'Impossible de créer le profil utilisateur. Vérifiez les règles de sécurité.',
+            });
+            return;
+       }
+
        const errorMessage = error.code === 'auth/email-already-in-use' 
         ? (language === 'fr' ? 'Cette adresse e-mail est déjà utilisée.' : language === 'en' ? 'This email address is already in use.' : 'Diese E-Mail-Adresse wird bereits verwendet.')
         : (language === 'fr' ? 'Une erreur est survenue lors de l\'inscription.' : language === 'en' ? 'An error occurred during registration.' : 'Bei der Registrierung ist ein Fehler aufgetreten.');

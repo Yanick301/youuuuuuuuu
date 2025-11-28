@@ -80,32 +80,22 @@ export default function LoginPageClient() {
             await setDoc(userRef, profileData, { merge: true });
         }
     } catch (e) {
-        // This is a read error, less likely but possible
+        // This can be a read (getDoc) or write (setDoc) error.
+        // We emit a generic write error as it's the more critical failure point.
         const permissionError = new FirestorePermissionError({
             path: userRef.path,
-            operation: 'get',
+            operation: 'write', 
         });
         errorEmitter.emit('permission-error', permissionError);
-        // Re-throw to be caught by the outer try/catch
-        throw e;
+        throw permissionError; // Re-throw to be caught by the outer try/catch
     }
   };
 
   const onSubmit: SubmitHandler<z.infer<typeof currentSchema>> = async (data) => {
-    if (!auth) return;
+    if (!auth || !firestore) return;
     try {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
-      await handleUserCreation(userCredential).catch((e) => {
-          // This specifically catches failures within handleUserCreation,
-          // including our re-thrown permission error.
-          // The most likely error here is the setDoc failing.
-          const userRef = doc(firestore, 'userProfiles', userCredential.user.uid);
-          const permissionError = new FirestorePermissionError({
-                path: userRef.path,
-                operation: 'write', 
-          });
-          errorEmitter.emit('permission-error', permissionError);
-      });
+      await handleUserCreation(userCredential)
       
       toast({
           title: language === 'fr' ? 'Connexion réussie' : language === 'en' ? 'Login Successful' : 'Anmeldung erfolgreich',
