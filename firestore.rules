@@ -31,14 +31,13 @@ service cloud.firestore {
     
     // Orders collection is now at the root.
     match /orders/{orderId} {
-      // User can create their own order.
-      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      // Any authenticated user can create, read, and update their own order.
+      // This is a simplified rule as requested.
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow read, update: if request.auth != null && resource.data.userId == request.auth.uid;
       
-      // User can upload their own receipt (update), with validation on the receipt image size.
-      // User can also view their own order.
-      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
-      allow update: if request.auth != null && request.auth.uid == resource.data.userId && request.resource.data.receiptImageUrl.size() < 1048576;
-      allow list: if false;
+      // Listing all orders is disallowed for security.
+      allow list, delete: if false;
     }
   }
 }
