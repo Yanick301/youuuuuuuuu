@@ -1,7 +1,7 @@
 
 'use client';
 
-import { notFound, useParams } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { Star } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 
@@ -27,13 +27,8 @@ import { useRouter } from 'next/navigation';
 
 const { placeholderImages } = placeholderImagesData;
 
-type ProductPageProps = {
-  params: {
-    slug: string;
-  };
-};
 
-export default function ProductPage({ params }: ProductPageProps) {
+export default function ProductPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
   const router = useRouter();
   const [product, setProduct] = useState<Product | undefined>(undefined);
@@ -359,3 +354,5 @@ export default function ProductPage({ params }: ProductPageProps) {
     </div>
   );
 }
+
+    
