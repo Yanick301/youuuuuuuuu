@@ -189,6 +189,10 @@
         "isAdmin": {
           "type": "boolean",
           "description": "Indicates if the user has administrative privileges."
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "URL of the user's profile picture, stored as a Base64 Data URI."
         }
       },
       "required": [

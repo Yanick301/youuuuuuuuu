@@ -8,6 +8,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 
 export type UserProfile = {
   isAdmin?: boolean;
+  photoURL?: string;
   // other profile fields...
 };
 
@@ -61,6 +62,7 @@ export const useUser = (): UserHookResult => {
       if (!isAuthLoading) { // Only stop loading if auth check is also complete
         setIsProfileLoading(false);
       }
+      setProfile(null); // Clear profile if no user
       return;
     }
 
@@ -88,5 +90,5 @@ export const useUser = (): UserHookResult => {
 
   const isAdmin = profile?.isAdmin === true;
 
-  return { user, profile, isLoading: isAuthLoading || isProfileLoading, error, isAdmin };
+  return { user, profile, isUserLoading: isAuthLoading || isProfileLoading, error, isAdmin };
 };

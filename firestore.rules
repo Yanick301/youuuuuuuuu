@@ -27,7 +27,9 @@ service cloud.firestore {
     // Admins can read any profile but not write to it.
     match /userProfiles/{userId} {
       allow create: if request.auth != null && request.auth.uid == userId;
-      allow read, update: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId && 
+                       (request.resource.data.photoURL.size() < 1048576 || !('photoURL' in request.resource.data.keys()));
       allow get: if isAdmin();
 
       // User can LIST their own cart items.
