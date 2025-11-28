@@ -40,10 +40,10 @@ function ConfirmPaymentContent() {
     }
     
     const bankDetails = {
-        'Bénéficiaire': 'EZCENTIALS GmbH',
-        'IBAN': 'DE89 3704 0044 0532 0130 00',
-        'BIC': 'COBADEFFXXX',
-        'Banque': 'Commerzbank',
+        'Bénéficiaire': 'Sabine Menke',
+        'IBAN': 'DE78500319000014630686',
+        'BIC/SWIFT': 'BBVADEFFXXX',
+        'Banque': 'BBVA',
         'Motif de virement': `Commande ${orderId}`
     };
 
@@ -51,7 +51,7 @@ function ConfirmPaymentContent() {
         navigator.clipboard.writeText(text);
         toast({
             title: 'Copié !',
-            description: `${text} a été copié dans le presse-papiers.`
+            description: `Le texte a été copié dans le presse-papiers.`
         })
     }
 
@@ -74,7 +74,7 @@ function ConfirmPaymentContent() {
     };
 
     const handleUpload = async () => {
-        if (!receiptImage || !firestore || !user) return;
+        if (!receiptImage || !firestore || !user || !orderId) return;
         setIsUploading(true);
         try {
             const orderRef = doc(firestore, 'orders', orderId);
@@ -107,15 +107,20 @@ function ConfirmPaymentContent() {
                 <h1 className="mt-4 font-headline text-4xl">
                 <TranslatedText fr="Presque terminé !" en="Almost Done!">Fast geschafft!</TranslatedText>
                 </h1>
-                <p className="mt-2 text-lg text-muted-foreground">
-                <TranslatedText fr="Finalisez votre commande en effectuant le virement bancaire." en="Finalize your order by making the bank transfer.">Schließen Sie Ihre Bestellung ab, indem Sie die Banküberweisung tätigen.</TranslatedText>
+                <p className="mt-2 text-lg text-muted-foreground max-w-2xl mx-auto">
+                    <TranslatedText 
+                        fr="Pour finaliser votre commande, veuillez suivre les deux étapes ci-dessous : effectuer le virement bancaire puis téléverser votre preuve de paiement." 
+                        en="To finalize your order, please follow the two steps below: make the bank transfer then upload your proof of payment."
+                    >
+                        Um Ihre Bestellung abzuschließen, befolgen Sie bitte die beiden folgenden Schritte: Führen Sie die Banküberweisung durch und laden Sie dann Ihren Zahlungsnachweis hoch.
+                    </TranslatedText>
                 </p>
             </div>
 
             <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
                 <Card>
                     <CardHeader>
-                        <CardTitle><TranslatedText fr="Détails pour le virement" en="Bank Transfer Details">Details für die Überweisung</TranslatedText></CardTitle>
+                        <CardTitle><TranslatedText fr="Étape 1 : Effectuer le virement" en="Step 1: Make the Bank Transfer">Schritt 1: Überweisung tätigen</TranslatedText></CardTitle>
                         <CardDescription><TranslatedText fr="Utilisez ces informations pour payer votre commande." en="Use this information to pay for your order.">Verwenden Sie diese Informationen, um Ihre Bestellung zu bezahlen.</TranslatedText></CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -123,8 +128,8 @@ function ConfirmPaymentContent() {
                             <div key={key}>
                                 <h4 className="text-sm font-semibold text-muted-foreground">{key}</h4>
                                 <div className="flex items-center justify-between">
-                                    <p className="font-mono text-sm">{value}</p>
-                                    <Button variant="ghost" size="icon" onClick={() => handleCopy(value)}>
+                                    <p className="font-mono text-sm break-all pr-2">{value}</p>
+                                    <Button variant="ghost" size="icon" className="shrink-0" onClick={() => handleCopy(value)}>
                                         <Copy className="h-4 w-4" />
                                     </Button>
                                 </div>
@@ -134,7 +139,7 @@ function ConfirmPaymentContent() {
                 </Card>
                  <Card>
                     <CardHeader>
-                        <CardTitle><TranslatedText fr="Téléverser la preuve de paiement" en="Upload Proof of Payment">Zahlungsnachweis hochladen</TranslatedText></CardTitle>
+                        <CardTitle><TranslatedText fr="Étape 2 : Téléverser la preuve" en="Step 2: Upload Proof">Schritt 2: Nachweis hochladen</TranslatedText></CardTitle>
                         <CardDescription><TranslatedText fr="Une fois le virement effectué, téléversez une capture d'écran ou une photo du reçu." en="Once the transfer is made, upload a screenshot or photo of the receipt.">Sobald die Überweisung erfolgt ist, laden Sie einen Screenshot oder ein Foto des Belegs hoch.</TranslatedText></CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4 text-center">
@@ -142,17 +147,20 @@ function ConfirmPaymentContent() {
                         {receiptImage ? (
                            <div className='relative mx-auto w-fit'>
                              <img src={receiptImage} alt="Aperçu du reçu" className="max-h-48 w-auto rounded-md border" />
-                              <Button variant="destructive" size="sm" className="absolute -top-2 -right-2 rounded-full" onClick={() => setReceiptImage(null)}>X</Button>
+                              <Button variant="destructive" size="sm" className="absolute -top-2 -right-2 rounded-full h-6 w-6 p-0" onClick={() => setReceiptImage(null)}>
+                                <X className="h-3 w-3" />
+                              </Button>
                            </div>
                         ) : (
                             <label htmlFor="receipt" className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-10 hover:bg-muted/50">
                                 <Upload className="h-10 w-10 text-muted-foreground" />
                                 <p className="mt-2 text-sm text-muted-foreground"><TranslatedText fr="Cliquez pour choisir un fichier" en="Click to choose a file">Klicken Sie, um eine Datei auszuwählen</TranslatedText></p>
+                                <p className="text-xs text-muted-foreground/80 mt-1"><TranslatedText fr="(Max 1Mo)" en="(Max 1MB)">(Max 1MB)</TranslatedText></p>
                             </label>
                         )}
                         <Button className="w-full" onClick={handleUpload} disabled={!receiptImage || isUploading}>
                             {isUploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : null}
-                            <TranslatedText fr="Confirmer le paiement" en="Confirm Payment">Zahlung bestätigen</TranslatedText>
+                            <TranslatedText fr="Valider ma commande" en="Validate My Order">Meine Bestellung bestätigen</TranslatedText>
                         </Button>
                     </CardContent>
                 </Card>
@@ -173,3 +181,5 @@ export default function ConfirmPaymentPage() {
         </Suspense>
     )
 }
+
+    
