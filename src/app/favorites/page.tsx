@@ -1,7 +1,5 @@
-
 'use client';
 
-import { useFavorites } from '@/context/FavoritesContext';
 import { products } from '@/lib/data';
 import { ProductCard } from '@/components/ProductCard';
 import { TranslatedText } from '@/components/TranslatedText';
@@ -9,9 +7,8 @@ import { Heart } from 'lucide-react';
 import { useUser } from '@/firebase';
 
 export default function FavoritesPage() {
-  const { favorites } = useFavorites();
   const { user } = useUser();
-  const favoriteProducts = products.filter((p) => favorites.includes(p.id));
+  const favoriteProducts = products.slice(0, 4); // Placeholder
 
   return (
     <div className="container mx-auto px-4 py-12">

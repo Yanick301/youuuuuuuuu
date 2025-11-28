@@ -1,4 +1,3 @@
-
 'use client';
 
 import { notFound, useParams } from 'next/navigation';
@@ -10,7 +9,6 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProductCard } from '@/components/ProductCard';
 import placeholderImagesData from '@/lib/placeholder-images.json';
-import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { TranslatedText } from '@/components/TranslatedText';
 import { AddToFavoritesButton } from '@/components/favorites/AddToFavoritesButton';
 import { Textarea } from '@/components/ui/textarea';
@@ -241,13 +239,9 @@ export default function ProductPage() {
           </div>
 
           <div className="mt-8 flex items-center gap-4">
-            <AddToCartButton 
-              product={product} 
-              options={{ size: selectedSize, color: selectedColor }}
-              disabled={ (product.sizes && product.sizes.length > 0 && !selectedSize) || (product.colors && product.colors.length > 0 && !selectedColor) }
-            >
+            <Button>
               <TranslatedText fr="Ajouter au panier" en="Add to Cart">In den Warenkorb</TranslatedText>
-            </AddToCartButton>
+            </Button>
             <AddToFavoritesButton productId={product.id} />
           </div>
 
@@ -355,5 +349,3 @@ export default function ProductPage() {
     </div>
   );
 }
-
-    

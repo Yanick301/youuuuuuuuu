@@ -4,11 +4,11 @@ import type { Product } from '@/lib/types';
 import placeholderImagesData from '@/lib/placeholder-images.json';
 import { TranslatedText } from './TranslatedText';
 import { AddToFavoritesButton } from './favorites/AddToFavoritesButton';
-import { AddToCartButton } from './cart/AddToCartButton';
 import { Star } from 'lucide-react';
 import { ProductCardActions } from './ProductCardActions';
 import { Badge } from './ui/badge';
 import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -68,11 +68,11 @@ export function ProductCard({ product }: ProductCardProps) {
                       <p className="text-sm text-muted-foreground line-through">€{product.oldPrice.toFixed(2)}</p>
                   )}
               </div>
-              <AddToCartButton product={product} variant="ghost" size="icon" />
+              <Button variant="ghost" size="icon">
+                <TranslatedText fr="Acheter" en="Buy">Kaufen</TranslatedText>
+              </Button>
             </div>
         </div>
     </div>
   );
 }
-
-    
