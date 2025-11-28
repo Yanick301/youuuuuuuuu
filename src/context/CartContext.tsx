@@ -4,7 +4,7 @@
 import { createContext, useContext, useState, type ReactNode, useEffect, useCallback } from 'react';
 import type { CartItem, Product } from '@/lib/types';
 import { useUser, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
-import { collection, doc, getDocs, writeBatch, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, writeBatch, setDoc, deleteDoc } from 'firebase/firestore';
 import { products as allProducts } from '@/lib/data';
 
 type AddToCartOptions = {
@@ -39,13 +39,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
 
-  const loadLocalCart = useCallback(() => {
+  const loadLocalCart = useCallback((): CartItem[] => {
     try {
       const localCartJson = localStorage.getItem(LOCAL_STORAGE_CART_KEY);
       if (localCartJson) {
         const localCart: Omit<CartItem, 'product'>[] = JSON.parse(localCartJson);
         const hydratedCart = localCart.map(item => {
-          if (!item || !item.id) { // Defensive check
+          if (!item || !item.id) {
             return null;
           }
           const productId = item.id.split('-')[0];
@@ -68,7 +68,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       console.error("Failed to save cart to local storage:", error);
     }
   }, []);
-
+  
   const fetchFirestoreCart = useCallback(async (userId: string): Promise<CartItem[]> => {
     if (!firestore) return [];
     try {
@@ -97,28 +97,39 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [firestore]);
 
   const syncCarts = useCallback(async (localCart: CartItem[], remoteCart: CartItem[], userId: string) => {
-      if (!firestore) return remoteCart;
+    if (!firestore) return remoteCart;
+    
+    const mergedCartMap = new Map<string, CartItem>();
+    
+    // Start with remote items
+    remoteCart.forEach(item => mergedCartMap.set(item.id, { ...item }));
+    
+    // Merge local items
+    localCart.forEach(localItem => {
+      const existingItem = mergedCartMap.get(localItem.id);
+      if (existingItem) {
+        // If item exists in both, sum quantities.
+        existingItem.quantity += localItem.quantity;
+      } else {
+        // If item only exists locally, add it.
+        mergedCartMap.set(localItem.id, localItem);
+      }
+    });
 
-      const mergedCartMap = new Map<string, CartItem>();
-      
-      remoteCart.forEach(item => mergedCartMap.set(item.id, item));
-      
-      localCart.forEach(localItem => {
-        const remoteItem = mergedCartMap.get(localItem.id);
-        if (!remoteItem) {
-          mergedCartMap.set(localItem.id, localItem);
-        } else {
-          // If item exists, sum quantities
-          remoteItem.quantity += localItem.quantity;
-          mergedCartMap.set(localItem.id, remoteItem);
-        }
-      });
-      
-      const finalCart = Array.from(mergedCartMap.values());
-      
+    const finalCart = Array.from(mergedCartMap.values());
+
+    try {
       const batch = writeBatch(firestore);
+      const cartColRef = collection(firestore, 'userProfiles', userId, 'cartItems');
+      
+      // We can't just batch write everything, because some remote items might have been deleted locally.
+      // A simpler approach is to clear the remote cart and write the merged one.
+      const existingDocs = await getDocs(cartColRef);
+      existingDocs.forEach(doc => batch.delete(doc.ref));
+
+      // Now, add all items from the merged cart.
       finalCart.forEach(item => {
-        const docRef = doc(firestore, 'userProfiles', userId, 'cartItems', item.id);
+        const docRef = doc(cartColRef, item.id);
         batch.set(docRef, { 
           productId: item.product.id,
           quantity: item.quantity,
@@ -127,42 +138,40 @@ export function CartProvider({ children }: { children: ReactNode }) {
         });
       });
 
-      remoteCart.forEach(remoteItem => {
-        if (!finalCart.some(item => item.id === remoteItem.id)) {
-            const docRef = doc(firestore, 'userProfiles', userId, 'cartItems', remoteItem.id);
-            batch.delete(docRef);
-        }
-      });
-
-      await batch.commit().catch(e => {
-         const permissionError = new FirestorePermissionError({
-            path: `userProfiles/${userId}/cartItems`,
-            operation: 'write',
-         });
-         errorEmitter.emit('permission-error', permissionError);
-      });
-      
-      localStorage.removeItem(LOCAL_STORAGE_CART_KEY);
-      
+      await batch.commit();
+      localStorage.removeItem(LOCAL_STORAGE_CART_KEY); // Clear local cart after successful sync
       return finalCart;
-
+    } catch (e) {
+       const permissionError = new FirestorePermissionError({
+          path: `userProfiles/${userId}/cartItems`,
+          operation: 'write',
+       });
+       errorEmitter.emit('permission-error', permissionError);
+       // In case of error, return the remote cart to avoid data loss
+       return remoteCart;
+    }
   }, [firestore]);
+
 
   useEffect(() => {
     const initializeCart = async () => {
-        setIsCartLoading(true);
-        if (isUserLoading) return;
+      if (isUserLoading) return; // Wait until auth state is resolved
 
-        const localCart = loadLocalCart();
+      setIsCartLoading(true);
+      const localCart = loadLocalCart();
 
-        if (user && firestore) {
-            const remoteCart = await fetchFirestoreCart(user.uid);
-            const syncedCart = await syncCarts(localCart, remoteCart, user.uid);
-            setCart(syncedCart);
+      if (user && firestore) {
+        const remoteCart = await fetchFirestoreCart(user.uid);
+        if (localCart.length > 0) {
+          const syncedCart = await syncCarts(localCart, remoteCart, user.uid);
+          setCart(syncedCart);
         } else {
-            setCart(localCart);
+          setCart(remoteCart);
         }
-        setIsCartLoading(false);
+      } else {
+        setCart(localCart);
+      }
+      setIsCartLoading(false);
     };
     initializeCart();
   }, [user, isUserLoading, firestore, fetchFirestoreCart, loadLocalCart, syncCarts]);
@@ -244,15 +253,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const clearCart = useCallback(async () => {
     setCart([]);
     if (user && firestore) {
-      const cartColRef = collection(firestore, 'userProfiles', user.uid, 'cartItems');
-      const snapshot = await getDocs(cartColRef).catch(() => null);
-      if (snapshot && !snapshot.empty) {
-        const batch = writeBatch(firestore);
-        snapshot.forEach(doc => batch.delete(doc.ref));
-        await batch.commit().catch(e => {
-            const permissionError = new FirestorePermissionError({ path: `userProfiles/${user.uid}/cartItems`, operation: 'delete' });
-            errorEmitter.emit('permission-error', permissionError);
-        });
+      try {
+        const cartColRef = collection(firestore, 'userProfiles', user.uid, 'cartItems');
+        const snapshot = await getDocs(cartColRef);
+        if (!snapshot.empty) {
+          const batch = writeBatch(firestore);
+          snapshot.forEach(doc => batch.delete(doc.ref));
+          await batch.commit();
+        }
+      } catch (e) {
+          const permissionError = new FirestorePermissionError({ path: `userProfiles/${user.uid}/cartItems`, operation: 'delete' });
+          errorEmitter.emit('permission-error', permissionError);
       }
     } else {
       localStorage.removeItem(LOCAL_STORAGE_CART_KEY);
