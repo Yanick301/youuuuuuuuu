@@ -9,7 +9,7 @@ import { TranslatedText } from '@/components/TranslatedText';
 
 export default function CheckoutPage() {
   const { user, isUserLoading } = useUser();
-  const { totalItems, subtotal } = useCart();
+  const { totalItems } = useCart();
   const router = useRouter();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export default function CheckoutPage() {
       return;
     }
     if (!user) {
-      router.push('/login?redirect=/checkout');
+      router.push('/login?redirect=/checkout/payment-method');
     } else if (totalItems === 0) {
       router.push('/products/all');
     } else {
