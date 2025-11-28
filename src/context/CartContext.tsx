@@ -4,7 +4,7 @@
 import { createContext, useContext, useState, type ReactNode, useEffect, useCallback } from 'react';
 import type { CartItem, Product } from '@/lib/types';
 import { useUser, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
-import { collection, doc, getDocs, writeBatch, setDoc, deleteDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, writeBatch, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import { products as allProducts } from '@/lib/data';
 
 type AddToCartOptions = {
@@ -122,12 +122,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const batch = writeBatch(firestore);
       const cartColRef = collection(firestore, 'userProfiles', userId, 'cartItems');
       
-      // We can't just batch write everything, because some remote items might have been deleted locally.
-      // A simpler approach is to clear the remote cart and write the merged one.
-      const existingDocs = await getDocs(cartColRef);
-      existingDocs.forEach(doc => batch.delete(doc.ref));
-
-      // Now, add all items from the merged cart.
+      // Update or set items in the batch
       finalCart.forEach(item => {
         const docRef = doc(cartColRef, item.id);
         batch.set(docRef, { 
