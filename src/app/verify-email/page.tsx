@@ -16,7 +16,7 @@ import { sendEmailVerification } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/context/LanguageContext';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { MailCheck } from 'lucide-react';
 
 export default function VerifyEmailPage() {
@@ -25,23 +25,31 @@ export default function VerifyEmailPage() {
   const { toast } = useToast();
   const { language } = useLanguage();
   const router = useRouter();
+  const [isResending, setIsResending] = useState(false);
 
+  // This effect will run when the user's auth state changes.
+  // If their email becomes verified, it will redirect them.
   useEffect(() => {
-    if (!isUserLoading && user?.emailVerified) {
+    // We check `user` directly. If it exists and emailVerified is true, we redirect.
+    if (user?.emailVerified) {
+      toast({
+        title: language === 'fr' ? 'Compte vérifié !' : language === 'en' ? 'Account Verified!' : 'Konto bestätigt!',
+        description: language === 'fr' ? 'Vous allez être redirigé...' : language === 'en' ? 'Redirecting...' : 'Sie werden weitergeleitet...',
+      });
       router.push('/account');
     }
-  }, [user, isUserLoading, router]);
-
+  }, [user, language, router, toast]);
 
   const handleResendEmail = async () => {
     if (!auth.currentUser) {
         toast({
             variant: "destructive",
-            title: "Fehler",
+            title: "Erreur",
             description: "Kein Benutzer angemeldet.",
         });
         return;
     }
+    setIsResending(true);
     try {
       await sendEmailVerification(auth.currentUser);
       toast({
@@ -52,11 +60,32 @@ export default function VerifyEmailPage() {
       console.error(error);
       toast({
         variant: 'destructive',
-        title: 'Fehler',
-        description: error.message,
+        title: 'Erreur',
+        description: "Une erreur s'est produite lors de l'envoi de l'e-mail.",
       });
+    } finally {
+        setIsResending(false);
     }
   };
+
+  // While firebase is checking auth state, we can show a simple loader.
+  if (isUserLoading) {
+      return (
+          <div className="flex min-h-[80vh] items-center justify-center">
+              <p>Chargement...</p>
+          </div>
+      )
+  }
+
+  // If user is already verified (e.g. they came back to this page), they'll be redirected by the useEffect.
+  // We can show a message while that happens.
+  if (user?.emailVerified) {
+       return (
+          <div className="flex min-h-[80vh] items-center justify-center">
+              <p><TranslatedText fr="Compte déjà vérifié. Redirection..." en="Account already verified. Redirecting...">Konto bereits bestätigt. Weiterleitung...</TranslatedText></p>
+          </div>
+      )
+  }
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center bg-background px-4">
@@ -75,8 +104,11 @@ export default function VerifyEmailPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
-          <Button onClick={handleResendEmail} className="w-full">
-            <TranslatedText fr="Renvoyer l'e-mail de vérification" en="Resend Verification Email">Bestätigungs-E-Mail erneut senden</TranslatedText>
+          <Button onClick={handleResendEmail} className="w-full" disabled={isResending}>
+            {isResending 
+                ? <TranslatedText fr="Envoi en cours..." en="Resending...">Erneutes Senden...</TranslatedText>
+                : <TranslatedText fr="Renvoyer l'e-mail de vérification" en="Resend Verification Email">Bestätigungs-E-Mail erneut senden</TranslatedText>
+            }
           </Button>
           <Button variant="ghost" asChild className="w-full">
             <Link href="/login"><TranslatedText fr="Retour à la connexion" en="Back to Login">Zurück zum Login</TranslatedText></Link>

@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useAuth, useFirestore, errorEmitter, FirestorePermissionError, useFirebase } from '@/firebase';
+import { useFirebase } from '@/firebase';
 import { signInWithEmailAndPassword, type UserCredential } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -72,25 +72,21 @@ export default function LoginPageClient() {
         const userDoc = await getDoc(userRef);
 
         if (!userDoc.exists()) {
-            const profileData = {
+             await setDoc(userRef, {
                 id: user.uid,
                 email: user.email,
                 firstName: user.displayName?.split(' ')[0] || '',
                 lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
                 isAdmin: false,
-                registrationDate: serverTimestamp(),
-            };
-            await setDoc(userRef, profileData, { merge: true });
+             }, { merge: true });
         }
     } catch (e) {
-        // This can be a read (getDoc) or write (setDoc) error.
-        // We emit a generic write error as it's the more critical failure point.
-        const permissionError = new FirestorePermissionError({
-            path: userRef.path,
-            operation: 'write', 
+       console.error("Error creating user profile document:", e)
+        toast({
+            variant: 'destructive',
+            title: 'Erreur de profil',
+            description: 'Impossible de créer le profil utilisateur.',
         });
-        errorEmitter.emit('permission-error', permissionError);
-        throw permissionError; // Re-throw to be caught by the outer try/catch
     }
   };
 
@@ -99,9 +95,14 @@ export default function LoginPageClient() {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
       
+      // IMPORTANT: Check for email verification
       if (userCredential.user && !userCredential.user.emailVerified) {
+        toast({
+            title: language === 'fr' ? 'Vérification requise' : language === 'en' ? 'Verification Required' : 'Bestätigung erforderlich',
+            description: language === 'fr' ? 'Veuillez vérifier votre e-mail avant de vous connecter.' : language === 'en' ? 'Please verify your email before logging in.' : 'Bitte bestätigen Sie Ihre E-Mail, bevor Sie sich anmelden.',
+        });
         router.push('/verify-email');
-        return;
+        return; // Stop execution here
       }
 
       await handleUserCreation(userCredential)
@@ -116,19 +117,11 @@ export default function LoginPageClient() {
       router.refresh();
 
     } catch (error: any) {
-      if (error instanceof FirestorePermissionError) {
-         // Error is already emitted, just show a toast
-          toast({
-            variant: 'destructive',
-            title: 'Erreur de Permission',
-            description: 'Impossible de mettre à jour le profil utilisateur.',
-          });
-          return;
+      let errorMessage = language === 'fr' ? 'Une erreur est survenue lors de la connexion.' : language === 'en' ? 'An error occurred during login.' : 'Bei der Anmeldung ist ein Fehler aufgetreten.';
+      if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+          errorMessage = language === 'fr' ? 'Email ou mot de passe incorrect.' : language === 'en' ? 'Incorrect email or password.' : 'Falsche E-Mail oder falsches Passwort.';
       }
-        
-      const errorMessage = error.code === 'auth/invalid-credential' 
-        ? (language === 'fr' ? 'Email ou mot de passe incorrect.' : language === 'en' ? 'Incorrect email or password.' : 'Falsche E-Mail oder falsches Passwort.')
-        : (language === 'fr' ? 'Une erreur est survenue lors de la connexion.' : language === 'en' ? 'An error occurred during login.' : 'Bei der Anmeldung ist ein Fehler aufgetreten.');
+      
       toast({
         variant: 'destructive',
         title: language === 'fr' ? 'Échec de la connexion' : language === 'en' ? 'Login Failed' : 'Anmeldung fehlgeschlagen',
