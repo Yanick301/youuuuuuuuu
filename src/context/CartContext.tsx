@@ -77,13 +77,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const remoteCart = snapshot.docs.map(doc => {
         const data = doc.data();
         const product = allProducts.find(p => p.id === data.productId);
-        return product ? {
+        if (!product) return null;
+        
+        const cartItem: CartItem = {
           id: doc.id,
           product,
           quantity: data.quantity,
-          size: data.size,
-          color: data.color,
-        } : null;
+        };
+        if (data.size) cartItem.size = data.size;
+        if (data.color) cartItem.color = data.color;
+        
+        return cartItem;
       }).filter((item): item is CartItem => item !== null);
       return remoteCart;
     } catch (e) {
