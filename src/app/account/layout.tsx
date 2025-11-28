@@ -52,24 +52,10 @@ export default function AccountLayout({
       router.push('/login');
       return;
     }
-    // This is the crucial check: If the user is authenticated via password but their email isn't verified,
-    // redirect them to the verification page.
-    if (
-      user.providerData.some((p) => p.providerId === 'password') &&
-      !user.emailVerified
-    ) {
-      router.push('/verify-email');
-      return;
-    }
   }, [user, isUserLoading, router]);
 
   // Show a loading screen while auth state is being determined or if a redirect is imminent.
-  if (
-    isUserLoading ||
-    !user ||
-    (user.providerData.some((p) => p.providerId === 'password') &&
-      !user.emailVerified)
-  ) {
+  if (isUserLoading || !user) {
     return (
       <div className="container mx-auto flex min-h-[60vh] items-center justify-center text-center">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />

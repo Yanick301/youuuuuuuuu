@@ -71,14 +71,15 @@ export default function LoginPageClient() {
     try {
         const userDoc = await getDoc(userRef);
 
+        // Only create the profile if it doesn't already exist.
         if (!userDoc.exists()) {
              await setDoc(userRef, {
                 id: user.uid,
                 email: user.email,
                 firstName: user.displayName?.split(' ')[0] || '',
                 lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
-                isAdmin: false,
-             });
+                photoURL: user.photoURL || '',
+             }, { merge: true });
         }
     } catch (e: any) {
         const permissionError = new FirestorePermissionError({
@@ -87,9 +88,6 @@ export default function LoginPageClient() {
           requestResourceData: {
             id: user.uid,
             email: user.email,
-            firstName: user.displayName?.split(' ')[0] || '',
-            lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
-            isAdmin: false,
           },
         });
         errorEmitter.emit('permission-error', permissionError);
@@ -99,6 +97,8 @@ export default function LoginPageClient() {
             title: language === 'fr' ? "Erreur de Profil" : language === 'en' ? "Profile Error" : "Profilfehler",
             description: language === 'fr' ? "Impossible de créer le profil utilisateur." : language === 'en' ? "Could not create user profile." : "Benutzerprofil konnte nicht erstellt werden.",
         });
+        // Re-throw the error to indicate failure
+        throw e;
     }
   };
 
@@ -107,16 +107,6 @@ export default function LoginPageClient() {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
       
-      // IMPORTANT: Check for email verification
-      if (userCredential.user && !userCredential.user.emailVerified) {
-        toast({
-            title: language === 'fr' ? 'Vérification requise' : language === 'en' ? 'Verification Required' : 'Bestätigung erforderlich',
-            description: language === 'fr' ? 'Veuillez vérifier votre e-mail avant de vous connecter.' : language === 'en' ? 'Please verify your email before logging in.' : 'Bitte bestätigen Sie Ihre E-Mail, bevor Sie sich anmelden.',
-        });
-        router.push('/verify-email');
-        return; // Stop execution here
-      }
-
       await handleUserCreation(userCredential)
       
       toast({
@@ -126,7 +116,7 @@ export default function LoginPageClient() {
       
       const redirectUrl = searchParams.get('redirect') || '/account';
       router.push(redirectUrl);
-      router.refresh();
+      router.refresh(); // Forces a state refresh to update user context
 
     } catch (error: any) {
       let errorMessage = language === 'fr' ? 'Une erreur est survenue lors de la connexion.' : language === 'en' ? 'An error occurred during login.' : 'Bei der Anmeldung ist ein Fehler aufgetreten.';
@@ -161,7 +151,7 @@ export default function LoginPageClient() {
                             <FormItem>
                                 <FormLabel><TranslatedText fr="Email" en="Email">Email</TranslatedText></FormLabel>
                                 <FormControl>
-                                <Input type="email" {...field} className="border-0 bg-input" />
+                                <Input type="email" {...field} className="border-0 bg-input" autoComplete="email" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -177,7 +167,7 @@ export default function LoginPageClient() {
                                 </div>
                                 <div className="relative">
                                     <FormControl>
-                                        <Input type={showPassword ? 'text' : 'password'} {...field} className="border-0 bg-input pr-10" />
+                                        <Input type={showPassword ? 'text' : 'password'} {...field} className="border-0 bg-input pr-10" autoComplete="current-password" />
                                     </FormControl>
                                     <Button
                                         type="button"

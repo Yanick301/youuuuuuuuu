@@ -12,8 +12,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useFirebase } from '@/firebase';
-import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth';
+import { useFirebase, errorEmitter, FirestorePermissionError } from '@/firebase';
+import { createUserWithEmailAndPassword, updateProfile, type UserCredential } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -45,8 +46,33 @@ const registerSchemaEN = z.object({
     password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
 });
 
+
+const handleUserProfileCreation = async (userCredential: UserCredential, firestore: any, name: string) => {
+    const user = userCredential.user;
+    if (!user || !firestore) return;
+
+    const userRef = doc(firestore, 'userProfiles', user.uid);
+    try {
+        await setDoc(userRef, {
+            id: user.uid,
+            email: user.email,
+            firstName: name.split(' ')[0] || '',
+            lastName: name.split(' ').slice(1).join(' ') || '',
+            photoURL: user.photoURL || '',
+        });
+    } catch (e: any) {
+         const permissionError = new FirestorePermissionError({
+          path: `userProfiles/${user.uid}`,
+          operation: 'create',
+          requestResourceData: { id: user.uid, email: user.email },
+        });
+        errorEmitter.emit('permission-error', permissionError);
+        throw e; // Re-throw to be caught by the calling function
+    }
+};
+
 export default function RegisterPageClient() {
-  const { auth } = useFirebase();
+  const { auth, firestore } = useFirebase();
   const router = useRouter();
   const { toast } = useToast();
   const { language } = useLanguage();
@@ -64,33 +90,34 @@ export default function RegisterPageClient() {
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof currentSchema>> = async (data) => {
-    if (!auth) {
+    if (!auth || !firestore) {
       toast({
         variant: "destructive",
-        title: "Erreur de configuration",
-        description: "Le service Firebase Auth n'est pas disponible.",
+        title: "Configuration Error",
+        description: "Firebase services are not available.",
       });
       return;
     }
 
     try {
-      // Étape 1 : Créer l'utilisateur dans Firebase Authentication
+      // Step 1: Create the user in Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
       const user = userCredential.user;
 
-      // Étape 2 : Mettre à jour le nom d'affichage dans Auth
+      // Step 2: Update the display name in Auth
       await updateProfile(user, { displayName: data.name });
       
-      // Étape 3 : Envoyer l'e-mail de vérification
-      await sendEmailVerification(user);
+      // Step 3: Create the user profile document in Firestore
+      await handleUserProfileCreation(userCredential, firestore, data.name);
       
       toast({
           title: language === 'fr' ? 'Inscription réussie !' : language === 'en' ? 'Registration Successful!' : 'Registrierung erfolgreich!',
-          description: language === 'fr' ? 'Un lien de vérification a été envoyé à votre adresse e-mail.' : language === 'en' ? 'A verification link has been sent to your email address.' : 'Ein Bestätigungslink wurde an Ihre E-Mail-Adresse gesendet.',
+          description: language === 'fr' ? 'Bienvenue ! Vous êtes maintenant connecté.' : language === 'en' ? 'Welcome! You are now logged in.' : 'Willkommen! Sie sind jetzt eingeloggt.',
       });
       
-      // Étape 4 : Rediriger l'utilisateur vers la page de vérification
-      router.push('/verify-email');
+      // Step 4: Redirect the user to their account page
+      router.push('/account');
+      router.refresh();
 
     } catch (error: any) {
        let errorMessage: string;
@@ -137,7 +164,7 @@ export default function RegisterPageClient() {
                                 <FormItem>
                                     <FormLabel><TranslatedText fr="Nom complet" en="Full Name">Nom complet</TranslatedText></FormLabel>
                                     <FormControl>
-                                        <Input {...field} className="border-0 bg-input" />
+                                        <Input {...field} className="border-0 bg-input" autoComplete="name" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -150,7 +177,7 @@ export default function RegisterPageClient() {
                                 <FormItem>
                                     <FormLabel><TranslatedText fr="Email" en="Email">Email</TranslatedText></FormLabel>
                                     <FormControl>
-                                        <Input type="email" {...field} className="border-0 bg-input" />
+                                        <Input type="email" {...field} className="border-0 bg-input" autoComplete="email" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -164,7 +191,7 @@ export default function RegisterPageClient() {
                                     <FormLabel><TranslatedText fr="Mot de passe" en="Password">Mot de passe</TranslatedText></FormLabel>
                                     <div className="relative">
                                       <FormControl>
-                                          <Input type={showPassword ? 'text' : 'password'} {...field} className="border-0 bg-input pr-10"/>
+                                          <Input type={showPassword ? 'text' : 'password'} {...field} className="border-0 bg-input pr-10" autoComplete="new-password"/>
                                       </FormControl>
                                       <Button
                                           type="button"

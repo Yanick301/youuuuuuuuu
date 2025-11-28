@@ -1,12 +1,12 @@
 
 'use client';
 
-import { useCart } from '@/context/CartContext';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Loader2, Lock } from 'lucide-react';
 import { TranslatedText } from '@/components/TranslatedText';
+import { useCart } from '@/context/CartContext';
 
 export default function CheckoutPage() {
   const { user, isUserLoading } = useUser();
@@ -14,26 +14,26 @@ export default function CheckoutPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Ne rien faire tant que l'état d'authentification n'est pas résolu.
+    // Wait until the authentication state is resolved
     if (isUserLoading) {
       return;
     }
 
-    // Une fois le chargement terminé, nous pouvons agir en toute sécurité.
+    // Once loading is complete, we can safely perform redirects
     if (!user) {
-      // Si aucun utilisateur, rediriger vers la page de connexion.
-      router.push('/login?redirect=/checkout/payment-method');
+      // If no user, redirect to login and tell it where to come back to
+      router.push('/login?redirect=/checkout');
     } else if (totalItems === 0) {
-      // Si le panier est vide, renvoyer aux produits.
+      // If the cart is empty, no point in checking out
       router.push('/products/all');
     } else {
-      // Si l'utilisateur est connecté et que le panier n'est pas vide,
-      // procéder en toute sécurité à la page de paiement.
+      // If the user is logged in and the cart is not empty, proceed to payment
       router.replace('/checkout/payment-method');
     }
   }, [user, isUserLoading, router, totalItems]);
 
-  // Afficher un écran de chargement pendant que l'état de l'utilisateur est vérifié.
+  // Render a loading state while we wait for the auth check to complete.
+  // This prevents the premature redirect that was causing issues.
   return (
     <div className="container mx-auto flex min-h-[60vh] flex-col items-center justify-center p-4 text-center">
       <Loader2 className="h-12 w-12 animate-spin text-primary" />
