@@ -95,6 +95,12 @@ export default function LoginPageClient() {
     if (!auth || !firestore) return;
     try {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+      
+      if (userCredential.user && !userCredential.user.emailVerified) {
+        router.push('/verify-email');
+        return;
+      }
+
       await handleUserCreation(userCredential)
       
       toast({
