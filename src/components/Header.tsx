@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Menu, Heart, ShieldCheck } from 'lucide-react';
+import { Menu, Heart, ShieldCheck, ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
 
 import { categories } from '@/lib/data';
@@ -19,6 +19,7 @@ import { SearchDialog } from './search/SearchDialog';
 import { Separator } from './ui/separator';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { useUser } from '@/firebase';
+import { CartButton } from './cart/CartButton';
 
 export function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -157,6 +158,7 @@ export function Header() {
               </span>
             </Link>
           </Button>
+           <CartButton />
         </div>
       </div>
     </header>

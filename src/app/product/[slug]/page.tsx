@@ -1,7 +1,7 @@
 'use client';
 
 import { notFound, useParams } from 'next/navigation';
-import { Star } from 'lucide-react';
+import { Star, ShoppingCart } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -148,6 +148,14 @@ export default function ProductPage() {
     }
   };
 
+  const handleAddToCart = () => {
+    // Placeholder for future cart context logic
+    toast({
+      title: 'Ajouté au panier !',
+      description: `${product.name} a été ajouté à votre panier.`,
+    });
+  };
+
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
@@ -239,7 +247,8 @@ export default function ProductPage() {
           </div>
 
           <div className="mt-8 flex items-center gap-4">
-            <Button>
+            <Button onClick={handleAddToCart}>
+              <ShoppingCart className="mr-2 h-4 w-4" />
               <TranslatedText fr="Ajouter au panier" en="Add to Cart">In den Warenkorb</TranslatedText>
             </Button>
             <AddToFavoritesButton productId={product.id} />
