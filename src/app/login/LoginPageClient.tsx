@@ -12,9 +12,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useFirebase } from '@/firebase';
+import { useFirebase, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { signInWithEmailAndPassword, type UserCredential } from 'firebase/auth';
-import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -78,14 +78,26 @@ export default function LoginPageClient() {
                 firstName: user.displayName?.split(' ')[0] || '',
                 lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
                 isAdmin: false,
-             }, { merge: true });
+             });
         }
-    } catch (e) {
-       console.error("Error creating user profile document:", e)
+    } catch (e: any) {
+        const permissionError = new FirestorePermissionError({
+          path: `userProfiles/${user.uid}`,
+          operation: 'create',
+          requestResourceData: {
+            id: user.uid,
+            email: user.email,
+            firstName: user.displayName?.split(' ')[0] || '',
+            lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
+            isAdmin: false,
+          },
+        });
+        errorEmitter.emit('permission-error', permissionError);
+
         toast({
             variant: 'destructive',
-            title: 'Erreur de profil',
-            description: 'Impossible de créer le profil utilisateur.',
+            title: language === 'fr' ? "Erreur de Profil" : language === 'en' ? "Profile Error" : "Profilfehler",
+            description: language === 'fr' ? "Impossible de créer le profil utilisateur." : language === 'en' ? "Could not create user profile." : "Benutzerprofil konnte nicht erstellt werden.",
         });
     }
   };
