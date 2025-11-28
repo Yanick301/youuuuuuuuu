@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { TranslatedText } from '@/components/TranslatedText';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Suspense, useState } from 'react';
-import { CheckCircle, Upload, Loader2, AlertTriangle, Copy } from 'lucide-react';
+import { CheckCircle, Upload, Loader2, AlertTriangle, Copy, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useFirebase } from '@/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
@@ -181,5 +181,6 @@ export default function ConfirmPaymentPage() {
         </Suspense>
     )
 }
+
 
     
