@@ -43,7 +43,6 @@ function ConfirmPaymentContent() {
         'Bénéficiaire': 'Sabine Menke',
         'IBAN': 'DE78500319000014630686',
         'BIC/SWIFT': 'BBVADEFFXXX',
-        'Banque': 'BBVA',
         'Motif de virement': `Commande ${orderId}`
     };
 
@@ -181,8 +180,3 @@ export default function ConfirmPaymentPage() {
         </Suspense>
     )
 }
-
-
-    
-
-    
