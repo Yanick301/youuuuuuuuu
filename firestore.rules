@@ -4,12 +4,6 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
   
-    // Helper function to check for admin role
-    function isAdmin() {
-      return exists(/databases/$(database)/documents/userProfiles/$(request.auth.uid)) &&
-             get(/databases/$(database)/documents/userProfiles/$(request.auth.uid)).data.isAdmin == true;
-    }
-
     // Products can be read by anyone. Writes are blocked from the client.
     match /products/{productId} {
       allow read: if true;
@@ -19,17 +13,15 @@ service cloud.firestore {
       match /reviews/{reviewId} {
         allow read: if true;
         allow create: if request.auth != null;
-        allow update, delete: if isAdmin();
+        allow update, delete: if false;
       }
     }
 
     // User profiles can only be created by the authenticated user for their own UID.
     // They can only be read and updated by their owner.
-    // Admins can read any profile but not write to it.
     match /userProfiles/{userId} {
       allow create: if request.auth != null && request.auth.uid == userId;
       allow read, update: if request.auth != null && request.auth.uid == userId;
-      allow get: if isAdmin();
 
       // Users can only read and write to their own favorites subcollection.
       match /favorites/{docId} {
@@ -43,12 +35,10 @@ service cloud.firestore {
       allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
       
       // User can upload their own receipt (update), with validation on the receipt image size.
-      // User can also view their own order. Admins can read and update any order.
-      allow read: if (request.auth != null && request.auth.uid == resource.data.userId) || isAdmin();
-      allow update: if (request.auth != null && request.auth.uid == resource.data.userId && request.resource.data.receiptImageUrl.size() < 1048576) || isAdmin();
-      allow list: if isAdmin();
+      // User can also view their own order.
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow update: if request.auth != null && request.auth.uid == resource.data.userId && request.resource.data.receiptImageUrl.size() < 1048576;
+      allow list: if false;
     }
   }
 }
-
-    

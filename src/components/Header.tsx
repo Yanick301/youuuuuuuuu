@@ -23,7 +23,6 @@ import { CartButton } from './cart/CartButton';
 
 export function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const { isAdmin } = useUser();
 
   const handleLinkClick = () => {
     setIsSheetOpen(false);
@@ -80,17 +79,6 @@ export function Header() {
                         </Link>
                       </li>
                     ))}
-                    {isAdmin && (
-                      <li>
-                        <Link
-                          href="/admin"
-                          className="text-xl text-foreground/80 transition-colors hover:text-foreground"
-                          onClick={handleLinkClick}
-                        >
-                          Admin
-                        </Link>
-                      </li>
-                    )}
                   </ul>
                 </nav>
               </main>
@@ -135,14 +123,6 @@ export function Header() {
             ))}
           </nav>
           <div className="hidden lg:flex items-center">
-            {isAdmin && (
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/admin">
-                  <ShieldCheck className="h-5 w-5 mr-1" />
-                  Admin
-                </Link>
-              </Button>
-            )}
             <UserButton />
             <Separator orientation="vertical" className="h-6 mx-2" />
             <LanguageSwitcher />

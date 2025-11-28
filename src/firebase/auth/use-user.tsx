@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -6,7 +7,6 @@ import { useFirebase } from '@/firebase/provider';
 import { doc, onSnapshot } from 'firebase/firestore';
 
 export type UserProfile = {
-  isAdmin?: boolean;
   photoURL?: string;
   // other profile fields...
 };
@@ -18,7 +18,6 @@ export interface UserHookResult {
   profile: WithId<UserProfile> | null;
   isUserLoading: boolean;
   error: Error | null;
-  isAdmin: boolean;
 }
 
 export const useUser = (): UserHookResult => {
@@ -87,7 +86,6 @@ export const useUser = (): UserHookResult => {
     return () => unsubscribeProfile();
   }, [user, firestore, isAuthLoading]);
 
-  const isAdmin = profile?.isAdmin === true;
 
-  return { user, profile, isUserLoading: isAuthLoading || isProfileLoading, error, isAdmin };
+  return { user, profile, isUserLoading: isAuthLoading || isProfileLoading, error };
 };
