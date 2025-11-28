@@ -5,7 +5,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 import { FirebaseClientProvider } from '@/firebase';
-import { AutoLogout } from '@/components/auth/AutoLogout';
+
 
 
 export const metadata: Metadata = {
@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className="font-body antialiased">
         
         <FirebaseClientProvider>
-          <AutoLogout />
+          
           <AppProviders>
             <div className="relative z-10 flex min-h-screen flex-col">
               <Header />
