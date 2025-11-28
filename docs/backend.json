@@ -66,6 +66,10 @@
           "type": "string",
           "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Review)"
         },
+        "userName": {
+          "type": "string",
+          "description": "The name of the user who left the review."
+        },
         "rating": {
           "type": "number",
           "description": "The rating given in the review (e.g., 1 to 5)."
@@ -74,7 +78,7 @@
           "type": "string",
           "description": "The text of the review."
         },
-        "date": {
+        "createdAt": {
           "type": "string",
           "description": "The date the review was submitted.",
           "format": "date-time"
@@ -84,9 +88,10 @@
         "id",
         "productId",
         "userId",
+        "userName",
         "rating",
         "comment",
-        "date"
+        "createdAt"
       ]
     },
     "Order": {
@@ -204,7 +209,7 @@
       "schema": {
         "$ref": "#/entities/Review"
       },
-      "description": "Stores reviews for each product. Anyone can create a review for any product, but listing reviews is open."
+      "description": "Stores reviews for each product. Anyone can read reviews, but only authenticated users can create them."
     },
     "/userProfiles/{userId}": {
       "schema": {

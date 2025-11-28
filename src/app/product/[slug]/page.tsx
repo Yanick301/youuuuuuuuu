@@ -19,9 +19,11 @@ import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/LanguageContext';
 import { getProductBySlug, getProductsByCategory, products as allProducts } from '@/lib/data';
 import type { Review, Product } from '@/lib/types';
-import { useUser, useFirebase } from '@/firebase';
+import { useUser, useFirebase, useCollection, useMemoFirebase } from '@/firebase';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { addDoc, collection, serverTimestamp, query, orderBy } from 'firebase/firestore';
+import { useRouter } from 'next/navigation';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -33,6 +35,7 @@ type ProductPageProps = {
 
 export default function ProductPage({ params }: ProductPageProps) {
   const { slug } = params;
+  const router = useRouter();
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [relatedProducts, setRelatedProducts] = useState<ReturnType<typeof getProductsByCategory>>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,7 +48,10 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [newReviewRating, setNewReviewRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [newReviewComment, setNewReviewComment] = useState('');
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+
   const { user } = useUser();
+  const { firestore } = useFirebase();
 
   useEffect(() => {
     setIsLoading(true);
@@ -66,10 +72,17 @@ export default function ProductPage({ params }: ProductPageProps) {
     setIsLoading(false);
   }, [slug]);
 
+  const reviewsQuery = useMemoFirebase(() => {
+    if (!firestore || !product) return null;
+    return query(collection(firestore, 'products', product.id, 'reviews'), orderBy('createdAt', 'desc'));
+  }, [firestore, product]);
+
+  const { data: reviews, isLoading: reviewsLoading } = useCollection<Review>(reviewsQuery);
+
   const averageRating = useMemo(() => {
-    if (!product || !product.reviews || product.reviews.length === 0) return 0;
-    return product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length;
-  }, [product]);
+    if (!reviews || reviews.length === 0) return 0;
+    return reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
+  }, [reviews]);
   
   if (isLoading) {
     return <div className="container mx-auto px-4 py-12 text-center">Chargement du produit...</div>;
@@ -86,8 +99,17 @@ export default function ProductPage({ params }: ProductPageProps) {
   const mainImage = placeholderImages.find(p => p.id === product.images[0]);
   const altImages = product.images.slice(1).map(id => placeholderImages.find(p => p.id === id));
 
-  const handleReviewSubmit = (e: React.FormEvent) => {
+  const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+        toast({
+            variant: 'destructive',
+            title: 'Authentification requise',
+            description: 'Vous devez être connecté pour laisser un avis.',
+        });
+        router.push('/login');
+        return;
+    }
     if (newReviewRating === 0 || newReviewComment.trim() === '') {
       toast({
         variant: 'destructive',
@@ -97,25 +119,39 @@ export default function ProductPage({ params }: ProductPageProps) {
       return;
     }
     
-    const newReview: Review = {
-        author: user?.displayName || (language === 'fr' ? 'Visiteur' : language === 'en' ? 'Guest' : 'Gast'),
+    setIsSubmittingReview(true);
+
+    const reviewData = {
+        productId: product.id,
+        userId: user.uid,
+        userName: user.displayName || 'Anonymous',
         rating: newReviewRating,
         comment: newReviewComment.trim(),
+        createdAt: serverTimestamp(),
     };
 
-    setProduct(prevProduct => {
-        if (!prevProduct) return undefined;
-        const updatedReviews = [newReview, ...prevProduct.reviews];
-        return { ...prevProduct, reviews: updatedReviews };
-    });
+    try {
+        if (!firestore) throw new Error('Firestore not available');
+        const reviewsColRef = collection(firestore, 'products', product.id, 'reviews');
+        await addDoc(reviewsColRef, reviewData);
+        
+        toast({
+          title: language === 'fr' ? 'Avis soumis' : language === 'en' ? 'Review Submitted' : 'Bewertung abgegeben',
+          description: language === 'fr' ? 'Merci pour votre avis !' : language === 'en' ? 'Thank you for your review!' : 'Vielen Dank für Ihre Bewertung!',
+        });
 
-    toast({
-      title: language === 'fr' ? 'Avis soumis' : language === 'en' ? 'Review Submitted' : 'Bewertung abgegeben',
-      description: language === 'fr' ? 'Merci pour votre avis !' : language === 'en' ? 'Thank you for your review!' : 'Vielen Dank für Ihre Bewertung!',
-    });
-
-    setNewReviewRating(0);
-    setNewReviewComment('');
+        setNewReviewRating(0);
+        setNewReviewComment('');
+    } catch (error) {
+        console.error("Error submitting review:", error);
+        toast({
+            variant: 'destructive',
+            title: 'Erreur',
+            description: "Impossible de soumettre l'avis. Veuillez réessayer.",
+        });
+    } finally {
+        setIsSubmittingReview(false);
+    }
   };
 
   return (
@@ -158,7 +194,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <Star key={i} className={`h-5 w-5 ${i < Math.floor(averageRating) ? 'text-yellow-500 fill-yellow-500' : 'text-muted'}`} />
               ))}
             </div>
-            <span className="text-sm text-muted-foreground">({product.reviews?.length || 0} <TranslatedText fr="avis" en="reviews">Bewertungen</TranslatedText>)</span>
+            <span className="text-sm text-muted-foreground">({reviews?.length || 0} <TranslatedText fr="avis" en="reviews">Bewertungen</TranslatedText>)</span>
           </div>
 
           <p className="mt-6 text-base leading-relaxed">
@@ -235,11 +271,12 @@ export default function ProductPage({ params }: ProductPageProps) {
             </TabsContent>
             <TabsContent value="reviews" className="mt-4">
               <div className="space-y-8">
-                {product.reviews && product.reviews.length > 0 ? (
-                  product.reviews.map((review, index) => (
-                    <div key={index}>
+                {reviewsLoading && <p>Chargement des avis...</p>}
+                {!reviewsLoading && reviews && reviews.length > 0 ? (
+                  reviews.map((review) => (
+                    <div key={review.id}>
                       <div className="flex items-center gap-2">
-                        <p className="font-semibold">{review.author}</p>
+                        <p className="font-semibold">{review.userName}</p>
                         <div className="flex items-center">
                           {[...Array(5)].map((_, i) => (
                             <Star key={i} className={`h-4 w-4 ${i < review.rating ? 'text-yellow-500 fill-yellow-500' : 'text-muted'}`} />
@@ -249,7 +286,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                       <p className="mt-2 text-sm text-muted-foreground">{review.comment}</p>
                     </div>
                   ))
-                ) : (
+                ) : !reviewsLoading && (
                   <p className="text-sm text-muted-foreground"><TranslatedText fr="Pas encore d'avis pour ce produit." en="No reviews for this product yet.">Noch keine Bewertungen für dieses Produkt.</TranslatedText></p>
                 )}
 
@@ -293,8 +330,8 @@ export default function ProductPage({ params }: ProductPageProps) {
                                 rows={4}
                             />
                         </div>
-                        <Button type="submit">
-                            <TranslatedText fr="Soumettre l'avis" en="Submit Review">Bewertung abschicken</TranslatedText>
+                        <Button type="submit" disabled={isSubmittingReview}>
+                            {isSubmittingReview ? "Envoi en cours..." : <TranslatedText fr="Soumettre l'avis" en="Submit Review">Bewertung abschicken</TranslatedText>}
                         </Button>
                     </form>
                 </div>
