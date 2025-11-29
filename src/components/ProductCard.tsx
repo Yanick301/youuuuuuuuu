@@ -1,4 +1,6 @@
 
+'use client';
+
 import Link from 'next/link';
 import type { Product } from '@/lib/types';
 import placeholderImagesData from '@/lib/placeholder-images.json';
@@ -82,7 +84,7 @@ export function ProductCard({ product }: ProductCardProps) {
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className={cn('h-4 w-4', i < Math.floor(averageRating) ? 'text-yellow-500 fill-yellow-500' : 'text-muted')} />
               ))}
-              {reviewCount > 0 && <span className="text-xs text-muted-foreground ml-1">({reviewCount})</span>}
+              {reviewCount > 0 ? <span className="text-xs text-muted-foreground ml-1">({reviewCount})</span> : null}
             </div>
             <div className="mt-4 flex justify-between items-center">
               <div className="flex items-baseline gap-2">

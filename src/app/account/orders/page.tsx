@@ -59,7 +59,7 @@ const getSafeDate = (order: any): Date => {
 };
 
 export default function OrdersPage() {
-  const { user } = useUser();
+  const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
   const { language } = useLanguage();
   const router = useRouter();
@@ -74,7 +74,9 @@ export default function OrdersPage() {
     );
   }, [firestore, user]);
 
-  const { data: orders, isLoading } = useCollection(ordersQuery);
+  const { data: orders, isLoading: isOrdersLoading } = useCollection(ordersQuery);
+
+  const isLoading = isUserLoading || isOrdersLoading;
 
   const handleUploadReceipt = (orderId: string) => {
     router.push(`/checkout/confirm-payment?orderId=${orderId}`);
