@@ -714,6 +714,72 @@
       "id": "femme6",
       "imageUrl": "/images/products/femme6.jpg",
       "imageHint": "womens coat"
+    },
+    {
+      "id": "aire_force1_noir1",
+      "description": "Air Force 1 in black",
+      "imageUrl": "/images/products/aire_force1_noir1.jpg",
+      "imageHint": "black sneaker"
+    },
+    {
+      "id": "aire_jordan_bleu",
+      "description": "Air Jordan in blue",
+      "imageUrl": "/images/products/aire_jordan_bleu.jpg",
+      "imageHint": "blue sneaker"
+    },
+    {
+      "id": "air_jordan_violet",
+      "description": "Air Jordan in purple",
+      "imageUrl": "/images/products/air_jordan_violet.jpg",
+      "imageHint": "purple sneaker"
+    },
+    {
+      "id": "air_jourdan_rose",
+      "description": "Air Jordan in pink",
+      "imageUrl": "/images/products/air_jourdan_rose.jpg",
+      "imageHint": "pink sneaker"
+    },
+    {
+      "id": "air_jordan_4_military_noir",
+      "description": "Air Jordan 4 Military Black",
+      "imageUrl": "/images/products/air_jordan_4_military_noir.jpg",
+      "imageHint": "black sneaker"
+    },
+    {
+      "id": "air_jordan4_military_bleu",
+      "description": "Air Jordan 4 Military Blue",
+      "imageUrl": "/images/products/air_jordan4_military_bleu.jpg",
+      "imageHint": "blue sneaker"
+    },
+    {
+      "id": "aire_jordan1",
+      "description": "Classic Air Jordan 1",
+      "imageUrl": "/images/products/aire_jordan1.jpg",
+      "imageHint": "red sneaker"
+    },
+    {
+      "id": "kids_aire_jordan1",
+      "description": "Kids Air Jordan 1",
+      "imageUrl": "/images/products/kids_aire_jordan1.jpg",
+      "imageHint": "kids sneaker"
+    },
+    {
+      "id": "aire_force1_noir",
+      "description": "Air Force 1 in black",
+      "imageUrl": "/images/products/aire_force1_noir.jpg",
+      "imageHint": "black sneaker"
+    },
+    {
+      "id": "aire_force1_blanc_lacet_rose",
+      "description": "White Air Force 1 with pink laces",
+      "imageUrl": "/images/products/aire_force1_blanc_lacet_rose.jpg",
+      "imageHint": "white sneaker"
+    },
+    {
+      "id": "aire_force1_blanc",
+      "description": "Classic white Air Force 1",
+      "imageUrl": "/images/products/aire_force1_blanc.jpg",
+      "imageHint": "white sneaker"
     }
   ]
 }
