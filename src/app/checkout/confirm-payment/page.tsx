@@ -13,8 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useUser, useStorage } from '@/firebase';
-import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { useUser } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -70,7 +69,6 @@ function ConfirmPaymentClient() {
   const orderId = searchParams.get('orderId');
 
   const { user, isUserLoading } = useUser();
-  const storage = useStorage();
   const { toast } = useToast();
   const { language } = useLanguage();
   const [order, setOrder] = useState<LocalOrder | null>(null);
@@ -123,25 +121,20 @@ function ConfirmPaymentClient() {
     });
 
   const onSubmit: SubmitHandler<UploadFormValues> = async (data) => {
-    if (!orderId || !user || !storage) {
+    if (!orderId || !user) {
         toast({ variant: 'destructive', title: 'Erreur', description: 'Le service n\'est pas disponible.'});
         return;
     }
 
     try {
         const base64Image = await toBase64(data.receipt);
-        const storageRef = ref(storage, `receipts/${orderId}/${data.receipt.name}`);
-
-        // Upload the Base64 string
-        await uploadString(storageRef, base64Image, 'data_url');
-        const imageUrl = await getDownloadURL(storageRef);
 
         // Update order in local storage
         const localOrders: LocalOrder[] = JSON.parse(localStorage.getItem('localOrders') || '[]');
         const orderIndex = localOrders.findIndex(o => o.id === orderId);
 
         if (orderIndex > -1) {
-            localOrders[orderIndex].receiptImageUrl = imageUrl;
+            localOrders[orderIndex].receiptImageUrl = base64Image;
             localOrders[orderIndex].paymentStatus = 'processing';
             localStorage.setItem('localOrders', JSON.stringify(localOrders));
         }
