@@ -47,15 +47,12 @@ const getSafeDate = (order: any): Date => {
   if (!order || !order.orderDate) {
     return new Date();
   }
-  // This handles ISO strings from local storage
   try {
     const parsedDate = new Date(order.orderDate);
     if (!isNaN(parsedDate.getTime())) {
       return parsedDate;
     }
-  } catch (e) {
-    // Fallback if parsing fails
-  }
+  } catch (e) {}
   return new Date();
 };
 
@@ -68,7 +65,7 @@ export default function OrdersPage() {
   
   useEffect(() => {
     if (isUserLoading) {
-      return; // Wait until user auth state is resolved
+      return;
     }
 
     setIsOrdersLoading(true);
@@ -199,15 +196,10 @@ export default function OrdersPage() {
                 <div>
                   <CardTitle className="text-lg">
                     <TranslatedText
-                      fr={`Commande du ${format(getSafeDate(order), 'PPP', {
-                        locale: fr,
-                      })}`}
-                      en={`Order of ${format(getSafeDate(order), 'PPP', {
-                        locale: enUS,
-                      })}`}
+                      fr={`Commande du ${format(getSafeDate(order), 'PPP', { locale: fr })}`}
+                      en={`Order of ${format(getSafeDate(order), 'PPP', { locale: enUS })}`}
                     >
-                      Bestellung vom{' '}
-                      {format(getSafeDate(order), 'PPP', { locale: de })}
+                      Bestellung vom {format(getSafeDate(order), 'PPP', { locale: de })}
                     </TranslatedText>
                   </CardTitle>
                   <CardDescription>
@@ -309,54 +301,45 @@ export default function OrdersPage() {
                       variant="destructive"
                     >
                       <Upload className="mr-2 h-4 w-4" />
-                      <TranslatedText
-                        fr="Téléverser le reçu"
-                        en="Upload Receipt"
-                      >
+                      <TranslatedText fr="Téléverser le reçu" en="Upload Receipt">
                         Beleg hochladen
                       </TranslatedText>
                     </Button>
                   </div>
                 )}
-                 {order.paymentStatus === 'processing' && (
+
+                {order.paymentStatus === 'processing' && (
                   <div className="mt-6 flex flex-col items-center justify-center gap-4 rounded-md border-2 border-dashed border-blue-200 bg-blue-50/50 p-4">
-                     <div className='flex items-center text-blue-800'>
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        <p className="font-semibold">
-                        <TranslatedText
-                            fr="Paiement en cours de vérification"
-                            en="Payment under review"
-                        >
-                            Zahlung wird überprüft
+                    <div className="flex items-center text-blue-800">
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      <p className="font-semibold">
+                        <TranslatedText fr="Paiement en cours de vérification" en="Payment under review">
+                          Zahlung wird überprüft
                         </TranslatedText>
-                        </p>
-                     </div>
+                      </p>
+                    </div>
                   </div>
                 )}
+
                 {order.paymentStatus === 'completed' && (
                   <div className="mt-6 flex flex-col items-center justify-center rounded-md bg-green-50 p-4 text-sm font-semibold text-green-700">
                     <div className="flex items-center">
                       <CheckCircle className="mr-2 h-5 w-5" />
                       <p>
-                        <TranslatedText
-                          fr="Paiement validé"
-                          en="Payment validated"
-                        >
+                        <TranslatedText fr="Paiement validé" en="Payment validated">
                           Zahlung bestätigt
                         </TranslatedText>
                       </p>
                     </div>
                   </div>
                 )}
-                 {order.paymentStatus === 'rejected' && (
+
+                {order.paymentStatus === 'rejected' && (
                   <div className="mt-6 flex flex-col items-center justify-center rounded-md bg-red-50 p-4 text-sm font-semibold text-red-700">
                     <div className="flex items-center">
                       <Ban className="mr-2 h-5 w-5" />
                       <p>
-                        <TranslatedText
-                          fr="Paiement rejeté"
-                          en="Payment rejected"
-                        >
+                        <TranslatedText fr="Paiement rejeté" en="Payment rejected">
                           Zahlung abgelehnt
                         </TranslatedText>
                       </p>
@@ -372,10 +355,7 @@ export default function OrdersPage() {
           <CardContent className="flex flex-col items-center justify-center p-12 text-center">
             <ShoppingBag className="h-16 w-16 text-muted-foreground" />
             <h3 className="mt-4 text-xl font-semibold">
-              <TranslatedText
-                fr="Aucune commande pour le moment"
-                en="No orders yet"
-              >
+              <TranslatedText fr="Aucune commande pour le moment" en="No orders yet">
                 Noch keine Bestellungen
               </TranslatedText>
             </h3>
@@ -384,16 +364,12 @@ export default function OrdersPage() {
                 fr="Explorez nos collections et trouvez quelque chose qui vous plaît."
                 en="Explore our collections and find something you like."
               >
-                Entdecken Sie unsere Kollektionen und finden Sie etwas, das
-                Ihnen gefällt.
+                Entdecken Sie unsere Kollektionen und finden Sie etwas, das Ihnen gefällt.
               </TanslatedText>
             </p>
             <Button asChild className="mt-6">
               <Link href="/products/all">
-                <TranslatedText
-                  fr="Continuer les achats"
-                  en="Continue Shopping"
-                >
+                <TranslatedText fr="Continuer les achats" en="Continue Shopping">
                   Weiter einkaufen
                 </TranslatedText>
               </Link>
@@ -404,5 +380,3 @@ export default function OrdersPage() {
     </div>
   );
 }
-
-    
