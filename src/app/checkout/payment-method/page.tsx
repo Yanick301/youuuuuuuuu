@@ -23,7 +23,7 @@ import { useUser, useFirebase, errorEmitter, FirestorePermissionError } from '@/
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 import {
   Card,
@@ -64,33 +64,52 @@ const shippingSchemaEN = z.object({
 
 export default function PaymentMethodPage() {
   const { cartItems, subtotal, clearCart } = useCart();
-  const { user } = useUser();
+  const { user, isUserLoading } = useUser();
   const { firestore } = useFirebase();
   const { language } = useLanguage();
   const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (!isUserLoading && !user) {
+      router.push('/login?redirect=/checkout/payment-method');
+    }
+  }, [isUserLoading, user, router]);
+
   const currentSchema =
     language === 'fr'
       ? shippingSchemaFR
       : language === 'en'
       ? shippingSchemaEN
-      : language === 'de'
-      ? shippingSchemaDE
-      : shippingSchemaEN;
+      : shippingSchemaDE;
 
   const form = useForm<z.infer<typeof currentSchema>>({
     resolver: zodResolver(currentSchema),
     defaultValues: {
-      name: user?.displayName || '',
-      email: user?.email || '',
+      name: '',
+      email: '',
       address: '',
       city: '',
       zip: '',
       country: 'Deutschland',
     },
   });
+
+  // Effect to populate form with user data once available
+  useEffect(() => {
+    if (user) {
+      form.reset({
+        name: user.displayName || '',
+        email: user.email || '',
+        address: '',
+        city: '',
+        zip: '',
+        country: 'Deutschland',
+      });
+    }
+  }, [user, form]);
+
 
   const shippingCost = subtotal > 100 ? 0 : 5;
   const taxRate = 0.08; // 8%
@@ -134,23 +153,7 @@ export default function PaymentMethodPage() {
 
     try {
         const ordersCollectionRef = collection(firestore, 'orders');
-        const docRef = await addDoc(ordersCollectionRef, orderData)
-          .catch((serverError) => {
-            console.error("Firestore addDoc error:", serverError);
-            const permissionError = new FirestorePermissionError({
-              path: 'orders',
-              operation: 'create',
-              requestResourceData: orderData,
-            });
-            errorEmitter.emit('permission-error', permissionError);
-
-            toast({
-                variant: 'destructive',
-                title: 'Permission Error',
-                description: 'Could not create order. Please check Firestore permissions.'
-            });
-            throw permissionError;
-          });
+        const docRef = await addDoc(ordersCollectionRef, orderData);
         
         clearCart();
         console.log("Order created successfully with ID:", docRef.id);
@@ -162,18 +165,24 @@ export default function PaymentMethodPage() {
         router.push(`/checkout/confirm-payment?orderId=${docRef.id}`);
 
     } catch (error) {
-        if (!(error instanceof FirestorePermissionError)) {
-            console.error("An unexpected error occurred during order creation:", error);
-            toast({
-                variant: "destructive",
-                title: "An Unexpected Error Occurred",
-                description: "Please try again later."
-            });
-        }
+        console.error("An unexpected error occurred during order creation:", error);
+        toast({
+            variant: "destructive",
+            title: "An Unexpected Error Occurred",
+            description: "Please try again later."
+        });
     } finally {
         setIsSubmitting(false);
     }
   };
+
+  if (isUserLoading || !user) {
+    return (
+      <div className="container mx-auto flex min-h-[60vh] items-center justify-center text-center">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto max-w-6xl px-4 py-12">
@@ -379,3 +388,5 @@ export default function PaymentMethodPage() {
     </div>
   );
 }
+
+    
