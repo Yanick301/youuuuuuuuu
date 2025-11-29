@@ -134,6 +134,18 @@
             "required": ["productId", "name", "price", "quantity"]
           }
         },
+        "subtotal": {
+          "type": "number",
+          "description": "The subtotal amount of the order before shipping and taxes."
+        },
+        "shipping": {
+            "type": "number",
+            "description": "The shipping cost for the order."
+        },
+        "taxes": {
+            "type": "number",
+            "description": "The tax amount for the order."
+        },
         "totalAmount": {
           "type": "number",
           "description": "The total amount of the order."
@@ -150,13 +162,16 @@
         },
         "receiptImageUrl": {
           "type": "string",
-          "description": "A Base64-encoded Data URI of the user's payment receipt image. Max size 1MB."
+          "description": "A URL to the user's payment receipt image stored in Firebase Storage."
         }
       },
       "required": [
         "userId",
         "shippingInfo",
         "items",
+        "subtotal",
+        "shipping",
+        "taxes",
         "totalAmount",
         "orderDate",
         "paymentStatus"
