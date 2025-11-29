@@ -48,6 +48,7 @@ export function Footer() {
   const socialLinks = [
     { name: 'Instagram', href: 'https://www.instagram.com/ezcentials_?igsh=MWQ2aTR60WgyYnpvag%3D%3D&utm_source=qr', image: '/images/insta.png' },
     { name: 'Snapchat', href: 'https://snapchat.com/t/qez0Z1z0', image: '/images/snap.png' },
+    { name: 'YouTube', href: 'https://www.youtube.com/@Ezcentials', image: '/images/youtube.png' },
   ];
 
   return (
