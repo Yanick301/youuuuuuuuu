@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useUser, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
+import { useUser } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,8 +30,6 @@ import { useLanguage } from '@/context/LanguageContext';
 import { Loader2, Upload, Banknote } from 'lucide-react';
 import { useEffect, useState, Suspense } from 'react';
 import type { CartItem } from '@/lib/types';
-import { doc, setDoc } from 'firebase/firestore';
-
 
 interface LocalOrder {
     id: string;
@@ -44,9 +42,8 @@ interface LocalOrder {
     totalAmount: number;
     orderDate: string;
     paymentStatus: 'pending' | 'processing' | 'completed' | 'rejected';
-    receiptImageUrl: string | boolean | null;
+    receiptImageUrl: string | null;
 }
-
 
 const uploadSchema = z.object({
   receipt: z
@@ -71,7 +68,6 @@ function ConfirmPaymentClient() {
   const orderId = searchParams.get('orderId');
 
   const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
   const { toast } = useToast();
   const { language } = useLanguage();
   const [order, setOrder] = useState<LocalOrder | null>(null);
@@ -127,33 +123,21 @@ function ConfirmPaymentClient() {
     });
 
   const onSubmit: SubmitHandler<UploadFormValues> = async (data) => {
-    if (!orderId || !user || !firestore) {
+    if (!orderId || !user) {
         toast({ variant: 'destructive', title: 'Erreur', description: 'Le service n\'est pas disponible.'});
         return;
     }
 
-    const base64Image = await toBase64(data.receipt);
-    const receiptData = {
-        orderId: orderId,
-        userId: user.uid,
-        receiptDataUrl: base64Image,
-        uploadedAt: new Date().toISOString(),
-    };
+    try {
+        const base64Image = await toBase64(data.receipt);
+        
+        const localOrders: LocalOrder[] = JSON.parse(localStorage.getItem('localOrders') || '[]');
+        const orderIndex = localOrders.findIndex(o => o.id === orderId);
 
-    const receiptRef = doc(firestore, 'receipts', orderId);
-
-    // Use non-blocking write with contextual error handling
-    setDoc(receiptRef, receiptData)
-        .then(() => {
-            // This runs on successful write to Firestore
-            const localOrders: LocalOrder[] = JSON.parse(localStorage.getItem('localOrders') || '[]');
-            const orderIndex = localOrders.findIndex(o => o.id === orderId);
-
-            if (orderIndex > -1) {
-                localOrders[orderIndex].receiptImageUrl = true; // Mark as uploaded
-                localOrders[orderIndex].paymentStatus = 'processing';
-                localStorage.setItem('localOrders', JSON.stringify(localOrders));
-            }
+        if (orderIndex > -1) {
+            localOrders[orderIndex].receiptImageUrl = base64Image;
+            localOrders[orderIndex].paymentStatus = 'processing';
+            localStorage.setItem('localOrders', JSON.stringify(localOrders));
 
             toast({
                 title: 'Reçu téléversé !',
@@ -161,27 +145,17 @@ function ConfirmPaymentClient() {
             });
 
             router.push('/account/orders');
-        })
-        .catch(serverError => {
-            // This runs if the write fails (e.g., permission denied)
-            const permissionError = new FirestorePermissionError({
-                path: receiptRef.path,
-                operation: 'create',
-                requestResourceData: {
-                    orderId: orderId,
-                    userId: user.uid,
-                    uploadedAt: receiptData.uploadedAt,
-                    // We omit the large base64 string from the error payload
-                },
-            });
-            errorEmitter.emit('permission-error', permissionError);
-
-            toast({
-                variant: 'destructive',
-                title: 'Erreur de téléversement',
-                description: 'Impossible de soumettre le reçu. Vérifiez les permissions et réessayez.',
-            });
+        } else {
+            throw new Error("Order not found in local storage during submission.");
+        }
+    } catch (error) {
+        console.error("Error processing receipt:", error);
+        toast({
+            variant: 'destructive',
+            title: 'Erreur de téléversement',
+            description: 'Impossible de sauvegarder le reçu. Veuillez réessayer.',
         });
+    }
   };
   
   if (isUserLoading || isOrderLoading) {
