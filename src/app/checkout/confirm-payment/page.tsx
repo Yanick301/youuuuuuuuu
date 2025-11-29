@@ -40,10 +40,11 @@ function ConfirmPaymentContent() {
     }
     
     const bankDetails = {
-        'Bénéficiaire': 'Sabine Menke',
+        'Titulaire du compte': 'Sabine Menke',
+        'Banque': 'BBVA',
         'IBAN': 'DE78500319000014630686',
-        'BIC/SWIFT': 'BBVADEFFXXX',
-        'Motif de virement': `Commande ${orderId}`
+        'BIC / SWIFT': 'BBVADEFFXXX',
+        'Référence de la commande': `Commande ${orderId}`
     };
 
     const handleCopy = (text: string) => {
