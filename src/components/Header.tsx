@@ -18,6 +18,7 @@ import { SearchDialog } from './search/SearchDialog';
 import { Separator } from './ui/separator';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { CartButton } from './cart/CartButton';
+import { UserButton } from './auth/UserButton';
 
 export function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -81,8 +82,9 @@ export function Header() {
                 </nav>
               </main>
               <footer className="border-t p-6">
-                <div className="flex items-center justify-end">
-                  <LanguageSwitcher />
+                <div className="flex items-center justify-between">
+                   <UserButton />
+                   <LanguageSwitcher />
                 </div>
               </footer>
             </SheetContent>
@@ -125,6 +127,7 @@ export function Header() {
           </div>
           
           <SearchDialog />
+          <UserButton />
           <CartButton />
         </div>
       </div>
