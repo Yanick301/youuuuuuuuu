@@ -8,28 +8,39 @@ service cloud.firestore {
     // They allow any authenticated user to read and write to any document in the database.
     // For a production environment, you should implement more restrictive rules.
     match /{document=**} {
-      allow read, write: if request.auth != null;
+      allow read: if request.auth != null;
+      allow write: if false; // Deny by default, use specific rules below
     }
 
-    // While the rule above covers these, keeping more specific (but still open) rules can be useful for later.
-    // match /products/{productId} {
-    //   allow read, write: if request.auth != null; 
-    // }
+    match /products/{productId} {
+      allow read: if true;
+    }
     
-    // match /products/{productId}/reviews/{reviewId} {
-    //   allow read, write: if request.auth != null;
-    // }
+    match /products/{productId}/reviews/{reviewId} {
+      allow read: if true;
+      allow create: if request.auth.uid == request.resource.data.userId;
+    }
 
-    // match /userProfiles/{userId} {
-    //   allow read, write: if request.auth != null;
-    // }
+    match /userProfiles/{userId} {
+      allow read: if true;
+      allow create: if request.auth.uid == userId;
+      allow update: if request.auth.uid == userId;
+    }
     
-    // match /userProfiles/{userId}/favorites/{docId} {
-    //    allow read, write: if request.auth != null;
-    // }
+    match /userProfiles/{userId}/favorites/{docId} {
+       allow read, write: if request.auth.uid == userId;
+    }
 
-    // match /orders/{orderId} {
-    //   allow read, write: if request.auth != null;
-    // }
+    match /orders/{orderId} {
+      allow create: if request.auth.uid == request.resource.data.userId;
+      allow read: if request.auth.uid == resource.data.userId;
+    }
+    
+    match /receipts/{receiptId} {
+      // Un utilisateur peut créer un reçu si l'userId dans le document
+      // correspond à son propre ID d'authentification.
+      allow create: if request.auth.uid == request.resource.data.userId;
+      allow read: if request.auth != null;
+    }
   }
 }
