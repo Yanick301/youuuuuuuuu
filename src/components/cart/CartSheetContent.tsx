@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -154,22 +155,18 @@ export function CartSheetContent() {
         </div>
         <p className="mt-0.5 text-sm text-muted-foreground">
           <TranslatedText
-            fr="Les frais de port et les taxes sont calculés à la caisse."
-            en="Shipping and taxes calculated at checkout."
+            fr="Processus de commande non disponible."
+            en="Checkout process not available."
           >
-            Versand und Steuern werden an der Kasse berechnet.
+            Bestellvorgang nicht verfügbar.
           </TranslatedText>
         </p>
         <div className="mt-6">
-          <SheetClose>
-            <Button className="w-full" asChild>
-              <Link href="/checkout">
-                <TranslatedText fr="Passer à la caisse" en="Checkout">
-                  Zur Kasse
-                </TranslatedText>
-              </Link>
-            </Button>
-          </SheetClose>
+          <Button className="w-full" disabled>
+            <TranslatedText fr="Passer à la caisse" en="Checkout">
+              Zur Kasse
+            </TranslatedText>
+          </Button>
         </div>
       </div>
     </>

@@ -1,18 +1,15 @@
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { AppProviders } from '@/components/AppProviders';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
-import { FirebaseClientProvider } from '@/firebase';
-
-
 
 export const metadata: Metadata = {
   title: 'EZCENTIALS',
   description: 'Understated elegance and sophistication.',
 };
-
 
 export default function RootLayout({
   children,
@@ -30,18 +27,14 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        
-        <FirebaseClientProvider>
-          
-          <AppProviders>
-            <div className="relative z-10 flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-grow">{children}</main>
-              <Footer />
-            </div>
-            <Toaster />
-          </AppProviders>
-        </FirebaseClientProvider>
+        <AppProviders>
+          <div className="relative z-10 flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </div>
+          <Toaster />
+        </AppProviders>
       </body>
     </html>
   );

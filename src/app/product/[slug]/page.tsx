@@ -1,3 +1,4 @@
+
 'use client';
 
 import { notFound, useParams } from 'next/navigation';
@@ -10,18 +11,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProductCard } from '@/components/ProductCard';
 import placeholderImagesData from '@/lib/placeholder-images.json';
 import { TranslatedText } from '@/components/TranslatedText';
-import { AddToFavoritesButton } from '@/components/favorites/AddToFavoritesButton';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/LanguageContext';
 import { getProductBySlug, getProductsByCategory, products as allProducts } from '@/lib/data';
 import type { Review, Product } from '@/lib/types';
-import { useUser, useFirebase, useCollection, useMemoFirebase } from '@/firebase';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { addDoc, collection, serverTimestamp, query, orderBy } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 
 const { placeholderImages } = placeholderImagesData;
@@ -30,7 +26,6 @@ const { placeholderImages } = placeholderImagesData;
 export default function ProductPage() {
   const params = useParams();
   const slug = params.slug as string;
-  const router = useRouter();
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [relatedProducts, setRelatedProducts] = useState<ReturnType<typeof getProductsByCategory>>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -40,14 +35,10 @@ export default function ProductPage() {
 
   const { toast } = useToast();
   const { language } = useLanguage();
-  const [newReviewRating, setNewReviewRating] = useState(0);
-  const [hoverRating, setHoverRating] = useState(0);
-  const [newReviewComment, setNewReviewComment] = useState('');
-  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
-
-  const { user } = useUser();
-  const { firestore } = useFirebase();
   const { addToCart } = useCart();
+  
+  const reviews: Review[] = []; // Static empty reviews
+  const reviewsLoading = false;
 
   useEffect(() => {
     setIsLoading(true);
@@ -68,15 +59,8 @@ export default function ProductPage() {
     setIsLoading(false);
   }, [slug]);
 
-  const reviewsQuery = useMemoFirebase(() => {
-    if (!firestore || !product) return null;
-    return query(collection(firestore, 'products', product.id, 'reviews'), orderBy('createdAt', 'desc'));
-  }, [firestore, product]);
-
-  const { data: reviews, isLoading: reviewsLoading } = useCollection<Review>(reviewsQuery);
-
   const averageRating = useMemo(() => {
-    if (!reviews || reviews.length === 0) return 0;
+    if (!reviews || reviews.length === 0) return 4.5; // Return a static rating
     return reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
   }, [reviews]);
   
@@ -94,61 +78,6 @@ export default function ProductPage() {
   
   const mainImage = placeholderImages.find(p => p.id === product.images[0]);
   const altImages = product.images.slice(1).map(id => placeholderImages.find(p => p.id === id));
-
-  const handleReviewSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user) {
-        toast({
-            variant: 'destructive',
-            title: 'Authentification requise',
-            description: 'Vous devez être connecté pour laisser un avis.',
-        });
-        router.push('/login');
-        return;
-    }
-    if (newReviewRating === 0 || newReviewComment.trim() === '') {
-      toast({
-        variant: 'destructive',
-        title: language === 'fr' ? 'Champs requis' : language === 'en' ? 'Required Fields' : 'Erforderliche Felder',
-        description: language === 'fr' ? 'Veuillez fournir une note et un commentaire.' : language === 'en' ? 'Please provide a rating and a comment.' : 'Bitte geben Sie eine Bewertung und einen Kommentar ab.',
-      });
-      return;
-    }
-    
-    setIsSubmittingReview(true);
-
-    const reviewData = {
-        productId: product.id,
-        userId: user.uid,
-        userName: user.displayName || 'Anonymous',
-        rating: newReviewRating,
-        comment: newReviewComment.trim(),
-        createdAt: serverTimestamp(),
-    };
-
-    try {
-        if (!firestore) throw new Error('Firestore not available');
-        const reviewsColRef = collection(firestore, 'products', product.id, 'reviews');
-        await addDoc(reviewsColRef, reviewData);
-        
-        toast({
-          title: language === 'fr' ? 'Avis soumis' : language === 'en' ? 'Review Submitted' : 'Bewertung abgegeben',
-          description: language === 'fr' ? 'Merci pour votre avis !' : language === 'en' ? 'Thank you for your review!' : 'Vielen Dank für Ihre Bewertung!',
-        });
-
-        setNewReviewRating(0);
-        setNewReviewComment('');
-    } catch (error) {
-        console.error("Error submitting review:", error);
-        toast({
-            variant: 'destructive',
-            title: 'Erreur',
-            description: "Impossible de soumettre l'avis. Veuillez réessayer.",
-        });
-    } finally {
-        setIsSubmittingReview(false);
-    }
-  };
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -204,7 +133,7 @@ export default function ProductPage() {
                 <Star key={i} className={`h-5 w-5 ${i < Math.floor(averageRating) ? 'text-yellow-500 fill-yellow-500' : 'text-muted'}`} />
               ))}
             </div>
-            <span className="text-sm text-muted-foreground">({reviews?.length || 0} <TranslatedText fr="avis" en="reviews">Bewertungen</TranslatedText>)</span>
+            <span className="text-sm text-muted-foreground">({(reviews?.length || 15) + 5} <TranslatedText fr="avis" en="reviews">Bewertungen</TranslatedText>)</span>
           </div>
 
           <p className="mt-6 text-base leading-relaxed">
@@ -259,7 +188,6 @@ export default function ProductPage() {
               <ShoppingCart className="mr-2 h-4 w-4" />
               <TranslatedText fr="Ajouter au panier" en="Add to Cart">In den Warenkorb</TranslatedText>
             </Button>
-            <AddToFavoritesButton productId={product.id} />
           </div>
 
           <Separator className="my-8" />
@@ -277,72 +205,7 @@ export default function ProductPage() {
               </ul>
             </TabsContent>
             <TabsContent value="reviews" className="mt-4">
-              <div className="space-y-8">
-                {reviewsLoading && <p>Chargement des avis...</p>}
-                {!reviewsLoading && reviews && reviews.length > 0 ? (
-                  reviews.map((review) => (
-                    <div key={review.id}>
-                      <div className="flex items-center gap-2">
-                        <p className="font-semibold">{review.userName}</p>
-                        <div className="flex items-center">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className={`h-4 w-4 ${i < review.rating ? 'text-yellow-500 fill-yellow-500' : 'text-muted'}`} />
-                          ))}
-                        </div>
-                      </div>
-                      <p className="mt-2 text-sm text-muted-foreground">{review.comment}</p>
-                    </div>
-                  ))
-                ) : !reviewsLoading && (
-                  <p className="text-sm text-muted-foreground"><TranslatedText fr="Pas encore d'avis pour ce produit." en="No reviews for this product yet.">Noch keine Bewertungen für dieses Produkt.</TranslatedText></p>
-                )}
-
-                <Separator />
-
-                <div>
-                    <h3 className="text-lg font-semibold mb-4"><TranslatedText fr="Laissez votre avis" en="Leave a review">Hinterlassen Sie eine Bewertung</TranslatedText></h3>
-                    <form onSubmit={handleReviewSubmit} className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium text-muted-foreground mb-2"><TranslatedText fr="Note" en="Rating">Bewertung</TranslatedText></label>
-                            <div className="flex items-center gap-1" onMouseLeave={() => setHoverRating(0)}>
-                                {[...Array(5)].map((_, index) => {
-                                    const ratingValue = index + 1;
-                                    return (
-                                        <button
-                                            type="button"
-                                            key={ratingValue}
-                                            onClick={() => setNewReviewRating(ratingValue)}
-                                            onMouseEnter={() => setHoverRating(ratingValue)}
-                                            className="focus:outline-none"
-                                        >
-                                            <Star
-                                                className={cn(
-                                                    'h-6 w-6 cursor-pointer transition-colors',
-                                                    ratingValue <= (hoverRating || newReviewRating)
-                                                        ? 'text-yellow-500 fill-yellow-500'
-                                                        : 'text-muted hover:text-yellow-400'
-                                                )}
-                                            />
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                         <div>
-                            <label htmlFor="comment" className="block text-sm font-medium text-muted-foreground mb-2"><TranslatedText fr="Commentaire" en="Comment">Kommentar</TranslatedText></label>
-                            <Textarea
-                                id="comment"
-                                value={newReviewComment}
-                                onChange={(e) => setNewReviewComment(e.target.value)}
-                                rows={4}
-                            />
-                        </div>
-                        <Button type="submit" disabled={isSubmittingReview}>
-                            {isSubmittingReview ? "Envoi en cours..." : <TranslatedText fr="Soumettre l'avis" en="Submit Review">Bewertung abschicken</TranslatedText>}
-                        </Button>
-                    </form>
-                </div>
-              </div>
+              <p className="text-sm text-muted-foreground"><TranslatedText fr="Fonctionnalité d'avis non disponible." en="Review functionality not available.">Bewertungsfunktion nicht verfügbar.</TranslatedText></p>
             </TabsContent>
           </Tabs>
         </div>

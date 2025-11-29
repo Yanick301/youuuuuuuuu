@@ -1,6 +1,6 @@
+
 'use client';
 
-import { AddToFavoritesButton } from './favorites/AddToFavoritesButton';
 import { Product } from '@/lib/types';
 import { Button } from './ui/button';
 import { Eye, ShoppingCart } from 'lucide-react';
@@ -37,7 +37,6 @@ export function ProductCardActions({ product }: { product: Product }) {
             <Eye className="h-5 w-5 text-muted-foreground" />
         </Link>
       </Button>
-      <AddToFavoritesButton productId={product.id} variant="ghost" size="icon" className="h-9 w-9 rounded-full hover:bg-muted" />
     </div>
   );
 }

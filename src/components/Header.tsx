@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Menu, Heart, ShieldCheck, ShoppingCart } from 'lucide-react';
+import { Menu, Heart } from 'lucide-react';
 import { useState } from 'react';
 
 import { categories } from '@/lib/data';
@@ -13,12 +13,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { UserButton } from '@/components/auth/UserButton';
 import { TranslatedText } from './TranslatedText';
 import { SearchDialog } from './search/SearchDialog';
 import { Separator } from './ui/separator';
 import { LanguageSwitcher } from './LanguageSwitcher';
-import { useUser } from '@/firebase';
 import { CartButton } from './cart/CartButton';
 
 export function Header() {
@@ -83,8 +81,7 @@ export function Header() {
                 </nav>
               </main>
               <footer className="border-t p-6">
-                <div className="flex items-center justify-between">
-                  <UserButton />
+                <div className="flex items-center justify-end">
                   <LanguageSwitcher />
                 </div>
               </footer>
@@ -123,23 +120,12 @@ export function Header() {
             ))}
           </nav>
           <div className="hidden lg:flex items-center">
-            <UserButton />
             <Separator orientation="vertical" className="h-6 mx-2" />
             <LanguageSwitcher />
           </div>
           
           <SearchDialog />
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/favorites">
-              <Heart className="h-5 w-5" />
-              <span className="sr-only">
-                <TranslatedText fr="Favoris" en="Favorites">
-                  Favoriten
-                </TranslatedText>
-              </span>
-            </Link>
-          </Button>
-           <CartButton />
+          <CartButton />
         </div>
       </div>
     </header>

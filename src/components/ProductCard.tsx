@@ -5,7 +5,6 @@ import Link from 'next/link';
 import type { Product } from '@/lib/types';
 import placeholderImagesData from '@/lib/placeholder-images.json';
 import { TranslatedText } from './TranslatedText';
-import { AddToFavoritesButton } from './favorites/AddToFavoritesButton';
 import { Star, ShoppingCart } from 'lucide-react';
 import { ProductCardActions } from './ProductCardActions';
 import { Badge } from './ui/badge';
@@ -75,7 +74,6 @@ export function ProductCard({ product }: ProductCardProps) {
                 <h3 className="font-headline text-xl text-foreground flex-grow pr-2">
                     <Link href={`/product/${product.slug}`}><TranslatedText fr={product.name_fr} en={product.name_en}>{product.name}</TranslatedText></Link>
                 </h3>
-                <AddToFavoritesButton productId={product.id} variant="ghost" size="icon" className="h-9 w-9 rounded-full flex-shrink-0" />
             </div>
             <p className="mt-1 text-sm text-muted-foreground flex-grow">
               <TranslatedText fr={product.description_fr.substring(0, 50) + '...'} en={product.description_en.substring(0, 50) + '...'}>{product.description.substring(0,50) + '...'}</TranslatedText>
