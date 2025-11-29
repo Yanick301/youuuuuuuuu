@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
+import { useState, useEffect } from 'react';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -21,9 +22,14 @@ type ProductCardProps = {
 export function ProductCard({ product }: ProductCardProps) {
   const productImage = placeholderImages.find(p => p.id === product.images[0]);
   const averageRating = 5;
-  const reviewCount = Math.floor(Math.random() * (25 - 5 + 1)) + 5;
+  const [reviewCount, setReviewCount] = useState(0);
   const { addToCart } = useCart();
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Generate random number only on the client-side to avoid hydration mismatch
+    setReviewCount(Math.floor(Math.random() * (25 - 5 + 1)) + 5);
+  }, []);
 
   const handleAddToCart = () => {
     const defaultSize = product.sizes ? product.sizes[0] : undefined;
@@ -76,7 +82,7 @@ export function ProductCard({ product }: ProductCardProps) {
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className={cn('h-4 w-4', i < Math.floor(averageRating) ? 'text-yellow-500 fill-yellow-500' : 'text-muted')} />
               ))}
-              <span className="text-xs text-muted-foreground ml-1">({reviewCount})</span>
+              {reviewCount > 0 && <span className="text-xs text-muted-foreground ml-1">({reviewCount})</span>}
             </div>
             <div className="mt-4 flex justify-between items-center">
               <div className="flex items-baseline gap-2">
