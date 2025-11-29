@@ -92,8 +92,8 @@ export default function PaymentMethodPage() {
     },
   });
 
-  const shippingCost = subtotal > 100 ? 0 : 10;
-  const taxRate = 0.19; // 19%
+  const shippingCost = subtotal > 100 ? 0 : 5;
+  const taxRate = 0.08; // 8%
   const taxes = subtotal * taxRate;
   const totalAmount = subtotal + shippingCost + taxes;
 
@@ -285,7 +285,7 @@ export default function PaymentMethodPage() {
             <div className="space-y-8">
                 <div className="h-fit rounded-lg bg-muted/50 p-6 lg:p-8">
                 <h2 className="mb-6 font-headline text-2xl">
-                    <TranslatedText fr="2. Récapitulatif de la commande" en="2. Order Summary">
+                    <TranslatedText fr="2. Résumé de la commande" en="2. Order Summary">
                     2. Bestellübersicht
                     </TranslatedText>
                 </h2>
@@ -339,7 +339,7 @@ export default function PaymentMethodPage() {
                     <p>{shippingCost > 0 ? `€${shippingCost.toFixed(2)}` : <TranslatedText fr="Gratuit" en="Free">Kostenlos</TranslatedText>}</p>
                     </div>
                     <div className="flex justify-between">
-                    <p className="text-muted-foreground"><TranslatedText fr="Taxes (19%)" en="Taxes (19%)">Steuern (19%)</TranslatedText></p>
+                    <p className="text-muted-foreground"><TranslatedText fr="Taxes" en="Taxes">Steuern</TranslatedText></p>
                     <p>€{taxes.toFixed(2)}</p>
                     </div>
                 </div>
@@ -351,23 +351,23 @@ export default function PaymentMethodPage() {
                 </div>
                 <Card>
                     <CardHeader>
-                        <CardTitle><TranslatedText fr="3. Processus de Paiement" en="3. Payment Process">3. Zahlungsprozess</TranslatedText></CardTitle>
+                        <CardTitle><TranslatedText fr="3. Instructions de Paiement" en="3. Payment Instructions">3. Zahlungsanweisungen</TranslatedText></CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="rounded-md border border-amber-300 bg-amber-50 p-4 text-amber-800">
                             <p className="text-sm">
                                 <TranslatedText 
-                                    fr="Un virement instantané est requis. Vous devrez téléverser le reçu de paiement à l'étape suivante pour valider votre commande."
-                                    en="An instant bank transfer is required. You will need to upload the payment receipt in the next step to validate your order."
+                                    fr="Veuillez effectuer un virement bancaire pour finaliser votre commande. Vous devrez téléverser le reçu de paiement à l'étape suivante pour valider votre commande."
+                                    en="Please make a bank transfer to finalize your order. You will need to upload the payment receipt in the next step to validate your order."
                                 >
-                                    Eine sofortige Banküberweisung ist erforderlich. Sie müssen den Zahlungsbeleg im nächsten Schritt hochladen, um Ihre Bestellung zu bestätigen.
+                                    Bitte tätigen Sie eine Banküberweisung, um Ihre Bestellung abzuschließen. Sie müssen den Zahlungsbeleg im nächsten Schritt hochladen, um Ihre Bestellung zu bestätigen.
                                 </TranslatedText>
                             </p>
                         </div>
                         <Button type="submit" size="lg" className="w-full mt-6" disabled={isSubmitting}>
                         {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                        <TranslatedText fr="Valider et Payer" en="Validate and Pay">
-                            Bestätigen und Bezahlen
+                        <TranslatedText fr="Valider et Continuer" en="Validate and Continue">
+                            Bestätigen und Fortfahren
                         </TranslatedText>
                         </Button>
                     </CardContent>

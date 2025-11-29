@@ -162,7 +162,7 @@ export function CartSheetContent() {
         <div className="mt-6">
           <SheetClose>
             <Button asChild className="w-full">
-              <Link href="/checkout">
+              <Link href="/checkout/payment-method">
                 <TranslatedText fr="Passer à la caisse" en="Checkout">
                   Zur Kasse
                 </TranslatedText>
