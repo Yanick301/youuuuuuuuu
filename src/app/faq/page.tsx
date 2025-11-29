@@ -54,11 +54,11 @@ export default function FaqPage() {
       question_fr: 'Comment contacter le service client ?',
       question_en: 'How do I contact customer service?',
       answer_de:
-        'Unser Kundenservice steht Ihnen zur Verfügung, um alle Ihre Fragen zu beantworten. Sie können uns per E-Mail unter contact-support@ezcentials.com oder telefonisch unter +49 123 456 789 erreichen. Wir sind von Montag bis Freitag von 9 bis 18 Uhr erreichbar.',
+        'Unser Kundenservice steht Ihnen zur Verfügung, um alle Ihre Fragen zu beantworten. Sie können uns per E-Mail unter contact-support@ezcentials.com erreichen. Wir sind von Montag bis Freitag von 9 bis 18 Uhr erreichbar.',
       answer_fr:
-        'Notre service client est à votre disposition pour répondre à toutes vos questions. Vous pouvez nous contacter par email à l\'adresse contact-support@ezcentials.com ou par téléphone au +33 1 23 45 67 89. Nous sommes disponibles du lundi au vendredi, de 9h à 18h.',
+        'Notre service client est à votre disposition pour répondre à toutes vos questions. Vous pouvez nous contacter par email à l\'adresse contact-support@ezcentials.com. Nous sommes disponibles du lundi au vendredi, de 9h à 18h.',
       answer_en:
-        'Our customer service is available to answer all your questions. You can contact us by email at contact-support@ezcentials.com or by phone at +44 20 1234 5678. We are available Monday to Friday, from 9am to 6pm.',
+        'Our customer service is available to answer all your questions. You can contact us by email at contact-support@ezcentials.com. We are available Monday to Friday, from 9am to 6pm.',
     },
   ];
 
