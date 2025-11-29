@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useUser } from '@/firebase';
+import { useUser, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,6 +30,8 @@ import { useLanguage } from '@/context/LanguageContext';
 import { Loader2, Upload, Banknote } from 'lucide-react';
 import { useEffect, useState, Suspense } from 'react';
 import type { CartItem } from '@/lib/types';
+import { doc, setDoc } from 'firebase/firestore';
+
 
 interface LocalOrder {
     id: string;
@@ -42,14 +44,14 @@ interface LocalOrder {
     totalAmount: number;
     orderDate: string;
     paymentStatus: 'pending' | 'processing' | 'completed' | 'rejected';
-    receiptImageUrl: string | null;
+    receiptImageUrl: string | boolean | null;
 }
 
 
 const uploadSchema = z.object({
   receipt: z
     .custom<FileList>()
-    .refine((files) => files?.length > 0, 'Le reçu est requis.')
+    .refine((files) => files?.length === 1, 'Le reçu est requis.')
     .transform((files) => files[0])
     .refine(
       (file) => file?.size <= 1024 * 1024,
@@ -69,6 +71,7 @@ function ConfirmPaymentClient() {
   const orderId = searchParams.get('orderId');
 
   const { user, isUserLoading } = useUser();
+  const firestore = useFirestore();
   const { toast } = useToast();
   const { language } = useLanguage();
   const [order, setOrder] = useState<LocalOrder | null>(null);
@@ -76,9 +79,6 @@ function ConfirmPaymentClient() {
 
   const form = useForm<UploadFormValues>({
     resolver: zodResolver(uploadSchema),
-    defaultValues: {
-      receipt: undefined,
-    },
   });
   
   useEffect(() => {
@@ -124,7 +124,7 @@ function ConfirmPaymentClient() {
     });
 
   const onSubmit: SubmitHandler<UploadFormValues> = async (data) => {
-    if (!orderId || !user) {
+    if (!orderId || !user || !firestore) {
         toast({ variant: 'destructive', title: 'Erreur', description: 'Le service n\'est pas disponible.'});
         return;
     }
@@ -132,12 +132,21 @@ function ConfirmPaymentClient() {
     try {
         const base64Image = await toBase64(data.receipt);
 
-        // Update order in local storage
+        // 1. Save receipt image to Firestore
+        const receiptRef = doc(firestore, 'receipts', orderId);
+        await setDoc(receiptRef, {
+            orderId: orderId,
+            userId: user.uid,
+            receiptDataUrl: base64Image,
+            uploadedAt: new Date().toISOString(),
+        });
+
+        // 2. Update order in local storage
         const localOrders: LocalOrder[] = JSON.parse(localStorage.getItem('localOrders') || '[]');
         const orderIndex = localOrders.findIndex(o => o.id === orderId);
 
         if (orderIndex > -1) {
-            localOrders[orderIndex].receiptImageUrl = base64Image;
+            localOrders[orderIndex].receiptImageUrl = true; // Mark as uploaded
             localOrders[orderIndex].paymentStatus = 'processing';
             localStorage.setItem('localOrders', JSON.stringify(localOrders));
         }
@@ -151,10 +160,20 @@ function ConfirmPaymentClient() {
 
     } catch (error: any) {
         console.error("Upload error:", error);
+        // Handle potential Firestore permission errors
+        if (error.code && error.code.includes('permission-denied')) {
+            const permissionError = new FirestorePermissionError({
+                path: `receipts/${orderId}`,
+                operation: 'create',
+                requestResourceData: { orderId, userId: user.uid, uploadedAt: new Date().toISOString() },
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        }
+
         toast({
             variant: 'destructive',
             title: 'Erreur de téléversement',
-            description: 'Une erreur s\'est produite. Veuillez réessayer.',
+            description: 'Une erreur s\'est produite. Vérifiez les permissions et réessayez.',
         });
     }
   };
@@ -297,3 +316,5 @@ export default function ConfirmPaymentPage() {
         </Suspense>
     )
 }
+
+    
