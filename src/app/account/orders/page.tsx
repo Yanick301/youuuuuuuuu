@@ -19,62 +19,81 @@ import {
   Ban,
   Upload,
 } from 'lucide-react';
-import {
-  useCollection,
-  useFirestore,
-  useUser,
-  useMemoFirebase,
-} from '@/firebase';
-import {
-  collection,
-  query,
-  orderBy,
-  where,
-} from 'firebase/firestore';
+import { useUser } from '@/firebase';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { fr, de, enUS } from 'date-fns/locale';
 import { useLanguage } from '@/context/LanguageContext';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import type { CartItem } from '@/lib/types';
+
+
+interface LocalOrder {
+    id: string;
+    userId: string;
+    shippingInfo: any;
+    items: CartItem[];
+    subtotal: number;
+    shipping: number;
+    taxes: number;
+    totalAmount: number;
+    orderDate: string;
+    paymentStatus: 'pending' | 'processing' | 'completed' | 'rejected';
+    receiptImageUrl: string | null;
+}
 
 const getSafeDate = (order: any): Date => {
   if (!order || !order.orderDate) {
     return new Date();
   }
-  if (order.orderDate && typeof order.orderDate.toDate === 'function') {
-    return order.orderDate.toDate();
-  }
-  if (order.orderDate instanceof Date) {
-    return order.orderDate;
-  }
+  // This handles ISO strings from local storage
   try {
     const parsedDate = new Date(order.orderDate);
     if (!isNaN(parsedDate.getTime())) {
       return parsedDate;
     }
   } catch (e) {
-    // Ignore and fallback
+    // Fallback if parsing fails
   }
   return new Date();
 };
 
 export default function OrdersPage() {
   const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
   const { language } = useLanguage();
   const router = useRouter();
+  const [orders, setOrders] = useState<LocalOrder[]>([]);
+  const [isOrdersLoading, setIsOrdersLoading] = useState(true);
   
-  const ordersQuery = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
+  useEffect(() => {
+    if (isUserLoading) {
+      return; // Wait until user auth state is resolved
+    }
 
-    return query(
-      collection(firestore, `orders`),
-      where('userId', '==', user.uid),
-      orderBy('orderDate', 'desc')
-    );
-  }, [firestore, user]);
+    setIsOrdersLoading(true);
+    if (user) {
+        try {
+            const localData = localStorage.getItem('localOrders');
+            if (localData) {
+                const allOrders: LocalOrder[] = JSON.parse(localData);
+                const userOrders = allOrders
+                    .filter(order => order.userId === user.uid)
+                    .sort((a, b) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime());
+                setOrders(userOrders);
+            } else {
+                setOrders([]);
+            }
+        } catch (error) {
+            console.error("Failed to load orders from local storage", error);
+            setOrders([]);
+        }
+    } else {
+        setOrders([]);
+    }
+    setIsOrdersLoading(false);
 
-  const { data: orders, isLoading: isOrdersLoading } = useCollection(ordersQuery);
+  }, [user, isUserLoading]);
 
   const isLoading = isUserLoading || isOrdersLoading;
 
@@ -174,7 +193,7 @@ export default function OrdersPage() {
       </h1>
       {orders && orders.length > 0 ? (
         <div className="space-y-6">
-          {[...(orders as any[])].map((order: any) => (
+          {orders.map((order: LocalOrder) => (
             <Card key={order.id}>
               <CardHeader className="flex-row items-start justify-between">
                 <div>

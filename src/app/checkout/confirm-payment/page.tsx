@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -12,8 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useUser, useFirestore, useStorage } from '@/firebase';
-import { doc, getDoc, updateDoc, DocumentData } from 'firebase/firestore';
+import { useUser, useStorage } from '@/firebase';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { useToast } from '@/hooks/use-toast';
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -30,6 +30,22 @@ import {
 import { useLanguage } from '@/context/LanguageContext';
 import { Loader2, Upload, Banknote } from 'lucide-react';
 import { useEffect, useState, Suspense } from 'react';
+import type { CartItem } from '@/lib/types';
+
+interface LocalOrder {
+    id: string;
+    userId: string;
+    shippingInfo: any;
+    items: CartItem[];
+    subtotal: number;
+    shipping: number;
+    taxes: number;
+    totalAmount: number;
+    orderDate: string;
+    paymentStatus: 'pending' | 'processing' | 'completed' | 'rejected';
+    receiptImageUrl: string | null;
+}
+
 
 const uploadSchema = z.object({
   receipt: z
@@ -54,11 +70,10 @@ function ConfirmPaymentClient() {
   const orderId = searchParams.get('orderId');
 
   const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
   const storage = useStorage();
   const { toast } = useToast();
   const { language } = useLanguage();
-  const [order, setOrder] = useState<DocumentData | null>(null);
+  const [order, setOrder] = useState<LocalOrder | null>(null);
   const [isOrderLoading, setIsOrderLoading] = useState(true);
 
   const form = useForm<UploadFormValues>({
@@ -66,31 +81,38 @@ function ConfirmPaymentClient() {
   });
   
   useEffect(() => {
-    if (!orderId || !firestore) {
+    if (!orderId) {
       router.push('/account/orders');
       return;
     }
     
-    const fetchOrder = async () => {
-        const orderRef = doc(firestore, 'orders', orderId);
-        const orderSnap = await getDoc(orderRef);
+    try {
+        const localOrders: LocalOrder[] = JSON.parse(localStorage.getItem('localOrders') || '[]');
+        const foundOrder = localOrders.find(o => o.id === orderId);
 
-        if (orderSnap.exists()) {
-            setOrder({ id: orderSnap.id, ...orderSnap.data() });
+        if (foundOrder) {
+            setOrder(foundOrder);
         } else {
             toast({
                 variant: 'destructive',
                 title: 'Commande non trouvée',
-                description: 'Cette commande n\'existe pas.',
+                description: 'Cette commande n\'existe pas localement.',
             });
             router.push('/account/orders');
         }
+    } catch (error) {
+        console.error("Failed to load order from local storage:", error);
+        toast({
+            variant: 'destructive',
+            title: 'Erreur',
+            description: 'Impossible de charger les commandes locales.',
+        });
+        router.push('/account/orders');
+    } finally {
         setIsOrderLoading(false);
-    };
-
-    fetchOrder();
-
-  }, [orderId, firestore, router, toast]);
+    }
+    
+  }, [orderId, router, toast]);
 
   const toBase64 = (file: File): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -101,7 +123,7 @@ function ConfirmPaymentClient() {
     });
 
   const onSubmit: SubmitHandler<UploadFormValues> = async (data) => {
-    if (!orderId || !user || !firestore || !storage) {
+    if (!orderId || !user || !storage) {
         toast({ variant: 'destructive', title: 'Erreur', description: 'Le service n\'est pas disponible.'});
         return;
     }
@@ -114,12 +136,15 @@ function ConfirmPaymentClient() {
         await uploadString(storageRef, base64Image, 'data_url');
         const imageUrl = await getDownloadURL(storageRef);
 
-        // Update order in Firestore
-        const orderRef = doc(firestore, 'orders', orderId);
-        await updateDoc(orderRef, {
-            receiptImageUrl: imageUrl,
-            paymentStatus: 'processing',
-        });
+        // Update order in local storage
+        const localOrders: LocalOrder[] = JSON.parse(localStorage.getItem('localOrders') || '[]');
+        const orderIndex = localOrders.findIndex(o => o.id === orderId);
+
+        if (orderIndex > -1) {
+            localOrders[orderIndex].receiptImageUrl = imageUrl;
+            localOrders[orderIndex].paymentStatus = 'processing';
+            localStorage.setItem('localOrders', JSON.stringify(localOrders));
+        }
 
         toast({
             title: 'Reçu téléversé !',

@@ -29,8 +29,7 @@ import { ArrowLeft, Loader2, Banknote, AlertTriangle } from 'lucide-react';
 import placeholderImagesData from '@/lib/placeholder-images.json';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useUser, useFirestore, useFirebase, errorEmitter, FirestorePermissionError } from '@/firebase';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { useUser } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { useEffect } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -58,7 +57,6 @@ export function CheckoutClientPage() {
   const { language } = useLanguage();
   const router = useRouter();
   const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
   const { toast } = useToast();
 
   const form = useForm<CheckoutFormValues>({
@@ -100,7 +98,7 @@ export function CheckoutClientPage() {
   }, [user, isUserLoading, router, form])
 
   const onSubmit: SubmitHandler<CheckoutFormValues> = async (data) => {
-    if (!user || !firestore) {
+    if (!user) {
       toast({ variant: 'destructive', title: 'Erreur', description: 'Vous devez être connecté pour passer une commande.' });
       return;
     }
@@ -109,7 +107,11 @@ export function CheckoutClientPage() {
     const taxes = subtotal * 0.2; // Example 20% tax
     const total = subtotal + shippingCost + taxes;
     
+    // Generate a unique local ID for the order
+    const localOrderId = `local_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+
     const orderData = {
+        id: localOrderId,
         userId: user.uid,
         shippingInfo: {
           name: `${data.firstName} ${data.lastName}`,
@@ -133,39 +135,31 @@ export function CheckoutClientPage() {
         shipping: shippingCost,
         taxes: taxes,
         totalAmount: total,
-        orderDate: serverTimestamp(),
+        orderDate: new Date().toISOString(), // Use ISO string for local storage
         paymentStatus: 'pending',
         receiptImageUrl: null,
     };
     
-    const ordersCollection = collection(firestore, 'orders');
+    try {
+        const localOrders = JSON.parse(localStorage.getItem('localOrders') || '[]');
+        localOrders.push(orderData);
+        localStorage.setItem('localOrders', JSON.stringify(localOrders));
 
-    addDoc(ordersCollection, orderData)
-      .then(docRef => {
         toast({
             title: "Commande validée !",
             description: "Vous allez être redirigé pour téléverser votre preuve de paiement."
         });
 
         clearCart();
-        router.push(`/checkout/confirm-payment?orderId=${docRef.id}`);
-      })
-      .catch(error => {
-        // Emit a detailed, contextual error for the development overlay
-        const permissionError = new FirestorePermissionError({
-          path: ordersCollection.path,
-          operation: 'create',
-          requestResourceData: orderData,
-        });
-        errorEmitter.emit('permission-error', permissionError);
-
-        // Also show a user-friendly toast
+        router.push(`/checkout/confirm-payment?orderId=${localOrderId}`);
+    } catch (error) {
+        console.error("Failed to save order to local storage:", error);
         toast({
             variant: "destructive",
             title: "Erreur de commande",
-            description: "Impossible de créer la commande. Vérifiez vos permissions et réessayez."
+            description: "Impossible de sauvegarder la commande localement."
         });
-      });
+    }
   };
 
   const shippingCost = subtotal > 100 ? 0 : 10;
