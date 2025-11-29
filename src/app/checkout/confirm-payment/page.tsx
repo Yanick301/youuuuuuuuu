@@ -49,8 +49,8 @@ interface LocalOrder {
 const uploadSchema = z.object({
   receipt: z
     .custom<FileList>()
-    .transform((file) => file[0])
-    .refine((file) => file, 'Le reçu est requis.')
+    .refine((files) => files?.length > 0, 'Le reçu est requis.')
+    .transform((files) => files[0])
     .refine(
       (file) => file?.size <= 1024 * 1024,
       'La taille du fichier doit être inférieure à 1 Mo.'
