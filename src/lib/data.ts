@@ -391,6 +391,21 @@ export const products: Product[] = [
     colors: ['Imprimé Or et Noir'],
   },
   {
+    id: 'manteau-long-laine-hugo-boss',
+    name: 'Langer Wollmantel Hugo Boss',
+    name_fr: 'Manteau Long en Laine Hugo Boss',
+    name_en: 'Hugo Boss Long Wool Coat',
+    slug: 'manteau-long-laine-hugo-boss',
+    price: 750,
+    description: 'Ein ikonischer langer Mantel aus einer luxuriösen Wollmischung, perfekt für einen eleganten Winterlook. Sein minimalistischer Schnitt und die tadellosen Oberflächen machen ihn zu einem zeitlosen Must-have.',
+    description_fr: 'Un manteau long iconique dans un mélange de laine luxueux, parfait pour une allure hivernale élégante. Sa coupe minimaliste et ses finitions impeccables en font un indispensable intemporel.',
+    description_en: 'An iconic long coat in a luxurious wool blend, perfect for an elegant winter look. Its minimalist cut and impeccable finishes make it a timeless essential.',
+    category: 'winter-clothing',
+    images: ['manteau-long-laine-hugo-boss'],
+    sizes: ['48', '50', '52', '54'],
+    colors: ['Noir', 'Gris Anthracite'],
+  },
+  {
     id: 'prod-42',
     name: 'Essential T-Shirt',
     name_fr: 'T-shirt Essential',
@@ -1912,3 +1927,4 @@ export function getWinterSaleProducts(products: Product[], limit?: number): Prod
 
   return Array.from(featuredItems);
 }
+
