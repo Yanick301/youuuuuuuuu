@@ -9,7 +9,6 @@ import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { DialogClose } from '@radix-ui/react-dialog';
 import placeholderImagesData from '@/lib/placeholder-images.json';
-import { useLanguage } from '@/context/LanguageContext';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -32,7 +31,6 @@ export function CartSheetContent() {
     updateQuantity,
     removeFromCart,
   } = useCart();
-  const { language } = useLanguage();
 
   if (totalItems === 0) {
     return (
@@ -155,18 +153,22 @@ export function CartSheetContent() {
         </div>
         <p className="mt-0.5 text-sm text-muted-foreground">
           <TranslatedText
-            fr="Processus de commande non disponible."
-            en="Checkout process not available."
+            fr="Taxes et frais de port calculés à la caisse."
+            en="Taxes and shipping calculated at checkout."
           >
-            Bestellvorgang nicht verfügbar.
+            Steuern und Versand an der Kasse berechnet.
           </TranslatedText>
         </p>
         <div className="mt-6">
-          <Button className="w-full" disabled>
-            <TranslatedText fr="Passer à la caisse" en="Checkout">
-              Zur Kasse
-            </TranslatedText>
-          </Button>
+          <SheetClose>
+            <Button asChild className="w-full">
+              <Link href="/checkout">
+                <TranslatedText fr="Passer à la caisse" en="Checkout">
+                  Zur Kasse
+                </TranslatedText>
+              </Link>
+            </Button>
+          </SheetClose>
         </div>
       </div>
     </>

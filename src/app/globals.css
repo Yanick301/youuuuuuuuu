@@ -76,4 +76,7 @@
     background-image: radial-gradient(hsl(25 30% 15%) 0.5px, transparent 0.5px);
     background-size: 5px 5px;
   }
+  .bg-checkout-background {
+      @apply bg-gray-50;
+  }
 }
