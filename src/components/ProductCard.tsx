@@ -14,6 +14,7 @@ import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
+import { AddToFavoritesButton } from './favorites/AddToFavoritesButton';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -45,7 +46,7 @@ export function ProductCard({ product }: ProductCardProps) {
     });
     toast({
       title: 'Ajouté au panier !',
-      description: `${product.name} a été ajouté à votre panier.`,
+      description: `${getTranslatedName()} a été ajouté à votre panier.`,
     });
   };
   
@@ -73,9 +74,12 @@ export function ProductCard({ product }: ProductCardProps) {
                     )}
                 </div>
             </Link>
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 transform opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <ProductCardActions product={product} />
-            </div>
+             <AddToFavoritesButton 
+                productId={product.id}
+                variant="ghost"
+                size="icon"
+                className="absolute top-2 right-2 h-9 w-9 rounded-full bg-background/60 p-2 text-white backdrop-blur-sm transition-all hover:bg-background/80"
+             />
         </div>
         <div className="pt-4 text-left flex-grow flex flex-col">
             <div className="flex justify-between items-start">
