@@ -5,18 +5,15 @@ import { products as allProducts, getProductById } from '@/lib/data';
 import { ProductCard } from '@/components/ProductCard';
 import { TranslatedText } from '@/components/TranslatedText';
 import { Heart, Loader2 } from 'lucide-react';
-import { useUser } from '@/firebase';
 import { useFavorites } from '@/context/FavoritesContext';
 import { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function FavoritesPage() {
-  const { user } = useUser();
   const { favorites, isFavoritesLoading } = useFavorites();
 
   const favoriteProducts = useMemo(() => {
-    if (!favorites) return [];
     return favorites
       .map((productId) => getProductById(allProducts, productId))
       .filter((p): p is NonNullable<typeof p> => p !== undefined);
@@ -36,19 +33,11 @@ export default function FavoritesPage() {
             <h1 className="mb-2 font-headline text-3xl">
                 <TranslatedText fr="Mes favoris" en="My Favorites">Meine Favoriten</TranslatedText>
             </h1>
-            {user?.displayName ? (
-                <p className="text-lg text-muted-foreground">
-                    <TranslatedText fr={`Bienvenue, ${user.displayName}. Voici vos articles précieusement sélectionnés.`} en={`Welcome, ${user.displayName}. Here are your treasured items.`}>
-                        Willkommen, {user.displayName}. Hier sind Ihre wertvollen Artikel.
-                    </TranslatedText>
-                </p>
-            ) : (
-                 <p className="text-lg text-muted-foreground">
-                    <TranslatedText fr="Voici vos articles précieusement sélectionnés." en="Here are your treasured items.">
-                        Hier sind Ihre wertvollen Artikel.
-                    </TranslatedText>
-                </p>
-            )}
+            <p className="text-lg text-muted-foreground">
+                <TranslatedText fr="Voici vos articles précieusement sélectionnés." en="Here are your treasured items.">
+                    Hier sind Ihre wertvollen Artikel.
+                </TranslatedText>
+            </p>
         </div>
       {favoriteProducts.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted p-12 text-center">
