@@ -76,6 +76,9 @@ function ConfirmPaymentClient() {
 
   const form = useForm<UploadFormValues>({
     resolver: zodResolver(uploadSchema),
+    defaultValues: {
+      receipt: undefined,
+    },
   });
   
   useEffect(() => {
@@ -243,7 +246,7 @@ function ConfirmPaymentClient() {
               <FormField
                 control={form.control}
                 name="receipt"
-                render={({ field: { onChange, ...fieldProps } }) => (
+                render={({ field: { onChange, value, ...fieldProps } }) => (
                   <FormItem>
                     <FormLabel>
                       <TranslatedText fr="Preuve de paiement" en="Proof of Payment">
