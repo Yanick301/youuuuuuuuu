@@ -107,6 +107,17 @@ export default function LoginPageClient() {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
       
+      // IMPORTANT: Check for email verification
+      if (userCredential.user && !userCredential.user.emailVerified) {
+        toast({
+            variant: "destructive",
+            title: language === 'fr' ? 'Vérification requise' : language === 'en' ? 'Verification Required' : 'Bestätigung erforderlich',
+            description: language === 'fr' ? 'Veuillez vérifier votre e-mail avant de vous connecter.' : language === 'en' ? 'Please verify your email before logging in.' : 'Bitte bestätigen Sie Ihre E-Mail, bevor Sie sich anmelden.',
+        });
+        router.push('/verify-email');
+        return; // Stop execution here
+      }
+
       await handleUserCreation(userCredential)
       
       toast({
