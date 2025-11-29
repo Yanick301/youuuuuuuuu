@@ -79,6 +79,9 @@ function ConfirmPaymentClient() {
 
   const form = useForm<UploadFormValues>({
     resolver: zodResolver(uploadSchema),
+    defaultValues: {
+      receipt: undefined,
+    },
   });
   
   useEffect(() => {
@@ -129,53 +132,56 @@ function ConfirmPaymentClient() {
         return;
     }
 
-    try {
-        const base64Image = await toBase64(data.receipt);
+    const base64Image = await toBase64(data.receipt);
+    const receiptData = {
+        orderId: orderId,
+        userId: user.uid,
+        receiptDataUrl: base64Image,
+        uploadedAt: new Date().toISOString(),
+    };
 
-        // 1. Save receipt image to Firestore
-        const receiptRef = doc(firestore, 'receipts', orderId);
-        await setDoc(receiptRef, {
-            orderId: orderId,
-            userId: user.uid,
-            receiptDataUrl: base64Image,
-            uploadedAt: new Date().toISOString(),
-        });
+    const receiptRef = doc(firestore, 'receipts', orderId);
 
-        // 2. Update order in local storage
-        const localOrders: LocalOrder[] = JSON.parse(localStorage.getItem('localOrders') || '[]');
-        const orderIndex = localOrders.findIndex(o => o.id === orderId);
+    // Use non-blocking write with contextual error handling
+    setDoc(receiptRef, receiptData)
+        .then(() => {
+            // This runs on successful write to Firestore
+            const localOrders: LocalOrder[] = JSON.parse(localStorage.getItem('localOrders') || '[]');
+            const orderIndex = localOrders.findIndex(o => o.id === orderId);
 
-        if (orderIndex > -1) {
-            localOrders[orderIndex].receiptImageUrl = true; // Mark as uploaded
-            localOrders[orderIndex].paymentStatus = 'processing';
-            localStorage.setItem('localOrders', JSON.stringify(localOrders));
-        }
+            if (orderIndex > -1) {
+                localOrders[orderIndex].receiptImageUrl = true; // Mark as uploaded
+                localOrders[orderIndex].paymentStatus = 'processing';
+                localStorage.setItem('localOrders', JSON.stringify(localOrders));
+            }
 
-        toast({
-            title: 'Reçu téléversé !',
-            description: 'Votre commande est maintenant en cours de validation.',
-        });
+            toast({
+                title: 'Reçu téléversé !',
+                description: 'Votre commande est maintenant en cours de validation.',
+            });
 
-        router.push('/account/orders');
-
-    } catch (error: any) {
-        console.error("Upload error:", error);
-        // Handle potential Firestore permission errors
-        if (error.code && error.code.includes('permission-denied')) {
+            router.push('/account/orders');
+        })
+        .catch(serverError => {
+            // This runs if the write fails (e.g., permission denied)
             const permissionError = new FirestorePermissionError({
-                path: `receipts/${orderId}`,
+                path: receiptRef.path,
                 operation: 'create',
-                requestResourceData: { orderId, userId: user.uid, uploadedAt: new Date().toISOString() },
+                requestResourceData: {
+                    orderId: orderId,
+                    userId: user.uid,
+                    uploadedAt: receiptData.uploadedAt,
+                    // We omit the large base64 string from the error payload
+                },
             });
             errorEmitter.emit('permission-error', permissionError);
-        }
 
-        toast({
-            variant: 'destructive',
-            title: 'Erreur de téléversement',
-            description: 'Une erreur s\'est produite. Vérifiez les permissions et réessayez.',
+            toast({
+                variant: 'destructive',
+                title: 'Erreur de téléversement',
+                description: 'Impossible de soumettre le reçu. Vérifiez les permissions et réessayez.',
+            });
         });
-    }
   };
   
   if (isUserLoading || isOrderLoading) {
@@ -316,5 +322,3 @@ export default function ConfirmPaymentPage() {
         </Suspense>
     )
 }
-
-    
