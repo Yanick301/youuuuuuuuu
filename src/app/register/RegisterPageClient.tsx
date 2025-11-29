@@ -12,8 +12,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useFirebase, errorEmitter, FirestorePermissionError } from '@/firebase';
-import { createUserWithEmailAndPassword, updateProfile, type UserCredential } from 'firebase/auth';
+import { useFirebase, errorEmitter, FirestorePermissionError, useFirestore } from '@/firebase';
+import { createUserWithEmailAndPassword, updateProfile, type UserCredential, sendEmailVerification } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -59,7 +59,8 @@ const handleUserProfileCreation = async (userCredential: UserCredential, firesto
             firstName: name.split(' ')[0] || '',
             lastName: name.split(' ').slice(1).join(' ') || '',
             photoURL: user.photoURL || '',
-        });
+            isAdmin: false, // Default to non-admin
+        }, { merge: true });
     } catch (e: any) {
          const permissionError = new FirestorePermissionError({
           path: `userProfiles/${user.uid}`,
@@ -110,14 +111,16 @@ export default function RegisterPageClient() {
       // Step 3: Create the user profile document in Firestore
       await handleUserProfileCreation(userCredential, firestore, data.name);
       
+      // Step 4: Send the verification email
+      await sendEmailVerification(user);
+
       toast({
           title: language === 'fr' ? 'Inscription réussie !' : language === 'en' ? 'Registration Successful!' : 'Registrierung erfolgreich!',
-          description: language === 'fr' ? 'Bienvenue ! Vous êtes maintenant connecté.' : language === 'en' ? 'Welcome! You are now logged in.' : 'Willkommen! Sie sind jetzt eingeloggt.',
+          description: language === 'fr' ? 'Un lien de vérification a été envoyé à votre adresse e-mail.' : language === 'en' ? 'A verification link has been sent to your email address.' : 'Ein Bestätigungslink wurde an Ihre E-Mail-Adresse gesendet.',
       });
       
-      // Step 4: Redirect the user to their account page
-      router.push('/account');
-      router.refresh();
+      // Step 5: Redirect the user to the verification page
+      router.push('/verify-email');
 
     } catch (error: any) {
        let errorMessage: string;
