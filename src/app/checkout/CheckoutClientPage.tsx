@@ -29,7 +29,7 @@ import { ArrowLeft, Loader2, Banknote, AlertTriangle } from 'lucide-react';
 import placeholderImagesData from '@/lib/placeholder-images.json';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useUser, useFirestore, useFirebase } from '@/firebase';
+import { useUser, useFirestore, useFirebase, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { useEffect } from 'react';
@@ -108,9 +108,8 @@ export function CheckoutClientPage() {
     const shippingCost = subtotal > 100 ? 0 : 10;
     const taxes = subtotal * 0.2; // Example 20% tax
     const total = subtotal + shippingCost + taxes;
-
-    try {
-      const orderData = {
+    
+    const orderData = {
         userId: user.uid,
         shippingInfo: {
           name: `${data.firstName} ${data.lastName}`,
@@ -137,26 +136,36 @@ export function CheckoutClientPage() {
         orderDate: serverTimestamp(),
         paymentStatus: 'pending',
         receiptImageUrl: null,
-      };
+    };
+    
+    const ordersCollection = collection(firestore, 'orders');
 
-      const docRef = await addDoc(collection(firestore, 'orders'), orderData);
-      
-      toast({
-          title: "Commande validée !",
-          description: "Vous allez être redirigé pour téléverser votre preuve de paiement."
-      });
+    addDoc(ordersCollection, orderData)
+      .then(docRef => {
+        toast({
+            title: "Commande validée !",
+            description: "Vous allez être redirigé pour téléverser votre preuve de paiement."
+        });
 
-      clearCart();
-      router.push(`/checkout/confirm-payment?orderId=${docRef.id}`);
-
-    } catch (error) {
-      console.error("Error creating order:", error);
-      toast({
-          variant: "destructive",
-          title: "Erreur de commande",
-          description: "Impossible de créer la commande. Veuillez réessayer."
+        clearCart();
+        router.push(`/checkout/confirm-payment?orderId=${docRef.id}`);
       })
-    }
+      .catch(error => {
+        // Emit a detailed, contextual error for the development overlay
+        const permissionError = new FirestorePermissionError({
+          path: ordersCollection.path,
+          operation: 'create',
+          requestResourceData: orderData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+
+        // Also show a user-friendly toast
+        toast({
+            variant: "destructive",
+            title: "Erreur de commande",
+            description: "Impossible de créer la commande. Vérifiez vos permissions et réessayez."
+        });
+      });
   };
 
   const shippingCost = subtotal > 100 ? 0 : 10;
