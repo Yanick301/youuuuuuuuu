@@ -13,6 +13,7 @@ import { Button } from './ui/button';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -21,6 +22,7 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product }: ProductCardProps) {
+  const { language } = useLanguage();
   const productImage = placeholderImages.find(p => p.id === product.images[0]);
   const averageRating = 5;
   const [reviewCount, setReviewCount] = useState(0);
@@ -46,6 +48,12 @@ export function ProductCard({ product }: ProductCardProps) {
       description: `${product.name} a été ajouté à votre panier.`,
     });
   };
+  
+  const getTranslatedName = () => {
+    if (language === 'fr') return product.name_fr;
+    if (language === 'en') return product.name_en;
+    return product.name;
+  }
 
   return (
     <div className="group flex h-full flex-col">
@@ -55,7 +63,7 @@ export function ProductCard({ product }: ProductCardProps) {
                     {productImage && (
                     <img
                         src={productImage.imageUrl}
-                        alt={product.name}
+                        alt={getTranslatedName()}
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                         data-ai-hint={productImage.imageHint}
                     />
