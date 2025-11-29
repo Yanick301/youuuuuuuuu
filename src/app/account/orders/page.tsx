@@ -365,7 +365,7 @@ export default function OrdersPage() {
                 en="Explore our collections and find something you like."
               >
                 Entdecken Sie unsere Kollektionen und finden Sie etwas, das Ihnen gefällt.
-              </TanslatedText>
+              </TranslatedText>
             </p>
             <Button asChild className="mt-6">
               <Link href="/products/all">
