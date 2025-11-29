@@ -780,6 +780,48 @@
       "description": "Classic white Air Force 1",
       "imageUrl": "/images/products/aire_force1_blanc.jpg",
       "imageHint": "white sneaker"
+    },
+    {
+      "id": "new_balance",
+      "description": "Classic New Balance 550 sneaker",
+      "imageUrl": "/images/products/new_balance.jpg",
+      "imageHint": "retro sneaker"
+    },
+    {
+      "id": "tenis_adidas3",
+      "description": "Adidas Tennis HU by Pharrell Williams",
+      "imageUrl": "/images/products/tenis_adidas3.jpg",
+      "imageHint": "tennis shoes"
+    },
+    {
+      "id": "tenis_adidas2",
+      "description": "Classic Adidas Stan Smith sneakers",
+      "imageUrl": "/images/products/tenis_adidas2.jpg",
+      "imageHint": "classic sneakers"
+    },
+    {
+      "id": "tenis_adidas1",
+      "description": "Adidas Gazelle Indoor sneakers",
+      "imageUrl": "/images/products/tenis_adidas1.jpg",
+      "imageHint": "suede sneakers"
+    },
+    {
+      "id": "tenis_adidas",
+      "description": "Adidas Ultraboost running shoes",
+      "imageUrl": "/images/products/tenis_adidas.jpg",
+      "imageHint": "running shoes"
+    },
+    {
+      "id": "adidis_campus",
+      "description": "Adidas Campus 00s skate shoes",
+      "imageUrl": "/images/products/adidis_campus.jpg",
+      "imageHint": "skate shoes"
+    },
+    {
+      "id": "adidas_superstar",
+      "description": "Iconic Adidas Superstar sneakers",
+      "imageUrl": "/images/products/adidas_superstar.jpg",
+      "imageHint": "shell-toe sneakers"
     }
   ]
 }
