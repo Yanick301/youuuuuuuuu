@@ -130,10 +130,15 @@ export function CheckoutClientPage() {
         },
         items: cartItems.map(item => ({
             id: item.id,
-            product: item.product,
+            productId: item.product.id,
+            name: item.product.name,
+            name_fr: item.product.name_fr,
+            name_en: item.product.name_en,
+            price: item.product.price,
             quantity: item.quantity,
             size: item.size,
             color: item.color,
+            image: item.product.images[0],
         })),
         subtotal: subtotal,
         shipping: finalShippingCost,
@@ -541,3 +546,5 @@ export function CheckoutClientPage() {
     </div>
   );
 }
+
+    

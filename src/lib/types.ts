@@ -43,3 +43,18 @@ export type CartItem = {
   color?: string;
 };
 
+// Represents an item as it is stored within a saved order
+export type OrderItem = {
+  id: string; // CartItem id
+  productId: string;
+  name: string;
+  name_fr: string;
+  name_en: string;
+  price: number;
+  quantity: number;
+  size?: string;
+  color?: string;
+  image: string;
+};
+
+    

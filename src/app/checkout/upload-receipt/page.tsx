@@ -29,7 +29,7 @@ import { UploadCloud, Loader2, CheckCircle } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { TranslatedText } from '@/components/TranslatedText'
 import { useLanguage } from '@/context/LanguageContext'
-import type { CartItem } from '@/lib/types'
+import type { OrderItem } from '@/lib/types'
 import { Separator } from '@/components/ui/separator'
 
 // -------------------- VALIDATION ---------------------
@@ -64,7 +64,7 @@ interface LocalOrder {
     zip: string
     country: string
   }
-  items: CartItem[]
+  items: OrderItem[]
   subtotal: number
   shipping: number
   taxes: number
@@ -166,8 +166,8 @@ function UploadReceiptForm() {
           ${order.items
             .map(
               (item) =>
-                `<li>${item.quantity} x ${item.product.name} - €${(
-                  item.product.price * item.quantity
+                `<li>${item.quantity} x ${item.name} - €${(
+                  item.price * item.quantity
                 ).toFixed(2)}</li>`
             )
             .join('')}
@@ -178,7 +178,7 @@ function UploadReceiptForm() {
         <p><strong>Total: €${order.totalAmount.toFixed(2)}</strong></p>
       `
 
-      const YOUR_BASE_URL = 'https://VOTRE_SITE.vercel.app' // !! IMPORTANT !! Remplacez par votre URL
+      const YOUR_BASE_URL = 'https://ezcentials.vercel.app' // !! IMPORTANT !! Remplacez par votre URL
 
       const confirmationLink = `${YOUR_BASE_URL}/confirm.html?orderId=${encodeURIComponent(
         orderId
@@ -293,8 +293,8 @@ function UploadReceiptForm() {
                 <ul className="divide-y text-sm">
                     {order.items.map(item => (
                         <li key={item.id} className="flex justify-between py-2">
-                            <span>{item.quantity} x <TranslatedText fr={item.product.name_fr} en={item.product.name_en}>{item.product.name}</TranslatedText></span>
-                            <span>€{(item.product.price * item.quantity).toFixed(2)}</span>
+                            <span>{item.quantity} x <TranslatedText fr={item.name_fr} en={item.name_en}>{item.name}</TranslatedText></span>
+                            <span>€{(item.price * item.quantity).toFixed(2)}</span>
                         </li>
                     ))}
                 </ul>
@@ -408,3 +408,5 @@ export default function UploadReceiptPage() {
     </div>
   )
 }
+
+    

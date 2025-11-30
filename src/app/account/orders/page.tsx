@@ -26,14 +26,14 @@ import { fr, de, enUS } from 'date-fns/locale';
 import { useLanguage } from '@/context/LanguageContext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import type { CartItem } from '@/lib/types';
+import type { OrderItem } from '@/lib/types';
 
 
 interface LocalOrder {
     id: string;
     userId: string;
     shippingInfo: any;
-    items: CartItem[];
+    items: OrderItem[];
     subtotal: number;
     shipping: number;
     taxes: number;
@@ -225,7 +225,7 @@ export default function OrdersPage() {
               <CardContent>
                 <div className="rounded-md border p-4">
                   <ul className="divide-y">
-                    {order.items.map((item: any) => (
+                    {order.items.map((item) => (
                       <li
                         key={item.productId}
                         className="flex items-center justify-between py-3 text-sm"
@@ -380,3 +380,5 @@ export default function OrdersPage() {
     </div>
   );
 }
+
+    
