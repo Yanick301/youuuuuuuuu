@@ -127,6 +127,16 @@ export function Header() {
           </div>
           
           <SearchDialog />
+           <Button variant="ghost" size="icon" asChild>
+            <Link href="/favorites">
+                <Heart className="h-5 w-5" />
+                <span className="sr-only">
+                    <TranslatedText fr="Favoris" en="Favorites">
+                        Favoriten
+                    </TranslatedText>
+                </span>
+            </Link>
+          </Button>
           <UserButton />
           <CartButton />
         </div>
