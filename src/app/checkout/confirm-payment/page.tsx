@@ -12,10 +12,10 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useUser, useFirestore } from '@/firebase';
+import { useUser } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/context/LanguageContext';
-import { Loader2, Mail, Banknote } from 'lucide-react';
+import { Loader2, ExternalLink, PartyPopper } from 'lucide-react';
 import { useEffect, useState, Suspense } from 'react';
 import type { CartItem } from '@/lib/types';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -34,7 +34,8 @@ interface LocalOrder {
     receiptImageUrl: string | null;
 }
 
-const PAYMENT_EMAIL = "payments@ezcentials.com";
+// !! IMPORTANT !! Remplacez cette URL par le lien de votre formulaire tiers (Tally, Google Forms, etc.)
+const THIRD_PARTY_FORM_URL = "https://tally.so/r/w2P1NE";
 
 function ConfirmPaymentClient() {
   const router = useRouter();
@@ -119,22 +120,11 @@ function ConfirmPaymentClient() {
       return null;
   }
 
-  const emailSubject = `Preuve de paiement pour la commande ${orderId}`;
-  const emailBody = `Bonjour,
-Veuillez trouver ci-joint la preuve de paiement pour ma commande numéro ${orderId}.
-Montant : €${order.totalAmount.toFixed(2)}
-Merci,
-${user?.displayName || ''}
-`;
-  const mailtoLink = `mailto:${PAYMENT_EMAIL}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-
-
   return (
     <div className="container mx-auto max-w-2xl px-4 py-12">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 font-headline text-3xl">
-            <Banknote />
             <TranslatedText
               fr="Finaliser le Paiement"
               en="Finalize Payment"
@@ -144,66 +134,74 @@ ${user?.displayName || ''}
           </CardTitle>
           <CardDescription>
             <TranslatedText
-              fr={`Pour la commande #${orderId}, veuillez nous envoyer votre preuve de virement par email.`}
-              en={`For order #${orderId}, please email us your proof of transfer.`}
+              fr={`Pour la commande #${orderId}, veuillez téléverser votre preuve de virement via notre formulaire sécurisé.`}
+              en={`For order #${orderId}, please upload your proof of transfer via our secure form.`}
             >
-              Für Bestellung #${orderId}, senden Sie uns bitte Ihren Überweisungsnachweis per E-Mail.
+              Für Bestellung #${orderId}, laden Sie bitte Ihren Überweisungsnachweis über unser sicheres Formular hoch.
             </TranslatedText>
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Alert variant="default" className="mb-8 border-blue-200 bg-blue-50 text-blue-900">
-             <Mail className="h-4 w-4 !text-blue-900" />
+        <CardContent className="space-y-6">
+          <Alert variant="default" className="border-blue-200 bg-blue-50 text-blue-900">
+             <ExternalLink className="h-4 w-4 !text-blue-900" />
             <AlertTitle className="font-semibold">
-                <TranslatedText fr="Action Requise : Envoyer votre reçu" en="Action Required: Send Your Receipt">Aktion erforderlich: Beleg senden</TranslatedText>
+                <TranslatedText fr="Étape 1 : Ouvrir le formulaire de paiement" en="Step 1: Open Payment Form">Schritt 1: Zahlungsformular öffnen</TranslatedText>
             </AlertTitle>
             <AlertDescription>
                 <TranslatedText
-                    fr={`Pour terminer, envoyez-nous la preuve de paiement à l'adresse e-mail suivante :`}
-                    en={`To finish, please send the proof of payment to the following email address:`}
+                    fr={`Cliquez sur le bouton ci-dessous pour ouvrir notre formulaire de téléversement sécurisé. Vous y indiquerez l'ID de votre commande (${orderId}) et joindrez votre reçu.`}
+                    en={`Click the button below to open our secure upload form. You will enter your order ID (${orderId}) and attach your receipt.`}
                 >
-                    Zum Abschluss senden Sie uns bitte den Zahlungsnachweis an folgende E-Mail-Adresse:
+                    Klicken Sie auf die Schaltfläche unten, um unser sicheres Upload-Formular zu öffnen. Dort geben Sie Ihre Bestell-ID (${orderId}) ein und hängen Ihren Beleg an.
                 </TranslatedText>
-                <br />
-                <a href={mailtoLink} className="font-bold underline">{PAYMENT_EMAIL}</a>.
-                 <p className="mt-2 text-xs">
-                    <TranslatedText fr="N'oubliez pas d'inclure votre reçu en pièce jointe." en="Don't forget to attach your receipt.">Vergessen Sie nicht, Ihren Beleg anzuhängen.</TranslatedText>
-                </p>
             </AlertDescription>
           </Alert>
           
-          <div className="space-y-4">
-              <a href={mailtoLink} target="_blank" rel="noopener noreferrer" className="w-full">
-                <Button className="w-full" size="lg">
-                    <Mail className="mr-2 h-4 w-4" />
-                    <TranslatedText fr="Ouvrir mon client de messagerie" en="Open My Email Client">Meinen E-Mail-Client öffnen</TranslatedText>
-                </Button>
-              </a>
+          <a href={`${THIRD_PARTY_FORM_URL}?orderId=${orderId}`} target="_blank" rel="noopener noreferrer" className="w-full">
+            <Button className="w-full" size="lg">
+                <ExternalLink className="mr-2 h-4 w-4" />
+                <TranslatedText fr="Ouvrir le formulaire sécurisé" en="Open Secure Form">Sicheres Formular öffnen</TranslatedText>
+            </Button>
+          </a>
 
-            <div className="relative my-4">
+          <div className="relative my-4">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
+                <span className="bg-card px-2 text-muted-foreground">
                   <TranslatedText fr="PUIS" en="THEN">DANN</TranslatedText>
                 </span>
               </div>
-            </div>
-
-             <Button variant="outline" className="w-full" size="lg" onClick={handleConfirmSent}>
-                <TranslatedText fr="J'ai envoyé l'e-mail" en="I've Sent The Email">Ich habe die E-Mail gesendet</TranslatedText>
-             </Button>
           </div>
+           
+           <Alert variant="default" className="border-green-200 bg-green-50 text-green-900">
+             <PartyPopper className="h-4 w-4 !text-green-900" />
+            <AlertTitle className="font-semibold">
+                <TranslatedText fr="Étape 2 : Confirmer l'envoi" en="Step 2: Confirm Submission">Schritt 2: Einsendung bestätigen</TranslatedText>
+            </AlertTitle>
+            <AlertDescription>
+                <TranslatedText
+                    fr="Une fois votre reçu téléversé via le formulaire, cliquez sur le bouton ci-dessous pour finaliser votre commande."
+                    en="Once you have uploaded your receipt via the form, click the button below to finalize your order."
+                >
+                    Sobald Sie Ihren Beleg über das Formular hochgeladen haben, klicken Sie auf die Schaltfläche unten, um Ihre Bestellung abzuschließen.
+                </TranslatedText>
+            </AlertDescription>
+          </Alert>
+
+          <Button variant="outline" className="w-full" size="lg" onClick={handleConfirmSent}>
+            <TranslatedText fr="J'ai téléversé le reçu, finaliser ma commande" en="I've Uploaded the Receipt, Finalize Order">Ich habe den Beleg hochgeladen, Bestellung abschließen</TranslatedText>
+          </Button>
           
         </CardContent>
          <CardFooter>
             <p className="text-xs text-muted-foreground">
                 <TranslatedText
-                    fr="En cliquant sur 'J'ai envoyé l'e-mail', votre commande passera en cours de traitement. Nous vérifierons votre paiement manuellement."
-                    en="By clicking 'I've Sent The Email', your order will be set to 'processing'. We will verify your payment manually."
+                    fr="En cliquant sur 'finaliser', votre commande passera en cours de traitement. Nous vérifierons votre paiement manuellement."
+                    en="By clicking 'finalize', your order will be set to 'processing'. We will verify your payment manually."
                 >
-                    Indem Sie auf 'Ich habe die E-Mail gesendet' klicken, wird Ihre Bestellung auf 'in Bearbeitung' gesetzt. Wir werden Ihre Zahlung manuell überprüfen.
+                    Indem Sie auf 'abschließen' klicken, wird Ihre Bestellung auf 'in Bearbeitung' gesetzt. Wir werden Ihre Zahlung manuell überprüfen.
                 </TranslatedText>
             </p>
          </CardFooter>
@@ -219,3 +217,4 @@ export default function ConfirmPaymentPage() {
         </Suspense>
     )
 }
+ 
