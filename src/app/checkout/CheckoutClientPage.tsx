@@ -129,11 +129,8 @@ export function CheckoutClientPage() {
           country: data.country,
         },
         items: cartItems.map(item => ({
-            productId: item.product.id,
-            name: item.product.name,
-            name_fr: item.product.name_fr,
-            name_en: item.product.name_en,
-            price: item.product.price,
+            id: item.id,
+            product: item.product,
             quantity: item.quantity,
             size: item.size,
             color: item.color,
