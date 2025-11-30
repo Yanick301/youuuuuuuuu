@@ -32,15 +32,30 @@ import { useLanguage } from '@/context/LanguageContext'
 import type { OrderItem } from '@/lib/types'
 import { Separator } from '@/components/ui/separator'
 
-// -------------------- VALIDATION ---------------------
+const uploadSchemaDE = z.object({
+  receipt: z
+    .any()
+    .refine((files) => files?.length === 1, 'Eine Datei ist erforderlich.')
+    .refine(
+      (files) => files?.[0]?.size <= 5000 * 1024,
+      'Die maximale Dateigröße beträgt 5 MB.'
+    )
+    .refine(
+      (files) =>
+        ['image/jpeg', 'image/png', 'application/pdf'].includes(
+          files?.[0]?.type
+        ),
+      'Nur die Formate .jpg, .png oder .pdf werden akzeptiert.'
+    ),
+});
 
-const uploadSchema = z.object({
+const uploadSchemaFR = z.object({
   receipt: z
     .any()
     .refine((files) => files?.length === 1, 'Un fichier est requis.')
     .refine(
-      (files) => files?.[0]?.size <= 50 * 1024, // 50KB
-      'La taille maximale du fichier est de 50 Ko.'
+      (files) => files?.[0]?.size <= 5000 * 1024,
+      'La taille maximale du fichier est de 5 Mo.'
     )
     .refine(
       (files) =>
@@ -49,9 +64,27 @@ const uploadSchema = z.object({
         ),
       'Seuls les formats .jpg, .png ou .pdf sont acceptés.'
     ),
-})
+});
 
-type UploadFormValues = z.infer<typeof uploadSchema>
+const uploadSchemaEN = z.object({
+  receipt: z
+    .any()
+    .refine((files) => files?.length === 1, 'A file is required.')
+    .refine(
+      (files) => files?.[0]?.size <= 5000 * 1024,
+      'Maximum file size is 5MB.'
+    )
+    .refine(
+      (files) =>
+        ['image/jpeg', 'image/png', 'application/pdf'].includes(
+          files?.[0]?.type
+        ),
+      'Only .jpg, .png, or .pdf formats are accepted.'
+    ),
+});
+
+
+type UploadFormValues = z.infer<typeof uploadSchemaEN>
 
 interface LocalOrder {
   id: string
@@ -74,8 +107,6 @@ interface LocalOrder {
   receiptImageUrl: string | null
 }
 
-// ----------- convert file to Base64 (safe) --------------
-
 const toBase64 = (file: File): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -83,8 +114,6 @@ const toBase64 = (file: File): Promise<string> =>
     reader.onload = () => resolve(reader.result as string)
     reader.onerror = (err) => reject(err)
   })
-
-// --------------------------------------------------------
 
 function UploadReceiptForm() {
   const router = useRouter()
@@ -101,9 +130,11 @@ function UploadReceiptForm() {
   const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
   const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
   const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+  
+  const currentSchema = language === 'fr' ? uploadSchemaFR : language === 'en' ? uploadSchemaEN : uploadSchemaDE;
 
   const form = useForm<UploadFormValues>({
-    resolver: zodResolver(uploadSchema),
+    resolver: zodResolver(currentSchema),
   })
 
   useEffect(() => {
@@ -122,12 +153,20 @@ function UploadReceiptForm() {
             if (currentOrder) {
                 setOrder(currentOrder);
             } else {
-                toast({ variant: 'destructive', title: 'Erreur', description: 'Commande non trouvée.' });
+                toast({ 
+                    variant: 'destructive', 
+                    title: <TranslatedText fr="Erreur" en="Error">Fehler</TranslatedText>, 
+                    description: <TranslatedText fr="Commande non trouvée." en="Order not found.">Bestellung nicht gefunden.</TranslatedText> 
+                });
                 router.push('/account/orders');
             }
         } catch (error) {
             console.error("Could not load order from local storage", error);
-            toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de charger les détails de la commande.' });
+            toast({ 
+                variant: 'destructive', 
+                title: <TranslatedText fr="Erreur" en="Error">Fehler</TranslatedText>, 
+                description: <TranslatedText fr="Impossible de charger les détails de la commande." en="Could not load order details.">Bestelldetails konnten nicht geladen werden.</TranslatedText>
+            });
         }
     }
     
@@ -137,8 +176,8 @@ function UploadReceiptForm() {
     if (!orderId || !order) {
       toast({
         variant: 'destructive',
-        title: 'Erreur',
-        description: 'ID de commande manquant ou détails introuvables.',
+        title: <TranslatedText fr="Erreur" en="Error">Fehler</TranslatedText>,
+        description: <TranslatedText fr="ID de commande manquant ou détails introuvables." en="Missing order ID or details not found.">Fehlende Bestell-ID oder Details nicht gefunden.</TranslatedText>
       })
       return
     }
@@ -146,9 +185,9 @@ function UploadReceiptForm() {
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) {
       toast({
         variant: 'destructive',
-        title: 'Erreur de configuration EmailJS',
+        title: <TranslatedText fr="Erreur de configuration EmailJS" en="EmailJS Config Error">EmailJS-Konfigurationsfehler</TranslatedText>,
         description:
-          "Les clés de service EmailJS sont manquantes. Vérifiez vos variables d'environnement.",
+          <TranslatedText fr="Les clés de service EmailJS sont manquantes. Vérifiez vos variables d'environnement." en="EmailJS service keys are missing. Check your environment variables.">EmailJS-Dienstschlüssel fehlen. Überprüfen Sie Ihre Umgebungsvariablen.</TranslatedText>
       })
       console.error('EmailJS: Missing environment vars')
       return
@@ -160,7 +199,6 @@ function UploadReceiptForm() {
       const file = data.receipt[0]
       const base64file = await toBase64(file)
 
-      // Format order details into HTML
       const orderDetailsHtml = `
         <ul>
           ${order.items
@@ -178,7 +216,7 @@ function UploadReceiptForm() {
         <p><strong>Total: €${order.totalAmount.toFixed(2)}</strong></p>
       `
 
-      const YOUR_BASE_URL = 'https://ezcentials.vercel.app' // !! IMPORTANT !! Remplacez par votre URL
+      const YOUR_BASE_URL = 'https://ezcentials.vercel.app'
 
       const confirmationLink = `${YOUR_BASE_URL}/confirm.html?orderId=${encodeURIComponent(
         orderId
@@ -201,7 +239,6 @@ function UploadReceiptForm() {
         templateParams
       )
 
-      // Update local orders
       const localOrders: LocalOrder[] = JSON.parse(
         localStorage.getItem('localOrders') || '[]'
       )
@@ -213,8 +250,8 @@ function UploadReceiptForm() {
       setUploadSuccess(true)
 
       toast({
-        title: 'Reçu envoyé',
-        description: 'Votre paiement est en cours de vérification.',
+        title: <TranslatedText fr="Reçu envoyé" en="Receipt Sent">Beleg gesendet</TranslatedText>,
+        description: <TranslatedText fr="Votre paiement est en cours de vérification." en="Your payment is under review.">Ihre Zahlung wird überprüft.</TranslatedText>,
       })
 
       setTimeout(() => {
@@ -224,24 +261,20 @@ function UploadReceiptForm() {
       console.error('EmailJS Error:', err)
       toast({
         variant: 'destructive',
-        title: 'Échec',
-        description: 'Erreur lors de l’envoi. Réessayez.',
+        title: <TranslatedText fr="Échec" en="Failed">Fehlgeschlagen</TranslatedText>,
+        description: <TranslatedText fr="Erreur lors de l’envoi. Réessayez." en="Error sending. Please try again.">Fehler beim Senden. Bitte versuchen Sie es erneut.</TranslatedText>,
       })
     }
 
     setIsSubmitting(false)
   }
 
-  // ----------------------------------------------------------
-  //                   UI WITH SUCCESS SCREEN
-  // ----------------------------------------------------------
-
   if (!orderId)
     return (
       <Card className="w-full max-w-lg">
         <CardHeader>
-          <CardTitle>Erreur</CardTitle>
-          <CardDescription>Aucun ID de commande détecté.</CardDescription>
+          <CardTitle><TranslatedText fr="Erreur" en="Error">Fehler</TranslatedText></CardTitle>
+          <CardDescription><TranslatedText fr="Aucun ID de commande détecté." en="No order ID detected.">Keine Bestell-ID erkannt.</TranslatedText></CardDescription>
         </CardHeader>
       </Card>
     )
@@ -251,17 +284,13 @@ function UploadReceiptForm() {
       <Card className="w-full max-w-lg text-center">
         <CardContent className="p-10">
           <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
-          <h2 className="mt-4 text-2xl font-semibold">Téléversement réussi</h2>
+          <h2 className="mt-4 text-2xl font-semibold"><TranslatedText fr="Téléversement réussi" en="Upload Successful">Upload erfolgreich</TranslatedText></h2>
           <p className="mt-2 text-muted-foreground">
-            Votre reçu a été envoyé. Vous serez redirigé automatiquement.
+            <TranslatedText fr="Votre reçu a été envoyé. Vous serez redirigé automatiquement." en="Your receipt has been sent. You will be redirected automatically.">Ihr Beleg wurde gesendet. Sie werden automatisch weitergeleitet.</TranslatedText>
           </p>
         </CardContent>
       </Card>
     )
-
-  // ----------------------------------------------------------
-  //                       MAIN FORM
-  // ----------------------------------------------------------
 
   return (
     <Card className="w-full max-w-lg">
@@ -289,7 +318,7 @@ function UploadReceiptForm() {
       <CardContent>
         {order && (
             <div className="mb-6 rounded-md border p-4">
-                <h4 className="mb-2 text-sm font-medium text-muted-foreground">Résumé de la commande</h4>
+                <h4 className="mb-2 text-sm font-medium text-muted-foreground"><TranslatedText fr="Résumé de la commande" en="Order Summary">Bestellübersicht</TranslatedText></h4>
                 <ul className="divide-y text-sm">
                     {order.items.map(item => (
                         <li key={item.id} className="flex justify-between py-2">
@@ -356,10 +385,10 @@ function UploadReceiptForm() {
                   </FormControl>
                   <p className="pt-1 text-xs text-muted-foreground">
                     <TranslatedText
-                      fr="Fichiers acceptés : JPG, PNG, PDF. Taille max : 50 Ko."
-                      en="Accepted files: JPG, PNG, PDF. Max size: 50KB."
+                      fr="Fichiers acceptés : JPG, PNG, PDF. Taille max : 5 Mo."
+                      en="Accepted files: JPG, PNG, PDF. Max size: 5MB."
                     >
-                      Akzeptierte Dateien: JPG, PNG, PDF. Max. Größe: 50 KB.
+                      Akzeptierte Dateien: JPG, PNG, PDF. Max. Größe: 5 MB.
                     </TranslatedText>
                   </p>
                   <FormMessage />
@@ -388,7 +417,6 @@ function UploadReceiptForm() {
   )
 }
 
-// ----------------------------------------------------------
 
 export default function UploadReceiptPage() {
   return (

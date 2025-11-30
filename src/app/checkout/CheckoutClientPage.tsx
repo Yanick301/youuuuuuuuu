@@ -36,23 +36,75 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const { placeholderImages } = placeholderImagesData;
 
-// Combined schema for all form fields
-const checkoutSchema = z.object({
+const baseSchema = {
+  email: z.string(),
+  country: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  address: z.string(),
+  apartment: z.string().optional(),
+  city: z.string(),
+  state: z.string(),
+  zip: z.string(),
+  discountCode: z.string().optional(),
+};
+
+const checkoutSchemaDE = z.object({
+  ...baseSchema,
+  email: z.string().email({ message: 'Geben Sie eine gültige E-Mail-Adresse ein' }),
+  country: z.string().min(2, { message: 'Wählen Sie ein Land aus' }),
+  firstName: z.string().min(1, { message: 'Geben Sie einen Vornamen ein' }),
+  lastName: z.string().min(1, { message: 'Geben Sie einen Nachnamen ein' }),
+  address: z.string().min(1, { message: 'Geben Sie eine Adresse ein' }),
+  city: z.string().min(1, { message: 'Geben Sie eine Stadt ein' }),
+  state: z.string().min(1, { message: 'Geben Sie ein Bundesland/eine Region ein' }),
+  zip: z.string().min(1, { message: 'Geben Sie eine Postleitzahl ein' }),
+});
+
+const checkoutSchemaFR = z.object({
+  ...baseSchema,
+  email: z.string().email({ message: 'Entrez une adresse e-mail valide' }),
+  country: z.string().min(2, { message: 'Sélectionnez un pays' }),
+  firstName: z.string().min(1, { message: 'Entrez un prénom' }),
+  lastName: z.string().min(1, { message: 'Entrez un nom de famille' }),
+  address: z.string().min(1, { message: 'Entrez une adresse' }),
+  city: z.string().min(1, { message: 'Entrez une ville' }),
+  state: z.string().min(1, { message: 'Entrez un état/une région' }),
+  zip: z.string().min(1, { message: 'Entrez un code postal' }),
+});
+
+const checkoutSchemaEN = z.object({
+  ...baseSchema,
   email: z.string().email({ message: 'Enter a valid email' }),
   country: z.string().min(2, { message: 'Select a country' }),
   firstName: z.string().min(1, { message: 'Enter a first name' }),
   lastName: z.string().min(1, { message: 'Enter a last name' }),
   address: z.string().min(1, { message: 'Enter an address' }),
-  apartment: z.string().optional(),
   city: z.string().min(1, { message: 'Enter a city' }),
   state: z.string().min(1, { message: 'Enter a state' }),
   zip: z.string().min(1, { message: 'Enter a ZIP code' }),
-  discountCode: z.string().optional(),
 });
 
-type CheckoutFormValues = z.infer<typeof checkoutSchema>;
+type CheckoutFormValues = z.infer<typeof checkoutSchemaEN>;
 
-const TAX_RATE = 0.19; // 19%
+const europeanCountries = [
+    { code: "DE", name_de: "Deutschland", name_fr: "Allemagne", name_en: "Germany" },
+    { code: "FR", name_de: "Frankreich", name_fr: "France", name_en: "France" },
+    { code: "AT", name_de: "Österreich", name_fr: "Autriche", name_en: "Austria" },
+    { code: "BE", name_de: "Belgien", name_fr: "Belgique", name_en: "Belgium" },
+    { code: "DK", name_de: "Dänemark", name_fr: "Danemark", name_en: "Denmark" },
+    { code: "ES", name_de: "Spanien", name_fr: "Espagne", name_en: "Spain" },
+    { code: "FI", name_de: "Finnland", name_fr: "Finlande", name_en: "Finland" },
+    { code: "IT", name_de: "Italien", name_fr: "Italie", name_en: "Italy" },
+    { code: "LU", name_de: "Luxemburg", name_fr: "Luxembourg", en: "Luxembourg" },
+    { code: "NL", name_de: "Niederlande", name_fr: "Pays-Bas", name_en: "Netherlands" },
+    { code: "PT", name_de: "Portugal", name_fr: "Portugal", name_en: "Portugal" },
+    { code: "SE", name_de: "Schweden", name_fr: "Suède", name_en: "Sweden" },
+    { code: "CH", name_de: "Schweiz", name_fr: "Suisse", name_en: "Switzerland" },
+];
+
+
+const TAX_RATE = 0.19;
 
 export function CheckoutClientPage() {
   const { cartItems, subtotal, clearCart } = useCart();
@@ -60,9 +112,11 @@ export function CheckoutClientPage() {
   const router = useRouter();
   const { user, isUserLoading } = useUser();
   const { toast } = useToast();
+  
+  const currentSchema = language === 'fr' ? checkoutSchemaFR : language === 'en' ? checkoutSchemaEN : checkoutSchemaDE;
 
   const form = useForm<CheckoutFormValues>({
-    resolver: zodResolver(checkoutSchema),
+    resolver: zodResolver(currentSchema),
     defaultValues: {
       email: user?.email || '',
       country: 'Germany',
@@ -107,16 +161,18 @@ export function CheckoutClientPage() {
 
   const onSubmit: SubmitHandler<CheckoutFormValues> = async (data) => {
     if (!user) {
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Vous devez être connecté pour passer une commande.' });
+        toast({ 
+            variant: 'destructive', 
+            title: <TranslatedText fr="Erreur" en="Error">Fehler</TranslatedText>, 
+            description: <TranslatedText fr="Vous devez être connecté pour passer une commande." en="You must be logged in to place an order.">Sie müssen eingeloggt sein, um eine Bestellung aufzugeben.</TranslatedText>
+        });
       return;
     }
 
-    // Recalculate costs based on final form data
     const finalShippingCost = data.country === 'Germany' ? 0 : 40;
     const finalTaxes = subtotal * TAX_RATE;
     const finalTotal = subtotal + finalShippingCost + finalTaxes;
     
-    // Generate a unique local ID for the order
     const localOrderId = `local_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
     const orderData = {
@@ -147,7 +203,7 @@ export function CheckoutClientPage() {
         taxes: finalTaxes,
         totalAmount: finalTotal,
         orderDate: new Date().toISOString(),
-        paymentStatus: 'pending', // Keep as pending until receipt is uploaded
+        paymentStatus: 'pending',
         receiptImageUrl: null,
     };
     
@@ -157,19 +213,18 @@ export function CheckoutClientPage() {
         localStorage.setItem('localOrders', JSON.stringify(localOrders));
 
         toast({
-            title: "Veuillez téléverser votre reçu",
-            description: "Vous allez être redirigé pour finaliser votre commande."
+            title: <TranslatedText fr="Veuillez téléverser votre reçu" en="Please upload your receipt">Bitte laden Sie Ihre Quittung hoch</TranslatedText>,
+            description: <TranslatedText fr="Vous allez être redirigé pour finaliser votre commande." en="You will be redirected to finalize your order.">Sie werden weitergeleitet, um Ihre Bestellung abzuschließen.</TranslatedText>
         });
 
         clearCart();
-        // Redirect to the new upload receipt page
         router.push(`/checkout/upload-receipt?orderId=${localOrderId}`);
     } catch (error) {
         console.error("Failed to save order to local storage:", error);
         toast({
             variant: "destructive",
-            title: "Erreur de commande",
-            description: "Impossible de sauvegarder la commande localement."
+            title: <TranslatedText fr="Erreur de commande" en="Order Error">Bestellfehler</TranslatedText>,
+            description: <TranslatedText fr="Impossible de sauvegarder la commande localement." en="Could not save order locally.">Bestellung konnte nicht lokal gespeichert werden.</TranslatedText>
         });
     }
   };
@@ -291,14 +346,15 @@ export function CheckoutClientPage() {
                             >
                               <FormControl>
                                 <SelectTrigger>
-                                  <SelectValue placeholder="Select a country" />
+                                  <SelectValue placeholder={<TranslatedText fr="Sélectionnez un pays" en="Select a country">Wähle ein Land</TranslatedText>} />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="Germany">Allemagne</SelectItem>
-                                <SelectItem value="France">France</SelectItem>
-                                <SelectItem value="United States">États-Unis</SelectItem>
-                                <SelectItem value="Canada">Canada</SelectItem>
+                                {europeanCountries.map(country => (
+                                    <SelectItem key={country.code} value={country.name_en}>
+                                        <TranslatedText fr={country.name_fr} en={country.name_en}>{country.name_de}</TranslatedText>
+                                    </SelectItem>
+                                ))}
                               </SelectContent>
                             </Select>
                             <FormMessage />
@@ -506,11 +562,11 @@ export function CheckoutClientPage() {
                             <TranslatedText fr="Veuillez effectuer un virement instantané aux coordonnées ci-dessous. Votre commande ne sera traitée qu'à réception du paiement." en="Please make an instant bank transfer to the details below. Your order will only be processed upon receipt of payment.">Bitte tätigen Sie eine Sofortüberweisung an die unten stehenden Daten. Ihre Bestellung wird erst nach Zahlungseingang bearbeitet.</TranslatedText>
                         </p>
                         <div className="space-y-2 text-sm">
-                            <div className="flex justify-between"><span className="font-medium">Titulaire du compte:</span> <span>Sabine Menke</span></div>
+                            <div className="flex justify-between"><span className="font-medium"><TranslatedText fr="Titulaire du compte" en="Account Holder">Kontoinhaber</TranslatedText>:</span> <span>Sabine Menke</span></div>
                             <div className="flex justify-between"><span className="font-medium">IBAN:</span> <span>DE78500319000014630686</span></div>
                             <div className="flex justify-between"><span className="font-medium">BIC:</span> <span>BBVADEFFXXX</span></div>
-                            <div className="flex justify-between"><span className="font-medium">Banque:</span> <span>BBVA</span></div>
-                            <div className="flex justify-between"><span className="font-medium">Motif:</span> <span className="font-bold">Gifts</span></div>
+                            <div className="flex justify-between"><span className="font-medium"><TranslatedText fr="Banque" en="Bank">Bank</TranslatedText>:</span> <span>BBVA</span></div>
+                            <div className="flex justify-between"><span className="font-medium"><TranslatedText fr="Motif" en="Reference">Verwendungszweck</TranslatedText>:</span> <span className="font-bold">Gifts</span></div>
                         </div>
 
                         <Alert variant="destructive" className="mt-6 bg-amber-50 border-amber-200 text-amber-800">
@@ -548,3 +604,5 @@ export function CheckoutClientPage() {
     </div>
   );
 }
+
+    
