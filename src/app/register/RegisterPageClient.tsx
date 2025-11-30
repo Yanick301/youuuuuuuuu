@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useFirebase, errorEmitter, FirestorePermissionError, useFirestore } from '@/firebase';
+import { useFirebase, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { createUserWithEmailAndPassword, updateProfile, type UserCredential, sendEmailVerification } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
