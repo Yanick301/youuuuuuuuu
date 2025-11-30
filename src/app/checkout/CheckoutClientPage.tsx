@@ -36,6 +36,9 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const { placeholderImages } = placeholderImagesData;
 
+// !! IMPORTANT !! Remplacez cette URL par le lien de votre formulaire tiers (Tally, Google Forms, etc.)
+const THIRD_PARTY_FORM_URL = "https://tally.so/r/w2P1NE";
+
 // Combined schema for all form fields
 const checkoutSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email' }),
@@ -136,7 +139,7 @@ export function CheckoutClientPage() {
         taxes: taxes,
         totalAmount: total,
         orderDate: new Date().toISOString(), // Use ISO string for local storage
-        paymentStatus: 'pending',
+        paymentStatus: 'processing', // Pass to processing directly
         receiptImageUrl: null,
     };
     
@@ -151,7 +154,8 @@ export function CheckoutClientPage() {
         });
 
         clearCart();
-        router.push(`/checkout/confirm-payment?orderId=${localOrderId}`);
+        // Redirect to external form instead of confirmation page
+        window.location.href = `${THIRD_PARTY_FORM_URL}?orderId=${localOrderId}`;
     } catch (error) {
         console.error("Failed to save order to local storage:", error);
         toast({
@@ -509,7 +513,7 @@ export function CheckoutClientPage() {
                             <AlertTriangle className="h-4 w-4 !text-amber-800" />
                             <AlertTitle className="font-semibold"><TranslatedText fr="Avertissement Important" en="Important Warning">Wichtiger Hinweis</TranslatedText></AlertTitle>
                             <AlertDescription className="text-amber-700">
-                                <TranslatedText fr="Après avoir cliqué sur 'Valider ma commande', vous devrez téléverser le reçu de votre virement pour finaliser votre commande." en="After clicking 'Validate my order', you will need to upload your transfer receipt to finalize your order.">Nachdem Sie auf 'Meine Bestellung bestätigen' geklickt haben, müssen Sie Ihren Überweisungsbeleg hochladen, um Ihre Bestellung abzuschließen.</TranslatedText>
+                                <TranslatedText fr="Après avoir cliqué sur 'Valider ma commande', vous serez redirigé pour téléverser le reçu de votre virement pour finaliser votre commande." en="After clicking 'Validate my order', you will be redirected to upload your transfer receipt to finalize your order.">Nachdem Sie auf 'Meine Bestellung bestätigen' geklickt haben, werden Sie weitergeleitet, um Ihren Überweisungsbeleg hochzuladen und Ihre Bestellung abzuschließen.</TranslatedText>
                             </AlertDescription>
                         </Alert>
                     </div>
@@ -528,7 +532,7 @@ export function CheckoutClientPage() {
                             <TranslatedText fr="Validation en cours..." en="Validating...">Validierung...</TranslatedText>
                         </>
                     ) : (
-                        <TranslatedText fr="Valider ma commande" en="Validate my order">Meine Bestellung bestätigen</TranslatedText>
+                        <TranslatedText fr="Valider et payer" en="Validate and Pay">Bestätigen und bezahlen</TranslatedText>
                     )}
                   </Button>
                 </div>
