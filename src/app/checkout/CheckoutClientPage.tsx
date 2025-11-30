@@ -63,7 +63,7 @@ export function CheckoutClientPage() {
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
       email: user?.email || '',
-      country: 'France',
+      country: 'Germany',
       firstName: '',
       lastName: '',
       address: '',
@@ -74,6 +74,12 @@ export function CheckoutClientPage() {
       discountCode: '',
     },
   });
+
+  const selectedCountry = form.watch('country');
+
+  const shippingCost = selectedCountry === 'Germany' ? 0 : 40;
+  const taxes = subtotal * 0.2; // 20%
+  const total = subtotal + shippingCost + taxes;
   
   useEffect(() => {
     if (isUserLoading) return;
@@ -86,7 +92,7 @@ export function CheckoutClientPage() {
         email: user.email || '',
         firstName: user.displayName?.split(' ')[0] || '',
         lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
-        country: 'France',
+        country: 'Germany',
         address: '',
         apartment: '',
         city: '',
@@ -103,9 +109,10 @@ export function CheckoutClientPage() {
       return;
     }
 
-    const shippingCost = subtotal > 100 ? 0 : 10;
-    const taxes = subtotal * 0.2; // Example 20% tax
-    const total = subtotal + shippingCost + taxes;
+    // Recalculate costs based on final form data
+    const finalShippingCost = data.country === 'Germany' ? 0 : 40;
+    const finalTaxes = subtotal * 0.2;
+    const finalTotal = subtotal + finalShippingCost + finalTaxes;
     
     // Generate a unique local ID for the order
     const localOrderId = `local_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
@@ -132,9 +139,9 @@ export function CheckoutClientPage() {
             color: item.color,
         })),
         subtotal: subtotal,
-        shipping: shippingCost,
-        taxes: taxes,
-        totalAmount: total,
+        shipping: finalShippingCost,
+        taxes: finalTaxes,
+        totalAmount: finalTotal,
         orderDate: new Date().toISOString(),
         paymentStatus: 'pending', // Keep as pending until receipt is uploaded
         receiptImageUrl: null,
@@ -162,10 +169,6 @@ export function CheckoutClientPage() {
         });
     }
   };
-
-  const shippingCost = subtotal > 100 ? 0 : 10;
-  const taxes = subtotal * 0.2; // 20%
-  const total = subtotal + shippingCost + taxes;
 
   if (isUserLoading || !user) {
     return (
@@ -288,8 +291,8 @@ export function CheckoutClientPage() {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="France">France</SelectItem>
                                 <SelectItem value="Germany">Allemagne</SelectItem>
+                                <SelectItem value="France">France</SelectItem>
                                 <SelectItem value="United States">États-Unis</SelectItem>
                                 <SelectItem value="Canada">Canada</SelectItem>
                               </SelectContent>
@@ -471,11 +474,11 @@ export function CheckoutClientPage() {
                   <div className="flex justify-between">
                     <p><TranslatedText fr="Livraison" en="Shipping">Versand</TranslatedText></p>
                     <p className="font-medium text-gray-900">
-                      {shippingCost > 0 ? `€${shippingCost.toFixed(2)}` : 'Gratuit'}
+                      {shippingCost > 0 ? `€${shippingCost.toFixed(2)}` : <TranslatedText fr="Gratuit" en="Free">Gratis</TranslatedText>}
                     </p>
                   </div>
                    <div className="flex justify-between">
-                    <p><TranslatedText fr="Taxes" en="Taxes">Steuern</TranslatedText></p>
+                    <p><TranslatedText fr="Taxes" en="Taxes">Steuern</TranslatedText> (20%)</p>
                     <p className="font-medium text-gray-900">
                         €{taxes.toFixed(2)}
                     </p>
