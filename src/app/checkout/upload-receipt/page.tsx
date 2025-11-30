@@ -60,13 +60,22 @@ function UploadReceiptForm() {
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [fileName, setFileName] = useState('')
 
-  const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
-  const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-  const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+  const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+  const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+  const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
   const form = useForm<UploadFormValues>({
     resolver: zodResolver(uploadSchema),
   })
+  
+  useEffect(() => {
+    if (EMAILJS_PUBLIC_KEY) {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    } else {
+      console.error('EmailJS Public Key is missing. Check your environment variables.');
+    }
+  }, [EMAILJS_PUBLIC_KEY]);
+
 
   const onSubmit: SubmitHandler<UploadFormValues> = async (data) => {
     if (!orderId) {
@@ -78,7 +87,7 @@ function UploadReceiptForm() {
       return
     }
 
-    if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
       toast({
         variant: 'destructive',
         title: 'Erreur de configuration EmailJS',
@@ -94,13 +103,17 @@ function UploadReceiptForm() {
       const file = data.receipt[0]
       const base64file = await toBase64(file)
 
+      // These params MUST match the variables in your EmailJS template.
       const templateParams = {
-        order_id: orderId,
-        receipt_file: base64file,
-        file_name: file.name,
+        user_name: orderId,
+        image_base64: base64file,
       }
 
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams
+      );
 
       // Update local orders
       const localOrders = JSON.parse(localStorage.getItem('localOrders') || '[]')
@@ -123,7 +136,7 @@ function UploadReceiptForm() {
       }, 2500)
 
     } catch (err) {
-      console.error('EmailJS ERROR:', err)
+      console.error('EmailJS Error:', err)
       toast({
         variant: 'destructive',
         title: 'Échec',
@@ -256,7 +269,7 @@ export default function UploadReceiptPage() {
       <Suspense fallback={
         <div className="flex items-center gap-2">
           <Loader2 className="h-5 w-5 animate-spin" />
-          <TranslatedText fr="Chargement..." en="Loading...">Chargement...</TranslatedText>
+          <TranslatedText fr="Chargement..." en="Loading...">Laden...</TranslatedText>
         </div>
       }>
         <UploadReceiptForm />
