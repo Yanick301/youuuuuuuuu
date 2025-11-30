@@ -96,7 +96,7 @@ const europeanCountries = [
     { code: "ES", name_de: "Spanien", name_fr: "Espagne", name_en: "Spain" },
     { code: "FI", name_de: "Finnland", name_fr: "Finlande", name_en: "Finland" },
     { code: "IT", name_de: "Italien", name_fr: "Italie", name_en: "Italy" },
-    { code: "LU", name_de: "Luxemburg", name_fr: "Luxembourg", en: "Luxembourg" },
+    { code: "LU", name_de: "Luxemburg", name_fr: "Luxembourg", name_en: "Luxembourg" },
     { code: "NL", name_de: "Niederlande", name_fr: "Pays-Bas", name_en: "Netherlands" },
     { code: "PT", name_de: "Portugal", name_fr: "Portugal", name_en: "Portugal" },
     { code: "SE", name_de: "Schweden", name_fr: "Suède", name_en: "Sweden" },
@@ -186,18 +186,7 @@ export function CheckoutClientPage() {
           zip: data.zip,
           country: data.country,
         },
-        items: cartItems.map(item => ({
-            id: item.id,
-            productId: item.product.id,
-            name: item.name,
-            name_fr: item.name_fr,
-            name_en: item.name_en,
-            price: item.price,
-            quantity: item.quantity,
-            size: item.size,
-            color: item.color,
-            image: item.image,
-        })),
+        items: cartItems, // Save the full cart item object
         subtotal: subtotal,
         shipping: finalShippingCost,
         taxes: finalTaxes,
@@ -483,7 +472,7 @@ export function CheckoutClientPage() {
                   <ul role="list" className="-my-6 divide-y divide-gray-200">
                     {cartItems.map((item) => {
                       const image = placeholderImages.find(
-                        (p) => p.id === item.image
+                        (p) => p.id === item.product.images[0]
                       );
                       return (
                         <li key={item.id} className="flex space-x-4 py-6">
@@ -491,7 +480,7 @@ export function CheckoutClientPage() {
                             {image && (
                               <img
                                 src={image.imageUrl}
-                                alt={item.name}
+                                alt={item.product.name}
                                 className="h-full w-full rounded-md object-cover object-center"
                               />
                             )}
@@ -502,10 +491,10 @@ export function CheckoutClientPage() {
                           <div className="flex-1 space-y-1">
                             <h3 className="font-medium text-gray-900">
                               <TranslatedText
-                                fr={item.name_fr}
-                                en={item.name_en}
+                                fr={item.product.name_fr}
+                                en={item.product.name_en}
                               >
-                                {item.name}
+                                {item.product.name}
                               </TranslatedText>
                             </h3>
                             <p className="text-sm text-gray-500">
@@ -514,7 +503,7 @@ export function CheckoutClientPage() {
                           </div>
                           <p className="flex-none text-base font-medium text-gray-900">
                             €
-                            {(item.price * item.quantity).toFixed(2)}
+                            {(item.product.price * item.quantity).toFixed(2)}
                           </p>
                         </li>
                       );
@@ -604,5 +593,3 @@ export function CheckoutClientPage() {
     </div>
   );
 }
-
-    

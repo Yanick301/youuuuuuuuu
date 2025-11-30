@@ -1,219 +1,286 @@
-
-'use client';
-
-import Link from 'next/link';
-import { useForm, type SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import {
-  Card,
-  CardContent,
-} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { TranslatedText } from '@/components/TranslatedText';
-import { useFirebase, errorEmitter, FirestorePermissionError } from '@/firebase';
-import { signInWithEmailAndPassword, type UserCredential } from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useToast } from '@/hooks/use-toast';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { useLanguage } from '@/context/LanguageContext';
-import { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
-
-
-const loginSchemaFR = z.object({
-  email: z.string().email({ message: 'Adresse e-mail invalide.' }),
-  password: z.string().min(1, { message: 'Le mot de passe est requis.' }),
-});
-const loginSchemaDE = z.object({
-  email: z.string().email({ message: 'Ungültige E-Mail-Adresse.' }),
-  password: z.string().min(1, { message: 'Passwort ist erforderlich.' }),
-});
-const loginSchemaEN = z.object({
-  email: z.string().email({ message: 'Invalid email address.' }),
-  password: z.string().min(1, { message: 'Password is required.' }),
-});
-
-
-export default function LoginPageClient() {
-  const { auth, firestore } = useFirebase();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const { toast } = useToast();
-  const { language } = useLanguage();
-  const [showPassword, setShowPassword] = useState(false);
-
-  const currentSchema = language === 'fr' ? loginSchemaFR : language === 'en' ? loginSchemaEN : loginSchemaDE;
-
-  const form = useForm<z.infer<typeof currentSchema>>({
-    resolver: zodResolver(currentSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
-
-  const handleUserCreation = async (userCredential: UserCredential) => {
-    const user = userCredential.user;
-    if (!user || !firestore) return;
-
-    const userRef = doc(firestore, 'userProfiles', user.uid);
-    
-    try {
-        const userDoc = await getDoc(userRef);
-
-        if (!userDoc.exists()) {
-             await setDoc(userRef, {
-                id: user.uid,
-                email: user.email,
-                firstName: user.displayName?.split(' ')[0] || '',
-                lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
-             });
+{
+  "entities": {
+    "Product": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Product",
+      "type": "object",
+      "description": "Represents a product in the Atelier Luxe catalog.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Product entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the product."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the product."
+        },
+        "price": {
+          "type": "number",
+          "description": "The price of the product."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the product's main image."
+        },
+        "category": {
+          "type": "string",
+          "description": "The category the product belongs to (e.g., Men's Clothing, Women's Clothing)."
+        },
+        "additionalImageUrls": {
+          "type": "array",
+          "description": "URLs of additional images for the product.",
+          "items": {
+            "type": "string"
+          }
         }
-    } catch (e: any) {
-        const permissionError = new FirestorePermissionError({
-          path: `userProfiles/${user.uid}`,
-          operation: 'create',
-          requestResourceData: {
-            id: user.uid,
-            email: user.email,
-            firstName: user.displayName?.split(' ')[0] || '',
-            lastName: user.displayName?.split(' ').slice(1).join(' ') || '',
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "price",
+        "imageUrl",
+        "category"
+      ]
+    },
+    "Review": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Review",
+      "type": "object",
+      "description": "Represents a review for a product.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Review entity."
+        },
+        "productId": {
+          "type": "string",
+          "description": "Reference to Product. (Relationship: Product 1:N Review)"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Review)"
+        },
+        "userName": {
+          "type": "string",
+          "description": "The name of the user who left the review."
+        },
+        "rating": {
+          "type": "number",
+          "description": "The rating given in the review (e.g., 1 to 5)."
+        },
+        "comment": {
+          "type": "string",
+          "description": "The text of the review."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "The date the review was submitted.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "productId",
+        "userId",
+        "userName",
+        "rating",
+        "comment",
+        "createdAt"
+      ]
+    },
+    "Order": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Order",
+      "type": "object",
+      "description": "Represents an order placed by a user. Orders are stored in a top-level 'orders' collection.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Order entity, generated by Firestore."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user who placed the order. (Relationship: UserProfile 1:N Order)"
+        },
+        "shippingInfo": {
+          "type": "object",
+          "description": "The shipping details provided by the user.",
+          "properties": {
+            "name": { "type": "string" },
+            "email": { "type": "string" },
+            "address": { "type": "string" },
+            "city": { "type": "string" },
+            "zip": { "type": "string" },
+            "country": { "type": "string" }
           },
-        });
-        errorEmitter.emit('permission-error', permissionError);
-
-        toast({
-            variant: 'destructive',
-            title: language === 'fr' ? "Erreur de Profil" : language === 'en' ? "Profile Error" : "Profilfehler",
-            description: language === 'fr' ? "Impossible de créer le profil utilisateur." : language === 'en' ? "Could not create user profile." : "Benutzerprofil konnte nicht erstellt werden.",
-        });
+          "required": ["name", "email", "address", "city", "zip", "country"]
+        },
+        "items": {
+          "type": "array",
+          "description": "The items included in the order.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": {"type": "string"},
+              "name": {"type": "string"},
+              "price": {"type": "number"},
+              "quantity": {"type": "number"}
+            },
+            "required": ["productId", "name", "price", "quantity"]
+          }
+        },
+        "subtotal": {
+          "type": "number",
+          "description": "The subtotal amount of the order before shipping and taxes."
+        },
+        "shipping": {
+            "type": "number",
+            "description": "The shipping cost for the order."
+        },
+        "taxes": {
+            "type": "number",
+            "description": "The tax amount for the order."
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "The total amount of the order."
+        },
+        "orderDate": {
+          "type": "string",
+          "description": "The date the order was placed (server timestamp).",
+          "format": "date-time"
+        },
+        "paymentStatus": {
+          "type": "string",
+          "description": "The status of the payment (e.g., pending, processing, completed, rejected).",
+          "enum": ["pending", "processing", "completed", "rejected"]
+        },
+        "receiptImageUrl": {
+          "type": "string",
+          "description": "A URL to the user's payment receipt image stored in Firebase Storage."
+        }
+      },
+      "required": [
+        "userId",
+        "shippingInfo",
+        "items",
+        "subtotal",
+        "shipping",
+        "taxes",
+        "totalAmount",
+        "orderDate",
+        "paymentStatus"
+      ]
+    },
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents user profile information.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the UserProfile entity, same as the Firebase Auth UID."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address.",
+          "format": "email"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The user's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The user's last name."
+        },
+        "isAdmin": {
+          "type": "boolean",
+          "description": "Indicates if the user has administrative privileges."
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "URL of the user's profile picture, stored as a Base64 Data URI."
+        }
+      },
+      "required": [
+        "id",
+        "email"
+      ]
+    },
+    "Receipt": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Receipt",
+      "type": "object",
+      "description": "Represents a payment receipt uploaded by a user for an order.",
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "description": "The ID of the order this receipt is for. Corresponds to the local order ID."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user who uploaded the receipt."
+        },
+        "receiptDataUrl": {
+          "type": "string",
+          "description": "The Base64 encoded data URL of the receipt image."
+        },
+        "uploadedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the receipt was uploaded."
+        }
+      },
+      "required": [
+        "orderId",
+        "userId",
+        "receiptDataUrl",
+        "uploadedAt"
+      ]
     }
-  };
-
-  const onSubmit: SubmitHandler<z.infer<typeof currentSchema>> = async (data) => {
-    if (!auth || !firestore) return;
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
-      
-      // IMPORTANT: Check for email verification
-      if (userCredential.user && !userCredential.user.emailVerified) {
-        toast({
-            title: language === 'fr' ? 'Vérification requise' : language === 'en' ? 'Verification Required' : 'Bestätigung erforderlich',
-            description: language === 'fr' ? 'Veuillez vérifier votre e-mail avant de vous connecter.' : language === 'en' ? 'Please verify your email before logging in.' : 'Bitte bestätigen Sie Ihre E-Mail, bevor Sie sich anmelden.',
-        });
-        router.push('/verify-email');
-        return; // Stop execution here
-      }
-
-      await handleUserCreation(userCredential)
-      
-      toast({
-          title: language === 'fr' ? 'Connexion réussie' : language === 'en' ? 'Login Successful' : 'Anmeldung erfolgreich',
-          description: language === 'fr' ? 'Bienvenue à nouveau !' : language === 'en' ? 'Welcome back!' : 'Willkommen zurück!',
-      });
-      
-      const redirectUrl = searchParams.get('redirect') || '/account';
-      router.push(redirectUrl);
-      router.refresh();
-
-    } catch (error: any) {
-      let errorMessage = language === 'fr' ? 'Une erreur est survenue lors de la connexion.' : language === 'en' ? 'An error occurred during login.' : 'Bei der Anmeldung ist ein Fehler aufgetreten.';
-      if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-          errorMessage = language === 'fr' ? 'Email ou mot de passe incorrect.' : language === 'en' ? 'Incorrect email or password.' : 'Falsche E-Mail oder falsches Passwort.';
-      }
-      
-      toast({
-        variant: 'destructive',
-        title: language === 'fr' ? 'Échec de la connexion' : language === 'en' ? 'Login Failed' : 'Anmeldung fehlgeschlagen',
-        description: errorMessage,
-      });
+  },
+  "auth": {
+    "providers": [
+      "password"
+    ]
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": {
+        "$ref": "#/entities/Product"
+      },
+      "description": "Stores product information. Accessible to all users for reading."
+    },
+    "/products/{productId}/reviews/{reviewId}": {
+      "schema": {
+        "$ref": "#/entities/Review"
+      },
+      "description": "Stores reviews for each product. Anyone can read reviews, but only authenticated users can create them."
+    },
+    "/userProfiles/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Stores user profile information. Only the authenticated user can read/write their own profile. Admins have special access."
+    },
+    "/orders/{orderId}": {
+      "schema": {
+        "$ref": "#/entities/Order"
+      },
+      "description": "Stores all order information. Any authenticated user can create their own order. Admins can read all orders."
+    },
+    "/receipts/{receiptId}": {
+      "schema": {
+        "$ref": "#/entities/Receipt"
+      },
+      "description": "Stores uploaded payment receipts. The receiptId should match the local orderId. Authenticated users can create receipts for their own orders."
     }
-  };
-
-  return (
-    <div className="flex min-h-[calc(100vh-80px)] w-full flex-col items-center justify-center p-4">
-        <div className="mb-8 text-center">
-            <h1 className="font-headline text-5xl tracking-tighter">EZCENTIALS</h1>
-            <p className="mt-2 text-sm uppercase tracking-widest text-muted-foreground"><TranslatedText fr="COLLECTION PREMIUM" en="PREMIUM COLLECTION">PREMIUM COLLECTION</TranslatedText></p>
-        </div>
-
-        <Card className="w-full max-w-sm rounded-2xl border-none shadow-lg">
-            <CardContent className="p-8">
-                <h2 className="mb-6 text-2xl font-semibold"><TranslatedText fr="Connexion" en="Log In">Se connecter</TranslatedText></h2>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                            <FormItem>
-                                <FormLabel><TranslatedText fr="Email" en="Email">Email</TranslatedText></FormLabel>
-                                <FormControl>
-                                <Input type="email" {...field} className="border-0 bg-input" />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                            <FormItem>
-                                <div className="flex items-center justify-between">
-                                    <FormLabel><TranslatedText fr="Mot de passe" en="Password">Mot de passe</TranslatedText></FormLabel>
-                                </div>
-                                <div className="relative">
-                                    <FormControl>
-                                        <Input type={showPassword ? 'text' : 'password'} {...field} className="border-0 bg-input pr-10" />
-                                    </FormControl>
-                                    <Button
-                                        type="button"
-                                        variant="ghost"
-                                        size="icon"
-                                        className="absolute inset-y-0 right-0 h-full px-3"
-                                        onClick={() => setShowPassword((prev) => !prev)}
-                                    >
-                                        {showPassword ? <EyeOff className="h-4 w-4 text-muted-foreground" /> : <Eye className="h-4 w-4 text-muted-foreground" />}
-                                        <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
-                                    </Button>
-                                </div>
-                                <FormMessage />
-                            </FormItem>
-                            )}
-                        />
-                        <Button type="submit" className="mt-4 w-full rounded-full" size="lg" disabled={form.formState.isSubmitting}>
-                            {form.formState.isSubmitting ? <TranslatedText fr="Connexion..." en="Logging in...">Connexion...</TranslatedText> : <TranslatedText fr="Se connecter" en="Log In">Se connecter</TranslatedText>}
-                        </Button>
-                    </form>
-                </Form>
-
-                <div className="mt-6 text-center text-sm">
-                    <p className="text-muted-foreground">
-                        <TranslatedText fr="Pas encore de compte ?" en="Don't have an account yet?">Pas encore de compte ?</TranslatedText>{' '}
-                        <Link href="/register" className="font-semibold text-foreground hover:underline">
-                            <TranslatedText fr="S'inscrire" en="Sign up">S'inscrire</TranslatedText>
-                        </Link>
-                    </p>
-                     <Link
-                        href="/forgot-password"
-                        className="mt-2 inline-block text-sm text-muted-foreground hover:underline"
-                    >
-                        <TranslatedText fr="Mot de passe oublié ?" en="Forgot password?">Mot de passe oublié ?</TranslatedText>
-                    </Link>
-                </div>
-            </CardContent>
-        </Card>
-    </div>
-  );
+  }
 }

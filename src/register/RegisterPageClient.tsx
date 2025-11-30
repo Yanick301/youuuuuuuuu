@@ -1,202 +1,286 @@
-
-'use client';
-
-import Link from 'next/link';
-import { useForm, type SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import {
-  Card,
-  CardContent,
-} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { TranslatedText } from '@/components/TranslatedText';
-import { useFirebase } from '@/firebase';
-import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
-import { useToast } from '@/hooks/use-toast';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { useLanguage } from '@/context/LanguageContext';
-import { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
-
-
-const registerSchemaFR = z.object({
-    name: z.string().min(2, { message: 'Le nom doit contenir au moins 2 caractères.' }),
-    email: z.string().email({ message: 'Adresse e-mail invalide.' }),
-    password: z.string().min(6, { message: 'Le mot de passe doit contenir au moins 6 caractères.' }),
-});
-const registerSchemaDE = z.object({
-    name: z.string().min(2, { message: 'Der Name muss mindestens 2 Zeichen enthalten.' }),
-    email: z.string().email({ message: 'Ungültige E-Mail-Adresse.' }),
-    password: z.string().min(6, { message: 'Das Passwort muss mindestens 6 Zeichen lang sein.' }),
-});
-const registerSchemaEN = z.object({
-    name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-    email: z.string().email({ message: 'Invalid email address.' }),
-    password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
-});
-
-export default function RegisterPageClient() {
-  const { auth } = useFirebase();
-  const router = useRouter();
-  const { toast } = useToast();
-  const { language } = useLanguage();
-  const [showPassword, setShowPassword] = useState(false);
-
-  const currentSchema = language === 'fr' ? registerSchemaFR : language === 'en' ? registerSchemaEN : registerSchemaDE;
-
-  const form = useForm<z.infer<typeof currentSchema>>({
-    resolver: zodResolver(currentSchema),
-    defaultValues: {
-      name: '',
-      email: '',
-      password: '',
+{
+  "entities": {
+    "Product": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Product",
+      "type": "object",
+      "description": "Represents a product in the Atelier Luxe catalog.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Product entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the product."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the product."
+        },
+        "price": {
+          "type": "number",
+          "description": "The price of the product."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the product's main image."
+        },
+        "category": {
+          "type": "string",
+          "description": "The category the product belongs to (e.g., Men's Clothing, Women's Clothing)."
+        },
+        "additionalImageUrls": {
+          "type": "array",
+          "description": "URLs of additional images for the product.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "price",
+        "imageUrl",
+        "category"
+      ]
     },
-  });
-
-  const onSubmit: SubmitHandler<z.infer<typeof currentSchema>> = async (data) => {
-    if (!auth) {
-      toast({
-        variant: "destructive",
-        title: "Erreur de configuration",
-        description: "Le service Firebase Auth n'est pas disponible.",
-      });
-      return;
+    "Review": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Review",
+      "type": "object",
+      "description": "Represents a review for a product.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Review entity."
+        },
+        "productId": {
+          "type": "string",
+          "description": "Reference to Product. (Relationship: Product 1:N Review)"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Review)"
+        },
+        "userName": {
+          "type": "string",
+          "description": "The name of the user who left the review."
+        },
+        "rating": {
+          "type": "number",
+          "description": "The rating given in the review (e.g., 1 to 5)."
+        },
+        "comment": {
+          "type": "string",
+          "description": "The text of the review."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "The date the review was submitted.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "productId",
+        "userId",
+        "userName",
+        "rating",
+        "comment",
+        "createdAt"
+      ]
+    },
+    "Order": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Order",
+      "type": "object",
+      "description": "Represents an order placed by a user. Orders are stored in a top-level 'orders' collection.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Order entity, generated by Firestore."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user who placed the order. (Relationship: UserProfile 1:N Order)"
+        },
+        "shippingInfo": {
+          "type": "object",
+          "description": "The shipping details provided by the user.",
+          "properties": {
+            "name": { "type": "string" },
+            "email": { "type": "string" },
+            "address": { "type": "string" },
+            "city": { "type": "string" },
+            "zip": { "type": "string" },
+            "country": { "type": "string" }
+          },
+          "required": ["name", "email", "address", "city", "zip", "country"]
+        },
+        "items": {
+          "type": "array",
+          "description": "The items included in the order.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": {"type": "string"},
+              "name": {"type": "string"},
+              "price": {"type": "number"},
+              "quantity": {"type": "number"}
+            },
+            "required": ["productId", "name", "price", "quantity"]
+          }
+        },
+        "subtotal": {
+          "type": "number",
+          "description": "The subtotal amount of the order before shipping and taxes."
+        },
+        "shipping": {
+            "type": "number",
+            "description": "The shipping cost for the order."
+        },
+        "taxes": {
+            "type": "number",
+            "description": "The tax amount for the order."
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "The total amount of the order."
+        },
+        "orderDate": {
+          "type": "string",
+          "description": "The date the order was placed (server timestamp).",
+          "format": "date-time"
+        },
+        "paymentStatus": {
+          "type": "string",
+          "description": "The status of the payment (e.g., pending, processing, completed, rejected).",
+          "enum": ["pending", "processing", "completed", "rejected"]
+        },
+        "receiptImageUrl": {
+          "type": "string",
+          "description": "A URL to the user's payment receipt image stored in Firebase Storage."
+        }
+      },
+      "required": [
+        "userId",
+        "shippingInfo",
+        "items",
+        "subtotal",
+        "shipping",
+        "taxes",
+        "totalAmount",
+        "orderDate",
+        "paymentStatus"
+      ]
+    },
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents user profile information.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the UserProfile entity, same as the Firebase Auth UID."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address.",
+          "format": "email"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The user's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The user's last name."
+        },
+        "isAdmin": {
+          "type": "boolean",
+          "description": "Indicates if the user has administrative privileges."
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "URL of the user's profile picture, stored as a Base64 Data URI."
+        }
+      },
+      "required": [
+        "id",
+        "email"
+      ]
+    },
+    "Receipt": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Receipt",
+      "type": "object",
+      "description": "Represents a payment receipt uploaded by a user for an order.",
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "description": "The ID of the order this receipt is for. Corresponds to the local order ID."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user who uploaded the receipt."
+        },
+        "receiptDataUrl": {
+          "type": "string",
+          "description": "The Base64 encoded data URL of the receipt image."
+        },
+        "uploadedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the receipt was uploaded."
+        }
+      },
+      "required": [
+        "orderId",
+        "userId",
+        "receiptDataUrl",
+        "uploadedAt"
+      ]
     }
-
-    try {
-      // Étape 1 : Créer l'utilisateur dans Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-      const user = userCredential.user;
-
-      // Étape 2 : Mettre à jour le nom d'affichage dans Auth
-      await updateProfile(user, { displayName: data.name });
-      
-      // Étape 3 : Envoyer l'e-mail de vérification
-      await sendEmailVerification(user);
-      
-      toast({
-          title: language === 'fr' ? 'Inscription réussie !' : language === 'en' ? 'Registration Successful!' : 'Registrierung erfolgreich!',
-          description: language === 'fr' ? 'Un lien de vérification a été envoyé à votre adresse e-mail.' : language === 'en' ? 'A verification link has been sent to your email address.' : 'Ein Bestätigungslink wurde an Ihre E-Mail-Adresse gesendet.',
-      });
-      
-      // Étape 4 : Rediriger l'utilisateur vers la page de vérification
-      router.push('/verify-email');
-
-    } catch (error: any) {
-       let errorMessage: string;
-       switch (error.code) {
-         case 'auth/email-already-in-use':
-           errorMessage = language === 'fr' ? 'Cette adresse e-mail est déjà utilisée.' : language === 'en' ? 'This email address is already in use.' : 'Diese E-Mail-Adresse wird bereits verwendet.';
-           break;
-         case 'auth/weak-password':
-           errorMessage = language === 'fr' ? 'Le mot de passe doit contenir au moins 6 caractères.' : language === 'en' ? 'Password must be at least 6 characters.' : 'Das Passwort muss mindestens 6 Zeichen lang sein.';
-           break;
-        case 'auth/invalid-email':
-           errorMessage = language === 'fr' ? 'L\'adresse e-mail est invalide.' : language === 'en' ? 'The email address is invalid.' : 'Die E-Mail-Adresse ist ungültig.';
-           break;
-         default:
-           errorMessage = language === 'fr' ? 'Une erreur est survenue lors de l\'inscription.' : language === 'en' ? 'An error occurred during registration.' : 'Bei der Registrierung ist ein Fehler aufgetreten.';
-           console.error("Signup error:", error);
-           break;
-       }
-      
-      toast({
-        variant: 'destructive',
-        title: language === 'fr' ? 'Échec de l\'inscription' : language === 'en' ? 'Registration Failed' : 'Registrierung fehlgeschlagen',
-        description: errorMessage,
-      });
+  },
+  "auth": {
+    "providers": [
+      "password"
+    ]
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": {
+        "$ref": "#/entities/Product"
+      },
+      "description": "Stores product information. Accessible to all users for reading."
+    },
+    "/products/{productId}/reviews/{reviewId}": {
+      "schema": {
+        "$ref": "#/entities/Review"
+      },
+      "description": "Stores reviews for each product. Anyone can read reviews, but only authenticated users can create them."
+    },
+    "/userProfiles/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Stores user profile information. Only the authenticated user can read/write their own profile. Admins have special access."
+    },
+    "/orders/{orderId}": {
+      "schema": {
+        "$ref": "#/entities/Order"
+      },
+      "description": "Stores all order information. Any authenticated user can create their own order. Admins can read all orders."
+    },
+    "/receipts/{receiptId}": {
+      "schema": {
+        "$ref": "#/entities/Receipt"
+      },
+      "description": "Stores uploaded payment receipts. The receiptId should match the local orderId. Authenticated users can create receipts for their own orders."
     }
-  };
-
-  return (
-    <div className="flex min-h-[calc(100vh-80px)] w-full flex-col items-center justify-center p-4">
-        <div className="mb-8 text-center">
-            <h1 className="font-headline text-5xl tracking-tighter">EZCENTIALS</h1>
-            <p className="mt-2 text-sm uppercase tracking-widest text-muted-foreground"><TranslatedText fr="COLLECTION PREMIUM" en="PREMIUM COLLECTION">PREMIUM COLLECTION</TranslatedText></p>
-        </div>
-
-        <Card className="w-full max-w-sm rounded-2xl border-none shadow-lg">
-            <CardContent className="p-8">
-                <h2 className="mb-6 text-2xl font-semibold"><TranslatedText fr="Créer un compte" en="Create an Account">Créer un compte</TranslatedText></h2>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel><TranslatedText fr="Nom complet" en="Full Name">Nom complet</TranslatedText></FormLabel>
-                                    <FormControl>
-                                        <Input {...field} className="border-0 bg-input" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel><TranslatedText fr="Email" en="Email">Email</TranslatedText></FormLabel>
-                                    <FormControl>
-                                        <Input type="email" {...field} className="border-0 bg-input" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel><TranslatedText fr="Mot de passe" en="Password">Mot de passe</TranslatedText></FormLabel>
-                                    <div className="relative">
-                                      <FormControl>
-                                          <Input type={showPassword ? 'text' : 'password'} {...field} className="border-0 bg-input pr-10"/>
-                                      </FormControl>
-                                      <Button
-                                          type="button"
-                                          variant="ghost"
-                                          size="icon"
-                                          className="absolute inset-y-0 right-0 h-full px-3"
-                                          onClick={() => setShowPassword((prev) => !prev)}
-                                      >
-                                          {showPassword ? <EyeOff className="h-4 w-4 text-muted-foreground" /> : <Eye className="h-4 w-4 text-muted-foreground" />}
-                                          <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
-                                      </Button>
-                                    </div>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <Button type="submit" className="w-full mt-4 rounded-full" size="lg" disabled={form.formState.isSubmitting}>
-                            {form.formState.isSubmitting ? <TranslatedText fr="Création..." en="Creating...">Création...</TranslatedText> : <TranslatedText fr="Créer un compte" en="Create Account">Créer un compte</TranslatedText>}
-                        </Button>
-                    </form>
-                </Form>
-                
-                <div className="mt-6 text-center text-sm">
-                    <p className="text-muted-foreground">
-                        <TranslatedText fr="Vous avez déjà un compte ?" en="Already have an account?">Vous avez déjà un compte ?</TranslatedText>{' '}
-                        <Link href="/login" className="font-semibold text-foreground hover:underline">
-                            <TranslatedText fr="Se connecter" en="Log In">Se connecter</TranslatedText>
-                        </Link>
-                    </p>
-                </div>
-            </CardContent>
-        </Card>
-    </div>
-  );
+  }
 }
