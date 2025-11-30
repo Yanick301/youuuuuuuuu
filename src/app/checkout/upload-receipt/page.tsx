@@ -1,3 +1,4 @@
+
 'use client'
 
 import { Suspense, useEffect, useState } from 'react'
@@ -29,20 +30,24 @@ import { useToast } from '@/hooks/use-toast'
 import { TranslatedText } from '@/components/TranslatedText'
 import { useLanguage } from '@/context/LanguageContext'
 import type { CartItem } from '@/lib/types'
+import { Separator } from '@/components/ui/separator'
 
 // -------------------- VALIDATION ---------------------
 
 const uploadSchema = z.object({
   receipt: z
     .any()
-    .refine((files) => files?.length === 1, 'File is required.')
-    .refine((files) => files?.[0]?.size <= 50000, 'Max file size is 50KB.')
+    .refine((files) => files?.length === 1, 'Un fichier est requis.')
+    .refine(
+      (files) => files?.[0]?.size <= 50 * 1024, // 50KB
+      'La taille maximale du fichier est de 50 Ko.'
+    )
     .refine(
       (files) =>
         ['image/jpeg', 'image/png', 'application/pdf'].includes(
           files?.[0]?.type
         ),
-      'Only .jpg, .png or .pdf.'
+      'Seuls les formats .jpg, .png ou .pdf sont acceptés.'
     ),
 })
 
@@ -52,13 +57,13 @@ interface LocalOrder {
   id: string
   userId: string
   shippingInfo: {
-    name: string;
-    email: string;
-    address: string;
-    city: string;
-    zip: string;
-    country: string;
-  };
+    name: string
+    email: string
+    address: string
+    city: string
+    zip: string
+    country: string
+  }
   items: CartItem[]
   subtotal: number
   shipping: number
@@ -91,6 +96,7 @@ function UploadReceiptForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [fileName, setFileName] = useState('')
+  const [order, setOrder] = useState<LocalOrder | null>(null)
 
   const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
   const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
@@ -108,14 +114,31 @@ function UploadReceiptForm() {
         'EmailJS Public Key is missing. Check your environment variables.'
       )
     }
-  }, [EMAILJS_PUBLIC_KEY])
+    
+    if (orderId) {
+        try {
+            const localOrders: LocalOrder[] = JSON.parse(localStorage.getItem('localOrders') || '[]')
+            const currentOrder = localOrders.find(o => o.id === orderId);
+            if (currentOrder) {
+                setOrder(currentOrder);
+            } else {
+                toast({ variant: 'destructive', title: 'Erreur', description: 'Commande non trouvée.' });
+                router.push('/account/orders');
+            }
+        } catch (error) {
+            console.error("Could not load order from local storage", error);
+            toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de charger les détails de la commande.' });
+        }
+    }
+    
+  }, [EMAILJS_PUBLIC_KEY, orderId, router, toast])
 
   const onSubmit: SubmitHandler<UploadFormValues> = async (data) => {
-    if (!orderId) {
+    if (!orderId || !order) {
       toast({
         variant: 'destructive',
         title: 'Erreur',
-        description: 'ID de commande manquant.',
+        description: 'ID de commande manquant ou détails introuvables.',
       })
       return
     }
@@ -134,22 +157,13 @@ function UploadReceiptForm() {
     setIsSubmitting(true)
 
     try {
-      const localOrders: LocalOrder[] = JSON.parse(
-        localStorage.getItem('localOrders') || '[]'
-      )
-      const currentOrder = localOrders.find((order) => order.id === orderId)
-
-      if (!currentOrder) {
-        throw new Error('Order not found in local storage')
-      }
-
       const file = data.receipt[0]
       const base64file = await toBase64(file)
 
       // Format order details into HTML
       const orderDetailsHtml = `
         <ul>
-          ${currentOrder.items
+          ${order.items
             .map(
               (item) =>
                 `<li>${item.quantity} x ${item.product.name} - €${(
@@ -158,26 +172,27 @@ function UploadReceiptForm() {
             )
             .join('')}
         </ul>
-        <p><strong>Sous-total:</strong> €${currentOrder.subtotal.toFixed(2)}</p>
-        <p><strong>Livraison:</strong> €${currentOrder.shipping.toFixed(2)}</p>
-        <p><strong>Taxes:</strong> €${currentOrder.taxes.toFixed(2)}</p>
-        <p><strong>Total:</strong> €${currentOrder.totalAmount.toFixed(2)}</p>
+        <p><strong>Sous-total:</strong> €${order.subtotal.toFixed(2)}</p>
+        <p><strong>Livraison:</strong> €${order.shipping.toFixed(2)}</p>
+        <p><strong>Taxes:</strong> €${order.taxes.toFixed(2)}</p>
+        <p><strong>Total: €${order.totalAmount.toFixed(2)}</strong></p>
       `
-      
-      // !! IMPORTANT !!
-      // Remplacez cette URL par la véritable URL de base où vous hébergez vos pages.
-      const YOUR_BASE_URL = 'https://VOTRE_SITE.vercel.app'
 
-      const confirmationLink = `${YOUR_BASE_URL}/confirm.html?orderId=${encodeURIComponent(orderId)}&userEmail=${encodeURIComponent(currentOrder.shippingInfo.email)}`;
-      const rejectionLink = `${YOUR_BASE_URL}/reject.html?orderId=${encodeURIComponent(orderId)}&userEmail=${encodeURIComponent(currentOrder.shippingInfo.email)}`;
+      const YOUR_BASE_URL = 'https://VOTRE_SITE.vercel.app' // !! IMPORTANT !! Remplacez par votre URL
 
+      const confirmationLink = `${YOUR_BASE_URL}/confirm.html?orderId=${encodeURIComponent(
+        orderId
+      )}&userEmail=${encodeURIComponent(order.shippingInfo.email)}`
+      const rejectionLink = `${YOUR_BASE_URL}/reject.html?orderId=${encodeURIComponent(
+        orderId
+      )}&userEmail=${encodeURIComponent(order.shippingInfo.email)}`
 
       const templateParams = {
         user_name: orderId,
         image_base64: base64file,
         order_details_html: orderDetailsHtml,
         confirmation_link: confirmationLink,
-        rejection_link: rejectionLink
+        rejection_link: rejectionLink,
       }
 
       await emailjs.send(
@@ -187,8 +202,11 @@ function UploadReceiptForm() {
       )
 
       // Update local orders
-      const updatedOrders = localOrders.map((order: any) =>
-        order.id === orderId ? { ...order, paymentStatus: 'processing' } : order
+      const localOrders: LocalOrder[] = JSON.parse(
+        localStorage.getItem('localOrders') || '[]'
+      )
+      const updatedOrders = localOrders.map((o: any) =>
+        o.id === orderId ? { ...o, paymentStatus: 'processing' } : o
       )
       localStorage.setItem('localOrders', JSON.stringify(updatedOrders))
 
@@ -253,8 +271,8 @@ function UploadReceiptForm() {
         </div>
 
         <CardTitle className="text-center">
-          <TranslatedText fr="Finaliser la commande" en="Finalize Order">
-            Bestellung abschließen
+          <TranslatedText fr="Finaliser votre paiement" en="Finalize Your Payment">
+            Zahlung abschließen
           </TranslatedText>
         </CardTitle>
 
@@ -269,6 +287,25 @@ function UploadReceiptForm() {
       </CardHeader>
 
       <CardContent>
+        {order && (
+            <div className="mb-6 rounded-md border p-4">
+                <h4 className="mb-2 text-sm font-medium text-muted-foreground">Résumé de la commande</h4>
+                <ul className="divide-y text-sm">
+                    {order.items.map(item => (
+                        <li key={item.id} className="flex justify-between py-2">
+                            <span>{item.quantity} x <TranslatedText fr={item.product.name_fr} en={item.product.name_en}>{item.product.name}</TranslatedText></span>
+                            <span>€{(item.product.price * item.quantity).toFixed(2)}</span>
+                        </li>
+                    ))}
+                </ul>
+                <Separator className="my-2"/>
+                <div className="flex justify-between font-semibold">
+                    <span>Total</span>
+                    <span>€{order.totalAmount.toFixed(2)}</span>
+                </div>
+            </div>
+        )}
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
@@ -288,7 +325,7 @@ function UploadReceiptForm() {
                     <div className="relative">
                       <Input
                         type="file"
-                        className="absolute inset-0 cursor-pointer opacity-0"
+                        className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
                         onChange={(e) => {
                           field.onChange(e.target.files)
                           setFileName(e.target.files?.[0]?.name || '')
@@ -298,7 +335,7 @@ function UploadReceiptForm() {
 
                       <div className="flex h-24 flex-col items-center justify-center rounded-md border-2 border-dashed">
                         {fileName ? (
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-muted-foreground px-4 text-center">
                             {fileName}
                           </p>
                         ) : (
@@ -339,8 +376,8 @@ function UploadReceiptForm() {
                   </TranslatedText>
                 </>
               ) : (
-                <TranslatedText fr="Envoyer le reçu" en="Send Receipt">
-                  Beleg senden
+                <TranslatedText fr="Envoyer le reçu et finaliser" en="Send Receipt and Finalize">
+                  Beleg senden und abschließen
                 </TranslatedText>
               )}
             </Button>

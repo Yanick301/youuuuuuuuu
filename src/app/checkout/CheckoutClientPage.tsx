@@ -513,7 +513,7 @@ export function CheckoutClientPage() {
                             <AlertTriangle className="h-4 w-4 !text-amber-800" />
                             <AlertTitle className="font-semibold"><TranslatedText fr="Avertissement Important" en="Important Warning">Wichtiger Hinweis</TranslatedText></AlertTitle>
                             <AlertDescription className="text-amber-700">
-                                <TranslatedText fr="Après avoir cliqué sur 'Valider ma commande', vous serez redirigé pour téléverser le reçu de votre virement pour finaliser votre commande." en="After clicking 'Validate my order', you will be redirected to upload your transfer receipt to finalize your order.">Nachdem Sie auf 'Meine Bestellung bestätigen' geklickt haben, werden Sie weitergeleitet, um Ihren Überweisungsbeleg hochzuladen und Ihre Bestellung abzuschließen.</TranslatedText>
+                                <TranslatedText fr="Après avoir cliqué sur 'Créer ma commande', vous serez redirigé pour téléverser le reçu de votre virement pour finaliser votre commande." en="After clicking 'Create my order', you will be redirected to upload your transfer receipt to finalize your order.">Nachdem Sie auf 'Meine Bestellung erstellen' geklickt haben, werden Sie weitergeleitet, um Ihren Überweisungsbeleg hochzuladen und Ihre Bestellung abzuschließen.</TranslatedText>
                             </AlertDescription>
                         </Alert>
                     </div>
@@ -529,10 +529,10 @@ export function CheckoutClientPage() {
                     {form.formState.isSubmitting ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            <TranslatedText fr="Validation en cours..." en="Validating...">Validierung...</TranslatedText>
+                            <TranslatedText fr="Création en cours..." en="Creating...">Erstellung...</TranslatedText>
                         </>
                     ) : (
-                        <TranslatedText fr="Valider et payer" en="Validate and Pay">Bestätigen und bezahlen</TranslatedText>
+                        <TranslatedText fr="Créer ma commande" en="Create my order">Meine Bestellung erstellen</TranslatedText>
                     )}
                   </Button>
                 </div>
