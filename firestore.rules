@@ -36,8 +36,6 @@ service cloud.firestore {
     }
     
     match /receipts/{receiptId} {
-      // Un utilisateur peut créer un reçu si l'userId dans le document
-      // correspond à son propre ID d'authentification.
       allow create: if request.auth.uid == request.resource.data.userId;
       allow read: if request.auth != null;
     }
