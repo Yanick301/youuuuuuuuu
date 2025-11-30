@@ -28,7 +28,7 @@ import { TranslatedText } from '@/components/TranslatedText';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, UploadCloud, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const uploadSchema = z.object({
   receipt: z
@@ -66,6 +66,7 @@ function UploadReceiptForm() {
   const { language } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [fileName, setFileName] = useState('');
 
   const form = useForm<UploadFormValues>({
     resolver: zodResolver(uploadSchema),
@@ -81,27 +82,19 @@ function UploadReceiptForm() {
       return;
     }
 
-    // --- IMPORTANT FOR YOU ---
-    // Replace these with your actual EmailJS credentials
-    const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'service_id';
-    const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'template_id';
-    const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || 'public_key';
-    // -------------------------
+    const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-    if (
-        EMAILJS_SERVICE_ID === 'service_id' ||
-        EMAILJS_TEMPLATE_ID === 'template_id' ||
-        EMAILJS_PUBLIC_KEY === 'public_key'
-    ) {
-        console.error("EmailJS credentials are not set in environment variables.");
-        toast({
-            variant: "destructive",
-            title: "Configuration Error",
-            description: "Email service is not configured. Please contact support."
-        });
-        return;
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+      console.error('EmailJS credentials are not set in environment variables.');
+      toast({
+        variant: 'destructive',
+        title: 'Configuration Error',
+        description: 'Email service is not configured. Please contact support.',
+      });
+      return;
     }
-
 
     setIsSubmitting(true);
 
@@ -201,8 +194,8 @@ function UploadReceiptForm() {
             fr={`Pour la commande n° ${orderId}, veuillez téléverser votre preuve de paiement.`}
             en={`For order ID ${orderId}, please upload your proof of payment.`}
           >
-            Für Bestell-ID ${orderId}, laden Sie bitte Ihren Zahlungsnachweis
-            hoch.
+            {`Für Bestell-ID ${orderId}, laden Sie bitte Ihren Zahlungsnachweis
+            hoch.`}
           </TranslatedText>
         </CardDescription>
       </CardHeader>
@@ -220,11 +213,35 @@ function UploadReceiptForm() {
                     </TranslatedText>
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      type="file"
-                      accept="image/png, image/jpeg, application/pdf"
-                      onChange={(e) => field.onChange(e.target.files)}
-                    />
+                    <div className="relative">
+                        <Input
+                            type="file"
+                            id="receipt"
+                            className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                            onChange={(e) => {
+                                field.onChange(e.target.files);
+                                if (e.target.files && e.target.files.length > 0) {
+                                    setFileName(e.target.files[0].name);
+                                } else {
+                                    setFileName('');
+                                }
+                            }}
+                        />
+                        <div className="flex h-24 w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed">
+                           {fileName ? (
+                                <p className="text-sm text-muted-foreground">{fileName}</p>
+                           ): (
+                                <>
+                                    <UploadCloud className="mb-2 h-8 w-8 text-muted-foreground" />
+                                    <p className="text-sm text-muted-foreground">
+                                        <TranslatedText fr="Cliquez pour téléverser ou glissez-déposez" en="Click to upload or drag and drop">
+                                            Klicken zum Hochladen oder Drag & Drop
+                                        </TranslatedText>
+                                    </p>
+                                </>
+                           )}
+                        </div>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -251,18 +268,13 @@ function UploadReceiptForm() {
   );
 }
 
+
 export default function UploadReceiptPage() {
-  return (
-    <div className="container mx-auto flex min-h-[80vh] items-center justify-center p-4">
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin" />
-          </div>
-        }
-      >
-        <UploadReceiptForm />
-      </Suspense>
-    </div>
-  );
+    return (
+        <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
+             <Suspense fallback={<Loader2 className="h-8 w-8 animate-spin" />}>
+                <UploadReceiptForm />
+            </Suspense>
+        </div>
+    )
 }
