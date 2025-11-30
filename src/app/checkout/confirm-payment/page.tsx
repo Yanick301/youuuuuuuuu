@@ -193,7 +193,7 @@ function ConfirmPaymentClient() {
               fr={`Pour la commande #${orderId}, veuillez téléverser votre preuve de virement.`}
               en={`For order #${orderId}, please upload your proof of transfer.`}
             >
-              Für die Bestellung #${orderId}, laden Sie bitte Ihren Überweisungsbeleg hoch.
+              Für die Bestellung #{orderId}, laden Sie bitte Ihren Überweisungsbeleg hoch.
             </TranslatedText>
           </CardDescription>
         </CardHeader>

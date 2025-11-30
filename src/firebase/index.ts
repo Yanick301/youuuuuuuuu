@@ -46,13 +46,15 @@ export type { FirebaseContextState, FirebaseServicesAndUser } from './provider';
 export { FirebaseClientProvider } from './client-provider';
 
 export { useCollection } from './firestore/use-collection';
-export type { UseCollectionResult, WithId as WithCollectionId } from './firestore/use-collection';
+export type { UseCollectionResult } from './firestore/use-collection';
 
 export { useDoc } from './firestore/use-doc';
-export type { UseDocResult, WithId as WithDocId } from './firestore/use-doc';
+export type { UseDocResult } from './firestore/use-doc';
 
 export { useUser } from './auth/use-user';
-export type { UserProfile, WithId as WithUserId, UserHookResult } from './auth/use-user';
+export type { UserProfile, UserHookResult } from './auth/use-user';
+
+export type { WithId } from './firestore/types';
 
 export { FirestorePermissionError } from './errors';
 export { errorEmitter, type AppEvents } from './error-emitter';
