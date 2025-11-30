@@ -36,7 +36,7 @@ const uploadSchema = z.object({
   receipt: z
     .any()
     .refine((files) => files?.length === 1, 'File is required.')
-    .refine((files) => files?.[0]?.size <= 50_000, 'Max file size is 50KB.')
+    .refine((files) => files?.[0]?.size <= 50000, 'Max file size is 50KB.')
     .refine(
       (files) =>
         ['image/jpeg', 'image/png', 'application/pdf'].includes(
@@ -51,7 +51,14 @@ type UploadFormValues = z.infer<typeof uploadSchema>
 interface LocalOrder {
   id: string
   userId: string
-  shippingInfo: any
+  shippingInfo: {
+    name: string;
+    email: string;
+    address: string;
+    city: string;
+    zip: string;
+    country: string;
+  };
   items: CartItem[]
   subtotal: number
   shipping: number
@@ -156,11 +163,21 @@ function UploadReceiptForm() {
         <p><strong>Taxes:</strong> €${currentOrder.taxes.toFixed(2)}</p>
         <p><strong>Total:</strong> €${currentOrder.totalAmount.toFixed(2)}</p>
       `
+      
+      // !! IMPORTANT !!
+      // Remplacez cette URL par la véritable URL de base où vous hébergez vos pages.
+      const YOUR_BASE_URL = 'https://VOTRE_SITE.vercel.app'
+
+      const confirmationLink = `${YOUR_BASE_URL}/confirm.html?orderId=${encodeURIComponent(orderId)}&userEmail=${encodeURIComponent(currentOrder.shippingInfo.email)}`;
+      const rejectionLink = `${YOUR_BASE_URL}/reject.html?orderId=${encodeURIComponent(orderId)}&userEmail=${encodeURIComponent(currentOrder.shippingInfo.email)}`;
+
 
       const templateParams = {
         user_name: orderId,
         image_base64: base64file,
         order_details_html: orderDetailsHtml,
+        confirmation_link: confirmationLink,
+        rejection_link: rejectionLink
       }
 
       await emailjs.send(
