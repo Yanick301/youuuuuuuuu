@@ -36,9 +36,6 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const { placeholderImages } = placeholderImagesData;
 
-// !! IMPORTANT !! Remplacez cette URL par le lien de votre formulaire tiers (Tally, Google Forms, etc.)
-const THIRD_PARTY_FORM_URL = "https://tally.so/r/w2P1NE";
-
 // Combined schema for all form fields
 const checkoutSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email' }),
@@ -138,8 +135,8 @@ export function CheckoutClientPage() {
         shipping: shippingCost,
         taxes: taxes,
         totalAmount: total,
-        orderDate: new Date().toISOString(), // Use ISO string for local storage
-        paymentStatus: 'processing', // Pass to processing directly
+        orderDate: new Date().toISOString(),
+        paymentStatus: 'pending', // Keep as pending until receipt is uploaded
         receiptImageUrl: null,
     };
     
@@ -154,8 +151,8 @@ export function CheckoutClientPage() {
         });
 
         clearCart();
-        // Redirect to external form instead of confirmation page
-        window.location.href = `${THIRD_PARTY_FORM_URL}?orderId=${localOrderId}`;
+        // Redirect to the new upload receipt page
+        router.push(`/checkout/upload-receipt?orderId=${localOrderId}`);
     } catch (error) {
         console.error("Failed to save order to local storage:", error);
         toast({
