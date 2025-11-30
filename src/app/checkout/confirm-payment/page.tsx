@@ -11,27 +11,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useUser, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
+import { useUser, useFirestore } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
-import { useForm, type SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
 import { useLanguage } from '@/context/LanguageContext';
-import { Loader2, Upload, Banknote } from 'lucide-react';
+import { Loader2, Mail, Banknote } from 'lucide-react';
 import { useEffect, useState, Suspense } from 'react';
 import type { CartItem } from '@/lib/types';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface LocalOrder {
     id: string;
@@ -47,22 +34,7 @@ interface LocalOrder {
     receiptImageUrl: string | null;
 }
 
-const uploadSchema = z.object({
-  receipt: z
-    .custom<FileList>()
-    .refine((files) => files?.length === 1, 'Le reçu est requis.')
-    .transform((files) => files[0])
-    .refine(
-      (file) => file?.size <= 1024 * 1024,
-      'La taille du fichier doit être inférieure à 1 Mo.'
-    )
-    .refine(
-      (file) => ['image/jpeg', 'image/png', 'image/gif'].includes(file?.type),
-      'Seuls les formats .jpg, .png et .gif sont acceptés.'
-    ),
-});
-
-type UploadFormValues = z.infer<typeof uploadSchema>;
+const PAYMENT_EMAIL = "payments@ezcentials.com";
 
 function ConfirmPaymentClient() {
   const router = useRouter();
@@ -70,19 +42,11 @@ function ConfirmPaymentClient() {
   const orderId = searchParams.get('orderId');
 
   const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
   const { toast } = useToast();
   const { language } = useLanguage();
   const [order, setOrder] = useState<LocalOrder | null>(null);
   const [isOrderLoading, setIsOrderLoading] = useState(true);
 
-  const form = useForm<UploadFormValues>({
-    resolver: zodResolver(uploadSchema),
-    defaultValues: {
-      receipt: undefined,
-    },
-  });
-  
   useEffect(() => {
     if (!orderId) {
       router.push('/account/orders');
@@ -95,6 +59,13 @@ function ConfirmPaymentClient() {
 
         if (foundOrder) {
             setOrder(foundOrder);
+             if (foundOrder.paymentStatus !== 'pending') {
+                toast({
+                    title: language === 'fr' ? 'Paiement déjà soumis' : language === 'en' ? 'Payment Already Submitted' : 'Zahlung bereits übermittelt',
+                    description: language === 'fr' ? 'Vous allez être redirigé vers vos commandes.' : language === 'en' ? 'You will be redirected to your orders.' : 'Sie werden zu Ihren Bestellungen weitergeleitet.',
+                });
+                router.push('/account/orders');
+            }
         } else {
             toast({
                 variant: 'destructive',
@@ -115,70 +86,25 @@ function ConfirmPaymentClient() {
         setIsOrderLoading(false);
     }
     
-  }, [orderId, router, toast]);
+  }, [orderId, router, toast, language]);
 
-  const toBase64 = (file: File): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
+  const handleConfirmSent = () => {
+    if (!orderId) return;
 
-  const onSubmit: SubmitHandler<UploadFormValues> = async (data) => {
-    if (!orderId || !user || !firestore) {
-        toast({ variant: 'destructive', title: 'Erreur', description: 'Le service n\'est pas disponible.'});
-        return;
-    }
+     const localOrders: LocalOrder[] = JSON.parse(localStorage.getItem('localOrders') || '[]');
+     const orderIndex = localOrders.findIndex(o => o.id === orderId);
 
-    try {
-        const base64Image = await toBase64(data.receipt);
+     if (orderIndex > -1) {
+         localOrders[orderIndex].paymentStatus = 'processing';
+         localStorage.setItem('localOrders', JSON.stringify(localOrders));
 
-        const receiptData = {
-            orderId: orderId,
-            userId: user.uid,
-            receiptDataUrl: base64Image,
-            uploadedAt: serverTimestamp()
-        };
+         toast({
+             title: language === 'fr' ? 'Confirmation reçue !' : language === 'en' ? 'Confirmation Received!' : 'Bestätigung erhalten!',
+             description: language === 'fr' ? 'Votre commande est en cours de validation.' : language === 'en' ? 'Your order is now being validated.' : 'Ihre Bestellung wird jetzt validiert.',
+         });
 
-        // 1. Add receipt to Firestore
-        const receiptsCollection = collection(firestore, 'receipts');
-        await addDoc(receiptsCollection, receiptData);
-
-        // 2. Update local order status
-        const localOrders: LocalOrder[] = JSON.parse(localStorage.getItem('localOrders') || '[]');
-        const orderIndex = localOrders.findIndex(o => o.id === orderId);
-
-        if (orderIndex > -1) {
-            localOrders[orderIndex].paymentStatus = 'processing';
-            localOrders[orderIndex].receiptImageUrl = 'submitted'; // Mark as submitted but don't store image
-            localStorage.setItem('localOrders', JSON.stringify(localOrders));
-
-            toast({
-                title: 'Reçu téléversé !',
-                description: 'Votre commande est maintenant en cours de validation.',
-            });
-
-            router.push('/account/orders');
-        } else {
-            throw new Error("Order not found in local storage during submission.");
-        }
-    } catch (error) {
-        console.error("Error processing receipt:", error);
-        
-        const permissionError = new FirestorePermissionError({
-          path: 'receipts',
-          operation: 'create',
-          requestResourceData: { orderId, userId: user.uid, receiptDataUrl: '[BASE64_DATA]' }
-        });
-        errorEmitter.emit('permission-error', permissionError);
-        
-        toast({
-            variant: 'destructive',
-            title: 'Erreur de téléversement',
-            description: 'Impossible de sauvegarder le reçu. Vérifiez vos permissions.',
-        });
-    }
+         router.push('/account/orders');
+     }
   };
   
   if (isUserLoading || isOrderLoading) {
@@ -189,14 +115,19 @@ function ConfirmPaymentClient() {
       )
   }
 
-  if (!order) {
+  if (!order || order.paymentStatus !== 'pending') {
       return null;
   }
-  
-  if (order.paymentStatus !== 'pending') {
-       router.push('/account/orders');
-       return null;
-  }
+
+  const emailSubject = `Preuve de paiement pour la commande ${orderId}`;
+  const emailBody = `Bonjour,
+Veuillez trouver ci-joint la preuve de paiement pour ma commande numéro ${orderId}.
+Montant : €${order.totalAmount.toFixed(2)}
+Merci,
+${user?.displayName || ''}
+`;
+  const mailtoLink = `mailto:${PAYMENT_EMAIL}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
 
   return (
     <div className="container mx-auto max-w-2xl px-4 py-12">
@@ -213,100 +144,69 @@ function ConfirmPaymentClient() {
           </CardTitle>
           <CardDescription>
             <TranslatedText
-              fr={`Pour la commande #${orderId}, veuillez téléverser votre preuve de virement.`}
-              en={`For order #${orderId}, please upload your proof of transfer.`}
+              fr={`Pour la commande #${orderId}, veuillez nous envoyer votre preuve de virement par email.`}
+              en={`For order #${orderId}, please email us your proof of transfer.`}
             >
-              Für die Bestellung #{orderId}, laden Sie bitte Ihren Überweisungsbeleg hoch.
+              Für Bestellung #${orderId}, senden Sie uns bitte Ihren Überweisungsnachweis per E-Mail.
             </TranslatedText>
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="mb-8 space-y-4 rounded-lg border bg-muted/50 p-6">
-            <h4 className="font-semibold">
-              <TranslatedText fr="Rappel des instructions" en="Instructions Reminder">
-                Anweisungserinnerung
-              </TranslatedText>
-            </h4>
-            <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground">
-              <li>
+          <Alert variant="default" className="mb-8 border-blue-200 bg-blue-50 text-blue-900">
+             <Mail className="h-4 w-4 !text-blue-900" />
+            <AlertTitle className="font-semibold">
+                <TranslatedText fr="Action Requise : Envoyer votre reçu" en="Action Required: Send Your Receipt">Aktion erforderlich: Beleg senden</TranslatedText>
+            </AlertTitle>
+            <AlertDescription>
                 <TranslatedText
-                  fr="Effectuez le virement vers le compte bancaire fourni."
-                  en="Make the transfer to the provided bank account."
+                    fr={`Pour terminer, envoyez-nous la preuve de paiement à l'adresse e-mail suivante :`}
+                    en={`To finish, please send the proof of payment to the following email address:`}
                 >
-                  Führen Sie die Überweisung auf das angegebene Bankkonto durch.
+                    Zum Abschluss senden Sie uns bitte den Zahlungsnachweis an folgende E-Mail-Adresse:
                 </TranslatedText>
-              </li>
-              <li>
-                <TranslatedText
-                  fr="Utilisez le motif 'Gifts' pour le virement."
-                  en="Use 'Gifts' as the reason for the transfer."
-                >
-                  Verwenden Sie 'Gifts' als Verwendungszweck.
-                </TranslatedText>
-              </li>
-              <li>
-                <TranslatedText
-                  fr="Prenez une capture d'écran ou une photo de la confirmation de virement."
-                  en="Take a screenshot or photo of the transfer confirmation."
-                >
-                  Machen Sie einen Screenshot oder ein Foto der Überweisungsbestätigung.
-                </TranslatedText>
-              </li>
-              <li>
-                <TranslatedText
-                  fr="Téléversez l'image ci-dessous."
-                  en="Upload the image below."
-                >
-                  Laden Sie das Bild unten hoch.
-                </TranslatedText>
-              </li>
-            </ul>
-          </div>
+                <br />
+                <a href={mailtoLink} className="font-bold underline">{PAYMENT_EMAIL}</a>.
+                 <p className="mt-2 text-xs">
+                    <TranslatedText fr="N'oubliez pas d'inclure votre reçu en pièce jointe." en="Don't forget to attach your receipt.">Vergessen Sie nicht, Ihren Beleg anzuhängen.</TranslatedText>
+                </p>
+            </AlertDescription>
+          </Alert>
+          
+          <div className="space-y-4">
+              <a href={mailtoLink} target="_blank" rel="noopener noreferrer" className="w-full">
+                <Button className="w-full" size="lg">
+                    <Mail className="mr-2 h-4 w-4" />
+                    <TranslatedText fr="Ouvrir mon client de messagerie" en="Open My Email Client">Meinen E-Mail-Client öffnen</TranslatedText>
+                </Button>
+              </a>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="receipt"
-                render={({ field: { onChange, value, ...fieldProps } }) => (
-                  <FormItem>
-                    <FormLabel>
-                      <TranslatedText fr="Preuve de paiement" en="Proof of Payment">
-                        Zahlungsnachweis
-                      </TranslatedText>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="file"
-                        accept="image/png, image/jpeg, image/gif"
-                        onChange={(event) => onChange(event.target.files)}
-                        {...fieldProps}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    <TranslatedText fr="Téléversement..." en="Uploading...">
-                      Hochladen...
-                    </TranslatedText>
-                  </>
-                ) : (
-                  <>
-                    <Upload className="mr-2 h-4 w-4" />
-                    <TranslatedText fr="Confirmer le paiement" en="Confirm Payment">
-                      Zahlung bestätigen
-                    </TranslatedText>
-                  </>
-                )}
-              </Button>
-            </form>
-          </Form>
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  <TranslatedText fr="PUIS" en="THEN">DANN</TranslatedText>
+                </span>
+              </div>
+            </div>
+
+             <Button variant="outline" className="w-full" size="lg" onClick={handleConfirmSent}>
+                <TranslatedText fr="J'ai envoyé l'e-mail" en="I've Sent The Email">Ich habe die E-Mail gesendet</TranslatedText>
+             </Button>
+          </div>
+          
         </CardContent>
+         <CardFooter>
+            <p className="text-xs text-muted-foreground">
+                <TranslatedText
+                    fr="En cliquant sur 'J'ai envoyé l'e-mail', votre commande passera en cours de traitement. Nous vérifierons votre paiement manuellement."
+                    en="By clicking 'I've Sent The Email', your order will be set to 'processing'. We will verify your payment manually."
+                >
+                    Indem Sie auf 'Ich habe die E-Mail gesendet' klicken, wird Ihre Bestellung auf 'in Bearbeitung' gesetzt. Wir werden Ihre Zahlung manuell überprüfen.
+                </TranslatedText>
+            </p>
+         </CardFooter>
       </Card>
     </div>
   );

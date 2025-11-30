@@ -17,7 +17,7 @@ import {
   Loader2,
   AlertCircle,
   Ban,
-  Upload,
+  Mail,
 } from 'lucide-react';
 import { useUser } from '@/firebase';
 import { Badge } from '@/components/ui/badge';
@@ -94,7 +94,7 @@ export default function OrdersPage() {
 
   const isLoading = isUserLoading || isOrdersLoading;
 
-  const handleUploadReceipt = (orderId: string) => {
+  const handleFinalizePayment = (orderId: string) => {
     router.push(`/checkout/confirm-payment?orderId=${orderId}`);
   };
 
@@ -290,19 +290,19 @@ export default function OrdersPage() {
                     </h4>
                     <p className="my-2 text-sm text-destructive/80">
                       <TranslatedText
-                        fr="Pour finaliser votre commande, veuillez effectuer le virement bancaire puis téléverser votre preuve de paiement."
-                        en="To finalize your order, please make the bank transfer then upload your proof of payment."
+                        fr="Pour finaliser votre commande, veuillez effectuer le virement bancaire puis nous envoyer votre preuve de paiement par email."
+                        en="To finalize your order, please make the bank transfer then email us your proof of payment."
                       >
-                        Um Ihre Bestellung abzuschließen, führen Sie bitte die Banküberweisung durch und laden Sie dann Ihren Zahlungsnachweis hoch.
+                        Um Ihre Bestellung abzuschließen, führen Sie bitte die Banküberweisung durch und senden Sie uns dann Ihren Zahlungsnachweis per E-Mail.
                       </TranslatedText>
                     </p>
                     <Button
-                      onClick={() => handleUploadReceipt(order.id)}
+                      onClick={() => handleFinalizePayment(order.id)}
                       variant="destructive"
                     >
-                      <Upload className="mr-2 h-4 w-4" />
-                      <TranslatedText fr="Téléverser le reçu" en="Upload Receipt">
-                        Beleg hochladen
+                      <Mail className="mr-2 h-4 w-4" />
+                      <TranslatedText fr="Finaliser le paiement" en="Finalize Payment">
+                        Zahlung abschließen
                       </TranslatedText>
                     </Button>
                   </div>
