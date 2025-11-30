@@ -73,7 +73,6 @@ function UploadReceiptForm() {
   const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
   useEffect(() => {
-    // Initialize EmailJS with the public key when the component mounts
     if (EMAILJS_PUBLIC_KEY) {
       emailjs.init(EMAILJS_PUBLIC_KEY);
     } else {
@@ -95,8 +94,8 @@ function UploadReceiptForm() {
       return;
     }
 
-    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
-      console.error('EmailJS credentials are not set in environment variables.');
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) {
+      console.error('EmailJS Service ID or Template ID are not set.');
       toast({
         variant: 'destructive',
         title: 'Configuration Error',
@@ -111,10 +110,10 @@ function UploadReceiptForm() {
       const file = data.receipt[0];
       const base64file = await toBase64(file);
 
+      // Using parameters that match the user's reference code
       const templateParams = {
-        order_id: orderId,
-        receipt_file: base64file,
-        file_name: file.name,
+        user_name: orderId,
+        image_base64: base64file,
       };
 
       await emailjs.send(
@@ -123,7 +122,6 @@ function UploadReceiptForm() {
         templateParams
       );
 
-      // Update local order status to 'processing'
       const localOrders = JSON.parse(
         localStorage.getItem('localOrders') || '[]'
       );
@@ -141,7 +139,7 @@ function UploadReceiptForm() {
 
       setTimeout(() => {
         router.push('/account/orders');
-      }, 3000); // Redirect after a short delay
+      }, 3000);
 
     } catch (error) {
       console.error('EmailJS Error:', error);
@@ -276,13 +274,19 @@ function UploadReceiptForm() {
   );
 }
 
-
 export default function UploadReceiptPage() {
-    return (
-        <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
-             <Suspense fallback={<Loader2 className="h-8 w-8 animate-spin" />}>
-                <UploadReceiptForm />
-            </Suspense>
-        </div>
-    )
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+      <Suspense
+        fallback={
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Loader2 className="h-5 w-5 animate-spin" />
+            <span>Chargement...</span>
+          </div>
+        }
+      >
+        <UploadReceiptForm />
+      </Suspense>
+    </div>
+  );
 }
