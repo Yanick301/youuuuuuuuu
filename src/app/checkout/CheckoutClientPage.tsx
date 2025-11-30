@@ -52,6 +52,8 @@ const checkoutSchema = z.object({
 
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
 
+const TAX_RATE = 0.19; // 19%
+
 export function CheckoutClientPage() {
   const { cartItems, subtotal, clearCart } = useCart();
   const { language } = useLanguage();
@@ -78,7 +80,7 @@ export function CheckoutClientPage() {
   const selectedCountry = form.watch('country');
 
   const shippingCost = selectedCountry === 'Germany' ? 0 : 40;
-  const taxes = subtotal * 0.2; // 20%
+  const taxes = subtotal * TAX_RATE;
   const total = subtotal + shippingCost + taxes;
   
   useEffect(() => {
@@ -111,7 +113,7 @@ export function CheckoutClientPage() {
 
     // Recalculate costs based on final form data
     const finalShippingCost = data.country === 'Germany' ? 0 : 40;
-    const finalTaxes = subtotal * 0.2;
+    const finalTaxes = subtotal * TAX_RATE;
     const finalTotal = subtotal + finalShippingCost + finalTaxes;
     
     // Generate a unique local ID for the order
@@ -131,14 +133,14 @@ export function CheckoutClientPage() {
         items: cartItems.map(item => ({
             id: item.id,
             productId: item.product.id,
-            name: item.product.name,
-            name_fr: item.product.name_fr,
-            name_en: item.product.name_en,
-            price: item.product.price,
+            name: item.name,
+            name_fr: item.name_fr,
+            name_en: item.name_en,
+            price: item.price,
             quantity: item.quantity,
             size: item.size,
             color: item.color,
-            image: item.product.images[0],
+            image: item.image,
         })),
         subtotal: subtotal,
         shipping: finalShippingCost,
@@ -425,7 +427,7 @@ export function CheckoutClientPage() {
                   <ul role="list" className="-my-6 divide-y divide-gray-200">
                     {cartItems.map((item) => {
                       const image = placeholderImages.find(
-                        (p) => p.id === item.product.images[0]
+                        (p) => p.id === item.image
                       );
                       return (
                         <li key={item.id} className="flex space-x-4 py-6">
@@ -433,7 +435,7 @@ export function CheckoutClientPage() {
                             {image && (
                               <img
                                 src={image.imageUrl}
-                                alt={item.product.name}
+                                alt={item.name}
                                 className="h-full w-full rounded-md object-cover object-center"
                               />
                             )}
@@ -444,10 +446,10 @@ export function CheckoutClientPage() {
                           <div className="flex-1 space-y-1">
                             <h3 className="font-medium text-gray-900">
                               <TranslatedText
-                                fr={item.product.name_fr}
-                                en={item.product.name_en}
+                                fr={item.name_fr}
+                                en={item.name_en}
                               >
-                                {item.product.name}
+                                {item.name}
                               </TranslatedText>
                             </h3>
                             <p className="text-sm text-gray-500">
@@ -456,7 +458,7 @@ export function CheckoutClientPage() {
                           </div>
                           <p className="flex-none text-base font-medium text-gray-900">
                             €
-                            {(item.product.price * item.quantity).toFixed(2)}
+                            {(item.price * item.quantity).toFixed(2)}
                           </p>
                         </li>
                       );
@@ -480,7 +482,7 @@ export function CheckoutClientPage() {
                     </p>
                   </div>
                    <div className="flex justify-between">
-                    <p><TranslatedText fr="Taxes" en="Taxes">Steuern</TranslatedText> (20%)</p>
+                    <p><TranslatedText fr="Taxes" en="Taxes">Steuern</TranslatedText> ({(TAX_RATE * 100).toFixed(0)}%)</p>
                     <p className="font-medium text-gray-900">
                         €{taxes.toFixed(2)}
                     </p>
@@ -546,5 +548,3 @@ export function CheckoutClientPage() {
     </div>
   );
 }
-
-    
