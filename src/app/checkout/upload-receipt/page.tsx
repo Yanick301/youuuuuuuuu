@@ -29,7 +29,7 @@ import { UploadCloud, Loader2, CheckCircle } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { TranslatedText } from '@/components/TranslatedText'
 import { useLanguage } from '@/context/LanguageContext'
-import type { CartItem } from '@/lib/types';
+import type { OrderItem } from '@/lib/types'
 import { Separator } from '@/components/ui/separator'
 
 const uploadSchemaDE = z.object({
@@ -47,7 +47,7 @@ const uploadSchemaDE = z.object({
         ),
       'Nur die Formate .jpg, .png oder .pdf werden akzeptiert.'
     ),
-});
+})
 
 const uploadSchemaFR = z.object({
   receipt: z
@@ -64,7 +64,7 @@ const uploadSchemaFR = z.object({
         ),
       'Seuls les formats .jpg, .png ou .pdf sont acceptés.'
     ),
-});
+})
 
 const uploadSchemaEN = z.object({
   receipt: z
@@ -81,8 +81,7 @@ const uploadSchemaEN = z.object({
         ),
       'Only .jpg, .png, or .pdf formats are accepted.'
     ),
-});
-
+})
 
 type UploadFormValues = z.infer<typeof uploadSchemaEN>
 
@@ -97,7 +96,7 @@ interface LocalOrder {
     zip: string
     country: string
   }
-  items: CartItem[]
+  items: OrderItem[]
   subtotal: number
   shipping: number
   taxes: number
@@ -130,8 +129,13 @@ function UploadReceiptForm() {
   const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
   const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
   const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-  
-  const currentSchema = language === 'fr' ? uploadSchemaFR : language === 'en' ? uploadSchemaEN : uploadSchemaDE;
+
+  const currentSchema =
+    language === 'fr'
+      ? uploadSchemaFR
+      : language === 'en'
+        ? uploadSchemaEN
+        : uploadSchemaDE
 
   const form = useForm<UploadFormValues>({
     resolver: zodResolver(currentSchema),
@@ -145,31 +149,51 @@ function UploadReceiptForm() {
         'EmailJS Public Key is missing. Check your environment variables.'
       )
     }
-    
+
     if (orderId) {
-        try {
-            const localOrders: LocalOrder[] = JSON.parse(localStorage.getItem('localOrders') || '[]')
-            const currentOrder = localOrders.find(o => o.id === orderId);
-            if (currentOrder) {
-                setOrder(currentOrder);
-            } else {
-                toast({ 
-                    variant: 'destructive', 
-                    title: <TranslatedText fr="Erreur" en="Error">Fehler</TranslatedText>, 
-                    description: <TranslatedText fr="Commande non trouvée." en="Order not found.">Bestellung nicht gefunden.</TranslatedText> 
-                });
-                router.push('/account/orders');
-            }
-        } catch (error) {
-            console.error("Could not load order from local storage", error);
-            toast({ 
-                variant: 'destructive', 
-                title: <TranslatedText fr="Erreur" en="Error">Fehler</TranslatedText>, 
-                description: <TranslatedText fr="Impossible de charger les détails de la commande." en="Could not load order details.">Bestelldetails konnten nicht geladen werden.</TranslatedText>
-            });
+      try {
+        const localOrders: LocalOrder[] = JSON.parse(
+          localStorage.getItem('localOrders') || '[]'
+        )
+        const currentOrder = localOrders.find((o) => o.id === orderId)
+        if (currentOrder) {
+          setOrder(currentOrder)
+        } else {
+          toast({
+            variant: 'destructive',
+            title: (
+              <TranslatedText fr="Erreur" en="Error">
+                Fehler
+              </TranslatedText>
+            ),
+            description: (
+              <TranslatedText fr="Commande non trouvée." en="Order not found.">
+                Bestellung nicht gefunden.
+              </TranslatedText>
+            ),
+          })
+          router.push('/account/orders')
         }
+      } catch (error) {
+        console.error('Could not load order from local storage', error)
+        toast({
+          variant: 'destructive',
+          title: (
+            <TranslatedText fr="Erreur" en="Error">
+              Fehler
+            </TranslatedText>
+          ),
+          description: (
+            <TranslatedText
+              fr="Impossible de charger les détails de la commande."
+              en="Could not load order details."
+            >
+              Bestelldetails konnten nicht geladen werden.
+            </TranslatedText>
+          ),
+        })
+      }
     }
-    
   }, [EMAILJS_PUBLIC_KEY, orderId, router, toast])
 
   const onSubmit: SubmitHandler<UploadFormValues> = async (data) => {
@@ -177,7 +201,14 @@ function UploadReceiptForm() {
       toast({
         variant: 'destructive',
         title: <TranslatedText fr="Erreur" en="Error">Fehler</TranslatedText>,
-        description: <TranslatedText fr="ID de commande manquant ou détails introuvables." en="Missing order ID or details not found.">Fehlende Bestell-ID oder Details nicht gefunden.</TranslatedText>
+        description: (
+          <TranslatedText
+            fr="ID de commande manquant ou détails introuvables."
+            en="Missing order ID or details not found."
+          >
+            Fehlende Bestell-ID oder Details nicht gefunden.
+          </TranslatedText>
+        ),
       })
       return
     }
@@ -185,9 +216,23 @@ function UploadReceiptForm() {
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) {
       toast({
         variant: 'destructive',
-        title: <TranslatedText fr="Erreur de configuration EmailJS" en="EmailJS Config Error">EmailJS-Konfigurationsfehler</TranslatedText>,
-        description:
-          <TranslatedText fr="Les clés de service EmailJS sont manquantes. Vérifiez vos variables d'environnement." en="EmailJS service keys are missing. Check your environment variables.">EmailJS-Dienstschlüssel fehlen. Überprüfen Sie Ihre Umgebungsvariablen.</TranslatedText>
+        title: (
+          <TranslatedText
+            fr="Erreur de configuration EmailJS"
+            en="EmailJS Config Error"
+          >
+            EmailJS-Konfigurationsfehler
+          </TranslatedText>
+        ),
+        description: (
+          <TranslatedText
+            fr="Les clés de service EmailJS sont manquantes. Vérifiez vos variables d'environnement."
+            en="EmailJS service keys are missing. Check your environment variables."
+          >
+            EmailJS-Dienstschlüssel fehlen. Überprüfen Sie Ihre
+            Umgebungsvariablen.
+          </TranslatedText>
+        ),
       })
       console.error('EmailJS: Missing environment vars')
       return
@@ -204,8 +249,8 @@ function UploadReceiptForm() {
           ${order.items
             .map(
               (item) =>
-                `<li>${item.quantity} x ${item.product.name} - €${(
-                  item.product.price * item.quantity
+                `<li>${item.quantity} x ${item.name} - €${(
+                  item.price * item.quantity
                 ).toFixed(2)}</li>`
             )
             .join('')}
@@ -250,8 +295,19 @@ function UploadReceiptForm() {
       setUploadSuccess(true)
 
       toast({
-        title: <TranslatedText fr="Reçu envoyé" en="Receipt Sent">Beleg gesendet</TranslatedText>,
-        description: <TranslatedText fr="Votre paiement est en cours de vérification." en="Your payment is under review.">Ihre Zahlung wird überprüft.</TranslatedText>,
+        title: (
+          <TranslatedText fr="Reçu envoyé" en="Receipt Sent">
+            Beleg gesendet
+          </TranslatedText>
+        ),
+        description: (
+          <TranslatedText
+            fr="Votre paiement est en cours de vérification."
+            en="Your payment is under review."
+          >
+            Ihre Zahlung wird überprüft.
+          </TranslatedText>
+        ),
       })
 
       setTimeout(() => {
@@ -262,7 +318,14 @@ function UploadReceiptForm() {
       toast({
         variant: 'destructive',
         title: <TranslatedText fr="Échec" en="Failed">Fehlgeschlagen</TranslatedText>,
-        description: <TranslatedText fr="Erreur lors de l’envoi. Réessayez." en="Error sending. Please try again.">Fehler beim Senden. Bitte versuchen Sie es erneut.</TranslatedText>,
+        description: (
+          <TranslatedText
+            fr="Erreur lors de l’envoi. Réessayez."
+            en="Error sending. Please try again."
+          >
+            Fehler beim Senden. Bitte versuchen Sie es erneut.
+          </TranslatedText>
+        ),
       })
     }
 
@@ -273,8 +336,19 @@ function UploadReceiptForm() {
     return (
       <Card className="w-full max-w-lg">
         <CardHeader>
-          <CardTitle><TranslatedText fr="Erreur" en="Error">Fehler</TranslatedText></CardTitle>
-          <CardDescription><TranslatedText fr="Aucun ID de commande détecté." en="No order ID detected.">Keine Bestell-ID erkannt.</TranslatedText></CardDescription>
+          <CardTitle>
+            <TranslatedText fr="Erreur" en="Error">
+              Fehler
+            </TranslatedText>
+          </CardTitle>
+          <CardDescription>
+            <TranslatedText
+              fr="Aucun ID de commande détecté."
+              en="No order ID detected."
+            >
+              Keine Bestell-ID erkannt.
+            </TranslatedText>
+          </CardDescription>
         </CardHeader>
       </Card>
     )
@@ -284,16 +358,25 @@ function UploadReceiptForm() {
       <Card className="w-full max-w-lg text-center">
         <CardContent className="p-10">
           <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
-          <h2 className="mt-4 text-2xl font-semibold"><TranslatedText fr="Téléversement réussi" en="Upload Successful">Upload erfolgreich</TranslatedText></h2>
+          <h2 className="mt-4 text-2xl font-semibold">
+            <TranslatedText fr="Téléversement réussi" en="Upload Successful">
+              Upload erfolgreich
+            </TranslatedText>
+          </h2>
           <p className="mt-2 text-muted-foreground">
-            <TranslatedText fr="Votre reçu a été envoyé. Vous serez redirigé automatiquement." en="Your receipt has been sent. You will be redirected automatically.">Ihr Beleg wurde gesendet. Sie werden automatisch weitergeleitet.</TranslatedText>
+            <TranslatedText
+              fr="Votre reçu a été envoyé. Vous serez redirigé automatiquement."
+              en="Your receipt has been sent. You will be redirected automatically."
+            >
+              Ihr Beleg wurde gesendet. Sie werden automatisch weitergeleitet.
+            </TranslatedText>
           </p>
         </CardContent>
       </Card>
     )
 
   return (
-    <Card className="w-full max-w-lg">
+    <Card className="w-full max-w-2xl">
       <CardHeader>
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
           <UploadCloud className="h-6 w-6 text-primary" />
@@ -317,22 +400,62 @@ function UploadReceiptForm() {
 
       <CardContent>
         {order && (
-            <div className="mb-6 rounded-md border p-4">
-                <h4 className="mb-2 text-sm font-medium text-muted-foreground"><TranslatedText fr="Résumé de la commande" en="Order Summary">Bestellübersicht</TranslatedText></h4>
-                <ul className="divide-y text-sm">
-                    {order.items.map(item => (
-                        <li key={item.id} className="flex justify-between py-2">
-                            <span>{item.quantity} x <TranslatedText fr={item.product.name_fr} en={item.product.name_en}>{item.product.name}</TranslatedText></span>
-                            <span>€{(item.product.price * item.quantity).toFixed(2)}</span>
-                        </li>
-                    ))}
-                </ul>
-                <Separator className="my-2"/>
-                <div className="flex justify-between font-semibold">
-                    <span>Total</span>
-                    <span>€{order.totalAmount.toFixed(2)}</span>
+          <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="rounded-md border p-4">
+              <h4 className="mb-2 text-sm font-medium text-muted-foreground">
+                <TranslatedText fr="Résumé de la commande" en="Order Summary">
+                  Bestellübersicht
+                </TranslatedText>
+              </h4>
+              <ul className="divide-y text-sm">
+                {order.items.map((item) => (
+                  <li key={item.id} className="flex justify-between py-2">
+                    <span>
+                      {item.quantity} x{' '}
+                      <TranslatedText fr={item.name_fr} en={item.name_en}>
+                        {item.name}
+                      </TranslatedText>
+                    </span>
+                    <span>€{(item.price * item.quantity).toFixed(2)}</span>
+                  </li>
+                ))}
+              </ul>
+              <Separator className="my-2" />
+              <div className="space-y-1 text-sm">
+                 <div className="flex justify-between">
+                    <span className='text-muted-foreground'><TranslatedText fr="Sous-total" en="Subtotal">Zwischensumme</TranslatedText></span>
+                    <span>€{order.subtotal.toFixed(2)}</span>
                 </div>
+                 <div className="flex justify-between">
+                    <span className='text-muted-foreground'><TranslatedText fr="Livraison" en="Shipping">Versand</TranslatedText></span>
+                    <span>€{order.shipping.toFixed(2)}</span>
+                </div>
+                 <div className="flex justify-between">
+                    <span className='text-muted-foreground'><TranslatedText fr="Taxes" en="Taxes">Steuern</TranslatedText> ({(order.taxes / order.subtotal * 100).toFixed(0)}%)</span>
+                    <span>€{order.taxes.toFixed(2)}</span>
+                </div>
+              </div>
+
+              <Separator className="my-2" />
+              <div className="flex justify-between font-semibold">
+                <span>Total</span>
+                <span>€{order.totalAmount.toFixed(2)}</span>
+              </div>
             </div>
+            <div className='rounded-md border p-4'>
+                <h4 className="mb-2 text-sm font-medium text-muted-foreground">
+                    <TranslatedText fr="Adresse de livraison" en="Shipping Address">
+                        Lieferadresse
+                    </TranslatedText>
+                </h4>
+                <address className="text-sm not-italic text-muted-foreground">
+                    {order.shippingInfo.name}<br />
+                    {order.shippingInfo.address}<br />
+                    {order.shippingInfo.zip} {order.shippingInfo.city}<br />
+                    {order.shippingInfo.country}
+                </address>
+            </div>
+          </div>
         )}
 
         <Form {...form}>
@@ -364,7 +487,7 @@ function UploadReceiptForm() {
 
                       <div className="flex h-24 flex-col items-center justify-center rounded-md border-2 border-dashed">
                         {fileName ? (
-                          <p className="text-sm text-muted-foreground px-4 text-center">
+                          <p className="px-4 text-center text-sm text-muted-foreground">
                             {fileName}
                           </p>
                         ) : (
@@ -405,7 +528,10 @@ function UploadReceiptForm() {
                   </TranslatedText>
                 </>
               ) : (
-                <TranslatedText fr="Envoyer le reçu et finaliser" en="Send Receipt and Finalize">
+                <TranslatedText
+                  fr="Envoyer le reçu et finaliser"
+                  en="Send Receipt and Finalize"
+                >
                   Beleg senden und abschließen
                 </TranslatedText>
               )}
@@ -416,7 +542,6 @@ function UploadReceiptForm() {
     </Card>
   )
 }
-
 
 export default function UploadReceiptPage() {
   return (
