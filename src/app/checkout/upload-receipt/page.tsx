@@ -28,7 +28,7 @@ const uploadSchema = z.object({
   receipt: z
     .any()
     .refine((files) => files?.length === 1, 'File is required.')
-    .refine((files) => files?.[0]?.size <= 5_000_000, 'Max file size is 5MB.')
+    .refine((files) => files?.[0]?.size <= 50_000, 'Max file size is 50KB.')
     .refine(
       (files) => ['image/jpeg', 'image/png', 'application/pdf'].includes(files?.[0]?.type),
       'Only .jpg, .png or .pdf.'
@@ -87,7 +87,7 @@ function UploadReceiptForm() {
       return
     }
 
-    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) {
       toast({
         variant: 'destructive',
         title: 'Erreur de configuration EmailJS',
@@ -105,10 +105,10 @@ function UploadReceiptForm() {
 
       // These params MUST match the variables in your EmailJS template.
       const templateParams = {
-        user_name: orderId,
-        image_base64: base64file,
+        user_name: orderId, // Corresponds to {{user_name}}
+        image_base64: base64file, // Corresponds to {{image_base64}}
       }
-
+      
       await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
@@ -219,6 +219,7 @@ function UploadReceiptForm() {
                           field.onChange(e.target.files)
                           setFileName(e.target.files?.[0]?.name || '')
                         }}
+                        accept="image/jpeg,image/png,application/pdf"
                       />
 
                       <div className="h-24 border-2 border-dashed rounded-md flex flex-col items-center justify-center">
@@ -237,7 +238,14 @@ function UploadReceiptForm() {
                       </div>
                     </div>
                   </FormControl>
-
+                  <p className="text-xs text-muted-foreground pt-1">
+                      <TranslatedText
+                        fr="Fichiers acceptés : JPG, PNG, PDF. Taille max : 50 Ko."
+                        en="Accepted files: JPG, PNG, PDF. Max size: 50KB."
+                      >
+                        Akzeptierte Dateien: JPG, PNG, PDF. Max. Größe: 50 KB.
+                      </TranslatedText>
+                  </p>
                   <FormMessage />
                 </FormItem>
               )}
