@@ -146,8 +146,8 @@ export function CheckoutClientPage() {
         localStorage.setItem('localOrders', JSON.stringify(localOrders));
 
         toast({
-            title: "Commande validée !",
-            description: "Vous allez être redirigé pour téléverser votre preuve de paiement."
+            title: "Veuillez téléverser votre reçu",
+            description: "Vous allez être redirigé pour finaliser votre commande."
         });
 
         clearCart();
