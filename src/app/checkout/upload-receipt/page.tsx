@@ -68,6 +68,19 @@ function UploadReceiptForm() {
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [fileName, setFileName] = useState('');
 
+  const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+  const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+  const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+  useEffect(() => {
+    // Initialize EmailJS with the public key when the component mounts
+    if (EMAILJS_PUBLIC_KEY) {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    } else {
+      console.error('EmailJS Public Key is not set.');
+    }
+  }, [EMAILJS_PUBLIC_KEY]);
+
   const form = useForm<UploadFormValues>({
     resolver: zodResolver(uploadSchema),
   });
@@ -81,10 +94,6 @@ function UploadReceiptForm() {
       });
       return;
     }
-
-    const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-    const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-    const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
       console.error('EmailJS credentials are not set in environment variables.');
@@ -111,8 +120,7 @@ function UploadReceiptForm() {
       await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_PUBLIC_KEY
+        templateParams
       );
 
       // Update local order status to 'processing'
