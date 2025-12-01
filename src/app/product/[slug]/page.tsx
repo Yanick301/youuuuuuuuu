@@ -20,7 +20,6 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/LanguageContext';
 import { getProductBySlug, getProductsByCategory, products as allProducts } from '@/lib/data';
-import allReviewsFromFile from '@/lib/reviews.json';
 import type { Review, Product } from '@/lib/types';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
@@ -28,106 +27,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { useCart } from '@/context/CartContext';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useUser } from '@/firebase';
+import AddReviewForm from '@/components/reviews/AddReviewForm';
+import allReviewsFromFile from '@/lib/reviews.json';
 
 const { placeholderImages } = placeholderImagesData;
 
-const reviewSchema = z.object({
-  rating: z.number().min(1, 'La note est requise'),
-  comment: z.string().min(10, 'Le commentaire doit faire au moins 10 caractères.'),
-});
-
-type ReviewFormValues = z.infer<typeof reviewSchema>;
-
-
-function AddReviewForm({ productId, onReviewAdded }: { productId: string; onReviewAdded: (review: Review) => void }) {
-  const { user } = useUser();
-  const { toast } = useToast();
-  const { register, handleSubmit, control, formState: { errors }, reset } = useForm<ReviewFormValues>({
-    resolver: zodResolver(reviewSchema),
-    defaultValues: {
-      rating: 0,
-      comment: '',
-    },
-  });
-
-  const onSubmit = (data: ReviewFormValues) => {
-    if (!user) {
-      toast({
-        variant: 'destructive',
-        title: 'Vous devez être connecté',
-        description: "Connectez-vous pour laisser un avis.",
-      });
-      return;
-    }
-    
-    // Simuler l'ajout d'avis
-    const newReview: Review = {
-        id: `local-${Date.now()}`,
-        productId: productId,
-        userId: user.uid,
-        userName: user.displayName || 'Utilisateur Anonyme',
-        rating: data.rating,
-        comment: data.comment,
-        createdAt: new Date(),
-    };
-
-    onReviewAdded(newReview);
-    toast({
-        title: "Avis ajouté !",
-        description: "Merci pour votre contribution.",
-    });
-    reset();
-  };
-
-  return (
-    <div className="mt-10">
-      <h4 className="font-headline text-xl mb-4">
-        <TranslatedText fr="Laisser un avis" en="Leave a Review">Eine Bewertung abgeben</TranslatedText>
-      </h4>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div>
-          <Label><TranslatedText fr="Votre note" en="Your Rating">Ihre Bewertung</TranslatedText></Label>
-          <Controller
-            name="rating"
-            control={control}
-            render={({ field }) => (
-              <div className="flex items-center gap-1 mt-2">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    className={cn(
-                      'h-6 w-6 cursor-pointer transition-colors',
-                      field.value >= star ? 'text-yellow-500 fill-yellow-500' : 'text-muted-foreground/30'
-                    )}
-                    onClick={() => field.onChange(star)}
-                  />
-                ))}
-              </div>
-            )}
-          />
-          {errors.rating && <p className="text-sm text-destructive mt-1">{errors.rating.message}</p>}
-        </div>
-
-        <div>
-          <Label htmlFor="comment"><TranslatedText fr="Votre commentaire" en="Your Comment">Ihr Kommentar</TranslatedText></Label>
-          <Textarea
-            id="comment"
-            {...register('comment')}
-            className="mt-2"
-            rows={4}
-          />
-          {errors.comment && <p className="text-sm text-destructive mt-1">{errors.comment.message}</p>}
-        </div>
-
-        <Button type="submit" disabled={!user}>
-          <Send className="mr-2 h-4 w-4" />
-          <TranslatedText fr="Envoyer l'avis" en="Submit Review">Bewertung abschicken</TranslatedText>
-        </Button>
-        {!user && <p className="text-sm text-muted-foreground mt-2"><TranslatedText fr="Vous devez être connecté pour laisser un avis." en="You must be logged in to leave a review.">Sie müssen angemeldet sein, um eine Bewertung abzugeben.</TranslatedText></p>}
-      </form>
-    </div>
-  );
-}
 
 export default function ProductPage() {
   const params = useParams();
@@ -159,7 +63,7 @@ export default function ProductPage() {
         const related = getProductsByCategory(allProducts, foundProduct.category, 4, foundProduct.id);
         setRelatedProducts(related);
         
-        // Charger les avis depuis le fichier JSON
+        // Charger les avis initiaux depuis le fichier JSON
         const productReviews = allReviewsFromFile.filter(r => r.productId === foundProduct.id).map(r => ({...r, createdAt: new Date(r.createdAt)})).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         setReviews(productReviews);
     }
@@ -168,6 +72,7 @@ export default function ProductPage() {
   }, [slug]);
 
   const handleReviewAdded = (newReview: Review) => {
+    // Ajoute le nouvel avis en haut de la liste pour un affichage instantané
     setReviews(prevReviews => [newReview, ...prevReviews]);
   };
 
