@@ -2,7 +2,7 @@
 'use server';
 
 import { getFirebaseAdmin } from "@/firebase/admin";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, FieldValue } from "firebase-admin/firestore";
 
 interface ReviewFormValues {
     rating: number;
@@ -19,7 +19,7 @@ export async function submitReview(productId: string, userId: string, userName: 
       userName,
       rating: data.rating,
       comment: data.comment,
-      createdAt: serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
     });
 
     return { success: true, id: newReviewRef.id };
