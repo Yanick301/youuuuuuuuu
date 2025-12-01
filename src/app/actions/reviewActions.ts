@@ -1,8 +1,9 @@
+
 'use server';
 
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { serverFirestore } from '@/firebase/server';
+import { firestore as serverFirestore } from '@/firebase/server';
 
 export type AddReviewState = {
   errors?: {
@@ -45,13 +46,11 @@ export async function addReview(
   try {
     const reviewWithTimestamp = {
       ...reviewData,
-      createdAt: new Date(), // Utiliser un objet Date de Firestore
+      createdAt: new Date(),
     };
     
-    // Écrire dans la sous-collection 'reviews' du produit
     await serverFirestore.collection(`products/${productId}/reviews`).add(reviewWithTimestamp);
     
-    // Revalider le chemin pour s'assurer que les rendus côté serveur sont mis à jour
     revalidatePath(`/product/${productId}`);
     
     return { message: "Merci ! Votre avis a été soumis." };
