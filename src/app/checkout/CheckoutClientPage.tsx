@@ -27,7 +27,7 @@ import {
 import { useLanguage } from '@/context/LanguageContext';
 import { ArrowLeft, Loader2, Banknote, AlertTriangle } from 'lucide-react';
 import placeholderImagesData from '@/lib/placeholder-images.json';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
@@ -110,7 +110,6 @@ export function CheckoutClientPage() {
   const { cartItems, subtotal, clearCart } = useCart();
   const { language } = useLanguage();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { user, isUserLoading } = useUser();
   const { toast } = useToast();
   
@@ -138,12 +137,6 @@ export function CheckoutClientPage() {
   const taxes = subtotal * TAX_RATE;
   const total = subtotal + shippingCost + taxes;
   
-  useEffect(() => {
-    if (searchParams.get('clearCart') === 'true') {
-      clearCart();
-    }
-  }, [searchParams, clearCart]);
-
   useEffect(() => {
     if (isUserLoading) return;
     if (!user) {
@@ -223,8 +216,8 @@ export function CheckoutClientPage() {
             title: <TranslatedText fr="Veuillez téléverser votre reçu" en="Please upload your receipt">Bitte laden Sie Ihre Quittung hoch</TranslatedText>,
             description: <TranslatedText fr="Vous allez être redirigé pour finaliser votre commande." en="You will be redirected to finalize your order.">Sie werden weitergeleitet, um Ihre Bestellung abzuschließen.</TranslatedText>
         });
-
-        // The cart is now cleared on the next page load via URL parameter
+        
+        clearCart();
         router.push(`/checkout/upload-receipt?orderId=${localOrderId}`);
     } catch (error) {
         console.error("Failed to save order to local storage:", error);
@@ -262,7 +255,7 @@ export function CheckoutClientPage() {
           </TranslatedText>
         </p>
         <Button asChild className="mt-6">
-          <Link href="/products/all?clearCart=true">
+          <Link href="/products/all">
             <TranslatedText fr="Continuer les achats" en="Continue Shopping">
               Weiter einkaufen
             </TranslatedText>
@@ -611,3 +604,5 @@ export function CheckoutClientPage() {
     </div>
   );
 }
+
+    
