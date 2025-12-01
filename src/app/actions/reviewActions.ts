@@ -1,7 +1,7 @@
 
 'use server';
 
-import { firestore } from '@/firebase/server';
+import { firestore as serverFirestore } from '@/firebase/server';
 import { z } from 'zod';
 import { FieldValue } from 'firebase-admin/firestore';
 import { revalidatePath } from 'next/cache';
@@ -42,7 +42,7 @@ export async function addReview(prevState: AddReviewState, formData: FormData): 
   const { productId, ...reviewData } = validatedFields.data;
 
   try {
-    const reviewsCollection = firestore.collection(`products/${productId}/reviews`);
+    const reviewsCollection = serverFirestore.collection(`products/${productId}/reviews`);
     await reviewsCollection.add({
       ...reviewData,
       createdAt: FieldValue.serverTimestamp(),
@@ -55,7 +55,7 @@ export async function addReview(prevState: AddReviewState, formData: FormData): 
     console.error("Erreur lors de l'ajout de l'avis :", error);
     return {
       errors: {
-        general: "Une erreur est survenue lors de l'ajout de votre avis. Veuillez vérifier vos permissions et réessayer."
+        general: "Une erreur est survenue lors de l'ajout de votre avis. Veuillez réessayer."
       },
       message: "La soumission de l'avis a échoué.",
     };
