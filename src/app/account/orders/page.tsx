@@ -227,7 +227,7 @@ export default function OrdersPage() {
                   <ul className="divide-y">
                     {order.items.map((item) => (
                       <li
-                        key={item.productId}
+                        key={item.id}
                         className="flex items-center justify-between py-3 text-sm"
                       >
                         <span className="flex-grow pr-4">
@@ -380,5 +380,3 @@ export default function OrdersPage() {
     </div>
   );
 }
-
-    
