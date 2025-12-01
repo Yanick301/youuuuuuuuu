@@ -19,8 +19,9 @@ function getFirebaseAdminApp(): App {
   }
 
   // If not initialized, create a new app instance.
-  // We use initializeApp directly, which automatically picks up
-  // GOOGLE_APPLICATION_CREDENTIALS environment variable on App Hosting.
+  // We use initializeApp directly. In a real Firebase environment (like App Hosting),
+  // it automatically picks up credentials. For local dev, explicitly passing
+  // the projectId ensures it connects to the right database.
   const adminApp = initializeApp({
       projectId: firebaseConfig.projectId
   }, 'auth');
