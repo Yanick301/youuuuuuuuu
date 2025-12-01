@@ -1,10 +1,25 @@
 
 import type { Metadata } from 'next';
+import { Inter, Cormorant_Garamond } from 'next/font/google';
 import './globals.css';
 import { AppProviders } from '@/components/AppProviders';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
+import { cn } from '@/lib/utils';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  display: 'swap',
+  variable: '--font-cormorant-garamond',
+});
 
 export const metadata: Metadata = {
   title: 'EZCENTIALS',
@@ -18,15 +33,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="font-body antialiased">
+      <body
+        className={cn(
+          'font-body antialiased',
+          inter.variable,
+          cormorantGaramond.variable
+        )}
+      >
         <AppProviders>
           <div className="relative z-10 flex min-h-screen flex-col">
             <Header />
