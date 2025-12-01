@@ -1,8 +1,11 @@
+
 'use client';
 
 import { notFound, useParams } from 'next/navigation';
-import { Star, ShoppingCart } from 'lucide-react';
+import { Star, ShoppingCart, MessageCircle } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
+import { formatDistanceToNow } from 'date-fns';
+import { fr, de, enUS } from 'date-fns/locale';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -14,14 +17,13 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/LanguageContext';
 import { getProductBySlug, getProductsByCategory, products as allProducts } from '@/lib/data';
+import allReviews from '@/lib/reviews.json';
 import type { Review, Product } from '@/lib/types';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { useCart } from '@/context/CartContext';
-import { useCollection, useFirebase, useMemoFirebase } from '@/firebase';
-import { collection, query, orderBy } from 'firebase/firestore';
-import { AddReviewForm } from '@/components/reviews/AddReviewForm';
-import { ReviewList } from '@/components/reviews/ReviewList';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+
 
 const { placeholderImages } = placeholderImagesData;
 
@@ -38,7 +40,12 @@ export default function ProductPage() {
   const { toast } = useToast();
   const { language } = useLanguage();
   const { addToCart } = useCart();
-  const { firestore } = useFirebase();
+
+  const reviews: Review[] = useMemo(() => {
+    if (!product) return [];
+    // The date is a string, so we convert it to a Date object for sorting
+    return allReviews.filter(r => r.productId === product.id).map(r => ({...r, createdAt: new Date(r.createdAt)})).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }, [product]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -59,19 +66,24 @@ export default function ProductPage() {
     setIsLoading(false);
   }, [slug]);
 
-  // Hook to fetch reviews for the current product
-  const reviewsQuery = useMemoFirebase(() => {
-    if (!product || !firestore) return null;
-    return query(collection(firestore, `products/${product.id}/reviews`), orderBy('createdAt', 'desc'));
-  }, [product, firestore]);
-
-  const { data: reviews, isLoading: reviewsLoading } = useCollection<Review>(reviewsQuery);
-
   const averageRating = useMemo(() => {
     if (!reviews || reviews.length === 0) return 0;
     return reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
   }, [reviews]);
   
+  const getLocale = () => {
+    switch(language) {
+      case 'fr': return fr;
+      case 'en': return enUS;
+      default: return de;
+    }
+  }
+
+  const getInitials = (name?: string | null) => {
+    if (!name) return 'U';
+    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  }
+
   if (isLoading) {
     return <div className="container mx-auto px-4 py-12 text-center">Chargement du produit...</div>;
   }
@@ -220,9 +232,45 @@ export default function ProductPage() {
               </ul>
             </TabsContent>
             <TabsContent value="reviews" className="mt-4">
-              <AddReviewForm productId={product.id} />
-              <Separator className="my-8" />
-              <ReviewList productId={product.id} />
+              {reviews.length > 0 ? (
+                <div className="space-y-8">
+                  {reviews.map((review) => (
+                    <div key={review.id} className="flex gap-4">
+                      <Avatar>
+                        <AvatarFallback>{getInitials(review.userName)}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <p className="font-semibold">{review.userName}</p>
+                          <div className="flex items-center">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={cn(
+                                  'h-4 w-4',
+                                  review.rating > i ? 'text-yellow-500 fill-yellow-500' : 'text-muted-foreground/30'
+                                )}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        {review.createdAt && (
+                          <p className="text-xs text-muted-foreground">
+                            {formatDistanceToNow(new Date(review.createdAt), { addSuffix: true, locale: getLocale() })}
+                          </p>
+                        )}
+                        <p className="mt-2 text-muted-foreground">{review.comment}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-12 text-center">
+                  <MessageCircle className="h-12 w-12 text-muted-foreground" />
+                  <h4 className="mt-4 text-lg font-semibold"><TranslatedText fr="Aucun avis pour l'instant" en="No reviews yet">Noch keine Bewertungen</TranslatedText></h4>
+                  <p className="mt-1 text-muted-foreground"><TranslatedText fr="Soyez le premier à donner votre avis sur ce produit !" en="Be the first to review this product!">Seien Sie der Erste, der dieses Produkt bewertet!</TranslatedText></p>
+                </div>
+              )}
             </TabsContent>
           </Tabs>
         </div>
