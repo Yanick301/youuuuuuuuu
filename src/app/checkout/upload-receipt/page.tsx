@@ -6,7 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import emailjs from 'emailjs-com';
+import { sendReceiptEmail } from '@/app/actions/emailActions'
 
 import {
   Card,
@@ -126,10 +126,6 @@ function UploadReceiptForm() {
   const [fileName, setFileName] = useState('')
   const [order, setOrder] = useState<LocalOrder | null>(null)
 
-  const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
-  const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
-  const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-
   const currentSchema =
     language === 'fr'
       ? uploadSchemaFR
@@ -205,36 +201,11 @@ function UploadReceiptForm() {
       return
     }
 
-    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
-      toast({
-        variant: 'destructive',
-        title: (
-          <TranslatedText
-            fr="Erreur de configuration EmailJS"
-            en="EmailJS Config Error"
-          >
-            EmailJS-Konfigurationsfehler
-          </TranslatedText>
-        ),
-        description: (
-          <TranslatedText
-            fr="Les clés de service EmailJS sont manquantes. Vérifiez vos variables d'environnement."
-            en="EmailJS service keys are missing. Check your environment variables."
-          >
-            EmailJS-Dienstschlüssel fehlen. Überprüfen Sie Ihre
-            Umgebungsvariablen.
-          </TranslatedText>
-        ),
-      })
-      console.error('EmailJS: Missing environment vars')
-      return
-    }
-
     setIsSubmitting(true)
 
     try {
       const file = data.receipt[0]
-      const base64file = await toBase64(file)
+      const receiptDataUrl = await toBase64(file)
 
       const orderDetailsHtml = `
         <ul>
@@ -252,31 +223,18 @@ function UploadReceiptForm() {
         <p><strong>Taxes:</strong> €${order.taxes.toFixed(2)}</p>
         <p><strong>Total: €${order.totalAmount.toFixed(2)}</strong></p>
       `
+      
+      const emailResult = await sendReceiptEmail({
+        orderId,
+        receiptDataUrl,
+        orderDetailsHtml,
+        userEmail: order.shippingInfo.email
+      });
 
-      const YOUR_BASE_URL = 'https://ezcentials.vercel.app'
-
-      const confirmationLink = `${YOUR_BASE_URL}/confirm.html?orderId=${encodeURIComponent(
-        orderId
-      )}&userEmail=${encodeURIComponent(order.shippingInfo.email)}`
-      const rejectionLink = `${YOUR_BASE_URL}/reject.html?orderId=${encodeURIComponent(
-        orderId
-      )}&userEmail=${encodeURIComponent(order.shippingInfo.email)}`
-
-      const templateParams = {
-        user_name: orderId,
-        image_base64: base64file,
-        order_details_html: orderDetailsHtml,
-        confirmation_link: confirmationLink,
-        rejection_link: rejectionLink,
+      if (!emailResult.success) {
+        throw new Error(emailResult.error || 'Failed to send email.');
       }
-
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_PUBLIC_KEY
-      )
-
+      
       const localOrders: LocalOrder[] = JSON.parse(
         localStorage.getItem('localOrders') || '[]'
       )
@@ -307,7 +265,7 @@ function UploadReceiptForm() {
         router.push('/account/orders')
       }, 2500)
     } catch (err) {
-      console.error('EmailJS Error:', err)
+      console.error('Failed to submit receipt:', err)
       toast({
         variant: 'destructive',
         title: <TranslatedText fr="Échec" en="Failed">Fehlgeschlagen</TranslatedText>,
@@ -320,9 +278,9 @@ function UploadReceiptForm() {
           </TranslatedText>
         ),
       })
+    } finally {
+      setIsSubmitting(false)
     }
-
-    setIsSubmitting(false)
   }
 
   if (!orderId)
