@@ -2,13 +2,10 @@
 'use client';
 
 import { notFound, useParams } from 'next/navigation';
-import { Star, ShoppingCart, MessageCircle, Send } from 'lucide-react';
+import { Star, ShoppingCart, MessageCircle } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { fr, de, enUS } from 'date-fns/locale';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -23,11 +20,8 @@ import { getProductBySlug, getProductsByCategory, products as allProducts } from
 import type { Review, Product } from '@/lib/types';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { useCart } from '@/context/CartContext';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { useUser } from '@/firebase';
-import AddReviewForm from '@/components/reviews/AddReviewForm';
 import allReviewsFromFile from '@/lib/reviews.json';
 
 const { placeholderImages } = placeholderImagesData;
@@ -39,7 +33,6 @@ export default function ProductPage() {
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [relatedProducts, setRelatedProducts] = useState<ReturnType<typeof getProductsByCategory>>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [reviews, setReviews] = useState<Review[]>([]);
 
   const [selectedSize, setSelectedSize] = useState<string | undefined>();
   const [selectedColor, setSelectedColor] = useState<string | undefined>();
@@ -47,6 +40,12 @@ export default function ProductPage() {
   const { toast } = useToast();
   const { language } = useLanguage();
   const { addToCart } = useCart();
+
+  const reviews: Review[] = useMemo(() => {
+    if (!product) return [];
+    // The date is a string, so we convert it to a Date object for sorting
+    return allReviewsFromFile.filter(r => r.productId === product.id).map(r => ({...r, createdAt: new Date(r.createdAt)})).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }, [product]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -62,19 +61,10 @@ export default function ProductPage() {
         }
         const related = getProductsByCategory(allProducts, foundProduct.category, 4, foundProduct.id);
         setRelatedProducts(related);
-        
-        // Charger les avis initiaux depuis le fichier JSON
-        const productReviews = allReviewsFromFile.filter(r => r.productId === foundProduct.id).map(r => ({...r, createdAt: new Date(r.createdAt)})).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        setReviews(productReviews);
     }
     
     setIsLoading(false);
   }, [slug]);
-
-  const handleReviewAdded = (newReview: Review) => {
-    // Ajoute le nouvel avis en haut de la liste pour un affichage instantané
-    setReviews(prevReviews => [newReview, ...prevReviews]);
-  };
 
   const averageRating = useMemo(() => {
     if (!reviews || reviews.length === 0) return 0;
@@ -285,7 +275,6 @@ export default function ProductPage() {
                     <p className="mt-1 text-muted-foreground"><TranslatedText fr="Soyez le premier à donner votre avis sur ce produit !" en="Be the first to review this product!">Seien Sie der Erste, der dieses Produkt bewertet!</TranslatedText></p>
                   </div>
                 )}
-                <AddReviewForm productId={product.id} onReviewAdded={handleReviewAdded} />
               </div>
             </TabsContent>
           </Tabs>
