@@ -1,4 +1,3 @@
-
 'use client';
 
 import { notFound, useParams } from 'next/navigation';
@@ -19,9 +18,12 @@ import type { Review, Product } from '@/lib/types';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { useCart } from '@/context/CartContext';
+import { useCollection, useFirebase, useMemoFirebase } from '@/firebase';
+import { collection, query, orderBy } from 'firebase/firestore';
+import { AddReviewForm } from '@/components/reviews/AddReviewForm';
+import { ReviewList } from '@/components/reviews/ReviewList';
 
 const { placeholderImages } = placeholderImagesData;
-
 
 export default function ProductPage() {
   const params = useParams();
@@ -36,9 +38,7 @@ export default function ProductPage() {
   const { toast } = useToast();
   const { language } = useLanguage();
   const { addToCart } = useCart();
-  
-  const reviews: Review[] = []; // Static empty reviews
-  const reviewsLoading = false;
+  const { firestore } = useFirebase();
 
   useEffect(() => {
     setIsLoading(true);
@@ -59,8 +59,16 @@ export default function ProductPage() {
     setIsLoading(false);
   }, [slug]);
 
+  // Hook to fetch reviews for the current product
+  const reviewsQuery = useMemoFirebase(() => {
+    if (!product || !firestore) return null;
+    return query(collection(firestore, `products/${product.id}/reviews`), orderBy('createdAt', 'desc'));
+  }, [product, firestore]);
+
+  const { data: reviews, isLoading: reviewsLoading } = useCollection<Review>(reviewsQuery);
+
   const averageRating = useMemo(() => {
-    if (!reviews || reviews.length === 0) return 4.5; // Return a static rating
+    if (!reviews || reviews.length === 0) return 0;
     return reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
   }, [reviews]);
   
@@ -130,10 +138,17 @@ export default function ProductPage() {
           <div className="mt-4 flex items-center gap-2">
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className={`h-5 w-5 ${i < Math.floor(averageRating) ? 'text-yellow-500 fill-yellow-500' : 'text-muted'}`} />
+                <Star key={i} className={cn(
+                  'h-5 w-5',
+                  averageRating > i ? 'text-yellow-500 fill-yellow-500' : 'text-muted-foreground/30'
+                )} />
               ))}
             </div>
-            <span className="text-sm text-muted-foreground">({(reviews?.length || 15) + 5} <TranslatedText fr="avis" en="reviews">Bewertungen</TranslatedText>)</span>
+            {reviews && reviews.length > 0 && (
+                <span className="text-sm text-muted-foreground">
+                    ({reviews.length} <TranslatedText fr="avis" en="reviews">Bewertungen</TranslatedText>)
+                </span>
+            )}
           </div>
 
           <p className="mt-6 text-base leading-relaxed">
@@ -195,7 +210,7 @@ export default function ProductPage() {
           <Tabs defaultValue="details" className="w-full">
             <TabsList>
               <TabsTrigger value="details"><TranslatedText fr="Détails" en="Details">Details</TranslatedText></TabsTrigger>
-              <TabsTrigger value="reviews"><TranslatedText fr="Avis" en="Reviews">Bewertungen</TranslatedText></TabsTrigger>
+              <TabsTrigger value="reviews"><TranslatedText fr="Avis" en="Reviews">Bewertungen</TranslatedText> ({reviews?.length || 0})</TabsTrigger>
             </TabsList>
             <TabsContent value="details" className="mt-4 text-sm text-muted-foreground">
               <ul className="list-disc pl-5 space-y-2">
@@ -205,7 +220,9 @@ export default function ProductPage() {
               </ul>
             </TabsContent>
             <TabsContent value="reviews" className="mt-4">
-              <p className="text-sm text-muted-foreground"><TranslatedText fr="Fonctionnalité d'avis non disponible." en="Review functionality not available.">Bewertungsfunktion nicht verfügbar.</TranslatedText></p>
+              <AddReviewForm productId={product.id} />
+              <Separator className="my-8" />
+              <ReviewList productId={product.id} />
             </TabsContent>
           </Tabs>
         </div>
