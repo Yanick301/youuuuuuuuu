@@ -6,7 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import emailjs from '@emailjs/browser'
+import emailjs from 'emailjs-com';
 
 import {
   Card,
@@ -142,14 +142,6 @@ function UploadReceiptForm() {
   })
 
   useEffect(() => {
-    if (EMAILJS_PUBLIC_KEY) {
-      emailjs.init(EMAILJS_PUBLIC_KEY)
-    } else {
-      console.error(
-        'EmailJS Public Key is missing. Check your environment variables.'
-      )
-    }
-
     if (orderId) {
       try {
         const localOrders: LocalOrder[] = JSON.parse(
@@ -194,7 +186,7 @@ function UploadReceiptForm() {
         })
       }
     }
-  }, [EMAILJS_PUBLIC_KEY, orderId, router, toast])
+  }, [orderId, router, toast])
 
   const onSubmit: SubmitHandler<UploadFormValues> = async (data) => {
     if (!orderId || !order) {
@@ -213,7 +205,7 @@ function UploadReceiptForm() {
       return
     }
 
-    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) {
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
       toast({
         variant: 'destructive',
         title: (
@@ -281,7 +273,8 @@ function UploadReceiptForm() {
       await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        templateParams
+        templateParams,
+        EMAILJS_PUBLIC_KEY
       )
 
       const localOrders: LocalOrder[] = JSON.parse(
