@@ -7,7 +7,7 @@ import { firebaseConfig } from './config';
 // IMPORTANT: DO NOT MODIFY THIS FILE
 
 // This file is the single source of truth for initializing the Firebase Admin SDK.
-// It is marked with 'use server' to ensure it only runs on the server.
+// It is a server-only module.
 // It safely handles initialization to prevent re-initializing the app.
 
 function getFirebaseAdminApp(): App {
