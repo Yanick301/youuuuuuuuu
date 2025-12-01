@@ -24,6 +24,7 @@ import {
   AlertCircle,
   Ban,
   Upload,
+  Clock,
 } from 'lucide-react';
 import { useUser } from '@/firebase';
 import { Badge } from '@/components/ui/badge';
@@ -166,7 +167,7 @@ export default function OrdersPage() {
       case 'pending':
         return <AlertCircle className="mr-2 h-4 w-4" />;
       case 'processing':
-        return <Loader2 className="mr-2 h-4 w-4 animate-spin" />;
+        return <Clock className="mr-2 h-4 w-4" />;
       case 'completed':
         return <CheckCircle className="mr-2 h-4 w-4" />;
       case 'rejected':
@@ -198,7 +199,7 @@ export default function OrdersPage() {
       </h1>
       {orders && orders.length > 0 ? (
         <div className="space-y-6">
-          {orders.map((order: LocalOrder) => (
+          {orders.map((order) => (
             <Card key={order.id}>
               <CardHeader className="flex-row items-start justify-between">
                 <div>
@@ -318,15 +319,23 @@ export default function OrdersPage() {
                 )}
 
                 {order.paymentStatus === 'processing' && (
-                  <div className="mt-6 flex flex-col items-center justify-center gap-4 rounded-md border-2 border-dashed border-blue-200 bg-blue-50/50 p-4">
+                  <div className="mt-6 flex flex-col items-center justify-center gap-4 rounded-md border-2 border-dashed border-blue-200 bg-blue-50/50 p-4 text-center">
                     <div className="flex items-center text-blue-800">
-                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      <Clock className="mr-2 h-5 w-5" />
                       <p className="font-semibold">
-                        <TranslatedText fr="Paiement en cours de vérification" en="Payment under review">
-                          Zahlung wird überprüft
+                        <TranslatedText fr="Vérification du paiement" en="Payment Verification">
+                          Zahlungsüberprüfung
                         </TranslatedText>
                       </p>
                     </div>
+                    <p className="text-sm text-blue-700">
+                        <TranslatedText 
+                            fr="Vous recevrez un e-mail de confirmation de commande dans les 10 prochaines minutes."
+                            en="You will receive an order confirmation email within the next 10 minutes."
+                        >
+                            Sie erhalten in den nächsten 10 Minuten eine E-Mail zur Bestellbestätigung.
+                        </TranslatedText>
+                    </p>
                   </div>
                 )}
 
