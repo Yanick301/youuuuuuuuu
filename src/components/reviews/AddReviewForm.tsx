@@ -13,7 +13,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { TranslatedText } from '@/components/TranslatedText';
 import type { Review } from '@/lib/types';
-import { submitReview } from '@/app/actions/reviewActions';
 
 
 const reviewSchema = z.object({
@@ -22,7 +21,6 @@ const reviewSchema = z.object({
 });
 
 type ReviewFormValues = z.infer<typeof reviewSchema>;
-
 
 export default function AddReviewForm({ productId, onReviewAdded }: { productId: string; onReviewAdded: (review: Review) => void }) {
   const { user } = useUser();
@@ -45,31 +43,26 @@ export default function AddReviewForm({ productId, onReviewAdded }: { productId:
       return;
     }
 
-    const result = await submitReview(productId, user.uid, user.displayName || 'Utilisateur Anonyme', data);
+    // Simulate saving the review and get the new review object
+    const newReview: Review = {
+      id: `local-${Date.now()}`,
+      productId: productId,
+      userId: user.uid,
+      userName: user.displayName || 'Utilisateur Anonyme',
+      rating: data.rating,
+      comment: data.comment,
+      createdAt: new Date(),
+    };
 
-    if (result.success) {
-      const newReview: Review = {
-        id: result.id!,
-        productId: productId,
-        userId: user.uid,
-        userName: user.displayName || 'Utilisateur Anonyme',
-        rating: data.rating,
-        comment: data.comment,
-        createdAt: new Date(), // Simule la date pour l'affichage instantané
-      };
-      onReviewAdded(newReview);
-      toast({
-        title: "Avis ajouté !",
-        description: "Merci pour votre contribution.",
-      });
-      reset();
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: result.error || 'Une erreur est survenue.',
-      });
-    }
+    // Call the callback to update the parent component's state
+    onReviewAdded(newReview);
+
+    toast({
+      title: "Avis ajouté !",
+      description: "Merci pour votre contribution. (Simulation)",
+    });
+
+    reset();
   };
 
   return (
@@ -109,13 +102,14 @@ export default function AddReviewForm({ productId, onReviewAdded }: { productId:
             className="mt-2"
             rows={4}
             disabled={!user || isSubmitting}
+            placeholder={!user ? "Connectez-vous pour laisser un avis" : "Écrivez votre avis ici..."}
           />
           {errors.comment && <p className="text-sm text-destructive mt-1">{errors.comment.message}</p>}
         </div>
 
         <Button type="submit" disabled={!user || isSubmitting}>
           <Send className="mr-2 h-4 w-4" />
-          {isSubmitting ? 'Envoi...' : <TranslatedText fr="Envoyer l'avis" en="Submit Review">Bewertung abschicken</TranslatedText>}
+          {isSubmitting ? <TranslatedText fr="Envoi..." en="Submitting...">Senden...</TranslatedText> : <TranslatedText fr="Envoyer l'avis" en="Submit Review">Bewertung abschicken</TranslatedText>}
         </Button>
         {!user && <p className="text-sm text-muted-foreground mt-2"><TranslatedText fr="Vous devez être connecté pour laisser un avis." en="You must be logged in to leave a review.">Sie müssen angemeldet sein, um eine Bewertung abzugeben.</TranslatedText></p>}
       </form>

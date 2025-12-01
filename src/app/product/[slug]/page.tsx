@@ -3,7 +3,7 @@
 
 import { notFound, useParams } from 'next/navigation';
 import { Star, ShoppingCart, MessageCircle } from 'lucide-react';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { fr, de, enUS } from 'date-fns/locale';
 
@@ -23,9 +23,9 @@ import { Label } from '@/components/ui/label';
 import { useCart } from '@/context/CartContext';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import allReviewsFromFile from '@/lib/reviews.json';
+import AddReviewForm from '@/components/reviews/AddReviewForm';
 
 const { placeholderImages } = placeholderImagesData;
-
 
 export default function ProductPage() {
   const params = useParams();
@@ -33,6 +33,7 @@ export default function ProductPage() {
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [relatedProducts, setRelatedProducts] = useState<ReturnType<typeof getProductsByCategory>>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   const [selectedSize, setSelectedSize] = useState<string | undefined>();
   const [selectedColor, setSelectedColor] = useState<string | undefined>();
@@ -40,12 +41,6 @@ export default function ProductPage() {
   const { toast } = useToast();
   const { language } = useLanguage();
   const { addToCart } = useCart();
-
-  const reviews: Review[] = useMemo(() => {
-    if (!product) return [];
-    // The date is a string, so we convert it to a Date object for sorting
-    return allReviewsFromFile.filter(r => r.productId === product.id).map(r => ({...r, createdAt: new Date(r.createdAt)})).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-  }, [product]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -61,10 +56,21 @@ export default function ProductPage() {
         }
         const related = getProductsByCategory(allProducts, foundProduct.category, 4, foundProduct.id);
         setRelatedProducts(related);
+
+        // Load initial reviews from the static file
+        const initialReviews = allReviewsFromFile
+            .filter(r => r.productId === foundProduct.id)
+            .map(r => ({ ...r, createdAt: new Date(r.createdAt) }))
+            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+        setReviews(initialReviews);
     }
     
     setIsLoading(false);
   }, [slug]);
+
+  const handleReviewAdded = useCallback((newReview: Review) => {
+    setReviews(prevReviews => [newReview, ...prevReviews]);
+  }, []);
 
   const averageRating = useMemo(() => {
     if (!reviews || reviews.length === 0) return 0;
@@ -276,6 +282,7 @@ export default function ProductPage() {
                   </div>
                 )}
               </div>
+              <AddReviewForm productId={product.id} onReviewAdded={handleReviewAdded} />
             </TabsContent>
           </Tabs>
         </div>
