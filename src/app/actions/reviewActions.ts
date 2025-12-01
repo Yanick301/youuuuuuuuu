@@ -50,14 +50,14 @@ export async function addReview(prevState: AddReviewState, formData: FormData): 
 
     revalidatePath(`/product/${productId}`);
 
-    return { message: 'Avis soumis avec succès !', errors: {} };
+    return { message: 'Avis soumis avec succès !' };
   } catch (error) {
     console.error("Erreur lors de l'ajout de l'avis :", error);
     return {
       errors: {
-        general: 'Une erreur est survenue lors de la soumission de votre avis. Veuillez réessayer.'
+        general: "Une erreur est survenue lors de l'ajout de votre avis. Veuillez vérifier vos permissions et réessayer."
       },
-      message: "Une erreur s'est produite.",
+      message: "La soumission de l'avis a échoué.",
     };
   }
 }
