@@ -2,11 +2,6 @@
 
 import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useForm, type SubmitHandler } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { sendReceiptEmail } from '@/app/actions/emailActions'
-
 import {
   Card,
   CardHeader,
@@ -14,75 +9,13 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from '@/components/ui/form'
 import { UploadCloud, Loader2, CheckCircle } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { TranslatedText } from '@/components/TranslatedText'
-import { useLanguage } from '@/context/LanguageContext'
 import type { OrderItem } from '@/lib/types'
 import { Separator } from '@/components/ui/separator'
+import UploadReceiptForm from '@/components/orders/UploadReceiptForm';
 
-const uploadSchemaDE = z.object({
-  receipt: z
-    .any()
-    .refine((files) => files?.length === 1, 'Eine Datei ist erforderlich.')
-    .refine(
-      (files) => files?.[0]?.size <= 5000 * 1024,
-      'Die maximale Dateigröße beträgt 5 MB.'
-    )
-    .refine(
-      (files) =>
-        ['image/jpeg', 'image/png', 'application/pdf'].includes(
-          files?.[0]?.type
-        ),
-      'Nur die Formate .jpg, .png oder .pdf werden akzeptiert.'
-    ),
-})
-
-const uploadSchemaFR = z.object({
-  receipt: z
-    .any()
-    .refine((files) => files?.length === 1, 'Un fichier est requis.')
-    .refine(
-      (files) => files?.[0]?.size <= 5000 * 1024,
-      'La taille maximale du fichier est de 5 Mo.'
-    )
-    .refine(
-      (files) =>
-        ['image/jpeg', 'image/png', 'application/pdf'].includes(
-          files?.[0]?.type
-        ),
-      'Seuls les formats .jpg, .png ou .pdf sont acceptés.'
-    ),
-})
-
-const uploadSchemaEN = z.object({
-  receipt: z
-    .any()
-    .refine((files) => files?.length === 1, 'A file is required.')
-    .refine(
-      (files) => files?.[0]?.size <= 5000 * 1024,
-      'Maximum file size is 5MB.'
-    )
-    .refine(
-      (files) =>
-        ['image/jpeg', 'image/png', 'application/pdf'].includes(
-          files?.[0]?.type
-        ),
-      'Only .jpg, .png, or .pdf formats are accepted.'
-    ),
-})
-
-type UploadFormValues = z.infer<typeof uploadSchemaEN>
 
 interface LocalOrder {
   id: string
@@ -105,36 +38,15 @@ interface LocalOrder {
   receiptImageUrl: string | null
 }
 
-const toBase64 = (file: File): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = (err) => reject(err)
-  })
 
-function UploadReceiptForm() {
+function UploadReceiptPageComponent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const orderId = searchParams.get('orderId')
 
   const { toast } = useToast()
-  const { language } = useLanguage()
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [uploadSuccess, setUploadSuccess] = useState(false)
-  const [fileName, setFileName] = useState('')
   const [order, setOrder] = useState<LocalOrder | null>(null)
-
-  const currentSchema =
-    language === 'fr'
-      ? uploadSchemaFR
-      : language === 'en'
-        ? uploadSchemaEN
-        : uploadSchemaDE
-
-  const form = useForm<UploadFormValues>({
-    resolver: zodResolver(currentSchema),
-  })
 
   useEffect(() => {
     if (orderId) {
@@ -182,105 +94,12 @@ function UploadReceiptForm() {
       }
     }
   }, [orderId, router, toast])
-
-  const onSubmit: SubmitHandler<UploadFormValues> = async (data) => {
-    if (!orderId || !order) {
-      toast({
-        variant: 'destructive',
-        title: <TranslatedText fr="Erreur" en="Error">Fehler</TranslatedText>,
-        description: (
-          <TranslatedText
-            fr="ID de commande manquant ou détails introuvables."
-            en="Missing order ID or details not found."
-          >
-            Fehlende Bestell-ID oder Details nicht gefunden.
-          </TranslatedText>
-        ),
-      })
-      return
-    }
-
-    setIsSubmitting(true)
-
-    try {
-      const file = data.receipt[0]
-      const receiptDataUrl = await toBase64(file)
-
-      const orderDetailsHtml = `
-        <ul>
-          ${order.items
-            .map(
-              (item) =>
-                `<li>${item.quantity} x ${item.name} - €${(
-                  item.price * item.quantity
-                ).toFixed(2)}</li>`
-            )
-            .join('')}
-        </ul>
-        <p><strong>Sous-total:</strong> €${order.subtotal.toFixed(2)}</p>
-        <p><strong>Livraison:</strong> €${order.shipping.toFixed(2)}</p>
-        <p><strong>Taxes:</strong> €${order.taxes.toFixed(2)}</p>
-        <p><strong>Total: €${order.totalAmount.toFixed(2)}</strong></p>
-      `
-      
-      const emailResult = await sendReceiptEmail({
-        orderId,
-        receiptDataUrl,
-        orderDetailsHtml,
-        userEmail: order.shippingInfo.email,
-        siteUrl: window.location.origin,
-      });
-
-      if (!emailResult.success) {
-        throw new Error(emailResult.error || 'Failed to send email.');
-      }
-      
-      const localOrders: LocalOrder[] = JSON.parse(
-        localStorage.getItem('localOrders') || '[]'
-      )
-      const updatedOrders = localOrders.map((o: any) =>
-        o.id === orderId ? { ...o, paymentStatus: 'processing' } : o
-      )
-      localStorage.setItem('localOrders', JSON.stringify(updatedOrders))
-
-      setUploadSuccess(true)
-
-      toast({
-        title: (
-          <TranslatedText fr="Reçu envoyé" en="Receipt Sent">
-            Beleg gesendet
-          </TranslatedText>
-        ),
-        description: (
-          <TranslatedText
-            fr="Votre paiement est en cours de vérification."
-            en="Your payment is under review."
-          >
-            Ihre Zahlung wird überprüft.
-          </TranslatedText>
-        ),
-      })
-
-      setTimeout(() => {
+  
+  const handleReceiptUploaded = () => {
+    setUploadSuccess(true);
+     setTimeout(() => {
         router.push('/account/orders')
       }, 2500)
-    } catch (err) {
-      console.error('Failed to submit receipt:', err)
-      toast({
-        variant: 'destructive',
-        title: <TranslatedText fr="Échec" en="Failed">Fehlgeschlagen</TranslatedText>,
-        description: (
-          <TranslatedText
-            fr="Erreur lors de l’envoi. Réessayez."
-            en="Error sending. Please try again."
-          >
-            Fehler beim Senden. Bitte versuchen Sie es erneut.
-          </TranslatedText>
-        ),
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
   }
 
   if (!orderId) {
@@ -411,86 +230,8 @@ function UploadReceiptForm() {
           </div>
         )}
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              name="receipt"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    <TranslatedText
-                      fr="Preuve de paiement"
-                      en="Proof of Payment"
-                    >
-                      Zahlungsnachweis
-                    </TranslatedText>
-                  </FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Input
-                        type="file"
-                        className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
-                        onChange={(e) => {
-                          field.onChange(e.target.files)
-                          setFileName(e.target.files?.[0]?.name || '')
-                        }}
-                        accept="image/jpeg,image/png,application/pdf"
-                      />
+        {order && <UploadReceiptForm order={order} onReceiptUploaded={handleReceiptUploaded} />}
 
-                      <div className="flex h-24 flex-col items-center justify-center rounded-md border-2 border-dashed">
-                        {fileName ? (
-                          <p className="px-4 text-center text-sm text-muted-foreground">
-                            {fileName}
-                          </p>
-                        ) : (
-                          <>
-                            <UploadCloud className="mb-2 h-8 w-8 text-muted-foreground" />
-                            <p className="text-sm text-muted-foreground">
-                              <TranslatedText
-                                fr="Cliquer ou glisser-déposer"
-                                en="Click or drag & drop"
-                              >
-                                Klicken oder Drag & Drop
-                              </TranslatedText>
-                            </p>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </FormControl>
-                  <p className="pt-1 text-xs text-muted-foreground">
-                    <TranslatedText
-                      fr="Fichiers acceptés : JPG, PNG, PDF. Taille max : 5 Mo."
-                      en="Accepted files: JPG, PNG, PDF. Max size: 5MB."
-                    >
-                      Akzeptierte Dateien: JPG, PNG, PDF. Max. Größe: 5 MB.
-                    </TranslatedText>
-                  </p>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button type="submit" disabled={isSubmitting} className="w-full">
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  <TranslatedText fr="Envoi en cours..." en="Sending...">
-                    Wird gesendet...
-                  </TranslatedText>
-                </>
-              ) : (
-                <TranslatedText
-                  fr="Envoyer le reçu et finaliser"
-                  en="Send Receipt and Finalize"
-                >
-                  Beleg senden und abschließen
-                </TranslatedText>
-              )}
-            </Button>
-          </form>
-        </Form>
       </CardContent>
     </Card>
   )
@@ -509,7 +250,7 @@ export default function UploadReceiptPage() {
           </div>
         }
       >
-        <UploadReceiptForm />
+        <UploadReceiptPageComponent />
       </Suspense>
     </div>
   )

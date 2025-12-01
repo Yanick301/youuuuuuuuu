@@ -12,12 +12,18 @@ import { TranslatedText } from '@/components/TranslatedText';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import {
   ShoppingBag,
   CheckCircle,
   Loader2,
   AlertCircle,
   Ban,
-  Mail,
+  Upload,
 } from 'lucide-react';
 import { useUser } from '@/firebase';
 import { Badge } from '@/components/ui/badge';
@@ -27,7 +33,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { OrderItem } from '@/lib/types';
-
+import UploadReceiptForm from '@/components/orders/UploadReceiptForm';
 
 interface LocalOrder {
     id: string;
@@ -63,11 +69,7 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState<LocalOrder[]>([]);
   const [isOrdersLoading, setIsOrdersLoading] = useState(true);
   
-  useEffect(() => {
-    if (isUserLoading) {
-      return;
-    }
-
+  const fetchOrders = () => {
     setIsOrdersLoading(true);
     if (user) {
         try {
@@ -89,14 +91,15 @@ export default function OrdersPage() {
         setOrders([]);
     }
     setIsOrdersLoading(false);
+  }
 
+  useEffect(() => {
+    if (!isUserLoading) {
+      fetchOrders();
+    }
   }, [user, isUserLoading]);
 
   const isLoading = isUserLoading || isOrdersLoading;
-
-  const handleFinalizePayment = (orderId: string) => {
-    router.push(`/checkout/confirm-payment?orderId=${orderId}`);
-  };
 
   const getStatusVariant = (status: string) => {
     switch (status) {
@@ -171,6 +174,11 @@ export default function OrdersPage() {
       default:
         return null;
     }
+  };
+  
+  const handleReceiptUploaded = () => {
+    // Re-fetch orders to update the status on the page
+    fetchOrders();
   };
 
   if (isLoading) {
@@ -279,32 +287,33 @@ export default function OrdersPage() {
                 </div>
 
                 {order.paymentStatus === 'pending' && (
-                  <div className="mt-6 rounded-md bg-destructive/10 p-6 pt-6 text-center">
-                    <h4 className="font-semibold text-destructive">
-                      <TranslatedText
-                        fr="Action requise : Finaliser votre paiement"
-                        en="Action Required: Finalize Your Payment"
-                      >
-                        Aktion erforderlich: Zahlung abschließen
-                      </TranslatedText>
-                    </h4>
-                    <p className="my-2 text-sm text-destructive/80">
-                      <TranslatedText
-                        fr="Pour finaliser votre commande, veuillez effectuer le virement bancaire puis nous envoyer votre preuve de paiement par email."
-                        en="To finalize your order, please make the bank transfer then email us your proof of payment."
-                      >
-                        Um Ihre Bestellung abzuschließen, führen Sie bitte die Banküberweisung durch und senden Sie uns dann Ihren Zahlungsnachweis per E-Mail.
-                      </TranslatedText>
-                    </p>
-                    <Button
-                      onClick={() => handleFinalizePayment(order.id)}
-                      variant="destructive"
-                    >
-                      <Mail className="mr-2 h-4 w-4" />
-                      <TranslatedText fr="Finaliser le paiement" en="Finalize Payment">
-                        Zahlung abschließen
-                      </TranslatedText>
-                    </Button>
+                  <div className="mt-6 rounded-md bg-destructive/10 p-6">
+                    <Accordion type="single" collapsible>
+                        <AccordionItem value="upload-receipt" className="border-b-0">
+                           <AccordionTrigger className="w-full justify-center font-semibold text-destructive hover:no-underline">
+                              <div className="flex items-center">
+                                <Upload className="mr-2 h-4 w-4" />
+                                <TranslatedText
+                                  fr="Finaliser le paiement"
+                                  en="Finalize Payment"
+                                >
+                                  Zahlung abschließen
+                                </TranslatedText>
+                              </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="pt-4">
+                               <p className="mb-4 text-center text-sm text-destructive/80">
+                                <TranslatedText
+                                    fr="Pour finaliser votre commande, veuillez nous envoyer votre preuve de paiement."
+                                    en="To finalize your order, please send us your proof of payment."
+                                >
+                                    Um Ihre Bestellung abzuschließen, senden Sie uns bitte Ihren Zahlungsnachweis.
+                                </TranslatedText>
+                                </p>
+                                <UploadReceiptForm order={order} onReceiptUploaded={handleReceiptUploaded} />
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
                   </div>
                 )}
 
