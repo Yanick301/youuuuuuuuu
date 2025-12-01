@@ -45,24 +45,19 @@ export async function addReview(
   try {
     const reviewWithTimestamp = {
       ...reviewData,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(), // Utiliser un objet Date de Firestore
     };
     
-    // Malheureusement, nous ne pouvons pas écrire dans le fichier reviews.json depuis le serveur.
-    // L'action suivante est une simulation. Pour une application réelle,
-    // il faudrait écrire dans une base de données comme Firestore.
-    console.log('Un nouvel avis serait ajouté à la base de données :', reviewWithTimestamp);
+    // Écrire dans la sous-collection 'reviews' du produit
+    await serverFirestore.collection(`products/${productId}/reviews`).add(reviewWithTimestamp);
     
-    // Pour simuler la persistance, nous allons simplement afficher un message de succès.
-    // Dans un scénario réel avec Firestore :
-    // await serverFirestore.collection(`products/${productId}/reviews`).add(reviewWithTimestamp);
-    
+    // Revalider le chemin pour s'assurer que les rendus côté serveur sont mis à jour
     revalidatePath(`/product/${productId}`);
     
     return { message: "Merci ! Votre avis a été soumis." };
 
-  } catch (e) {
-    console.error('Erreur lors de lajout de lavis:', e);
+  } catch (e: any) {
+    console.error('Erreur lors de l\'ajout de l\'avis:', e);
     return {
       errors: { general: 'Une erreur est survenue lors de l\'ajout de votre avis. Veuillez réessayer.' },
       message: 'Une erreur est survenue lors de l\'ajout de votre avis. Veuillez réessayer.',

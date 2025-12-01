@@ -6,6 +6,7 @@ import { Star, ShoppingCart, MessageCircle } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { fr, de, enUS } from 'date-fns/locale';
+import { collection, query, orderBy } from 'firebase/firestore';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -17,13 +18,13 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/LanguageContext';
 import { getProductBySlug, getProductsByCategory, products as allProducts } from '@/lib/data';
-import allReviews from '@/lib/reviews.json';
 import type { Review, Product } from '@/lib/types';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { useCart } from '@/context/CartContext';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { AddReviewForm } from '@/components/reviews/AddReviewForm';
+import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 
 
 const { placeholderImages } = placeholderImagesData;
@@ -31,6 +32,7 @@ const { placeholderImages } = placeholderImagesData;
 export default function ProductPage() {
   const params = useParams();
   const slug = params.slug as string;
+  const firestore = useFirestore();
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [relatedProducts, setRelatedProducts] = useState<ReturnType<typeof getProductsByCategory>>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -42,11 +44,17 @@ export default function ProductPage() {
   const { language } = useLanguage();
   const { addToCart } = useCart();
 
-  const reviews: Review[] = useMemo(() => {
-    if (!product) return [];
-    // The date is a string, so we convert it to a Date object for sorting
-    return allReviews.filter(r => r.productId === product.id).map(r => ({...r, createdAt: new Date(r.createdAt)})).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-  }, [product]);
+  // Créer une requête Firestore mémoïsée pour les avis
+  const reviewsQuery = useMemoFirebase(() => {
+    if (!product || !firestore) return null;
+    return query(
+      collection(firestore, `products/${product.id}/reviews`),
+      orderBy('createdAt', 'desc')
+    );
+  }, [product, firestore]);
+
+  // Utiliser le hook useCollection pour récupérer les avis en temps réel
+  const { data: reviews, isLoading: isLoadingReviews } = useCollection<Review>(reviewsQuery);
 
   useEffect(() => {
     setIsLoading(true);
@@ -234,7 +242,9 @@ export default function ProductPage() {
             </TabsContent>
             <TabsContent value="reviews" className="mt-4">
               <div className="space-y-8">
-                {reviews.length > 0 ? (
+                {isLoadingReviews ? (
+                  <p>Chargement des avis...</p>
+                ) : reviews && reviews.length > 0 ? (
                   reviews.map((review) => (
                       <div key={review.id} className="flex gap-4">
                         <Avatar>
@@ -257,7 +267,8 @@ export default function ProductPage() {
                           </div>
                           {review.createdAt && (
                             <p className="text-xs text-muted-foreground">
-                              {formatDistanceToNow(new Date(review.createdAt), { addSuffix: true, locale: getLocale() })}
+                               {/* La date peut être un objet Timestamp de Firestore, nous devons la convertir */}
+                               {formatDistanceToNow(review.createdAt.toDate ? review.createdAt.toDate() : new Date(review.createdAt), { addSuffix: true, locale: getLocale() })}
                             </p>
                           )}
                           <p className="mt-2 text-muted-foreground">{review.comment}</p>
@@ -299,3 +310,4 @@ export default function ProductPage() {
     </div>
   );
 }
+
