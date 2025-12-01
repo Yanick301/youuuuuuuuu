@@ -1,3 +1,4 @@
+
 'use server';
 
 import nodemailer from 'nodemailer';
@@ -37,8 +38,8 @@ export async function sendReceiptEmail(input: SendReceiptInput) {
 
   const transporter = nodemailer.createTransport({
     host: EMAIL_SERVER_HOST,
-    port: parseInt(EMAIL_SERVER_PORT),
-    secure: true,
+    port: parseInt(EMAIL_SERVER_PORT, 10),
+    secure: parseInt(EMAIL_SERVER_PORT, 10) === 465, // Use secure connection for port 465
     auth: {
       user: EMAIL_SERVER_USER,
       pass: EMAIL_SERVER_PASSWORD,
