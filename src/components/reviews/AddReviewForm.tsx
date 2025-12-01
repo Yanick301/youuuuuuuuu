@@ -46,13 +46,18 @@ export function AddReviewForm({ productId }: { productId: string }) {
 
   useEffect(() => {
     if (state.message) {
-      if (state.errors && (Object.keys(state.errors).length > 0 && state.errors.general) || state.errors.comment || state.errors.rating) {
+      if (state.errors && (Object.keys(state.errors).length > 0 || state.errors?.general)) {
+        // Affiche les erreurs de champ spécifiques si elles existent
+        const fieldErrors = [state.errors.rating, state.errors.comment].flat().filter(Boolean).join(' ');
+        const finalMessage = fieldErrors || state.message;
+        
         toast({
           variant: "destructive",
           title: "Erreur",
-          description: state.message,
+          description: finalMessage,
         });
       } else {
+        // Succès
         toast({
           title: "Succès",
           description: state.message,

@@ -23,6 +23,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { useCart } from '@/context/CartContext';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { AddReviewForm } from '@/components/reviews/AddReviewForm';
 
 
 const { placeholderImages } = placeholderImagesData;
@@ -232,45 +233,49 @@ export default function ProductPage() {
               </ul>
             </TabsContent>
             <TabsContent value="reviews" className="mt-4">
-              {reviews.length > 0 ? (
-                <div className="space-y-8">
-                  {reviews.map((review) => (
-                    <div key={review.id} className="flex gap-4">
-                      <Avatar>
-                        <AvatarFallback>{getInitials(review.userName)}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between">
-                          <p className="font-semibold">{review.userName}</p>
-                          <div className="flex items-center">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={cn(
-                                  'h-4 w-4',
-                                  review.rating > i ? 'text-yellow-500 fill-yellow-500' : 'text-muted-foreground/30'
-                                )}
-                              />
-                            ))}
+              <div className="space-y-8">
+                {reviews.length > 0 ? (
+                  reviews.map((review) => (
+                      <div key={review.id} className="flex gap-4">
+                        <Avatar>
+                          <AvatarFallback>{getInitials(review.userName)}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between">
+                            <p className="font-semibold">{review.userName}</p>
+                            <div className="flex items-center">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={cn(
+                                    'h-4 w-4',
+                                    review.rating > i ? 'text-yellow-500 fill-yellow-500' : 'text-muted-foreground/30'
+                                  )}
+                                />
+                              ))}
+                            </div>
                           </div>
+                          {review.createdAt && (
+                            <p className="text-xs text-muted-foreground">
+                              {formatDistanceToNow(new Date(review.createdAt), { addSuffix: true, locale: getLocale() })}
+                            </p>
+                          )}
+                          <p className="mt-2 text-muted-foreground">{review.comment}</p>
                         </div>
-                        {review.createdAt && (
-                          <p className="text-xs text-muted-foreground">
-                            {formatDistanceToNow(new Date(review.createdAt), { addSuffix: true, locale: getLocale() })}
-                          </p>
-                        )}
-                        <p className="mt-2 text-muted-foreground">{review.comment}</p>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-12 text-center">
-                  <MessageCircle className="h-12 w-12 text-muted-foreground" />
-                  <h4 className="mt-4 text-lg font-semibold"><TranslatedText fr="Aucun avis pour l'instant" en="No reviews yet">Noch keine Bewertungen</TranslatedText></h4>
-                  <p className="mt-1 text-muted-foreground"><TranslatedText fr="Soyez le premier à donner votre avis sur ce produit !" en="Be the first to review this product!">Seien Sie der Erste, der dieses Produkt bewertet!</TranslatedText></p>
-                </div>
-              )}
+                    ))
+                ) : (
+                  <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-12 text-center">
+                    <MessageCircle className="h-12 w-12 text-muted-foreground" />
+                    <h4 className="mt-4 text-lg font-semibold"><TranslatedText fr="Aucun avis pour l'instant" en="No reviews yet">Noch keine Bewertungen</TranslatedText></h4>
+                    <p className="mt-1 text-muted-foreground"><TranslatedText fr="Soyez le premier à donner votre avis sur ce produit !" en="Be the first to review this product!">Seien Sie der Erste, der dieses Produkt bewertet!</TranslatedText></p>
+                  </div>
+                )}
+                
+                <Separator className="my-8" />
+
+                <AddReviewForm productId={product.id} />
+              </div>
             </TabsContent>
           </Tabs>
         </div>
