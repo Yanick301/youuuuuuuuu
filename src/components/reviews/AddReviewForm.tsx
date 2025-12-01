@@ -38,7 +38,7 @@ export function AddReviewForm({ productId }: { productId: string }) {
   const formRef = useRef<HTMLFormElement>(null);
 
   const initialState: AddReviewState = { message: null, errors: {} };
-  const [state, dispatch] = useActionState(addReview, initialState);
+  const [state, formAction] = useActionState(addReview, initialState);
   
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
@@ -46,7 +46,7 @@ export function AddReviewForm({ productId }: { productId: string }) {
 
   useEffect(() => {
     if (state.message) {
-      if (state.errors && Object.keys(state.errors).length > 0) {
+      if (state.errors && (Object.keys(state.errors).length > 0 && state.errors.general) || state.errors.comment || state.errors.rating) {
         toast({
           variant: "destructive",
           title: "Erreur",
@@ -62,19 +62,6 @@ export function AddReviewForm({ productId }: { productId: string }) {
       }
     }
   }, [state, toast]);
-
-
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (rating === 0) {
-      setRatingError("Veuillez sélectionner une note.");
-      return;
-    }
-    setRatingError(null);
-    const formData = new FormData(event.currentTarget);
-    formData.set('rating', rating.toString());
-    dispatch(formData);
-  };
 
   if (isUserLoading) {
     return <div className="flex justify-center"><Loader2 className="h-6 w-6 animate-spin" /></div>;
@@ -102,7 +89,7 @@ export function AddReviewForm({ productId }: { productId: string }) {
         <h3 className="text-lg font-semibold mb-4">
             <TranslatedText fr="Donnez votre avis" en="Write a review">Schreiben Sie eine Bewertung</TranslatedText>
         </h3>
-        <form ref={formRef} onSubmit={handleFormSubmit} className="space-y-4">
+        <form ref={formRef} action={formAction} className="space-y-4">
             <input type="hidden" name="productId" value={productId} />
             <input type="hidden" name="userId" value={user.uid} />
             <input type="hidden" name="userName" value={user.displayName || 'Anonyme'} />
@@ -125,7 +112,10 @@ export function AddReviewForm({ productId }: { productId: string }) {
                                         ? 'text-yellow-500 fill-yellow-500'
                                         : 'text-muted-foreground/30'
                                     )}
-                                    onClick={() => setRating(starValue)}
+                                    onClick={() => {
+                                        setRating(starValue);
+                                        setRatingError(null);
+                                    }}
                                     onMouseEnter={() => setHoverRating(starValue)}
                                     onMouseLeave={() => setHoverRating(0)}
                                 />
