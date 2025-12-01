@@ -163,6 +163,7 @@ export default function UploadReceiptForm({ order, onReceiptUploaded }: UploadRe
         throw new Error(emailResult.error || 'Failed to send email.')
       }
 
+      // We still update the local status to 'processing' for the user's view
       const localOrders: LocalOrder[] = JSON.parse(
         localStorage.getItem('localOrders') || '[]'
       )
@@ -179,10 +180,10 @@ export default function UploadReceiptForm({ order, onReceiptUploaded }: UploadRe
         ),
         description: (
           <TranslatedText
-            fr="Votre paiement est en cours de vérification."
-            en="Your payment is under review."
+            fr="Votre paiement est en cours de vérification. Un email de confirmation vous sera envoyé."
+            en="Your payment is under review. A confirmation email will be sent to you."
           >
-            Ihre Zahlung wird überprüft.
+            Ihre Zahlung wird überprüft. Eine Bestätigungs-E-Mail wird Ihnen zugesandt.
           </TranslatedText>
         ),
       })
@@ -280,10 +281,10 @@ export default function UploadReceiptForm({ order, onReceiptUploaded }: UploadRe
             </>
           ) : (
             <TranslatedText
-              fr="Envoyer le reçu"
-              en="Send Receipt"
+              fr="Envoyer le reçu pour vérification"
+              en="Send Receipt for Verification"
             >
-              Beleg senden
+              Beleg zur Überprüfung senden
             </TranslatedText>
           )}
         </Button>

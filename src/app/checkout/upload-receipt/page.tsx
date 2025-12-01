@@ -15,6 +15,7 @@ import { TranslatedText } from '@/components/TranslatedText'
 import type { OrderItem } from '@/lib/types'
 import { Separator } from '@/components/ui/separator'
 import UploadReceiptForm from '@/components/orders/UploadReceiptForm';
+import { useCart } from '@/context/CartContext'
 
 
 interface LocalOrder {
@@ -43,6 +44,7 @@ function UploadReceiptPageComponent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const orderId = searchParams.get('orderId')
+  const { clearCart } = useCart();
 
   const { toast } = useToast()
   const [uploadSuccess, setUploadSuccess] = useState(false)
@@ -97,6 +99,7 @@ function UploadReceiptPageComponent() {
   
   const handleReceiptUploaded = () => {
     setUploadSuccess(true);
+    clearCart(); // Clear the cart on successful upload
      setTimeout(() => {
         router.push('/account/orders')
       }, 2500)
@@ -136,10 +139,10 @@ function UploadReceiptPageComponent() {
           </h2>
           <p className="mt-2 text-muted-foreground">
             <TranslatedText
-              fr="Votre reçu a été envoyé. Vous serez redirigé automatiquement."
-              en="Your receipt has been sent. You will be redirected automatically."
+              fr="Votre reçu a été envoyé pour vérification. Vous serez redirigé automatiquement."
+              en="Your receipt has been sent for verification. You will be redirected automatically."
             >
-              Ihr Beleg wurde gesendet. Sie werden automatisch weitergeleitet.
+              Ihr Beleg wurde zur Überprüfung gesendet. Sie werden automatisch weitergeleitet.
             </TranslatedText>
           </p>
         </CardContent>

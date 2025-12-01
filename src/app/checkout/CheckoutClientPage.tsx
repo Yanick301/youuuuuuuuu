@@ -107,7 +107,7 @@ const europeanCountries = [
 const TAX_RATE = 0.19;
 
 export function CheckoutClientPage() {
-  const { cartItems, subtotal, clearCart } = useCart();
+  const { cartItems, subtotal } = useCart();
   const { language } = useLanguage();
   const router = useRouter();
   const { user, isUserLoading } = useUser();
@@ -217,7 +217,6 @@ export function CheckoutClientPage() {
             description: <TranslatedText fr="Vous allez être redirigé pour finaliser votre commande." en="You will be redirected to finalize your order.">Sie werden weitergeleitet, um Ihre Bestellung abzuschließen.</TranslatedText>
         });
         
-        clearCart();
         router.push(`/checkout/upload-receipt?orderId=${localOrderId}`);
     } catch (error) {
         console.error("Failed to save order to local storage:", error);
@@ -604,5 +603,3 @@ export function CheckoutClientPage() {
     </div>
   );
 }
-
-    

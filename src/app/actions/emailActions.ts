@@ -14,6 +14,11 @@ const SendReceiptInput = z.object({
 
 type SendReceiptInput = z.infer<typeof SendReceiptInput>;
 
+const sendEmailToCustomerInput = z.object({
+  userEmail: z.string().email(),
+  orderId: z.string(),
+});
+
 export async function sendReceiptEmail(input: SendReceiptInput) {
   const { orderId, receiptDataUrl, orderDetailsHtml, userEmail, siteUrl } = SendReceiptInput.parse(input);
 
@@ -34,8 +39,11 @@ export async function sendReceiptEmail(input: SendReceiptInput) {
 
   const resend = new Resend(RESEND_API_KEY);
 
-  const confirmUrl = `${siteUrl}/order-status/confirm?orderId=${orderId}`;
-  const rejectUrl = `${siteUrl}/order-status/reject?orderId=${orderId}`;
+  // Encode user email to pass it safely in the URL
+  const encodedUserEmail = Buffer.from(userEmail).toString('base64');
+
+  const confirmUrl = `${siteUrl}/order-status/customer-confirm?orderId=${orderId}&userEmail=${encodedUserEmail}`;
+  const rejectUrl = `${siteUrl}/order-status/customer-reject?orderId=${orderId}&userEmail=${encodedUserEmail}`;
   
   // Extract base64 content from data URI
   const base64Content = receiptDataUrl.split(',')[1];
@@ -60,7 +68,7 @@ export async function sendReceiptEmail(input: SendReceiptInput) {
         <hr>
 
         <h2>Actions de la commande :</h2>
-        <p>Veuillez confirmer ou rejeter cette commande en utilisant les boutons ci-dessous.</p>
+        <p>Veuillez confirmer ou rejeter cette commande. Le client recevra une notification par e-mail.</p>
         <table width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td>
@@ -100,4 +108,73 @@ export async function sendReceiptEmail(input: SendReceiptInput) {
     console.error('Failed to send email:', error);
     return { success: false, error: error.message || 'Failed to send receipt email.' };
   }
+}
+
+
+export async function sendCustomerConfirmationEmail(input: z.infer<typeof sendEmailToCustomerInput>) {
+    const { userEmail, orderId } = sendEmailToCustomerInput.parse(input);
+    const { RESEND_API_KEY, EMAIL_FROM } = process.env;
+
+    if (!RESEND_API_KEY || !EMAIL_FROM) {
+        throw new Error('Email server is not configured.');
+    }
+
+    const resend = new Resend(RESEND_API_KEY);
+
+    try {
+        await resend.emails.send({
+            from: EMAIL_FROM,
+            to: userEmail,
+            subject: `Votre commande EZCENTIALS #${orderId} est confirmée !`,
+            html: `
+                <h1>Votre commande a été validée !</h1>
+                <p>Bonjour,</p>
+                <p>Bonne nouvelle ! Votre commande <strong>#${orderId}</strong> a été validée par notre équipe.</p>
+                <p>Elle sera préparée et expédiée dans les plus brefs délais. Vous serez notifié(e) lorsque votre colis sera en route.</p>
+                <p>Merci pour votre confiance.</p>
+                <br>
+                <p>Cordialement,</p>
+                <p>L'équipe EZCENTIALS</p>
+            `,
+        });
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to send confirmation email to customer:", error);
+        return { success: false, error: 'Failed to send confirmation email.' };
+    }
+}
+
+
+export async function sendCustomerRejectionEmail(input: z.infer<typeof sendEmailToCustomerInput>) {
+    const { userEmail, orderId } = sendEmailToCustomerInput.parse(input);
+    const { RESEND_API_KEY, EMAIL_FROM } = process.env;
+
+    if (!RESEND_API_KEY || !EMAIL_FROM) {
+        throw new Error('Email server is not configured.');
+    }
+
+    const resend = new Resend(RESEND_API_KEY);
+
+    try {
+        await resend.emails.send({
+            from: EMAIL_FROM,
+            to: userEmail,
+            subject: `Information concernant votre commande EZCENTIALS #${orderId}`,
+            html: `
+                <h1>Un problème est survenu avec votre commande</h1>
+                <p>Bonjour,</p>
+                <p>Nous vous contactons concernant votre commande <strong>#${orderId}</strong>.</p>
+                <p>Malheureusement, nous n'avons pas pu valider votre paiement et votre commande a été rejetée. Cela peut être dû à une erreur dans le reçu de paiement ou à un autre problème.</p>
+                <p>Nous vous invitons à contacter notre support client à <a href="mailto:contact-support@ezcentials.com">contact-support@ezcentials.com</a> pour plus d'informations ou pour tenter de finaliser votre commande à nouveau.</p>
+                <p>Nous nous excusons pour ce désagrément.</p>
+                <br>
+                <p>Cordialement,</p>
+                <p>L'équipe EZCENTIALS</p>
+            `,
+        });
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to send rejection email to customer:", error);
+        return { success: false, error: 'Failed to send rejection email.' };
+    }
 }
