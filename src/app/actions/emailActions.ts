@@ -19,13 +19,13 @@ export async function sendReceiptEmail(input: SendReceiptInput) {
 
   const {
     EMAIL_SERVER_USER,
-    EMAIL_SERVER_PASSWORD,
+    EMAIL_APP_PASSWORD, // Renommé pour plus de clarté
     EMAIL_TO,
   } = process.env;
 
   if (
     !EMAIL_SERVER_USER ||
-    !EMAIL_SERVER_PASSWORD ||
+    !EMAIL_APP_PASSWORD || // Vérification de la nouvelle variable
     !EMAIL_TO
   ) {
     console.error('Missing environment variables for email configuration.');
@@ -36,7 +36,7 @@ export async function sendReceiptEmail(input: SendReceiptInput) {
     service: 'gmail',
     auth: {
       user: EMAIL_SERVER_USER,
-      pass: EMAIL_SERVER_PASSWORD,
+      pass: EMAIL_APP_PASSWORD, // Utilisation de la nouvelle variable
     },
   });
 
@@ -89,7 +89,7 @@ export async function sendReceiptEmail(input: SendReceiptInput) {
       `,
       attachments: [
         {
-          filename: `recu-${orderId}.jpg`, // Default to jpg, nodemailer will handle content type
+          filename: `recu-${orderId}.jpg`,
           path: receiptDataUrl,
         },
       ],
@@ -100,7 +100,6 @@ export async function sendReceiptEmail(input: SendReceiptInput) {
     return { success: true };
   } catch (error: any) {
     console.error('Failed to send email:', error);
-    // Return the specific error message from Nodemailer
     return { success: false, error: error.message || 'Failed to send receipt email.' };
   }
 }
