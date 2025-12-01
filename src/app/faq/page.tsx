@@ -18,11 +18,11 @@ export default function FaqPage() {
       question_fr: 'Comment passer une commande ?',
       question_en: 'How do I place an order?',
       answer_de:
-        'Um eine Bestellung aufzugeben, durchsuchen Sie einfach unsere Kollektionen, wählen Sie die Artikel und Größen aus, die Sie möchten, und fügen Sie sie Ihrem Warenkorb hinzu. Klicken Sie dann auf das Warenkorb-Symbol und folgen Sie den Anweisungen, um zur Kasse zu gehen. Sie müssen Ihre Versand- und Zahlungsinformationen angeben, um den Vorgang abzuschließen.',
+        'Wählen Sie Artikel aus und legen Sie sie in den Warenkorb. Gehen Sie zur Kasse, geben Sie Ihre Lieferinformationen an und folgen Sie den Anweisungen, um einen sofortigen Banktransfer durchzuführen. Laden Sie Ihren Zahlungsbeleg hoch. Ihre Bestellung wird nach Überprüfung des Belegs validiert.',
       answer_fr:
-        'Pour passer une commande, parcourez simplement nos collections, sélectionnez les articles et les tailles que vous désirez, puis ajoutez-les à votre panier. Ensuite, cliquez sur l\'icône du panier et suivez les instructions pour passer à la caisse. Vous devrez fournir vos informations de livraison et de paiement pour finaliser le processus.',
+        'Sélectionnez des articles et ajoutez-les au panier. Passez à la caisse, fournissez vos informations de livraison, puis suivez les instructions pour effectuer un virement bancaire instantané. Téléversez votre reçu de paiement. Votre commande sera validée après vérification du reçu.',
       answer_en:
-        'To place an order, simply browse our collections, select the items and sizes you want, and add them to your cart. Then, click on the cart icon and follow the instructions to proceed to checkout. You will need to provide your shipping and payment information to complete the process.',
+        'Select items and add them to the cart. Proceed to checkout, provide your shipping information, then follow the instructions to make an instant bank transfer. Upload your payment receipt. Your order will be validated after receipt verification.',
     },
     {
       icon: <Truck className="mr-3 h-5 w-5 text-primary" />,
