@@ -1,6 +1,4 @@
 
-'use server';
-
 import { initializeApp, getApps, App } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
@@ -17,7 +15,10 @@ function getFirebaseAdminApp(): App {
   if (getApps().length > 0) {
     // The 'auth' key is a convention for our primary admin app.
     // We use a named app to avoid conflicts if other libraries also initialize Firebase.
-    return getApps().find(app => app.name === 'auth')!;
+    const existingApp = getApps().find(app => app.name === 'auth');
+    if (existingApp) {
+        return existingApp;
+    }
   }
 
   // If not initialized, create a new app instance.
