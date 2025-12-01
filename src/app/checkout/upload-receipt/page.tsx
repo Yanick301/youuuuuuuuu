@@ -283,7 +283,7 @@ function UploadReceiptForm() {
     }
   }
 
-  if (!orderId)
+  if (!orderId) {
     return (
       <Card className="w-full max-w-lg">
         <CardHeader>
@@ -302,9 +302,10 @@ function UploadReceiptForm() {
           </CardDescription>
         </CardHeader>
       </Card>
-    )
+    );
+  }
 
-  if (uploadSuccess)
+  if (uploadSuccess) {
     return (
       <Card className="w-full max-w-lg text-center">
         <CardContent className="p-10">
@@ -324,7 +325,8 @@ function UploadReceiptForm() {
           </p>
         </CardContent>
       </Card>
-    )
+    );
+  }
 
   return (
     <Card className="w-full max-w-2xl">
@@ -476,7 +478,7 @@ function UploadReceiptForm() {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   <TranslatedText fr="Envoi en cours..." en="Sending...">
                     Wird gesendet...
-                  </Translat edText>
+                  </TranslatedText>
                 </>
               ) : (
                 <TranslatedText
