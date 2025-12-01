@@ -1,14 +1,16 @@
+
 'use server';
 
 import { firestore } from '@/firebase/server';
 import { z } from 'zod';
 import { FieldValue } from 'firebase-admin/firestore';
+import { revalidatePath } from 'next/cache';
 
 const AddReviewSchema = z.object({
   productId: z.string(),
   userId: z.string(),
   userName: z.string(),
-  rating: z.number().min(1).max(5),
+  rating: z.number().min(1, "Veuillez sélectionner une note.").max(5),
   comment: z.string().min(10, "Le commentaire doit contenir au moins 10 caractères.").max(500),
 });
 
@@ -46,7 +48,9 @@ export async function addReview(prevState: AddReviewState, formData: FormData): 
       createdAt: FieldValue.serverTimestamp(),
     });
 
-    return { message: 'Avis soumis avec succès !' };
+    revalidatePath(`/product/${productId}`);
+
+    return { message: 'Avis soumis avec succès !', errors: {} };
   } catch (error) {
     console.error("Erreur lors de l'ajout de l'avis :", error);
     return {

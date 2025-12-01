@@ -1,8 +1,9 @@
+
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
 import { Star, Loader2 } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useActionState } from 'react';
 
 import { addReview, type AddReviewState } from '@/app/actions/reviewActions';
 import { useUser } from '@/firebase';
@@ -37,7 +38,7 @@ export function AddReviewForm({ productId }: { productId: string }) {
   const formRef = useRef<HTMLFormElement>(null);
 
   const initialState: AddReviewState = { message: null, errors: {} };
-  const [state, dispatch] = useFormState(addReview, initialState);
+  const [state, dispatch] = useActionState(addReview, initialState);
   
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
@@ -45,7 +46,7 @@ export function AddReviewForm({ productId }: { productId: string }) {
 
   useEffect(() => {
     if (state.message) {
-      if (state.errors) {
+      if (state.errors && Object.keys(state.errors).length > 0) {
         toast({
           variant: "destructive",
           title: "Erreur",
