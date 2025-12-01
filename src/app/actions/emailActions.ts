@@ -1,7 +1,7 @@
 
 'use server';
 
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { z } from 'zod';
 
 const SendReceiptInput = z.object({
@@ -18,34 +18,34 @@ export async function sendReceiptEmail(input: SendReceiptInput) {
   const { orderId, receiptDataUrl, orderDetailsHtml, userEmail, siteUrl } = SendReceiptInput.parse(input);
 
   const {
-    EMAIL_SERVER_USER,
-    EMAIL_APP_PASSWORD, // Renommé pour plus de clarté
+    RESEND_API_KEY,
+    EMAIL_FROM,
     EMAIL_TO,
   } = process.env;
 
   if (
-    !EMAIL_SERVER_USER ||
-    !EMAIL_APP_PASSWORD || // Vérification de la nouvelle variable
+    !RESEND_API_KEY ||
+    !EMAIL_FROM ||
     !EMAIL_TO
   ) {
-    console.error('Missing environment variables for email configuration.');
+    console.error('Missing environment variables for Resend configuration.');
     return { success: false, error: 'Email server is not configured.' };
   }
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: EMAIL_SERVER_USER,
-      pass: EMAIL_APP_PASSWORD, // Utilisation de la nouvelle variable
-    },
-  });
+  const resend = new Resend(RESEND_API_KEY);
 
   const confirmUrl = `${siteUrl}/order-status/confirm?orderId=${orderId}`;
   const rejectUrl = `${siteUrl}/order-status/reject?orderId=${orderId}`;
+  
+  // Extract base64 content from data URI
+  const base64Content = receiptDataUrl.split(',')[1];
+  if (!base64Content) {
+    return { success: false, error: 'Invalid receipt data URI.' };
+  }
 
   try {
-    const mailOptions = {
-      from: `"EZCENTIALS" <${EMAIL_SERVER_USER}>`,
+    await resend.emails.send({
+      from: EMAIL_FROM,
       to: EMAIL_TO,
       subject: `Nouveau reçu pour la commande ${orderId}`,
       html: `
@@ -90,12 +90,10 @@ export async function sendReceiptEmail(input: SendReceiptInput) {
       attachments: [
         {
           filename: `recu-${orderId}.jpg`,
-          path: receiptDataUrl,
+          content: base64Content,
         },
       ],
-    };
-
-    await transporter.sendMail(mailOptions);
+    });
 
     return { success: true };
   } catch (error: any) {
