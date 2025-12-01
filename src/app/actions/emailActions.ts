@@ -20,26 +20,22 @@ export async function sendReceiptEmail(input: SendReceiptInput) {
   const {
     EMAIL_SERVER_USER,
     EMAIL_SERVER_PASSWORD,
-    EMAIL_SERVER_HOST,
-    EMAIL_SERVER_PORT,
     EMAIL_TO,
   } = process.env;
 
   if (
     !EMAIL_SERVER_USER ||
     !EMAIL_SERVER_PASSWORD ||
-    !EMAIL_SERVER_HOST ||
-    !EMAIL_SERVER_PORT ||
     !EMAIL_TO
   ) {
     console.error('Missing environment variables for email configuration.');
     return { success: false, error: 'Email server is not configured.' };
   }
 
+  // Use the 'gmail' service for robust configuration
   const transporter = nodemailer.createTransport({
-    host: EMAIL_SERVER_HOST,
-    port: parseInt(EMAIL_SERVER_PORT, 10),
-    secure: parseInt(EMAIL_SERVER_PORT, 10) === 465, // Use secure connection for port 465
+    service: 'gmail',
+    secure: true, // Use SSL
     auth: {
       user: EMAIL_SERVER_USER,
       pass: EMAIL_SERVER_PASSWORD,
