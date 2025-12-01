@@ -1,4 +1,3 @@
-
 'use client'
 
 import { Suspense, useEffect, useState } from 'react'
@@ -228,7 +227,8 @@ function UploadReceiptForm() {
         orderId,
         receiptDataUrl,
         orderDetailsHtml,
-        userEmail: order.shippingInfo.email
+        userEmail: order.shippingInfo.email,
+        siteUrl: window.location.origin,
       });
 
       if (!emailResult.success) {
@@ -476,7 +476,7 @@ function UploadReceiptForm() {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   <TranslatedText fr="Envoi en cours..." en="Sending...">
                     Wird gesendet...
-                  </TranslatedText>
+                  </Translat edText>
                 </>
               ) : (
                 <TranslatedText
