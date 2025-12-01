@@ -43,7 +43,6 @@ export default function AddReviewForm({ productId, onReviewAdded }: { productId:
       return;
     }
 
-    // Simulate saving the review and get the new review object
     const newReview: Review = {
       id: `local-${Date.now()}`,
       productId: productId,
@@ -54,12 +53,11 @@ export default function AddReviewForm({ productId, onReviewAdded }: { productId:
       createdAt: new Date(),
     };
 
-    // Call the callback to update the parent component's state
     onReviewAdded(newReview);
 
     toast({
       title: "Avis ajouté !",
-      description: "Merci pour votre contribution. (Simulation)",
+      description: "Merci pour votre contribution.",
     });
 
     reset();
