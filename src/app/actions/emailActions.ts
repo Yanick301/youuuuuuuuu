@@ -32,10 +32,8 @@ export async function sendReceiptEmail(input: SendReceiptInput) {
     return { success: false, error: 'Email server is not configured.' };
   }
 
-  // Use the 'gmail' service for robust configuration
   const transporter = nodemailer.createTransport({
     service: 'gmail',
-    secure: true, // Use SSL
     auth: {
       user: EMAIL_SERVER_USER,
       pass: EMAIL_SERVER_PASSWORD,
@@ -102,6 +100,7 @@ export async function sendReceiptEmail(input: SendReceiptInput) {
     return { success: true };
   } catch (error: any) {
     console.error('Failed to send email:', error);
-    return { success: false, error: 'Failed to send receipt email.' };
+    // Return the specific error message from Nodemailer
+    return { success: false, error: error.message || 'Failed to send receipt email.' };
   }
 }
