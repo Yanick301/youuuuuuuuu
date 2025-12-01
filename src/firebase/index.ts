@@ -58,13 +58,3 @@ export type { WithId } from './firestore/types';
 
 export { FirestorePermissionError } from './errors';
 export { errorEmitter, type AppEvents } from './error-emitter';
-
-// This is a server-side only import. We guard it with a check to ensure
-// it's not accidentally bundled in the client.
-let serverAuth, serverFirestore;
-if (typeof window === 'undefined') {
-  const server = require('./server');
-  serverAuth = server.auth;
-  serverFirestore = server.firestore;
-}
-export { serverAuth, serverFirestore };

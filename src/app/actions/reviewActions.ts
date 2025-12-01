@@ -3,7 +3,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { firestore as serverFirestore } from '@/firebase/server';
+import { getFirebaseAdmin } from '@/firebase/admin';
 
 export type AddReviewState = {
   errors?: {
@@ -44,12 +44,13 @@ export async function addReview(
   const { productId, ...reviewData } = validatedFields.data;
 
   try {
+    const { firestore } = getFirebaseAdmin();
     const reviewWithTimestamp = {
       ...reviewData,
       createdAt: new Date(),
     };
     
-    await serverFirestore.collection(`products/${productId}/reviews`).add(reviewWithTimestamp);
+    await firestore.collection(`products/${productId}/reviews`).add(reviewWithTimestamp);
     
     revalidatePath(`/product/${productId}`);
     
