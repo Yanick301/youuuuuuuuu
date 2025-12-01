@@ -6,7 +6,7 @@ export type Review = {
   userName: string;
   rating: number;
   comment: string;
-  createdAt: any; // Can be a Timestamp from Firebase
+  createdAt: any; // Can be a Timestamp from Firebase or a JS Date object
 };
 
 export type Product = {

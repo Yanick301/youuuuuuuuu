@@ -2,10 +2,13 @@
 'use client';
 
 import { notFound, useParams } from 'next/navigation';
-import { Star, ShoppingCart, MessageCircle } from 'lucide-react';
+import { Star, ShoppingCart, MessageCircle, Send } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { fr, de, enUS } from 'date-fns/locale';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -17,15 +20,114 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/LanguageContext';
 import { getProductBySlug, getProductsByCategory, products as allProducts } from '@/lib/data';
-import allReviews from '@/lib/reviews.json';
+import allReviewsFromFile from '@/lib/reviews.json';
 import type { Review, Product } from '@/lib/types';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { useCart } from '@/context/CartContext';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-
+import { useUser } from '@/firebase';
 
 const { placeholderImages } = placeholderImagesData;
+
+const reviewSchema = z.object({
+  rating: z.number().min(1, 'La note est requise'),
+  comment: z.string().min(10, 'Le commentaire doit faire au moins 10 caractères.'),
+});
+
+type ReviewFormValues = z.infer<typeof reviewSchema>;
+
+
+function AddReviewForm({ productId, onReviewAdded }: { productId: string; onReviewAdded: (review: Review) => void }) {
+  const { user } = useUser();
+  const { toast } = useToast();
+  const { register, handleSubmit, control, formState: { errors }, reset } = useForm<ReviewFormValues>({
+    resolver: zodResolver(reviewSchema),
+    defaultValues: {
+      rating: 0,
+      comment: '',
+    },
+  });
+
+  const onSubmit = (data: ReviewFormValues) => {
+    if (!user) {
+      toast({
+        variant: 'destructive',
+        title: 'Vous devez être connecté',
+        description: "Connectez-vous pour laisser un avis.",
+      });
+      return;
+    }
+    
+    // Simuler l'ajout d'avis
+    const newReview: Review = {
+        id: `local-${Date.now()}`,
+        productId: productId,
+        userId: user.uid,
+        userName: user.displayName || 'Utilisateur Anonyme',
+        rating: data.rating,
+        comment: data.comment,
+        createdAt: new Date(),
+    };
+
+    onReviewAdded(newReview);
+    toast({
+        title: "Avis ajouté !",
+        description: "Merci pour votre contribution.",
+    });
+    reset();
+  };
+
+  return (
+    <div className="mt-10">
+      <h4 className="font-headline text-xl mb-4">
+        <TranslatedText fr="Laisser un avis" en="Leave a Review">Eine Bewertung abgeben</TranslatedText>
+      </h4>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <Label><TranslatedText fr="Votre note" en="Your Rating">Ihre Bewertung</TranslatedText></Label>
+          <Controller
+            name="rating"
+            control={control}
+            render={({ field }) => (
+              <div className="flex items-center gap-1 mt-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star
+                    key={star}
+                    className={cn(
+                      'h-6 w-6 cursor-pointer transition-colors',
+                      field.value >= star ? 'text-yellow-500 fill-yellow-500' : 'text-muted-foreground/30'
+                    )}
+                    onClick={() => field.onChange(star)}
+                  />
+                ))}
+              </div>
+            )}
+          />
+          {errors.rating && <p className="text-sm text-destructive mt-1">{errors.rating.message}</p>}
+        </div>
+
+        <div>
+          <Label htmlFor="comment"><TranslatedText fr="Votre commentaire" en="Your Comment">Ihr Kommentar</TranslatedText></Label>
+          <Textarea
+            id="comment"
+            {...register('comment')}
+            className="mt-2"
+            rows={4}
+          />
+          {errors.comment && <p className="text-sm text-destructive mt-1">{errors.comment.message}</p>}
+        </div>
+
+        <Button type="submit" disabled={!user}>
+          <Send className="mr-2 h-4 w-4" />
+          <TranslatedText fr="Envoyer l'avis" en="Submit Review">Bewertung abschicken</TranslatedText>
+        </Button>
+        {!user && <p className="text-sm text-muted-foreground mt-2"><TranslatedText fr="Vous devez être connecté pour laisser un avis." en="You must be logged in to leave a review.">Sie müssen angemeldet sein, um eine Bewertung abzugeben.</TranslatedText></p>}
+      </form>
+    </div>
+  );
+}
 
 export default function ProductPage() {
   const params = useParams();
@@ -33,6 +135,7 @@ export default function ProductPage() {
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [relatedProducts, setRelatedProducts] = useState<ReturnType<typeof getProductsByCategory>>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   const [selectedSize, setSelectedSize] = useState<string | undefined>();
   const [selectedColor, setSelectedColor] = useState<string | undefined>();
@@ -40,11 +143,6 @@ export default function ProductPage() {
   const { toast } = useToast();
   const { language } = useLanguage();
   const { addToCart } = useCart();
-
-  const reviews: Review[] = useMemo(() => {
-    if (!product) return [];
-    return allReviews.filter(r => r.productId === product.id).map(r => ({...r, createdAt: new Date(r.createdAt)})).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-  }, [product]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -60,10 +158,18 @@ export default function ProductPage() {
         }
         const related = getProductsByCategory(allProducts, foundProduct.category, 4, foundProduct.id);
         setRelatedProducts(related);
+        
+        // Charger les avis depuis le fichier JSON
+        const productReviews = allReviewsFromFile.filter(r => r.productId === foundProduct.id).map(r => ({...r, createdAt: new Date(r.createdAt)})).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        setReviews(productReviews);
     }
     
     setIsLoading(false);
   }, [slug]);
+
+  const handleReviewAdded = (newReview: Review) => {
+    setReviews(prevReviews => [newReview, ...prevReviews]);
+  };
 
   const averageRating = useMemo(() => {
     if (!reviews || reviews.length === 0) return 0;
@@ -84,7 +190,7 @@ export default function ProductPage() {
   }
 
   if (isLoading) {
-    return <div className="container mx-auto px-4 py-12 text-center">Chargement du produit...</div>;
+    return <div className="container mx-auto px-4 py-12 text-center"><TranslatedText fr="Chargement du produit..." en="Loading product...">Produkt wird geladen...</TranslatedText></div>;
   }
   
   if (!isLoading && !product) {
@@ -107,10 +213,17 @@ export default function ProductPage() {
       color: selectedColor,
     });
     toast({
-      title: 'Ajouté au panier !',
-      description: `${product.name} a été ajouté à votre panier.`,
+      title: language === 'fr' ? 'Ajouté au panier !' : language === 'en' ? 'Added to cart!' : 'Zum Warenkorb hinzugefügt!',
+      description: language === 'fr' ? `${product.name_fr} a été ajouté à votre panier.` : language === 'en' ? `${product.name_en} has been added to your cart.` : `${product.name} wurde Ihrem Warenkorb hinzugefügt.`,
     });
   };
+
+  const safeDate = (date: any): Date => {
+    if (date instanceof Date) return date;
+    if (typeof date === 'string') return new Date(date);
+    if (date && typeof date.toDate === 'function') return date.toDate();
+    return new Date();
+  }
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -253,11 +366,9 @@ export default function ProductPage() {
                               ))}
                             </div>
                           </div>
-                          {review.createdAt && (
-                            <p className="text-xs text-muted-foreground">
-                               {formatDistanceToNow(new Date(review.createdAt), { addSuffix: true, locale: getLocale() })}
-                            </p>
-                          )}
+                          <p className="text-xs text-muted-foreground">
+                            {formatDistanceToNow(safeDate(review.createdAt), { addSuffix: true, locale: getLocale() })}
+                          </p>
                           <p className="mt-2 text-muted-foreground">{review.comment}</p>
                         </div>
                       </div>
@@ -269,7 +380,7 @@ export default function ProductPage() {
                     <p className="mt-1 text-muted-foreground"><TranslatedText fr="Soyez le premier à donner votre avis sur ce produit !" en="Be the first to review this product!">Seien Sie der Erste, der dieses Produkt bewertet!</TranslatedText></p>
                   </div>
                 )}
-                
+                <AddReviewForm productId={product.id} onReviewAdded={handleReviewAdded} />
               </div>
             </TabsContent>
           </Tabs>
@@ -288,7 +399,7 @@ export default function ProductPage() {
               ))}
             </div>
         ): (
-            <div className="text-center">Chargement...</div>
+            <div className="text-center"><TranslatedText fr="Chargement..." en="Loading...">Laden...</TranslatedText></div>
         )}
       </div>
     </div>
