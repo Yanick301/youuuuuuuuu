@@ -267,8 +267,7 @@ export default function ProductPage() {
                           </div>
                           {review.createdAt && (
                             <p className="text-xs text-muted-foreground">
-                               {/* La date peut être un objet Timestamp de Firestore, nous devons la convertir */}
-                               {formatDistanceToNow(review.createdAt.toDate ? review.createdAt.toDate() : new Date(review.createdAt), { addSuffix: true, locale: getLocale() })}
+                               {formatDistanceToNow(review.createdAt?.toDate ? review.createdAt.toDate() : new Date(review.createdAt), { addSuffix: true, locale: getLocale() })}
                             </p>
                           )}
                           <p className="mt-2 text-muted-foreground">{review.comment}</p>
@@ -310,4 +309,3 @@ export default function ProductPage() {
     </div>
   );
 }
-
