@@ -46,7 +46,8 @@ export default function ProductPage() {
 
   // Créer une requête Firestore mémoïsée pour les avis
   const reviewsQuery = useMemoFirebase(() => {
-    if (!product || !firestore) return null;
+    // MODIFICATION : On s'assure que product et firestore existent avant de créer la requête.
+    if (!product || !product.id || !firestore) return null;
     return query(
       collection(firestore, `products/${product.id}/reviews`),
       orderBy('createdAt', 'desc')
