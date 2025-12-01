@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -8,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
 
 export default function AccountLayout({
   children,
@@ -37,7 +39,7 @@ export default function AccountLayout({
       name: 'Meine Favoriten',
       name_fr: 'Mes favoris',
       name_en: 'My Favorites',
-      href: '/account/favorites',
+      href: '/favorites',
       icon: Heart,
     },
   ];
@@ -50,24 +52,13 @@ export default function AccountLayout({
       router.push('/login');
       return;
     }
-    if (
-      user.providerData.some((p) => p.providerId === 'password') &&
-      !user.emailVerified
-    ) {
-      router.push('/verify-email');
-      return;
-    }
   }, [user, isUserLoading, router]);
 
-  if (
-    isUserLoading ||
-    !user ||
-    (user.providerData.some((p) => p.providerId === 'password') &&
-      !user.emailVerified)
-  ) {
+  // Show a loading screen while auth state is being determined or if a redirect is imminent.
+  if (isUserLoading || !user) {
     return (
-      <div className="container mx-auto px-4 py-12 text-center">
-        <p>Laden...</p>
+      <div className="container mx-auto flex min-h-[60vh] items-center justify-center text-center">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }

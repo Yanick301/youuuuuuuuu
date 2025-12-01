@@ -17,116 +17,85 @@ import {
   Loader2,
   AlertCircle,
   Ban,
-  Upload,
-  Link as LinkIcon,
+  Mail,
 } from 'lucide-react';
-import {
-  useCollection,
-  useFirestore,
-  useUser,
-  useMemoFirebase,
-} from '@/firebase';
-import {
-  collection,
-  query,
-  orderBy,
-  onSnapshot,
-  where,
-} from 'firebase/firestore';
-import { useState, useEffect } from 'react';
+import { useUser } from '@/firebase';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { fr, de, enUS } from 'date-fns/locale';
 import { useLanguage } from '@/context/LanguageContext';
-import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import type { OrderItem } from '@/lib/types';
+
+
+interface LocalOrder {
+    id: string;
+    userId: string;
+    shippingInfo: any;
+    items: OrderItem[];
+    subtotal: number;
+    shipping: number;
+    taxes: number;
+    totalAmount: number;
+    orderDate: string;
+    paymentStatus: 'pending' | 'processing' | 'completed' | 'rejected';
+    receiptImageUrl: string | null;
+}
 
 const getSafeDate = (order: any): Date => {
   if (!order || !order.orderDate) {
     return new Date();
-  }
-  if (order.orderDate && typeof order.orderDate.toDate === 'function') {
-    return order.orderDate.toDate();
-  }
-  if (order.orderDate instanceof Date) {
-    return order.orderDate;
   }
   try {
     const parsedDate = new Date(order.orderDate);
     if (!isNaN(parsedDate.getTime())) {
       return parsedDate;
     }
-  } catch (e) {
-    // Ignore and fallback
-  }
+  } catch (e) {}
   return new Date();
 };
 
 export default function OrdersPage() {
-  const { user } = useUser();
-  const firestore = useFirestore();
+  const { user, isUserLoading } = useUser();
   const { language } = useLanguage();
-  const { toast } = useToast();
   const router = useRouter();
+  const [orders, setOrders] = useState<LocalOrder[]>([]);
+  const [isOrdersLoading, setIsOrdersLoading] = useState(true);
   
-  const ordersQuery = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
-
-    return query(
-      collection(firestore, `orders`),
-      where('userId', '==', user.uid),
-      orderBy('orderDate', 'desc')
-    );
-  }, [firestore, user]);
-
-  const { data: orders, isLoading } = useCollection(ordersQuery);
-
   useEffect(() => {
-    if (!ordersQuery || !user) return;
+    if (isUserLoading) {
+      return;
+    }
 
-    const unsubscribe = onSnapshot(ordersQuery, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-            if (change.type === 'modified') {
-                const changedDoc = change.doc.data();
-                const getStatusText = (status: string, lang: string) => {
-                    if (lang === 'fr') {
-                        if (status === 'completed') return 'validé';
-                        if (status === 'rejected') return 'rejeté';
-                    }
-                    if (lang === 'en') {
-                        if (status === 'completed') return 'validated';
-                        if (status === 'rejected') return 'rejected';
-                    }
-                    if (status === 'completed') return 'validiert';
-                    if (status === 'rejected') return 'abgelehnt';
-                    return '';
-                }
-                const statusText = getStatusText(changedDoc.paymentStatus, language);
-                if(statusText) {
-                    toast({
-                        title: language === 'fr' ? 'Mise à jour de la commande' : language === 'en' ? 'Order Update' : 'Bestellaktualisierung',
-                        description: language === 'fr' ? `Votre paiement a été ${statusText}.` : language === 'en' ? `Your payment has been ${statusText}.` : `Ihre Zahlung wurde ${statusText}.`,
-                    });
-                }
+    setIsOrdersLoading(true);
+    if (user) {
+        try {
+            const localData = localStorage.getItem('localOrders');
+            if (localData) {
+                const allOrders: LocalOrder[] = JSON.parse(localData);
+                const userOrders = allOrders
+                    .filter(order => order.userId === user.uid)
+                    .sort((a, b) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime());
+                setOrders(userOrders);
+            } else {
+                setOrders([]);
             }
-        });
-    });
+        } catch (error) {
+            console.error("Failed to load orders from local storage", error);
+            setOrders([]);
+        }
+    } else {
+        setOrders([]);
+    }
+    setIsOrdersLoading(false);
 
-    return () => unsubscribe();
-  }, [ordersQuery, language, toast, user]);
+  }, [user, isUserLoading]);
 
-  const handleUploadReceipt = (orderId: string) => {
+  const isLoading = isUserLoading || isOrdersLoading;
+
+  const handleFinalizePayment = (orderId: string) => {
     router.push(`/checkout/confirm-payment?orderId=${orderId}`);
-  };
-
-  const handleCopyValidationLink = (order: any) => {
-    const url = `${window.location.origin}/order-validation/${order.id}`;
-    navigator.clipboard.writeText(url).then(() => {
-        toast({
-            title: language === 'fr' ? 'Lien copié' : language === 'en' ? 'Link Copied' : 'Link kopiert',
-            description: language === 'fr' ? 'Le lien de validation a été copié dans le presse-papiers.' : language === 'en' ? 'The validation link has been copied to the clipboard.' : 'Der Validierungslink wurde in die Zwischenablage kopiert.',
-        });
-    });
   };
 
   const getStatusVariant = (status: string) => {
@@ -221,21 +190,16 @@ export default function OrdersPage() {
       </h1>
       {orders && orders.length > 0 ? (
         <div className="space-y-6">
-          {[...(orders as any[])].map((order: any) => (
+          {orders.map((order: LocalOrder) => (
             <Card key={order.id}>
               <CardHeader className="flex-row items-start justify-between">
                 <div>
                   <CardTitle className="text-lg">
                     <TranslatedText
-                      fr={`Commande du ${format(getSafeDate(order), 'PPP', {
-                        locale: fr,
-                      })}`}
-                      en={`Order of ${format(getSafeDate(order), 'PPP', {
-                        locale: enUS,
-                      })}`}
+                      fr={`Commande du ${format(getSafeDate(order), 'PPP', { locale: fr })}`}
+                      en={`Order of ${format(getSafeDate(order), 'PPP', { locale: enUS })}`}
                     >
-                      Bestellung vom{' '}
-                      {format(getSafeDate(order), 'PPP', { locale: de })}
+                      Bestellung vom {format(getSafeDate(order), 'PPP', { locale: de })}
                     </TranslatedText>
                   </CardTitle>
                   <CardDescription>
@@ -261,9 +225,9 @@ export default function OrdersPage() {
               <CardContent>
                 <div className="rounded-md border p-4">
                   <ul className="divide-y">
-                    {order.items.map((item: any) => (
+                    {order.items.map((item) => (
                       <li
-                        key={item.productId}
+                        key={item.id}
                         className="flex items-center justify-between py-3 text-sm"
                       >
                         <span className="flex-grow pr-4">
@@ -326,65 +290,56 @@ export default function OrdersPage() {
                     </h4>
                     <p className="my-2 text-sm text-destructive/80">
                       <TranslatedText
-                        fr="Pour finaliser votre commande, veuillez effectuer le virement bancaire puis téléverser votre preuve de paiement."
-                        en="To finalize your order, please make the bank transfer then upload your proof of payment."
+                        fr="Pour finaliser votre commande, veuillez effectuer le virement bancaire puis nous envoyer votre preuve de paiement par email."
+                        en="To finalize your order, please make the bank transfer then email us your proof of payment."
                       >
-                        Um Ihre Bestellung abzuschließen, führen Sie bitte die Banküberweisung durch und laden Sie dann Ihren Zahlungsnachweis hoch.
+                        Um Ihre Bestellung abzuschließen, führen Sie bitte die Banküberweisung durch und senden Sie uns dann Ihren Zahlungsnachweis per E-Mail.
                       </TranslatedText>
                     </p>
                     <Button
-                      onClick={() => handleUploadReceipt(order.id)}
+                      onClick={() => handleFinalizePayment(order.id)}
                       variant="destructive"
                     >
-                      <Upload className="mr-2 h-4 w-4" />
-                      <TranslatedText
-                        fr="Téléverser le reçu"
-                        en="Upload Receipt"
-                      >
-                        Beleg hochladen
+                      <Mail className="mr-2 h-4 w-4" />
+                      <TranslatedText fr="Finaliser le paiement" en="Finalize Payment">
+                        Zahlung abschließen
                       </TranslatedText>
                     </Button>
                   </div>
                 )}
-                 {order.paymentStatus === 'processing' && (
+
+                {order.paymentStatus === 'processing' && (
                   <div className="mt-6 flex flex-col items-center justify-center gap-4 rounded-md border-2 border-dashed border-blue-200 bg-blue-50/50 p-4">
-                     <div className='flex items-center text-blue-800'>
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        <p className="font-semibold">
-                        <TranslatedText
-                            fr="Paiement en cours de vérification"
-                            en="Payment under review"
-                        >
-                            Zahlung wird überprüft
+                    <div className="flex items-center text-blue-800">
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      <p className="font-semibold">
+                        <TranslatedText fr="Paiement en cours de vérification" en="Payment under review">
+                          Zahlung wird überprüft
                         </TranslatedText>
-                        </p>
-                     </div>
+                      </p>
+                    </div>
                   </div>
                 )}
+
                 {order.paymentStatus === 'completed' && (
                   <div className="mt-6 flex flex-col items-center justify-center rounded-md bg-green-50 p-4 text-sm font-semibold text-green-700">
                     <div className="flex items-center">
                       <CheckCircle className="mr-2 h-5 w-5" />
                       <p>
-                        <TranslatedText
-                          fr="Paiement validé"
-                          en="Payment validated"
-                        >
+                        <TranslatedText fr="Paiement validé" en="Payment validated">
                           Zahlung bestätigt
                         </TranslatedText>
                       </p>
                     </div>
                   </div>
                 )}
-                 {order.paymentStatus === 'rejected' && (
+
+                {order.paymentStatus === 'rejected' && (
                   <div className="mt-6 flex flex-col items-center justify-center rounded-md bg-red-50 p-4 text-sm font-semibold text-red-700">
                     <div className="flex items-center">
                       <Ban className="mr-2 h-5 w-5" />
                       <p>
-                        <TranslatedText
-                          fr="Paiement rejeté"
-                          en="Payment rejected"
-                        >
+                        <TranslatedText fr="Paiement rejeté" en="Payment rejected">
                           Zahlung abgelehnt
                         </TranslatedText>
                       </p>
@@ -400,10 +355,7 @@ export default function OrdersPage() {
           <CardContent className="flex flex-col items-center justify-center p-12 text-center">
             <ShoppingBag className="h-16 w-16 text-muted-foreground" />
             <h3 className="mt-4 text-xl font-semibold">
-              <TranslatedText
-                fr="Aucune commande pour le moment"
-                en="No orders yet"
-              >
+              <TranslatedText fr="Aucune commande pour le moment" en="No orders yet">
                 Noch keine Bestellungen
               </TranslatedText>
             </h3>
@@ -412,16 +364,12 @@ export default function OrdersPage() {
                 fr="Explorez nos collections et trouvez quelque chose qui vous plaît."
                 en="Explore our collections and find something you like."
               >
-                Entdecken Sie unsere Kollektionen und finden Sie etwas, das
-                Ihnen gefällt.
+                Entdecken Sie unsere Kollektionen und finden Sie etwas, das Ihnen gefällt.
               </TranslatedText>
             </p>
             <Button asChild className="mt-6">
               <Link href="/products/all">
-                <TranslatedText
-                  fr="Continuer les achats"
-                  en="Continue Shopping"
-                >
+                <TranslatedText fr="Continuer les achats" en="Continue Shopping">
                   Weiter einkaufen
                 </TranslatedText>
               </Link>

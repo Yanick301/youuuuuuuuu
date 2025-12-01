@@ -66,6 +66,10 @@
           "type": "string",
           "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Review)"
         },
+        "userName": {
+          "type": "string",
+          "description": "The name of the user who left the review."
+        },
         "rating": {
           "type": "number",
           "description": "The rating given in the review (e.g., 1 to 5)."
@@ -74,7 +78,7 @@
           "type": "string",
           "description": "The text of the review."
         },
-        "date": {
+        "createdAt": {
           "type": "string",
           "description": "The date the review was submitted.",
           "format": "date-time"
@@ -84,9 +88,10 @@
         "id",
         "productId",
         "userId",
+        "userName",
         "rating",
         "comment",
-        "date"
+        "createdAt"
       ]
     },
     "Order": {
@@ -130,6 +135,18 @@
             "required": ["productId", "name", "price", "quantity"]
           }
         },
+        "subtotal": {
+          "type": "number",
+          "description": "The subtotal amount of the order before shipping and taxes."
+        },
+        "shipping": {
+            "type": "number",
+            "description": "The shipping cost for the order."
+        },
+        "taxes": {
+            "type": "number",
+            "description": "The tax amount for the order."
+        },
         "totalAmount": {
           "type": "number",
           "description": "The total amount of the order."
@@ -146,13 +163,16 @@
         },
         "receiptImageUrl": {
           "type": "string",
-          "description": "A Base64-encoded Data URI of the user's payment receipt image. Max size 1MB."
+          "description": "A URL to the user's payment receipt image stored in Firebase Storage."
         }
       },
       "required": [
         "userId",
         "shippingInfo",
         "items",
+        "subtotal",
+        "shipping",
+        "taxes",
         "totalAmount",
         "orderDate",
         "paymentStatus"
@@ -173,10 +193,6 @@
           "description": "The user's email address.",
           "format": "email"
         },
-         "isAdmin": {
-          "type": "boolean",
-          "description": "Indicates if the user has administrative privileges. Set to true for 'ezcentials@gmail.com'."
-        },
         "firstName": {
           "type": "string",
           "description": "The user's first name."
@@ -184,11 +200,50 @@
         "lastName": {
           "type": "string",
           "description": "The user's last name."
+        },
+        "isAdmin": {
+          "type": "boolean",
+          "description": "Indicates if the user has administrative privileges."
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "URL of the user's profile picture, stored as a Base64 Data URI."
         }
       },
       "required": [
         "id",
         "email"
+      ]
+    },
+    "Receipt": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Receipt",
+      "type": "object",
+      "description": "Represents a payment receipt uploaded by a user for an order.",
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "description": "The ID of the order this receipt is for. Corresponds to the local order ID."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user who uploaded the receipt."
+        },
+        "receiptDataUrl": {
+          "type": "string",
+          "description": "The Base64 encoded data URL of the receipt image."
+        },
+        "uploadedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the receipt was uploaded."
+        }
+      },
+      "required": [
+        "orderId",
+        "userId",
+        "receiptDataUrl",
+        "uploadedAt"
       ]
     }
   },
@@ -202,34 +257,33 @@
       "schema": {
         "$ref": "#/entities/Product"
       },
-      "description": "Stores product information. Accessible to all users for reading. Writable only by admins."
+      "description": "Stores product information. Accessible to all users for reading."
     },
     "/products/{productId}/reviews/{reviewId}": {
       "schema": {
         "$ref": "#/entities/Review"
       },
-      "description": "Stores reviews for each product. Anyone can create a review for any product, but listing reviews is open."
+      "description": "Stores reviews for each product. Anyone can read reviews, but only authenticated users can create them."
     },
     "/userProfiles/{userId}": {
       "schema": {
         "$ref": "#/entities/UserProfile"
       },
-      "description": "Stores user profile information. Only the authenticated user can read/write their own profile. Admins can read any profile."
+      "description": "Stores user profile information. Only the authenticated user can read/write their own profile. Admins have special access."
     },
     "/orders/{orderId}": {
       "schema": {
         "$ref": "#/entities/Order"
       },
-      "description": "Stores all order information. Any authenticated user can create their own order. Only admins can read, list, and update order statuses."
-    }
-  },
-  "storage": {
-    "/profile-pictures/{userId}/{fileName}": {
-      "description": "Users can upload their own profile pictures.",
-      "rules": {
-        "read": "true",
-        "write": "request.auth != null && request.auth.uid == userId"
-      }
+      "description": "Stores all order information. Any authenticated user can create their own order. Admins can read all orders."
+    },
+    "/receipts/{receiptId}": {
+      "schema": {
+        "$ref": "#/entities/Receipt"
+      },
+      "description": "Stores uploaded payment receipts. The receiptId should match the local orderId. Authenticated users can create receipts for their own orders."
     }
   }
 }
+
+    

@@ -2,46 +2,45 @@
 'use client';
 
 import { notFound, useParams } from 'next/navigation';
-import { Star } from 'lucide-react';
-import { useState, useMemo, useEffect } from 'react';
+import { Star, ShoppingCart, MessageCircle } from 'lucide-react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
+import { formatDistanceToNow } from 'date-fns';
+import { fr, de, enUS } from 'date-fns/locale';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProductCard } from '@/components/ProductCard';
 import placeholderImagesData from '@/lib/placeholder-images.json';
-import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { TranslatedText } from '@/components/TranslatedText';
-import { AddToFavoritesButton } from '@/components/favorites/AddToFavoritesButton';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/LanguageContext';
 import { getProductBySlug, getProductsByCategory, products as allProducts } from '@/lib/data';
 import type { Review, Product } from '@/lib/types';
-import { useUser } from '@/firebase';
-
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
+import { useCart } from '@/context/CartContext';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import allReviewsFromFile from '@/lib/reviews.json';
+import AddReviewForm from '@/components/reviews/AddReviewForm';
 
 const { placeholderImages } = placeholderImagesData;
 
-type ProductPageProps = {
-  params: {
-    slug: string;
-  };
-};
-
-export default function ProductPage({ params }: ProductPageProps) {
-  const { slug } = params;
+export default function ProductPage() {
+  const params = useParams();
+  const slug = params.slug as string;
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [relatedProducts, setRelatedProducts] = useState<ReturnType<typeof getProductsByCategory>>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [reviews, setReviews] = useState<Review[]>([]);
+
+  const [selectedSize, setSelectedSize] = useState<string | undefined>();
+  const [selectedColor, setSelectedColor] = useState<string | undefined>();
 
   const { toast } = useToast();
   const { language } = useLanguage();
-  const [newReviewRating, setNewReviewRating] = useState(0);
-  const [hoverRating, setHoverRating] = useState(0);
-  const [newReviewComment, setNewReviewComment] = useState('');
-  const { user } = useUser();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     setIsLoading(true);
@@ -49,20 +48,50 @@ export default function ProductPage({ params }: ProductPageProps) {
     
     if (foundProduct) {
         setProduct(foundProduct);
+        if (foundProduct.sizes && foundProduct.sizes.length > 0) {
+          setSelectedSize(foundProduct.sizes[0]);
+        }
+        if (foundProduct.colors && foundProduct.colors.length > 0) {
+          setSelectedColor(foundProduct.colors[0]);
+        }
         const related = getProductsByCategory(allProducts, foundProduct.category, 4, foundProduct.id);
         setRelatedProducts(related);
+
+        // Load initial reviews from the static file
+        const initialReviews = allReviewsFromFile
+            .filter(r => r.productId === foundProduct.id)
+            .map(r => ({ ...r, createdAt: new Date(r.createdAt) }))
+            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+        setReviews(initialReviews);
     }
     
     setIsLoading(false);
   }, [slug]);
 
+  const handleReviewAdded = useCallback((newReview: Review) => {
+    setReviews(prevReviews => [newReview, ...prevReviews]);
+  }, []);
+
   const averageRating = useMemo(() => {
-    if (!product || !product.reviews || product.reviews.length === 0) return 0;
-    return product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length;
-  }, [product]);
+    if (!reviews || reviews.length === 0) return 0;
+    return reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
+  }, [reviews]);
   
+  const getLocale = () => {
+    switch(language) {
+      case 'fr': return fr;
+      case 'en': return enUS;
+      default: return de;
+    }
+  }
+
+  const getInitials = (name?: string | null) => {
+    if (!name) return 'U';
+    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  }
+
   if (isLoading) {
-    return <div className="container mx-auto px-4 py-12 text-center">Chargement du produit...</div>;
+    return <div className="container mx-auto px-4 py-12 text-center"><TranslatedText fr="Chargement du produit..." en="Loading product...">Produkt wird geladen...</TranslatedText></div>;
   }
   
   if (!isLoading && !product) {
@@ -76,37 +105,26 @@ export default function ProductPage({ params }: ProductPageProps) {
   const mainImage = placeholderImages.find(p => p.id === product.images[0]);
   const altImages = product.images.slice(1).map(id => placeholderImages.find(p => p.id === id));
 
-  const handleReviewSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newReviewRating === 0 || newReviewComment.trim() === '') {
-      toast({
-        variant: 'destructive',
-        title: language === 'fr' ? 'Champs requis' : language === 'en' ? 'Required Fields' : 'Erforderliche Felder',
-        description: language === 'fr' ? 'Veuillez fournir une note et un commentaire.' : language === 'en' ? 'Please provide a rating and a comment.' : 'Bitte geben Sie eine Bewertung und einen Kommentar ab.',
-      });
-      return;
-    }
-    
-    const newReview: Review = {
-        author: user?.displayName || (language === 'fr' ? 'Visiteur' : language === 'en' ? 'Guest' : 'Gast'),
-        rating: newReviewRating,
-        comment: newReviewComment.trim(),
-    };
-
-    setProduct(prevProduct => {
-        if (!prevProduct) return undefined;
-        const updatedReviews = [newReview, ...prevProduct.reviews];
-        return { ...prevProduct, reviews: updatedReviews };
+  const handleAddToCart = () => {
+    if (!product) return;
+    addToCart({
+      product,
+      quantity: 1,
+      size: selectedSize,
+      color: selectedColor,
     });
-
     toast({
-      title: language === 'fr' ? 'Avis soumis' : language === 'en' ? 'Review Submitted' : 'Bewertung abgegeben',
-      description: language === 'fr' ? 'Merci pour votre avis !' : language === 'en' ? 'Thank you for your review!' : 'Vielen Dank für Ihre Bewertung!',
+      title: language === 'fr' ? 'Ajouté au panier !' : language === 'en' ? 'Added to cart!' : 'Zum Warenkorb hinzugefügt!',
+      description: language === 'fr' ? `${product.name_fr} a été ajouté à votre panier.` : language === 'en' ? `${product.name_en} has been added to your cart.` : `${product.name} wurde Ihrem Warenkorb hinzugefügt.`,
     });
-
-    setNewReviewRating(0);
-    setNewReviewComment('');
   };
+
+  const safeDate = (date: any): Date => {
+    if (date instanceof Date) return date;
+    if (typeof date === 'string') return new Date(date);
+    if (date && typeof date.toDate === 'function') return date.toDate();
+    return new Date();
+  }
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -145,19 +163,71 @@ export default function ProductPage({ params }: ProductPageProps) {
           <div className="mt-4 flex items-center gap-2">
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className={`h-5 w-5 ${i < Math.floor(averageRating) ? 'text-yellow-500 fill-yellow-500' : 'text-muted'}`} />
+                <Star key={i} className={cn(
+                  'h-5 w-5',
+                  averageRating > i ? 'text-yellow-500 fill-yellow-500' : 'text-muted-foreground/30'
+                )} />
               ))}
             </div>
-            <span className="text-sm text-muted-foreground">({product.reviews?.length || 0} <TranslatedText fr="avis" en="reviews">Bewertungen</TranslatedText>)</span>
+            {reviews && reviews.length > 0 && (
+                <span className="text-sm text-muted-foreground">
+                    ({reviews.length} <TranslatedText fr="avis" en="reviews">Bewertungen</TranslatedText>)
+                </span>
+            )}
           </div>
 
           <p className="mt-6 text-base leading-relaxed">
             <TranslatedText fr={product.description_fr} en={product.description_en}>{product.description}</TranslatedText>
           </p>
 
+          <div className="mt-8 space-y-6">
+            {product.sizes && product.sizes.length > 0 && (
+                <div>
+                    <Label className="text-sm font-medium"><TranslatedText fr="Taille" en="Size">Größe</TranslatedText></Label>
+                    <RadioGroup value={selectedSize} onValueChange={setSelectedSize} className="mt-2 flex flex-wrap gap-2">
+                        {product.sizes.map(size => (
+                            <RadioGroupItem key={size} value={size} id={`size-${size}`} className="sr-only" />
+                        ))}
+                        {product.sizes.map(size => (
+                            <Label 
+                                key={size} 
+                                htmlFor={`size-${size}`}
+                                className={cn(
+                                    'flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border text-sm transition-colors',
+                                    selectedSize === size ? 'border-primary bg-primary text-primary-foreground' : 'hover:bg-accent'
+                                )}
+                            >{size}</Label>
+                        ))}
+                    </RadioGroup>
+                </div>
+            )}
+             {product.colors && product.colors.length > 0 && (
+                <div>
+                    <Label className="text-sm font-medium"><TranslatedText fr="Couleur" en="Color">Farbe</TranslatedText></Label>
+                    <RadioGroup value={selectedColor} onValueChange={setSelectedColor} className="mt-2 flex flex-wrap gap-2">
+                         {product.colors.map(color => (
+                            <RadioGroupItem key={color} value={color} id={`color-${color}`} className="sr-only" />
+                        ))}
+                        {product.colors.map(color => (
+                            <Label 
+                                key={color} 
+                                htmlFor={`color-${color}`}
+                                className={cn(
+                                    'flex h-10 cursor-pointer items-center justify-center rounded-md border px-4 text-sm transition-colors',
+                                    selectedColor === color ? 'border-primary bg-primary text-primary-foreground' : 'hover:bg-accent'
+                                )}
+                            >{color}</Label>
+                        ))}
+                    </RadioGroup>
+                </div>
+            )}
+          </div>
+
           <div className="mt-8 flex items-center gap-4">
-            <AddToCartButton product={product} />
-            <AddToFavoritesButton productId={product.id} />
+            <Button onClick={handleAddToCart}>
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              <TranslatedText fr="Ajouter au panier" en="Add to Cart">In den Warenkorb</TranslatedText>
+            </Button>
           </div>
 
           <Separator className="my-8" />
@@ -165,7 +235,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           <Tabs defaultValue="details" className="w-full">
             <TabsList>
               <TabsTrigger value="details"><TranslatedText fr="Détails" en="Details">Details</TranslatedText></TabsTrigger>
-              <TabsTrigger value="reviews"><TranslatedText fr="Avis" en="Reviews">Bewertungen</TranslatedText></TabsTrigger>
+              <TabsTrigger value="reviews"><TranslatedText fr="Avis" en="Reviews">Bewertungen</TranslatedText> ({reviews?.length || 0})</TabsTrigger>
             </TabsList>
             <TabsContent value="details" className="mt-4 text-sm text-muted-foreground">
               <ul className="list-disc pl-5 space-y-2">
@@ -176,70 +246,43 @@ export default function ProductPage({ params }: ProductPageProps) {
             </TabsContent>
             <TabsContent value="reviews" className="mt-4">
               <div className="space-y-8">
-                {product.reviews && product.reviews.length > 0 ? (
-                  product.reviews.map((review, index) => (
-                    <div key={index}>
-                      <div className="flex items-center gap-2">
-                        <p className="font-semibold">{review.author}</p>
-                        <div className="flex items-center">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className={`h-4 w-4 ${i < review.rating ? 'text-yellow-500 fill-yellow-500' : 'text-muted'}`} />
-                          ))}
+                {reviews.length > 0 ? (
+                  reviews.map((review) => (
+                      <div key={review.id} className="flex gap-4">
+                        <Avatar>
+                          <AvatarFallback>{getInitials(review.userName)}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between">
+                            <p className="font-semibold">{review.userName}</p>
+                            <div className="flex items-center">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={cn(
+                                    'h-4 w-4',
+                                    review.rating > i ? 'text-yellow-500 fill-yellow-500' : 'text-muted-foreground/30'
+                                  )}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            {formatDistanceToNow(safeDate(review.createdAt), { addSuffix: true, locale: getLocale() })}
+                          </p>
+                          <p className="mt-2 text-muted-foreground">{review.comment}</p>
                         </div>
                       </div>
-                      <p className="mt-2 text-sm text-muted-foreground">{review.comment}</p>
-                    </div>
-                  ))
+                    ))
                 ) : (
-                  <p className="text-sm text-muted-foreground"><TranslatedText fr="Pas encore d'avis pour ce produit." en="No reviews for this product yet.">Noch keine Bewertungen für dieses Produkt.</TranslatedText></p>
+                  <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-12 text-center">
+                    <MessageCircle className="h-12 w-12 text-muted-foreground" />
+                    <h4 className="mt-4 text-lg font-semibold"><TranslatedText fr="Aucun avis pour l'instant" en="No reviews yet">Noch keine Bewertungen</TranslatedText></h4>
+                    <p className="mt-1 text-muted-foreground"><TranslatedText fr="Soyez le premier à donner votre avis sur ce produit !" en="Be the first to review this product!">Seien Sie der Erste, der dieses Produkt bewertet!</TranslatedText></p>
+                  </div>
                 )}
-
-                <Separator />
-
-                <div>
-                    <h3 className="text-lg font-semibold mb-4"><TranslatedText fr="Laissez votre avis" en="Leave a review">Hinterlassen Sie eine Bewertung</TranslatedText></h3>
-                    <form onSubmit={handleReviewSubmit} className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium text-muted-foreground mb-2"><TranslatedText fr="Note" en="Rating">Bewertung</TranslatedText></label>
-                            <div className="flex items-center gap-1" onMouseLeave={() => setHoverRating(0)}>
-                                {[...Array(5)].map((_, index) => {
-                                    const ratingValue = index + 1;
-                                    return (
-                                        <button
-                                            type="button"
-                                            key={ratingValue}
-                                            onClick={() => setNewReviewRating(ratingValue)}
-                                            onMouseEnter={() => setHoverRating(ratingValue)}
-                                            className="focus:outline-none"
-                                        >
-                                            <Star
-                                                className={cn(
-                                                    'h-6 w-6 cursor-pointer transition-colors',
-                                                    ratingValue <= (hoverRating || newReviewRating)
-                                                        ? 'text-yellow-500 fill-yellow-500'
-                                                        : 'text-muted hover:text-yellow-400'
-                                                )}
-                                            />
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                         <div>
-                            <label htmlFor="comment" className="block text-sm font-medium text-muted-foreground mb-2"><TranslatedText fr="Commentaire" en="Comment">Kommentar</TranslatedText></label>
-                            <Textarea
-                                id="comment"
-                                value={newReviewComment}
-                                onChange={(e) => setNewReviewComment(e.target.value)}
-                                rows={4}
-                            />
-                        </div>
-                        <Button type="submit">
-                            <TranslatedText fr="Soumettre l'avis" en="Submit Review">Bewertung abschicken</TranslatedText>
-                        </Button>
-                    </form>
-                </div>
               </div>
+              <AddReviewForm productId={product.id} onReviewAdded={handleReviewAdded} />
             </TabsContent>
           </Tabs>
         </div>
@@ -257,12 +300,9 @@ export default function ProductPage({ params }: ProductPageProps) {
               ))}
             </div>
         ): (
-            <div className="text-center">Chargement...</div>
+            <div className="text-center"><TranslatedText fr="Chargement..." en="Loading...">Laden...</TranslatedText></div>
         )}
       </div>
     </div>
   );
 }
-
-    
-    

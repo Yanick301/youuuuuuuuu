@@ -9,21 +9,30 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { TranslatedText } from '@/components/TranslatedText';
-import { useUser, useAuth, errorEmitter, FirestorePermissionError, useStorage } from '@/firebase';
+import { useUser, useAuth, errorEmitter, FirestorePermissionError, useFirestore } from '@/firebase';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Heart, ListOrdered, User, Camera, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
-import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { updateProfile } from 'firebase/auth';
+import { doc, updateDoc } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/context/LanguageContext';
 
+// Helper to convert file to Base64
+const toBase64 = (file: File): Promise<string> => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = error => reject(error);
+});
+
+
 export default function AccountPage() {
-  const { user } = useUser();
+  const { user, profile } = useUser();
   const auth = useAuth();
-  const storage = useStorage();
+  const firestore = useFirestore();
   const { toast } = useToast();
   const { language } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -43,30 +52,42 @@ export default function AccountPage() {
   };
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || event.target.files.length === 0 || !user || !auth.currentUser || !storage) {
+    if (!event.target.files || event.target.files.length === 0 || !user || !auth.currentUser || !firestore) {
       return;
     }
     
     const file = event.target.files[0];
+     if (file.size > 1 * 1024 * 1024) { 
+        toast({
+            variant: "destructive",
+            title: language === 'fr' ? "Fichier trop volumineux" : language === 'en' ? "File too large" : "Datei zu groß",
+            description: language === 'fr' ? "La taille de l'image doit être inférieure à 1 Mo." : language === 'en' ? "Image size must be less than 1MB." : "Die Bildgröße muss weniger als 1 MB betragen.",
+        });
+        return;
+    }
+
     setIsUploading(true);
 
-    const filePath = `profile-pictures/${user.uid}/${file.name}`;
-    const fileRef = storageRef(storage, filePath);
-
     try {
-      await uploadBytes(fileRef, file);
-      const downloadURL = await getDownloadURL(fileRef);
-      await updateProfile(auth.currentUser, { photoURL: downloadURL });
-      
-      toast({
-        title: language === 'fr' ? "Photo de profil mise à jour" : language === 'en' ? "Profile picture updated" : "Profilbild aktualisiert",
-        description: language === 'fr' ? "Votre nouvelle photo de profil a été enregistrée." : language === 'en' ? "Your new profile picture has been saved." : "Ihr neues Profilbild wurde gespeichert.",
-      });
+        const base64Image = await toBase64(file);
+
+        // Update Auth profile
+        await updateProfile(auth.currentUser, { photoURL: base64Image });
+
+        // Update Firestore profile
+        const userProfileRef = doc(firestore, 'userProfiles', user.uid);
+        await updateDoc(userProfileRef, { photoURL: base64Image });
+        
+        toast({
+            title: language === 'fr' ? "Photo de profil mise à jour" : language === 'en' ? "Profile picture updated" : "Profilbild aktualisiert",
+            description: language === 'fr' ? "Votre nouvelle photo de profil a été enregistrée." : language === 'en' ? "Your new profile picture has been saved." : "Ihr neues Profilbild wurde gespeichert.",
+        });
 
     } catch (error) {
         const permissionError = new FirestorePermissionError({
-          path: fileRef.fullPath,
-          operation: 'write', // Storage operations map to 'write'
+          path: `userProfiles/${user.uid}`,
+          operation: 'update',
+          requestResourceData: { photoURL: '[BASE64_DATA]' }
         });
         errorEmitter.emit('permission-error', permissionError);
 
@@ -82,6 +103,8 @@ export default function AccountPage() {
         }
     }
   };
+  
+  const photoURL = user.photoURL || profile?.photoURL;
 
   return (
     <div>
@@ -102,7 +125,7 @@ export default function AccountPage() {
                 <CardContent className="flex flex-col items-center p-8 text-center">
                     <div className="relative">
                       <Avatar className="h-24 w-24">
-                          <AvatarImage src={user.photoURL || undefined} alt={user.displayName || 'User'} />
+                          <AvatarImage src={photoURL || undefined} alt={user.displayName || 'User'} />
                           <AvatarFallback className="text-3xl">{getInitials(user.displayName)}</AvatarFallback>
                       </Avatar>
                       <Button
@@ -135,7 +158,7 @@ export default function AccountPage() {
                     </Link>
                 </Card>
                  <Card className="hover:bg-muted/50 transition-colors">
-                     <Link href="/account/favorites">
+                     <Link href="/favorites">
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
                             <CardTitle className="text-sm font-medium"><TranslatedText fr="Vos favoris" en="Your Favorites">Ihre Favoriten</TranslatedText></CardTitle>
                             <Heart className="h-4 w-4 text-muted-foreground" />

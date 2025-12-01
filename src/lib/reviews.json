@@ -1,0 +1,30 @@
+
+[
+  {
+    "id": "rev-1",
+    "productId": "manteau-laine-premium",
+    "userId": "user-123",
+    "userName": "Sophie L.",
+    "rating": 5,
+    "comment": "Absolument magnifique. La qualité de la laine est exceptionnelle et la coupe est parfaite. Je le recommande vivement.",
+    "createdAt": "2024-05-10T10:00:00.000Z"
+  },
+  {
+    "id": "rev-2",
+    "productId": "manteau-laine-premium",
+    "userId": "user-456",
+    "userName": "Clara M.",
+    "rating": 4,
+    "comment": "Très beau manteau, élégant et chaud. Un peu plus long que ce que je pensais mais ça reste un excellent achat.",
+    "createdAt": "2024-05-12T14:30:00.000Z"
+  },
+  {
+    "id": "rev-3",
+    "productId": "pull-cachemire-femme",
+    "userId": "user-789",
+    "userName": "Julien D.",
+    "rating": 5,
+    "comment": "J'ai acheté ce pull pour ma femme, elle l'adore. La douceur du cachemire est incroyable.",
+    "createdAt": "2024-05-15T09:00:00.000Z"
+  }
+]

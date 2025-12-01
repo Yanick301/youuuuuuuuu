@@ -4,81 +4,57 @@
 import { useEffect, useState } from 'react';
 import type { User } from 'firebase/auth';
 import { useFirebase } from '@/firebase/provider';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { doc, onSnapshot, DocumentData } from 'firebase/firestore';
 
 export type UserProfile = {
-  isAdmin?: boolean;
-  // other profile fields...
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  photoURL?: string;
 };
-
-export type WithId<T> = T & { id: string };
 
 export interface UserHookResult {
   user: User | null;
-  profile: WithId<UserProfile> | null;
-  isLoading: boolean;
+  profile: UserProfile | null;
+  isUserLoading: boolean;
   error: Error | null;
 }
 
 export const useUser = (): UserHookResult => {
   const { auth, firestore, isUserLoading: isAuthLoading } = useFirebase();
+  const user = auth.currentUser;
 
-  const [user, setUser] = useState<User | null>(() => auth.currentUser);
-  const [profile, setProfile] = useState<WithId<UserProfile> | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isProfileLoading, setIsProfileLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    if (!auth) {
+    if (isAuthLoading) {
+      setIsProfileLoading(true);
+      return;
+    }
+    
+    if (!user || !firestore) {
+      setProfile(null);
       setIsProfileLoading(false);
       return;
     }
 
-    const unsubscribeAuth = auth.onAuthStateChanged(
-      (user) => {
-        setUser(user);
-        if (!user) {
-          // If user logs out, clear profile and stop loading
-          setProfile(null);
-          setIsProfileLoading(false);
-        }
-      },
-      (error) => {
-        console.error("Auth Error:", error);
-        setError(error);
-        setUser(null);
-        setProfile(null);
-        setIsProfileLoading(false);
-      }
-    );
-
-    return () => unsubscribeAuth();
-  }, [auth]);
-
-  useEffect(() => {
-    // Don't do anything until we have a user object
-    if (!user || !firestore) {
-      if (!isAuthLoading) { // Only stop loading if auth check is also complete
-        setIsProfileLoading(false);
-      }
-      return;
-    }
-
-    // We have a user, start loading profile
     setIsProfileLoading(true);
     const userProfileRef = doc(firestore, 'userProfiles', user.uid);
     
     const unsubscribeProfile = onSnapshot(userProfileRef, (docSnap) => {
       if (docSnap.exists()) {
-        setProfile({ id: docSnap.id, ...(docSnap.data() as UserProfile) });
+        setProfile({ id: docSnap.id, ...(docSnap.data() as Omit<UserProfile, 'id'>) });
       } else {
+        console.warn(`No profile document found for user ${user.uid}`);
         setProfile(null);
       }
-      // Profile is loaded (or confirmed not to exist), so we are done loading
       setIsProfileLoading(false);
       setError(null);
     }, (err) => {
-      console.error("Firestore Profile Error:", err);
+      console.error("Error fetching user profile:", err);
       setError(err);
       setProfile(null);
       setIsProfileLoading(false);
@@ -87,5 +63,7 @@ export const useUser = (): UserHookResult => {
     return () => unsubscribeProfile();
   }, [user, firestore, isAuthLoading]);
 
-  return { user, profile, isLoading: isAuthLoading || isProfileLoading, error };
+  const isTotalLoading = isAuthLoading || (!!user && isProfileLoading);
+
+  return { user, profile, isUserLoading: isTotalLoading, error };
 };

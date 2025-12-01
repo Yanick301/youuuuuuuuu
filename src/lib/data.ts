@@ -12,11 +12,56 @@ export const categories: Category[] = [
 ];
 
 export const products: Product[] = [
+  {
+    id: 'manteau-laine-premium',
+    name: 'Manteau long en laine premium',
+    name_fr: 'Manteau long en laine premium',
+    name_en: 'Premium wool long coat',
+    slug: 'manteau-laine-premium',
+    price: 200,
+    description: 'Un manteau long et élégant en laine de qualité supérieure.',
+    description_fr: 'Un manteau long et élégant en laine de qualité supérieure.',
+    description_en: 'A long and elegant coat made of premium quality wool.',
+    category: 'womens-clothing',
+    images: ['manteau-laine-premium'],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Gris'],
+  },
+  {
+    id: 'pull-cachemire-femme',
+    name: 'Cremefarbener 100% Kaschmirpullover',
+    name_fr: 'Pull 100% cachemire crème',
+    name_en: '100% Cream Cashmere Sweater',
+    slug: 'pull-cachemire-femme',
+    price: 200,
+    description: 'Umhüllende Weichheit mit diesem cremefarbenen Pullover aus reinem Kaschmir. Ein luxuriöses Basic für ultimativen Komfort und raffinierten Stil.',
+    description_fr: 'La douceur enveloppante avec ce pull en pur cachemire de couleur crème. Un basique de luxe pour un confort ultime et un style raffiné.',
+    description_en: 'Enveloping softness with this pure cream-colored cashmere sweater. A luxury basic for ultimate comfort and refined style.',
+    category: 'womens-clothing',
+    images: ['pull-cachemire-femme'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Crème', 'Beige'],
+  },
+  {
+    id: 'robe-satinee-noire',
+    name: 'Langes schwarzes Satinkleid',
+    name_fr: 'Robe longue satinée noire',
+    name_en: 'Long Black Satin Dress',
+    slug: 'robe-satinee-noire',
+    price: 200,
+    description: 'Die Essenz der Eleganz. Dieses lange, fließende Kleid aus schwarzem Satin umhüllt die Silhouette mit Anmut für einen unvergesslichen Auftritt.',
+    description_fr: 'L\'essence même de l\'élégance. Cette robe longue et fluide en satin noir épouse la silhouette avec grâce pour une allure inoubliable.',
+    description_en: 'The very essence of elegance. This long, flowing dress in black satin gracefully hugs the silhouette for an unforgettable look.',
+    category: 'womens-clothing',
+    images: ['robe-satinee-noire'],
+    sizes: ['XS', 'S', 'M'],
+    colors: ['Noir'],
+  },
     {
     id: '1',
-    name: 'Seiden-Midikleid',
-    name_fr: 'Robe midi en soie',
-    name_en: 'Silk Midi Dress',
+    name: 'Gucci Seiden-Midikleid',
+    name_fr: 'Robe midi en soie Gucci',
+    name_en: 'Gucci Silk Midi Dress',
     slug: 'robe-midi-en-soie-gucci',
     price: 490,
     description: 'Umhüllen Sie sich mit fließender Eleganz. Dieses Midikleid aus reiner Seide besticht durch seinen sanften Glanz und eine schmeichelhafte Silhouette, die bei jeder Bewegung tanzt. Ein Meisterwerk der Couture für unvergessliche Momente.',
@@ -24,10 +69,8 @@ export const products: Product[] = [
     description_en: 'Wrap yourself in fluid elegance. This pure silk midi dress features a delicate sheen and a flattering silhouette that dances with every move. A couture masterpiece for unforgettable moments.',
     category: 'womens-clothing',
     images: ['robe-midi-en-soie-gucci'],
-    reviews: [
-      { author: 'Sophie', rating: 5, comment: 'Absolument sublime. La qualité de la soie est exceptionnelle.' },
-      { author: 'Claire', rating: 4, comment: 'Très chic, mais attention elle taille un peu petit.' },
-    ],
+    sizes: ['XS', 'S', 'M', 'L'],
+    colors: ['Rose', 'Vert', 'Noir'],
   },
   {
     id: '2',
@@ -41,10 +84,8 @@ export const products: Product[] = [
     description_en: 'Define authority and style with this double-breasted blazer. Its structured shoulders and gold buttons create a powerful silhouette. Crafted from the finest wool, it is an investment in timeless elegance.',
     category: 'womens-clothing',
     images: ['blazer-croise-balmain'],
-    reviews: [
-      { author: 'Léa', rating: 5, comment: 'La coupe est absolument parfaite et le tissu est magnifique.' },
-      { author: 'Inès', rating: 5, comment: 'Un classique instantané. Je me sens puissante en le portant.' },
-    ],
+    sizes: ['34', '36', '38', '40'],
+    colors: ['Noir', 'Blanc'],
   },
   {
     id: 'prod-21',
@@ -59,9 +100,8 @@ export const products: Product[] = [
     description_en: 'A luxurious sweater dress in pure cashmere, for comfortable and warm elegance. Its relaxed fit and the softness of its knit make it a cocoon of luxury for the winter.',
     category: 'womens-clothing',
     images: ['robe-pull-en-cachemire-max-mara'],
-    reviews: [
-      { author: 'Elodie', rating: 5, comment: 'Incroyablement douce et confortable, tout en restant très chic.' },
-    ]
+    sizes: ['S', 'M', 'L'],
+    colors: ['Gris', 'Beige'],
   },
   {
     id: 'prod-22',
@@ -75,9 +115,8 @@ export const products: Product[] = [
     description_en: 'The ultimate statement piece. These slim-fit trousers in supple lambskin sculpt the silhouette for a resolutely rock and chic look. A strong piece that stands the test of time.',
     category: 'womens-clothing',
     images: ['pantalon-en-cuir-saint-laurent'],
-    reviews: [
-      { author: 'Victoria', rating: 5, comment: 'Un cuir de rêve, souple et confortable. La coupe est parfaite.' },
-    ]
+    sizes: ['36', '38', '40'],
+    colors: ['Noir'],
   },
   {
     id: 'prod-23',
@@ -91,9 +130,8 @@ export const products: Product[] = [
     description_en: 'An ode to femininity and movement. This fluid and light sunray pleated midi skirt dances with every step, creating a graceful and airy silhouette.',
     category: 'womens-clothing',
     images: ['jupe-plissee-midi-valentino'],
-    reviews: [
-      { author: 'Olivia', rating: 5, comment: 'Le mouvement de cette jupe est magique. Très élégante.' },
-    ]
+    sizes: ['S', 'M', 'L'],
+    colors: ['Rose Poudré', 'Noir'],
   },
   {
     id: 'prod-24',
@@ -107,9 +145,8 @@ export const products: Product[] = [
     description_en: 'The luxury basic. This high-quality cotton T-shirt is enhanced by the house\'s iconic logo, meticulously embroidered on the chest. A symbol of belonging and casual style.',
     category: 'womens-clothing',
     images: ['t-shirt-brode-logo-gucci'],
-    reviews: [
-      { author: 'Anna', rating: 5, comment: 'Même pour un t-shirt, la qualité est incroyable. Très confortable.' },
-    ]
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    colors: ['Blanc', 'Noir'],
   },
   {
     id: 'prod-25',
@@ -122,11 +159,10 @@ export const products: Product[] = [
     description: 'Eine romantische und moderne Silhouette. Dieser Pullover mit U-Boot-Ausschnitt zeichnet sich durch seine voluminösen Ballonärmel aus und verleiht jedem Outfit einen Hauch von Couture.',
     description_fr: 'Une silhouette romantique et moderne. Ce pull à col bateau se distingue par ses manches ballon volumineuses, apportant une touche couture à n\'importe quelle tenue.',
     description_en: 'A romantic and modern silhouette. This boatneck sweater is distinguished by its voluminous balloon sleeves, bringing a couture touch to any outfit.',
-    category: 'womens-clothing',
+    category: 'winter-clothing',
     images: ['pull-col-bateau-manches-ballon-chloe'],
-    reviews: [
-      { author: 'Emma', rating: 5, comment: 'Les manches sont magnifiques, c\'est une pièce très originale.' },
-    ]
+    sizes: ['S', 'M', 'L'],
+    colors: ['Crème', 'Bleu Ciel'],
   },
   {
     id: 'prod-26',
@@ -140,9 +176,8 @@ export const products: Product[] = [
     description_en: 'The height of casual chic. This immaculate white oversized shirtdress can be worn alone or open over trousers, offering an avant-garde and versatile style.',
     category: 'womens-clothing',
     images: ['robe-chemise-oversize-balenciaga'],
-    reviews: [
-      { author: 'Chloé', rating: 5, comment: 'La coupe est incroyable. Très mode et facile à porter.' },
-    ]
+    sizes: ['Taille Unique'],
+    colors: ['Blanc'],
   },
   {
     id: 'prod-27',
@@ -156,9 +191,8 @@ export const products: Product[] = [
     description_en: 'A majestic allure. These fluid wool palazzo pants lengthen the leg and offer graceful and powerful movement. Perfect for a sophisticated office look or an elegant evening out.',
     category: 'womens-clothing',
     images: ['pantalon-palazzo-en-laine-max-mara'],
-    reviews: [
-      { author: 'Juliette', rating: 5, comment: 'Le tombé de ce pantalon est juste sublime. Très confortable.' },
-    ]
+    sizes: ['36', '38', '40', '42'],
+    colors: ['Gris Anthracite', 'Camel'],
   },
   {
     id: 'prod-28',
@@ -172,9 +206,8 @@ export const products: Product[] = [
     description_en: 'An evening jewel. This luxurious silk satin tuxedo blazer, with its shimmering lapel, is the ultimate piece for an unforgettable and glamorous look.',
     category: 'womens-clothing',
     images: ['blazer-satin-saint-laurent'],
-    reviews: [
-      { author: 'Garance', rating: 5, comment: 'Une pièce d\'exception. La qualité est visible au premier coup d\'œil.' },
-    ]
+    sizes: ['36', '38', '40'],
+    colors: ['Noir'],
   },
   {
     id: 'prod-29',
@@ -188,9 +221,8 @@ export const products: Product[] = [
     description_en: 'A royal elegance. This long dress in deep black velvet envelops the silhouette with a mysterious and opulent grace. A masterpiece for the most exclusive occasions.',
     category: 'womens-clothing',
     images: ['robe-longue-en-velours-valentino'],
-    reviews: [
-      { author: 'Constance', rating: 5, comment: 'Je me suis sentie comme une reine. La robe est spectaculaire.' },
-    ]
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir Profond'],
   },
   {
     id: 'prod-30',
@@ -204,10 +236,8 @@ export const products: Product[] = [
     description_en: 'The quintessence of refinement. This slim-fit shirt, cut from luxurious Egyptian cotton, offers an unmatched fit and a flawless finish. The perfect ally for the modern gentleman.',
     category: 'mens-clothing',
     images: ['chemise-slim-fit-tom-ford'],
-    reviews: [
-        { author: 'Thomas', rating: 5, comment: 'Une qualité de tissu exceptionnelle. Le tombé est parfait.'},
-        { author: 'Julien', rating: 5, comment: 'Enfin une chemise qui épouse parfaitement la silhouette.'}
-    ]
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Blanc', 'Bleu Ciel'],
   },
   {
     id: 'prod-31',
@@ -221,9 +251,8 @@ export const products: Product[] = [
     description_en: 'The icon of casual elegance. This breathable cotton piqué polo combines comfort with a touch of aristocratic ease. A timeless essential for all occasions, from the yacht club to the city.',
     category: 'mens-clothing',
     images: ['polo-pique-ralph-lauren'],
-    reviews: [
-        { author: 'Antoine', rating: 5, comment: 'La qualité est au rendez-vous. Un classique efficace.'}
-    ]
+    sizes: ['M', 'L', 'XL', 'XXL'],
+    colors: ['Marine', 'Blanc', 'Rouge'],
   },
   {
     id: 'prod-32',
@@ -238,10 +267,8 @@ export const products: Product[] = [
     description_en: 'Experience the embrace of pure luxury. This turtleneck sweater, crafted from the finest Mongolian cashmere, offers unparalleled softness and comforting warmth. A work of knitting art for the coldest days.',
     category: 'winter-clothing',
     images: ['pull-col-roule-cachemire-loro-piana'],
-    reviews: [
-        { author: 'François', rating: 5, comment: 'Une douceur incroyable. On ne veut plus le quitter.'},
-        { author: 'Paul', rating: 5, comment: 'L\'investissement vaut chaque centime.'}
-    ]
+    sizes: ['M', 'L', 'XL'],
+    colors: ['Gris', 'Noir'],
   },
   {
     id: 'prod-33',
@@ -255,25 +282,23 @@ export const products: Product[] = [
     description_en: 'The perfect basic. Made from Pima cotton, this T-shirt offers exceptional softness and an impeccable fit. Proof that true luxury lies in simplicity.',
     category: 'mens-clothing',
     images: ['t-shirt-col-rond-hugo-boss'],
-    reviews: [
-      { author: 'Luc', rating: 5, comment: 'Un coton d\'une douceur rare. Le meilleur t-shirt que j\'ai jamais eu.'},
-    ]
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Blanc', 'Gris chiné'],
   },
   {
     id: 'prod-34',
-    name: 'Stretch-Chino-Hose',
-    name_fr: 'Pantalon chino stretch',
-    name_en: 'Stretch Chino Trousers',
-    slug: 'pantalon-chino-stretch-burberry',
-    price: 190,
-    description: 'Die moderne Eleganz. Diese Chino-Hose, leicht dehnbar für optimalen Komfort, hat eine schlanke und moderne Passform. Sie ist der vielseitige Verbündete für alle Ihre lässig-schicken Looks.',
-    description_fr: 'L\'élégance moderne. Ce pantalon chino, légèrement extensible pour un confort optimal, présente une coupe ajustée et contemporaine. L\'allié polyvalent de tous vos looks casual-chic.',
-    description_en: 'Modern elegance. This slightly stretchy chino for optimal comfort features a slim, contemporary fit. The versatile ally for all your casual-chic looks.',
+    name: 'Pantalon Cargo Urbain Noir',
+    name_fr: 'Pantalon Cargo Urbain Noir',
+    name_en: 'Black Urban Cargo Pants',
+    slug: 'pantalon-cargo-urbain-noir',
+    price: 180,
+    description: 'Ein vielseitiger schwarzer Cargohose, die utilitaristischen Stil und modernen Komfort vereint. Mit ihrer schlanken Passform und den praktischen Taschen ist sie perfekt für einen lässig-schicken urbanen Look.',
+    description_fr: 'Un pantalon cargo noir polyvalent, alliant style utilitaire et confort moderne. Avec sa coupe ajustée et ses poches pratiques, il est parfait pour un look urbain décontracté-chic.',
+    description_en: 'A versatile black cargo pant, combining utilitarian style and modern comfort. With its slim fit and practical pockets, it\'s perfect for a casual-chic urban look.',
     category: 'mens-clothing',
-    images: ['pantalon-chino-stretch-burberry'],
-    reviews: [
-      { author: 'Mathieu', rating: 5, comment: 'Très confortable et la coupe est parfaite. Je l\'ai pris en plusieurs couleurs.'},
-    ]
+    images: ['pantalon-cargo-noir-homme'],
+    sizes: ['30', '32', '34', '36'],
+    colors: ['Noir'],
   },
   {
     id: 'prod-35',
@@ -287,9 +312,8 @@ export const products: Product[] = [
     description_en: 'A second skin. These jeans, cut from premium Japanese denim, hug the body while offering remarkable freedom of movement. The quintessence of cool style.',
     category: 'mens-clothing',
     images: ['jean-coupe-ajustee-diesel'],
-    reviews: [
-      { author: 'Alex', rating: 5, comment: 'Le meilleur jean que j\'ai jamais porté. La toile est incroyable.'},
-    ]
+    sizes: ['29', '30', '31', '32', '33', '34'],
+    colors: ['Brut', 'Délavé'],
   },
   {
     id: 'prod-36',
@@ -303,9 +327,8 @@ export const products: Product[] = [
     description_en: 'A reinvented urban classic. This shiny nylon bomber, lined with the finest down, combines streetwear style and high-end performance. A mid-season must-have.',
     category: 'winter-clothing',
     images: ['bomber-nylon-moncler'],
-    reviews: [
-      { author: 'Nico', rating: 5, comment: 'Légère, chaude et incroyablement stylée. Parfaite.'},
-    ]
+    sizes: ['M', 'L', 'XL'],
+    colors: ['Noir', 'Vert Militaire'],
   },
   {
     id: 'prod-37',
@@ -319,9 +342,8 @@ export const products: Product[] = [
     description_en: 'A legend. This biker jacket in soft and sturdy lambskin is more than a piece of clothing, it is a symbol of rebellion and timeless style. It will get better with age.',
     category: 'mens-clothing',
     images: ['blouson-cuir-saint-laurent'],
-    reviews: [
-      { author: 'Chris', rating: 5, comment: 'La perfection. Un investissement pour la vie.'},
-    ]
+    sizes: ['48', '50', '52'],
+    colors: ['Noir'],
   },
   {
     id: 'prod-38',
@@ -335,9 +357,8 @@ export const products: Product[] = [
     description_en: 'The essence of Italian elegance. This deconstructed jacket, in an exclusive blend of wool and silk, offers a fluid and light drape, enveloping the silhouette with unparalleled grace.',
     category: 'mens-clothing',
     images: ['veste-costume-giorgio-armani'],
-    reviews: [
-      { author: 'Hugo', rating: 5, comment: 'On sent la qualité et le savoir-faire. C\'est une autre dimension.'},
-    ]
+    sizes: ['46', '48', '50', '52', '54'],
+    colors: ['Gris chiné'],
   },
   {
     id: 'prod-39',
@@ -351,9 +372,8 @@ export const products: Product[] = [
     description_en: 'The armor of the modern seducer. Cut from the prestigious Trofeo wool, this suit is distinguished by its resilience and flawless drape. A masterpiece for the man of power.',
     category: 'mens-clothing',
     images: ['costume-2-pieces-zegna'],
-    reviews: [
-      { author: 'Arthur', rating: 5, comment: 'Un costume qui vous transforme. La coupe est exceptionnelle.'},
-    ]
+    sizes: ['46R', '48R', '50R', '52L'],
+    colors: ['Bleu Nuit'],
   },
   {
     id: 'prod-40',
@@ -367,9 +387,23 @@ export const products: Product[] = [
     description_en: 'Make a statement with this bold silk shirt. Its iconic baroque print and the fluidity of the silk, a signature of the house of Versace, guarantee a memorable style that exudes confidence.',
     category: 'mens-clothing',
     images: ['chemise-soie-versace'],
-    reviews: [
-        { author: 'Stéphane', rating: 5, comment: 'Pièce maîtresse de ma garde-robe. Les regards se tournent vers moi.'}
-    ]
+    sizes: ['M', 'L', 'XL'],
+    colors: ['Imprimé Or et Noir'],
+  },
+  {
+    id: 'manteau-long-laine-hugo-boss',
+    name: 'Langer Wollmantel Hugo Boss',
+    name_fr: 'Manteau Long en Laine Hugo Boss',
+    name_en: 'Hugo Boss Long Wool Coat',
+    slug: 'manteau-long-laine-hugo-boss',
+    price: 750,
+    description: 'Ein ikonischer langer Mantel aus einer luxuriösen Wollmischung, perfekt für einen eleganten Winterlook. Sein minimalistischer Schnitt und die tadellosen Oberflächen machen ihn zu einem zeitlosen Must-have.',
+    description_fr: 'Un manteau long iconique dans un mélange de laine luxueux, parfait pour une allure hivernale élégante. Sa coupe minimaliste et ses finitions impeccables en font un indispensable intemporel.',
+    description_en: 'An iconic long coat in a luxurious wool blend, perfect for an elegant winter look. Its minimalist cut and impeccable finishes make it a timeless essential.',
+    category: 'winter-clothing',
+    images: ['manteau-long-laine-hugo-boss'],
+    sizes: ['48', '50', '52', '54'],
+    colors: ['Noir', 'Gris Anthracite'],
   },
   {
     id: 'prod-42',
@@ -383,9 +417,8 @@ export const products: Product[] = [
     description_en: 'The redefinition of the basic. With its loose fit, dropped shoulders, and minimalist branding, this t-shirt embodies a discreet and thoughtful luxury. A modern classic.',
     category: 'mens-clothing',
     images: ['t-shirt-essential-fear-of-god'],
-    reviews: [
-      { author: 'Noah', rating: 5, comment: 'La coupe est parfaite. Le tissu est lourd et de grande qualité.'},
-    ]
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir Délavé', 'Crème'],
   },
   {
     id: 'prod-43',
@@ -393,15 +426,14 @@ export const products: Product[] = [
     name_fr: 'Pull Laine Merinos',
     name_en: 'Merino Wool Sweater',
     slug: 'pull-laine-merinos-lacoste',
-    price: 110,
+    price: 160,
     description: 'Die zeitlose Eleganz von Merinowolle. Dieser Pullover bietet unübertroffene Weichheit und natürliche Thermoregulation. Ein Must-Have für eine anspruchsvolle und komfortable Garderobe.',
     description_fr: 'L\'élégance intemporelle de la laine mérinos. Ce pull offre une douceur inégalée et une thermorégulation naturelle. Un indispensable pour une garde-robe sophistiquée et confortable.',
     description_en: 'The timeless elegance of merino wool. This sweater offers unparalleled softness and natural thermoregulation. An essential for a sophisticated and comfortable wardrobe.',
     category: 'winter-clothing',
     images: ['pull-laine-merinos-lacoste'],
-    reviews: [
-        { author: 'Bastien', rating: 5, comment: 'Doux, chaud et élégant. La qualité Lacoste est au rendez-vous.'}
-    ]
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Gris', 'Bleu Marine', 'Vert Forêt'],
   },
   {
     id: 'prod-44',
@@ -415,9 +447,8 @@ export const products: Product[] = [
     description_en: 'A bold reinterpretation of the classic shirt. With its oversized cut and impeccable cotton, it\'s a strong piece that creates an avant-garde and trendy look.',
     category: 'mens-clothing',
     images: ['chemise-oversize-balenciaga'],
-    reviews: [
-        { author: 'Raphael', rating: 5, comment: 'Une coupe incroyable. Très conceptuel, j\'adore.'}
-    ]
+    sizes: ['S', 'M', 'L'],
+    colors: ['Blanc', 'Noir'],
   },
   {
     id: 'prod-45',
@@ -431,9 +462,8 @@ export const products: Product[] = [
     description_en: 'The ideal layering piece. This soft flannel overshirt provides warmth and style. Perfect over a t-shirt or under a coat for a modern and casual look.',
     category: 'mens-clothing',
     images: ['surchemise-flanelle-acne-studios'],
-    reviews: [
-        { author: 'Theo', rating: 5, comment: 'Très confortable et la qualité est top.'}
-    ]
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Carreaux Rouge/Noir', 'Carreaux Vert/Bleu'],
   },
   {
     id: 'prod-46',
@@ -447,9 +477,8 @@ export const products: Product[] = [
     description_en: 'Functionality meets high-end style. These technical fabric cargo shorts are both practical and trendy, featuring the brand\'s iconic logo.',
     category: 'mens-clothing',
     images: ['short-cargo-stone-island'],
-    reviews: [
-        { author: 'Enzo', rating: 5, comment: 'Très bien coupé et le tissu est incroyable.'}
-    ]
+    sizes: ['28', '30', '32', '34'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'prod-47',
@@ -463,10 +492,8 @@ export const products: Product[] = [
     description_en: 'The perfect blend of tradition and modernity. These full-grain calfskin Chelsea boots offer a sleek silhouette and exceptional comfort thanks to their elastic gussets. A must-have for the urban explorer.',
     category: 'shoes',
     images: ['bottines-chelsea-cuir-citadin'],
-    reviews: [
-      { author: 'Alex', rating: 5, comment: 'Très confortables et le cuir est de superbe qualité. Je les porte tous les jours.' },
-      { author: 'Luc', rating: 4, comment: 'Elles sont belles, mais demandent un petit temps d\'adaptation.'}
-    ]
+    sizes: ['40', '41', '42', '43', '44', '45'],
+    colors: ['Noir', 'Marron'],
   },
   {
     id: 'prod-48',
@@ -480,10 +507,8 @@ export const products: Product[] = [
     description_en: 'Elegance and stability combined. These suede ankle boots, with their solid block heel, ensure a confident walk and a feminine silhouette. The softness of the suede adds a note of refinement to any outfit.',
     category: 'shoes',
     images: ['bottines-en-cuir-suede-talon-carre-paris'],
-    reviews: [
-      { author: 'Julia', rating: 4, comment: 'J\'adore le style, mais elles nécessitent d\'être "faites" au début.' },
-      { author: 'Alice', rating: 5, comment: 'Parfaites pour le bureau comme pour sortir. Très polyvalentes.'}
-    ]
+    sizes: ['36', '37', '38', '39', '40'],
+    colors: ['Camel', 'Noir'],
   },
   {
     id: 'prod-49',
@@ -497,15 +522,14 @@ export const products: Product[] = [
     description_en: 'A timeless classic of the men\'s wardrobe. These full-brogue shoes in fine leather are adorned with artistic perforations, a testament to traditional craftsmanship for a touch of distinguished sophistication.',
     category: 'shoes',
     images: ['brogues-perforees-full-brogue-tradition'],
-    reviews: [
-      { author: 'Guillaume', rating: 5, comment: 'Une qualité de fabrication irréprochable. De vrais souliers de gentleman.' }
-    ]
+    sizes: ['41', '42', '43', '44'],
+    colors: ['Marron Foncé', 'Noir'],
   },
   {
     id: 'prod-50',
-    name: 'Chunky-Derby-Schuhe mit Plateausohle',
-    name_fr: 'Derby chunky à plateforme Street-Luxe',
-    name_en: 'Chunky Platform Derby Shoes',
+    name: 'PRADA Chunky-Derby-Schuhe mit Plateausohle',
+    name_fr: 'PRADA Derby chunky à plateforme Street-Luxe',
+    name_en: 'PRADA Chunky Platform Derby Shoes',
     slug: 'derby-chunky-platform-street-luxe',
     price: 420,
     description: 'Ein kühnes Statement für den modebewussten Mann. Diese Derby-Schuhe kombinieren ein klassisches Obermaterial aus poliertem Leder mit einer imposanten Plateausohle und schaffen so eine avantgardistische Fusion aus Streetwear und Luxus.',
@@ -513,10 +537,8 @@ export const products: Product[] = [
     description_en: 'A bold statement for the fashion-forward man. These derbies merge a classic polished leather upper with an imposing platform sole, creating an avant-garde fusion of streetwear and luxury.',
     category: 'shoes',
     images: ['derby-chunky-platform-street-luxe'],
-    reviews: [
-      { author: 'Leo', rating: 5, comment: 'Style unique, elles font vraiment leur effet.' },
-      { author: 'Maxime', rating: 5, comment: 'Surprenant au début, mais incroyablement confortables.'}
-    ]
+    sizes: ['41', '42', '43'],
+    colors: ['Noir'],
   },
   {
     id: 'prod-51',
@@ -530,9 +552,8 @@ export const products: Product[] = [
     description_en: 'When robustness meets refinement. Crafted from premium grained leather, this derby offers a rich texture and exceptional durability. A pillar of the discerning man\'s wardrobe.',
     category: 'shoes',
     images: ['derby-cuir-graine-elite'],
-    reviews: [
-      { author: 'Sébastien', rating: 5, comment: 'Le cuir grainé est magnifique et la chaussure est très solide.' }
-    ]
+    sizes: ['41', '42', '43', '44', '45'],
+    colors: ['Noir', 'Cognac'],
   },
   {
     id: 'prod-52',
@@ -546,9 +567,8 @@ export const products: Product[] = [
     description_en: 'The epitome of feminine elegance. These glossy patent leather pumps elongate the silhouette with their 9 cm stiletto heel. A symbol of glamour and confidence for any special occasion.',
     category: 'shoes',
     images: ['escarpins-cuir-verni-talon-9-cm-eclipse'],
-    reviews: [
-      { author: 'Charlotte', rating: 5, comment: 'La cambrure est parfaite. Elles sont sublimes.' }
-    ]
+    sizes: ['36', '37', '38', '39', '40', '41'],
+    colors: ['Noir', 'Nude'],
   },
   {
     id: 'prod-53',
@@ -562,9 +582,8 @@ export const products: Product[] = [
     description_en: 'A casual-chic aesthetic. These soft suede loafers, embellished with elegant tassels, embody an effortless preppy style. Ideal for an elegant look on the weekend or at the office.',
     category: 'shoes',
     images: ['mocassin-tasseled-suede-club'],
-    reviews: [
-      { author: 'Arthur', rating: 4, comment: 'Très beaux, mais un peu fragiles sous la pluie.' }
-    ]
+    sizes: ['41', '42', '43'],
+    colors: ['Bleu Marine', 'Beige'],
   },
   {
     id: 'prod-54',
@@ -578,10 +597,8 @@ export const products: Product[] = [
     description_en: 'A true foot jewel. These luminous satin mules are distinguished by their unique and artistic sculptural heel. The guarantee of a remarkable and sophisticated entrance.',
     category: 'shoes',
     images: ['mules-satin-talon-sculpte-diva'],
-    reviews: [
-      { author: 'Nina', rating: 5, comment: 'Spectaculaires ! Une véritable œuvre d\'art à mes pieds.' },
-      { author: 'Laura', rating: 5, comment: 'Étonnamment confortables pour des chaussures aussi design.'}
-    ]
+    sizes: ['37', '38', '39'],
+    colors: ['Fuchsia', 'Noir'],
   },
   {
     id: 'prod-55',
@@ -595,9 +612,8 @@ export const products: Product[] = [
     description_en: 'The pinnacle of shoemaking art. This hand-stitched oxford, made from meticulously patinated leather, offers unparalleled depth and shades of color. For the connoisseur who seeks the exceptional.',
     category: 'shoes',
     images: ['richelieu-cousu-main-cuir-patine-souverain'],
-    reviews: [
-      { author: 'Édouard', rating: 5, comment: 'La patine est magnifique. Des chaussures d\'exception.' }
-    ]
+    sizes: ['41', '42', '43', '44'],
+    colors: ['Brun Patiné', 'Bordeaux Patiné'],
   },
   {
     id: 'prod-56',
@@ -611,9 +627,8 @@ export const products: Product[] = [
     description_en: 'The essence of summer simplicity. These minimalist sandals are characterized by a thin leather strap that delicately wraps around the ankle. A symbol of effortless elegance for sunny days.',
     category: 'shoes',
     images: ['sandales-a-bride-cheville-en-cuir-serenite'],
-    reviews: [
-      { author: 'Chloé', rating: 5, comment: 'Élégantes, simples et confortables. Parfaites pour l\'été.' }
-    ]
+    sizes: ['37', '38', '39', '40'],
+    colors: ['Blanc', 'Cuir Naturel'],
   },
   {
     id: 'prod-58',
@@ -627,9 +642,8 @@ export const products: Product[] = [
     description_en: 'Essential warmth without the bulk. This lightweight down jacket offers exceptional insulation in a slim, versatile package. Ideal for travel or as a layer on cooler days.',
     category: 'winter-clothing',
     images: ['doudoune-legere-canada-goose'],
-    reviews: [
-        { author: 'Adam', rating: 5, comment: 'Incroyablement légère et chaude. Parfaite pour la mi-saison.'}
-    ]
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Rouge'],
   },
   {
     id: 'prod-59',
@@ -643,9 +657,8 @@ export const products: Product[] = [
     description_en: 'Ultimate protection against the elements. Designed for extreme conditions, this Black Series parka combines cutting-edge technical materials with an urban, sophisticated design.',
     category: 'winter-clothing',
     images: ['parka-expedition-the-north-face-black-series'],
-    reviews: [
-        { author: 'Xavier', rating: 5, comment: 'Un véritable bouclier contre le froid. Chaque détail est pensé.'}
-    ]
+    sizes: ['M', 'L', 'XL'],
+    colors: ['Noir', 'Jaune'],
   },
   {
     id: 'prod-60',
@@ -659,24 +672,8 @@ export const products: Product[] = [
     description_en: 'Casual luxury at its finest. This pure cashmere zip-up cardigan is incredibly soft and versatile, to be worn alone or as a layer.',
     category: 'mens-clothing',
     images: ['cardigan-zippe-cachemire-brunello-cucinelli'],
-    reviews: [
-        { author: 'Gaspard', rating: 5, comment: 'Une pièce d\'une qualité exceptionnelle. Le prix est justifié.'}
-    ]
-  },
-  {
-    id: 'manteau-long-laine-hugo-boss',
-    name: 'Manteau Long en Laine',
-    name_fr: 'Manteau Long en Laine',
-    name_en: 'Long Wool Coat',
-    slug: 'manteau-long-laine-hugo-boss',
-    price: 390,
-    oldPrice: 490,
-    description: 'Ein zeitloser Mantel aus hochwertiger Wolle, der Eleganz und Wärme vereint. Perfekt für den Winter.',
-    description_fr: 'Un manteau intemporel en laine de qualité supérieure qui allie élégance et chaleur. Parfait pour l\'hiver.',
-    description_en: 'A timeless coat made of high-quality wool that combines elegance and warmth. Perfect for winter.',
-    category: 'winter-clothing',
-    images: ['manteau-long-laine-hugo-boss'],
-    reviews: []
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Gris', 'Bleu Marine'],
   },
   {
     id: 'doudoune-matelassee-moncler',
@@ -691,7 +688,8 @@ export const products: Product[] = [
     description_en: 'A light and warm down jacket, ideal for cold days. A classic from Moncler.',
     category: 'winter-clothing',
     images: ['doudoune-matelassee-moncler'],
-    reviews: []
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Bleu Marine'],
   },
   {
     id: 'pull-col-roule-laine-merinos-paul-smith',
@@ -706,7 +704,8 @@ export const products: Product[] = [
     description_en: 'A soft and elegant turtleneck sweater in merino wool. An essential for your winter wardrobe.',
     category: 'winter-clothing',
     images: ['pull-col-roule-laine-merinos-paul-smith'],
-    reviews: []
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Gris', 'Noir', 'Bordeaux'],
   },
   {
     id: 'prod-80',
@@ -721,7 +720,8 @@ export const products: Product[] = [
     description_en: 'An urban parka that combines warmth and style, with a slim silhouette and protection down to -20°C.',
     category: 'winter-clothing',
     images: ['Canada_Goose_MacMillan_Parka'],
-    reviews: []
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Graphite', 'Bleu Marine'],
   },
   {
     id: 'prod-81',
@@ -735,7 +735,8 @@ export const products: Product[] = [
     description_en: 'Luxurious quilted parka, filled with down, offering unmatched comfort and iconic style.',
     category: 'winter-clothing',
     images: ['Moncler_Quilted_Hooded_Parka'],
-    reviews: []
+    sizes: ['0', '1', '2', '3', '4'],
+    colors: ['Noir', 'Blanc'],
   },
   {
     id: 'prod-82',
@@ -750,7 +751,8 @@ export const products: Product[] = [
     description_en: 'A robust parka designed for extreme cold, with a water-repellent finish and luxurious fur trim.',
     category: 'winter-clothing',
     images: ['Moose_Knuckles_Everest_Parka'],
-    reviews: []
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'prod-83',
@@ -764,7 +766,8 @@ export const products: Product[] = [
     description_en: 'The iconic Arctic Parka, a symbol of resistance and warmth, perfect for the harshest winters.',
     category: 'winter-clothing',
     images: ['Woolrich_Arctic_Parka'],
-    reviews: []
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Vert Foncé'],
   },
   {
     id: 'prod-84',
@@ -778,7 +781,8 @@ export const products: Product[] = [
     description_en: 'A lightweight and waterproof parka that combines functionality and urban style with technical details.',
     category: 'winter-clothing',
     images: ['Parajumpers_Easy_Waterproof_Parka'],
-    reviews: []
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Bleu'],
   },
   {
     id: 'prod-85',
@@ -793,7 +797,8 @@ export const products: Product[] = [
     description_en: 'An elegant, minimalist parka offering GORE-TEX protection and the warmth of goose down.',
     category: 'winter-clothing',
     images: ['ArcTeryx_Patera_Down_Parka'],
-    reviews: []
+    sizes: ['XS', 'S', 'M', 'L'],
+    colors: ['Noir', 'Bordeaux'],
   },
   {
     id: 'prod-86',
@@ -807,7 +812,8 @@ export const products: Product[] = [
     description_en: 'A lightweight and compressible down parka, designed to provide warmth without the bulk.',
     category: 'winter-clothing',
     images: ['The_North_Face_Hydrenalite_Down_Parka'],
-    reviews: []
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'prod-87',
@@ -821,7 +827,8 @@ export const products: Product[] = [
     description_en: 'A parka that combines Belstaff\'s motorcycling heritage with modern, weather-resistant materials.',
     category: 'winter-clothing',
     images: ['Belstaff_Pendulum_Parka'],
-    reviews: []
+    sizes: ['48', '50', '52', '54'],
+    colors: ['Noir', 'Vert'],
   },
   {
     id: 'prod-88',
@@ -836,7 +843,8 @@ export const products: Product[] = [
     description_en: 'A long and extremely warm expedition parka, designed for arctic conditions.',
     category: 'winter-clothing',
     images: ['Fjallraven_Expedition_Long_Down_Parka'],
-    reviews: []
+    sizes: ['XS', 'S', 'M', 'L'],
+    colors: ['Noir', 'Bleu Marine'],
   },
   {
     id: 'prod-89',
@@ -850,7 +858,8 @@ export const products: Product[] = [
     description_en: 'The iconic anorak jacket, reinvented with improved insulation and modern details.',
     category: 'winter-clothing',
     images: ['Napapijri_Skidoo_2_0_Parka'],
-    reviews: []
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Rouge', 'Bleu'],
   },
   {
     id: 'prod-90',
@@ -864,7 +873,8 @@ export const products: Product[] = [
     description_en: 'A versatile 3-in-1 parka with a waterproof GORE-TEX outer layer and a removable down jacket.',
     category: 'winter-clothing',
     images: ['Patagonia_Frozen_Range_3_in_1_Parka'],
-    reviews: []
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'prod-91',
@@ -879,7 +889,8 @@ export const products: Product[] = [
     description_en: 'A minimalist and oversized down parka, combining Scandinavian design with functionality.',
     category: 'winter-clothing',
     images: ['Acne_Studios_Down_Parka'],
-    reviews: []
+    sizes: ['XS/S', 'M/L'],
+    colors: ['Noir', 'Beige'],
   },
   {
     id: 'prod-92',
@@ -893,7 +904,8 @@ export const products: Product[] = [
     description_en: 'A technical parka made from ripstop Cordura fabric, treated to be water-repellent and filled with high-quality down.',
     category: 'winter-clothing',
     images: ['Stone_Island_Cordura_Ripstop_Down_Parka'],
-    reviews: []
+    sizes: ['M', 'L', 'XL'],
+    colors: ['Noir', 'Vert Olive'],
   },
   {
     id: 'prod-93',
@@ -907,7 +919,8 @@ export const products: Product[] = [
     description_en: 'An elegant and functional parka, with a water-repellent Teflon treatment and a detachable fur collar.',
     category: 'winter-clothing',
     images: ['Peuterey_Kasa_Down_Parka'],
-    reviews: []
+    sizes: ['40', '42', '44', '46'],
+    colors: ['Noir', 'Bleu Foncé'],
   },
   {
     id: 'prod-94',
@@ -922,7 +935,8 @@ export const products: Product[] = [
     description_en: 'A high-performance ski parka that combines style and technical features for optimal performance on the slopes.',
     category: 'winter-clothing',
     images: ['Bogner_Fire_Ice_Ski_Parka'],
-    reviews: []
+    sizes: ['S', 'M', 'L'],
+    colors: ['Rouge', 'Noir', 'Blanc'],
   },
   {
     id: 'sport-101',
@@ -936,7 +950,8 @@ export const products: Product[] = [
     description_en: 'A technical and chic jacket, perfect for cool weather training, combining performance and style.',
     category: 'sport',
     images: ['Adidas_by_Stella_McCartney_Veste'],
-    reviews: []
+    sizes: ['XS', 'S', 'M', 'L'],
+    colors: ['Noir', 'Blanc'],
   },
   {
     id: 'sport-102',
@@ -950,7 +965,8 @@ export const products: Product[] = [
     description_en: 'High-performance leggings with a flattering cut for optimal freedom of movement.',
     category: 'sport',
     images: ['Adidas_by_Stella_McCartney_Legging'],
-    reviews: []
+    sizes: ['XS', 'S', 'M', 'L'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'sport-103',
@@ -964,7 +980,8 @@ export const products: Product[] = [
     description_en: 'A soft and comfortable zip jacket, ideal for warm-ups or for a casual post-yoga look.',
     category: 'sport',
     images: ['Alo_Yoga_Veste_Zippee'],
-    reviews: []
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Blanc'],
   },
   {
     id: 'sport-104',
@@ -978,7 +995,8 @@ export const products: Product[] = [
     description_en: 'A breathable and stylish training top, designed for comfort during the most intense sessions.',
     category: 'sport',
     images: ['Alo_Yoga_Haut_Entrainement'],
-    reviews: []
+    sizes: ['XS', 'S', 'M'],
+    colors: ['Noir', 'Blanc', 'Rose'],
   },
   {
     id: 'sport-105',
@@ -992,7 +1010,8 @@ export const products: Product[] = [
     description_en: 'A luxurious fleece for optimal warmth, perfect for outdoor activities or an urban winter look.',
     category: 'sport',
     images: ['HAUTE_Motion_Fleece_Polaire'],
-    reviews: []
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Crème'],
   },
   {
     id: 'sport-106',
@@ -1006,7 +1025,8 @@ export const products: Product[] = [
     description_en: 'Technical leggings with a modern design, offering unmatched comfort and exceptional durability.',
     category: 'sport',
     images: ['HAUTE_Legging_Nomad'],
-    reviews: []
+    sizes: ['XS', 'S', 'M'],
+    colors: ['Noir', 'Vert Kaki'],
   },
   {
     id: 'sport-107',
@@ -1020,7 +1040,8 @@ export const products: Product[] = [
     description_en: 'The perfect blend of luxury and performance, this sports bra offers optimal support with a high-fashion touch.',
     category: 'sport',
     images: ['Loewe_On_Brassiere_Sport'],
-    reviews: []
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Blanc'],
   },
   {
     id: 'sport-108',
@@ -1034,7 +1055,8 @@ export const products: Product[] = [
     description_en: 'Combine style and functionality with these leggings from the collaboration between Loewe and On.',
     category: 'sport',
     images: ['Loewe_On_Legging_Actif'],
-    reviews: []
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Orange'],
   },
   {
     id: 'sport-109',
@@ -1048,7 +1070,8 @@ export const products: Product[] = [
     description_en: 'A technical jacket designed for all conditions, protecting you from the elements without compromising on style.',
     category: 'sport',
     images: ['Loewe_On_Storm_Active_Jacket'],
-    reviews: []
+    sizes: ['S', 'M', 'L'],
+    colors: ['Dégradé Bleu', 'Noir'],
   },
   {
     id: 'sport-110',
@@ -1062,7 +1085,8 @@ export const products: Product[] = [
     description_en: 'An innovative design for a second-skin feel and absolute comfort during exercise.',
     category: 'sport',
     images: ['Under_Armour_Halo_Bonded_Legging'],
-    reviews: []
+    sizes: ['XS', 'S', 'M'],
+    colors: ['Gris', 'Noir'],
   },
   {
     id: 'sport-111',
@@ -1076,7 +1100,8 @@ export const products: Product[] = [
     description_en: 'A retro-look track jacket with a modern twist, perfect for a sporty and trendy style.',
     category: 'sport',
     images: ['Diesel_Sport_Track_Jacket'],
-    reviews: []
+    sizes: ['M', 'L', 'XL'],
+    colors: ['Noir/Blanc', 'Rouge/Blanc'],
   },
   {
     id: 'sport-112',
@@ -1090,7 +1115,8 @@ export const products: Product[] = [
     description_en: 'An elegant and comfortable merino wool yoga jumpsuit for a luxurious practice.',
     category: 'sport',
     images: ['Nagnata_Laine_Combinaison_Yoga'],
-    reviews: []
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Gris Chiné'],
   },
   {
     id: 'sport-113',
@@ -1104,7 +1130,8 @@ export const products: Product[] = [
     description_en: 'A premium jacket that combines performance and aesthetics for a sophisticated sporty look.',
     category: 'sport',
     images: ['Lululemon_Veste_Premium'],
-    reviews: []
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Bleu Nuit'],
   },
   {
     id: 'sport-114',
@@ -1118,7 +1145,8 @@ export const products: Product[] = [
     description_en: 'A technical jacket for outdoor adventures, offering optimal protection and great freedom of movement.',
     category: 'sport',
     images: ['Peak_Performance_Tech_Jacket'],
-    reviews: []
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir', 'Orange'],
   },
   {
     id: 'sport-115',
@@ -1132,7 +1160,8 @@ export const products: Product[] = [
     description_en: 'A technical running shirt for maximum performance, ensuring breathability and comfort.',
     category: 'sport',
     images: ['Craft_Running_Tech_Shirt'],
-    reviews: []
+    sizes: ['S', 'M', 'L'],
+    colors: ['Blanc', 'Noir'],
   },
   {
     id: 'sport-116',
@@ -1146,7 +1175,8 @@ export const products: Product[] = [
     description_en: 'A professional cycling jersey for demanding cyclists, combining aerodynamics and comfort.',
     category: 'sport',
     images: ['Gore_Wear_Cycling_Jersey'],
-    reviews: []
+    sizes: ['S', 'M', 'L', 'XL'],
+    colors: ['Noir/Rouge', 'Bleu/Jaune'],
   },
   {
     id: 'sport-117',
@@ -1160,7 +1190,8 @@ export const products: Product[] = [
     description_en: 'Running shorts with a minimalist design and technical fabrics for an unparalleled running experience.',
     category: 'sport',
     images: ['Satisfy_Running_Short'],
-    reviews: []
+    sizes: ['1', '2', '3', '4'],
+    colors: ['Noir', 'Vert Olive'],
   },
   {
     id: 'sport-118',
@@ -1174,7 +1205,8 @@ export const products: Product[] = [
     description_en: 'A high-end ski parka that combines elegance and performance for an impeccable style on the slopes.',
     category: 'sport',
     images: ['Bogner_Ski_Parka'],
-    reviews: []
+    sizes: ['S', 'M', 'L'],
+    colors: ['Blanc', 'Noir'],
   },
   {
     id: 'shoe-1',
@@ -1187,9 +1219,10 @@ export const products: Product[] = [
     description: 'Der ikonische Stiefel, um den härtesten Wintern zu trotzen. Wasserdicht und isoliert für optimalen Komfort.',
     description_fr: 'La botte iconique pour affronter les hivers les plus rudes. Imperméable et isolée pour un confort optimal.',
     description_en: 'The iconic boot to face the harshest winters. Waterproof and insulated for optimal comfort.',
-    category: 'shoes',
+    category: 'winter-clothing',
     images: ['Sorel_Caribou'],
-    reviews: []
+    sizes: ['40', '41', '42', '43', '44', '45'],
+    colors: ['Marron', 'Noir'],
   },
   {
     id: 'shoe-2',
@@ -1201,9 +1234,10 @@ export const products: Product[] = [
     description: 'Die moderne Version des Caribou mit GORE-TEX-Technologie für verbesserte Atmungsaktivität und Wasserdichtigkeit.',
     description_fr: 'La version moderne de la Caribou, avec la technologie GORE-TEX pour une respirabilité et une imperméabilité accrues.',
     description_en: 'The modern version of the Caribou, with GORE-TEX technology for increased breathability and waterproofing.',
-    category: 'shoes',
+    category: 'winter-clothing',
     images: ['Sorel_Caribou_Horizon_GTX'],
-    reviews: []
+    sizes: ['41', '42', '43', '44'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'shoe-3',
@@ -1215,9 +1249,10 @@ export const products: Product[] = [
     description: 'Ein klassischer und vielseitiger Winterstiefel, der Stil und Funktionalität für den täglichen Gebrauch vereint.',
     description_fr: 'Une botte d\'hiver classique et polyvalente, alliant style et fonctionnalité pour un usage quotidien.',
     description_en: 'A classic and versatile winter boot, combining style and functionality for daily use.',
-    category: 'shoes',
+    category: 'winter-clothing',
     images: ['Sorel_1964_PAC'],
-    reviews: []
+    sizes: ['39', '40', '41', '42'],
+    colors: ['Marron', 'Noir'],
   },
   {
     id: 'shoe-4',
@@ -1230,9 +1265,10 @@ export const products: Product[] = [
     description: 'Leichter und agiler Stiefel für Winterwanderungen, der Grip und Wärme bietet.',
     description_fr: 'Botte légère et agile pour la randonnée hivernale, offrant adhérence et chaleur.',
     description_en: 'Lightweight and agile boot for winter hiking, offering grip and warmth.',
-    category: 'shoes',
+    category: 'winter-clothing',
     images: ['Salomon_X_Ultra_Snow_Pilot'],
-    reviews: []
+    sizes: ['42', '43', '44', '45'],
+    colors: ['Noir', 'Bleu'],
   },
   {
     id: 'shoe-5',
@@ -1244,9 +1280,10 @@ export const products: Product[] = [
     description: 'Ein robuster und zuverlässiger Stiefel für extreme Kälte, mit Omni-Heat-Technologie.',
     description_fr: 'Une botte robuste et fiable pour le grand froid, dotée de la technologie Omni-Heat.',
     description_en: 'A robust and reliable boot for extreme cold, featuring Omni-Heat technology.',
-    category: 'shoes',
+    category: 'winter-clothing',
     images: ['Columbia_Bugaboot_III'],
-    reviews: []
+    sizes: ['40', '41', '42', '43', '44', '45', '46'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'shoe-6',
@@ -1258,9 +1295,10 @@ export const products: Product[] = [
     description: 'Hochleistungs-Winterstiefel mit überlegenem Grip und Isolierung für anspruchsvolles Gelände.',
     description_fr: 'Botte d\'hiver haute performance avec une adhérence et une isolation supérieures pour les terrains difficiles.',
     description_en: 'High-performance winter boot with superior grip and insulation for challenging terrains.',
-    category: 'shoes',
+    category: 'winter-clothing',
     images: ['The_North_Face_Chilkat_V_400'],
-    reviews: []
+    sizes: ['42', '43', '44', '45'],
+    colors: ['Noir', 'Vert'],
   },
   {
     id: 'shoe-7',
@@ -1272,9 +1310,10 @@ export const products: Product[] = [
     description: 'Entwickelt für arktische Bedingungen, bietet dieser Stiefel extremen Schutz bis -100°C.',
     description_fr: 'Conçue pour les conditions arctiques, cette botte offre une protection extrême jusqu\'à -100°C.',
     description_en: 'Designed for arctic conditions, this boot offers extreme protection down to -100°C.',
-    category: 'shoes',
+    category: 'winter-clothing',
     images: ['Baffin_Impact'],
-    reviews: []
+    sizes: ['41', '42', '43', '44', '45'],
+    colors: ['Noir'],
   },
   {
     id: 'shoe-8',
@@ -1287,9 +1326,10 @@ export const products: Product[] = [
     description: 'Ein vielseitiger Wanderstiefel für den Winter, der Komfort und Schutz vor den Elementen bietet.',
     description_fr: 'Une botte de randonnée polyvalente pour l\'hiver, offrant confort et protection contre les éléments.',
     description_en: 'A versatile hiking boot for winter, offering comfort and protection from the elements.',
-    category: 'shoes',
+    category: 'winter-clothing',
     images: ['Merrell_Thermo_Chill_2_Mid'],
-    reviews: []
+    sizes: ['41', '42', '43', '44', '45'],
+    colors: ['Noir', 'Marron'],
   },
   {
     id: 'shoe-9',
@@ -1301,9 +1341,10 @@ export const products: Product[] = [
     description: 'Die perfekte Kombination aus urbanem Stil und Winterkomfort, mit einem Futter aus reiner Wolle.',
     description_fr: 'Le mariage parfait entre style urbain et confort hivernal, avec une doublure en laine pure.',
     description_en: 'The perfect marriage of urban style and winter comfort, with a pure wool lining.',
-    category: 'shoes',
+    category: 'winter-clothing',
     images: ['UGG_Butte'],
-    reviews: []
+    sizes: ['41', '42', '43', '44'],
+    colors: ['Noir', 'Marron'],
   },
   {
     id: 'shoe-10',
@@ -1315,9 +1356,10 @@ export const products: Product[] = [
     description: 'Hoher Gummistiefel, der für extreme Kälte und nasse Bedingungen entwickelt wurde und einen außergewöhnlichen Grip auf Eis bietet.',
     description_fr: 'Botte haute en caoutchouc conçue pour le froid extrême et les conditions humides, offrant une adhérence exceptionnelle sur la glace.',
     description_en: 'High rubber boot designed for extreme cold and wet conditions, offering exceptional grip on ice.',
-    category: 'shoes',
+    category: 'winter-clothing',
     images: ['Muck_Boot_Arctic_Ice_Tall'],
-    reviews: []
+    sizes: ['40', '41', '42', '43', '44'],
+    colors: ['Noir'],
   },
   {
     id: 'sac_de_couchage1',
@@ -1331,7 +1373,8 @@ export const products: Product[] = [
     description_en: 'Designed for extreme conditions, this sleeping bag provides optimal warmth and comfort down to -10°C.',
     category: 'winter-clothing',
     images: ['sac_de_couchage1'],
-    reviews: [],
+    sizes: ['Standard'],
+    colors: ['Rouge'],
   },
   {
     id: 'sac_de_couchage2',
@@ -1346,7 +1389,8 @@ export const products: Product[] = [
     description_en: 'The perfect ally for high mountain expeditions, ensuring protection and warmth down to -20°C.',
     category: 'winter-clothing',
     images: ['sac_de_couchage2'],
-    reviews: [],
+    sizes: ['Standard', 'Long'],
+    colors: ['Bleu'],
   },
   {
     id: 'sac_de_couchage3',
@@ -1360,7 +1404,8 @@ export const products: Product[] = [
     description_en: 'Lightweight and compact, this sleeping bag is ideal for mid-season treks.',
     category: 'winter-clothing',
     images: ['sac_de_couchage3'],
-    reviews: [],
+    sizes: ['Standard'],
+    colors: ['Vert'],
   },
   {
     id: 'sac_de_couchage4',
@@ -1375,7 +1420,8 @@ export const products: Product[] = [
     description_en: 'Provides exceptional comfort for cool nights when camping or bivouacking.',
     category: 'winter-clothing',
     images: ['sac_de_couchage4'],
-    reviews: [],
+    sizes: ['Standard', 'Large'],
+    colors: ['Gris'],
   },
   {
     id: 'sac_hiver1',
@@ -1390,7 +1436,8 @@ export const products: Product[] = [
     description_en: 'A chic and functional bag for the winter, with soft padding to keep your belongings warm.',
     category: 'winter-clothing',
     images: ['sac_hiver1'],
-    reviews: [],
+    sizes: ['Unique'],
+    colors: ['Noir', 'Bordeaux'],
   },
   {
     id: 'sac_hiver2',
@@ -1404,7 +1451,8 @@ export const products: Product[] = [
     description_en: 'A sturdy and spacious backpack designed for winter adventures, with multiple compartments and water-resistant materials.',
     category: 'winter-clothing',
     images: ['sac_hiver2'],
-    reviews: [],
+    sizes: ['30L', '45L'],
+    colors: ['Noir', 'Gris Anthracite'],
   },
   {
     id: 'sac_hiver3',
@@ -1418,7 +1466,8 @@ export const products: Product[] = [
     description_en: 'An elegant tote bag made of high-quality wool, perfect for a sophisticated winter look.',
     category: 'winter-clothing',
     images: ['sac_hiver3'],
-    reviews: [],
+    sizes: ['Unique'],
+    colors: ['Gris Chiné', 'Noir'],
   },
   {
     id: 'sac_hiver4',
@@ -1432,7 +1481,8 @@ export const products: Product[] = [
     description_en: 'A small and practical crossbody bag, ideal for carrying your essentials in style during the winter.',
     category: 'winter-clothing',
     images: ['sac_hiver4'],
-    reviews: [],
+    sizes: ['Unique'],
+    colors: ['Noir', 'Marron'],
   },
     {
     id: 'acc-101',
@@ -1446,7 +1496,6 @@ export const products: Product[] = [
     description_en: 'A durable and stylish watch for the active lifestyle. Water-resistant and comfortable.',
     category: 'accessories',
     images: ['montre-sport-silicone-hydrosport-5-atm'],
-    reviews: [],
   },
   {
     id: 'acc-102',
@@ -1460,7 +1509,6 @@ export const products: Product[] = [
     description_en: 'Timeless elegance with a classic leather strap and a sophisticated dial.',
     category: 'accessories',
     images: ['montre-cuir-brun-heritage-classique'],
-    reviews: [],
   },
   {
     id: 'acc-103',
@@ -1474,7 +1522,6 @@ export const products: Product[] = [
     description_en: 'A modern timepiece with a sleek silver metal band and a striking blue face.',
     category: 'accessories',
     images: ['montre-metallique-argent-blue-vision'],
-    reviews: [],
   },
   {
     id: 'acc-104',
@@ -1488,7 +1535,6 @@ export const products: Product[] = [
     description_en: 'A futuristic digital watch with an LED display, perfect for an urban and techy look.',
     category: 'accessories',
     images: ['montre-digitale-led-urban-tech'],
-    reviews: [],
   },
   {
     id: 'acc-105',
@@ -1502,7 +1548,6 @@ export const products: Product[] = [
     description_en: 'A luxury timepiece with a rose gold dial, exuding confidence and style.',
     category: 'accessories',
     images: ['montre-cadran-or-rose-executive-elite'],
-    reviews: [],
   },
   {
     id: 'acc-106',
@@ -1516,77 +1561,6 @@ export const products: Product[] = [
     description_en: 'A robust and precise chronograph built for performance and durability.',
     category: 'accessories',
     images: ['montre-chronographe-titan-steel-pro'],
-    reviews: [],
-  },
-  {
-    id: 'acc-107',
-    name: 'Elegant Wrap Winterschal',
-    name_fr: 'Châle d\'Hiver Elegant Wrap',
-    name_en: 'Elegant Wrap Winter Shawl',
-    slug: 'chale-hiver-motif-elegant-elegant-wrap',
-    price: 110,
-    description: 'Ein großer, eleganter Schal mit einem raffinierten Muster, perfekt, um sich stilvoll einzuwickeln.',
-    description_fr: 'Un grand châle élégant avec un motif sophistiqué, parfait pour s\'envelopper de style.',
-    description_en: 'A large, elegant shawl with a sophisticated pattern, perfect for wrapping up in style.',
-    category: 'accessories',
-    images: ['chale-hiver-motif-elegant-elegant-wrap'],
-    reviews: [],
-  },
-  {
-    id: 'acc-108',
-    name: 'Cashmere Touch bedruckter Schal',
-    name_fr: 'Foulard Imprimé Cashmere Touch',
-    name_en: 'Cashmere Touch Printed Scarf',
-    slug: 'foulard-cachemire-imprime-cashmere-touch',
-    price: 130,
-    description: 'Ein luxuriöser Kaschmirschal mit einem eleganten Aufdruck, der jedem Outfit einen Hauch von Farbe verleiht.',
-    description_fr: 'Un foulard luxueux au toucher cachemire avec un imprimé élégant pour ajouter une touche de couleur à n\'importe quelle tenue.',
-    description_en: 'A luxurious cashmere-touch scarf with an elegant print to add a pop of color to any outfit.',
-    category: 'accessories',
-    images: ['foulard-cachemire-imprime-cashmere-touch'],
-    reviews: [],
-  },
-  {
-    id: 'acc-109',
-    name: 'Mini Glam Schicke Handtasche',
-    name_fr: 'Petite Sac à Main Chic Mini Glam',
-    name_en: 'Mini Glam Chic Handbag',
-    slug: 'petit-sac-a-main-chic-mini-glam',
-    price: 220,
-    description: 'Eine kleine, aber glamouröse Handtasche, um Ihre Essentials mit Eleganz zu tragen.',
-    description_fr: 'Un petit sac à main glamour mais compact pour transporter vos essentiels avec élégance.',
-    description_en: 'A small yet glamorous handbag to carry your essentials with elegance.',
-    category: 'accessories',
-    images: ['petit-sac-a-main-chic-mini-glam'],
-    reviews: [],
-  },
-  {
-    id: 'acc-110',
-    name: 'Shine Drop Silberne Ohrhänger',
-    name_fr: 'Boucles d\'Oreilles Pendantes Shine Drop',
-    name_en: 'Shine Drop Dangle Earrings',
-    slug: 'boucles-oreilles-pendantes-argentees-shine-drop',
-    price: 85,
-    description: 'Funkelnde silberne Ohrhänger, um Ihren Look zu erhellen.',
-    description_fr: 'Des boucles d\'oreilles pendantes et scintillantes en argent pour illuminer votre look.',
-    description_en: 'Sparkling silver dangle earrings to illuminate your look.',
-    category: 'accessories',
-    images: ['boucles-oreilles-pendantes-argentees-shine-drop'],
-    reviews: [],
-  },
-  {
-    id: 'acc-111',
-    name: 'Shine Night Abendclutch',
-    name_fr: 'Pochette de Soirée Shine Night',
-    name_en: 'Shine Night Evening Clutch',
-    slug: 'pochette-soiree-shine-night-premium',
-    price: 150,
-    description: 'Eine Premium-Clutch, um bei Ihren eleganten Abenden zu glänzen.',
-    description_fr: 'Une pochette de soirée premium pour briller lors de vos événements chics.',
-    description_en: 'A premium evening clutch to shine at your chic events.',
-    category: 'accessories',
-    images: ['pochette-soiree-shine-night-premium'],
-    reviews: [],
   },
   {
     id: 'acc-112',
@@ -1600,7 +1574,6 @@ export const products: Product[] = [
     description_en: 'A luxurious cable-knit wool beanie to keep you warm in style.',
     category: 'accessories',
     images: ['bonnet-laine-torsadee-noir-nordic-luxe'],
-    reviews: [],
   },
   {
     id: 'acc-113',
@@ -1614,7 +1587,6 @@ export const products: Product[] = [
     description_en: 'A thick and comfortable grey beanie, a must-have for winter.',
     category: 'accessories',
     images: ['bonnet-epais-gris-winter-essential'],
-    reviews: [],
   },
   {
     id: 'acc-114',
@@ -1628,7 +1600,6 @@ export const products: Product[] = [
     description_en: 'A trendy cuffed beanie for an urban and casual style.',
     category: 'accessories',
     images: ['bonnet-streetwear-a-revers-urban-knit'],
-    reviews: [],
   },
   {
     id: 'acc-115',
@@ -1642,7 +1613,6 @@ export const products: Product[] = [
     description_en: 'A slim and elegant wallet made from genuine leather to organize your cards and cash.',
     category: 'accessories',
     images: ['portefeuille-cuir-veritable-slimfold-premium'],
-    reviews: [],
   },
   {
     id: 'acc-116',
@@ -1656,7 +1626,6 @@ export const products: Product[] = [
     description_en: 'A premium leather crossbody bag for the modern professional, combining style and functionality.',
     category: 'accessories',
     images: ['sacoche-bandouliere-cuir-premium-executive-bag'],
-    reviews: [],
   },
   {
     id: 'acc-117',
@@ -1670,7 +1639,6 @@ export const products: Product[] = [
     description_en: 'A wool beanie with a playful faux fur pompom for a glamorous winter look.',
     category: 'accessories',
     images: ['bonnet-laine-pompon-fourrure-synthetique-cozy-glam'],
-    reviews: [],
   },
   {
     id: 'acc-118',
@@ -1684,7 +1652,6 @@ export const products: Product[] = [
     description_en: 'A long, oversized beanie for a relaxed and chic urban look.',
     category: 'accessories',
     images: ['bonnet-long-oversize-urban-chic'],
-    reviews: [],
   },
   {
     id: 'acc-119',
@@ -1698,77 +1665,6 @@ export const products: Product[] = [
     description_en: 'An elegantly knitted beanie adorned with pearls for a touch of winter sophistication.',
     category: 'accessories',
     images: ['bonnet-tricote-perle-winter-pearl'],
-    reviews: [],
-  },
-  {
-    id: 'acc-120',
-    name: 'Elegant Wrap Winterschal',
-    name_fr: 'Châle d\'Hiver Elegant Wrap',
-    name_en: 'Elegant Wrap Winter Shawl',
-    slug: 'chale-hiver-motif-elegant-elegant-wrap-bis',
-    price: 110,
-    description: 'Ein großer, eleganter Schal mit einem raffinierten Muster, perfekt, um sich stilvoll einzuwickeln.',
-    description_fr: 'Un grand châle élégant avec un motif sophistiqué, parfait pour s\'envelopper de style.',
-    description_en: 'A large, elegant shawl with a sophisticated pattern, perfect for wrapping up in style.',
-    category: 'accessories',
-    images: ['chale-hiver-motif-elegant-elegant-wrap'],
-    reviews: [],
-  },
-  {
-    id: 'acc-121',
-    name: 'Cashmere Touch bedruckter Schal',
-    name_fr: 'Foulard Imprimé Cashmere Touch',
-    name_en: 'Cashmere Touch Printed Scarf',
-    slug: 'foulard-cachemire-imprime-cashmere-touch-bis',
-    price: 130,
-    description: 'Ein luxuriöser Kaschmirschal mit einem eleganten Aufdruck, der jedem Outfit einen Hauch von Farbe verleiht.',
-    description_fr: 'Un foulard luxueux au toucher cachemire avec un imprimé élégant pour ajouter une touche de couleur à n\'importe quelle tenue.',
-    description_en: 'A luxurious cashmere-touch scarf with an elegant print to add a pop of color to any outfit.',
-    category: 'accessories',
-    images: ['foulard-cachemire-imprime-cashmere-touch'],
-    reviews: [],
-  },
-  {
-    id: 'acc-122',
-    name: 'Mini Glam Schicke Handtasche',
-    name_fr: 'Petite Sac à Main Chic Mini Glam',
-    name_en: 'Mini Glam Chic Handbag',
-    slug: 'petit-sac-a-main-chic-mini-glam-bis',
-    price: 220,
-    description: 'Eine kleine, aber glamouröse Handtasche, um Ihre Essentials mit Eleganz zu tragen.',
-    description_fr: 'Un petit sac à main glamour mais compact pour transporter vos essentiels avec élégance.',
-    description_en: 'A small yet glamorous handbag to carry your essentials with elegance.',
-    category: 'accessories',
-    images: ['petit-sac-a-main-chic-mini-glam'],
-    reviews: [],
-  },
-  {
-    id: 'acc-123',
-    name: 'Shine Drop Silberne Ohrhänger',
-    name_fr: 'Boucles d\'Oreilles Pendantes Shine Drop',
-    name_en: 'Shine Drop Dangle Earrings',
-    slug: 'boucles-oreilles-pendantes-argentees-shine-drop-bis',
-    price: 85,
-    description: 'Funkelnde silberne Ohrhänger, um Ihren Look zu erhellen.',
-    description_fr: 'Des boucles d\'oreilles pendantes et scintillantes en argent pour illuminer votre look.',
-    description_en: 'Sparkling silver dangle earrings to illuminate your look.',
-    category: 'accessories',
-    images: ['boucles-oreilles-pendantes-argentees-shine-drop'],
-    reviews: [],
-  },
-  {
-    id: 'acc-124',
-    name: 'Shine Night Abendclutch',
-    name_fr: 'Pochette de Soirée Shine Night',
-    name_en: 'Shine Night Evening Clutch',
-    slug: 'pochette-soiree-shine-night-premium-bis',
-    price: 150,
-    description: 'Eine Premium-Clutch, um bei Ihren eleganten Abenden zu glänzen.',
-    description_fr: 'Une pochette de soirée premium pour briller lors de vos événements chics.',
-    description_en: 'A premium evening clutch to shine at your chic events.',
-    category: 'accessories',
-    images: ['pochette-soiree-shine-night-premium'],
-    reviews: [],
   },
    {
     id: 'acc-10',
@@ -1783,9 +1679,8 @@ export const products: Product[] = [
     description_en: 'Wrap yourself in a cocoon of softness. This pure virgin wool scarf offers unparalleled warmth and a feeling of delicate luxury against the skin. The perfect accessory for the coldest days.',
     category: 'accessories',
     images: ['echarpe-laine-vierge-premium-alpine-soft'],
-    reviews: [
-        { author: 'Isabelle', rating: 5, comment: 'Une douceur incroyable, c\'est comme un câlin.'}
-    ]
+    sizes: ['Unique'],
+    colors: ['Gris', 'Noir'],
   },
   {
     id: 'acc-11',
@@ -1799,9 +1694,8 @@ export const products: Product[] = [
     description_en: 'A modern and practical alternative to the scarf. This fleece snood offers optimal protection against wind and cold, while maintaining a clean and urban style. Perfect for your outdoor activities.',
     category: 'accessories',
     images: ['snood-polaire-winter-shield-premium'],
-    reviews: [
-        { author: 'Romain', rating: 5, comment: 'Très pratique et bien plus chaud que je ne le pensais.'}
-    ]
+    sizes: ['Unique'],
+    colors: ['Noir', 'Gris'],
   },
   {
     id: 'acc-13',
@@ -1816,9 +1710,8 @@ export const products: Product[] = [
     description_en: 'Combine warmth and connectivity. These thermal gloves are equipped with a special technology that allows you to use your touch screens without taking them off. Never have cold hands to stay connected again.',
     category: 'accessories',
     images: ['gants-tactiles-thermiques-tech-gloves'],
-    reviews: [
-        { author: 'Laura', rating: 5, comment: 'Enfin des gants qui fonctionnent vraiment avec mon téléphone !'}
-    ]
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir'],
   },
   {
     id: 'acc-23',
@@ -1833,9 +1726,8 @@ export const products: Product[] = [
     description_en: 'Drape yourself in extreme luxury. This oversized scarf in high-quality faux fur offers unparalleled softness and a touch of opulent glamour to your winter outfits.',
     category: 'accessories',
     images: ['echarpe-oversize-fausse-fourrure-luxe-soft'],
-    reviews: [
-        { author: 'Caroline', rating: 5, comment: 'Incroyablement douce et luxueuse. C\'est magnifique.'}
-    ]
+    sizes: ['Unique'],
+    colors: ['Noir', 'Blanc Cassé'],
   },
   {
     id: 'acc-24',
@@ -1850,9 +1742,8 @@ export const products: Product[] = [
     description_en: 'The timeless elegance of cable knit. This thick and soft scarf envelops you in warmth with style. Its rich texture and generous dimensions make it the perfect ally against the winter cold.',
     category: 'accessories',
     images: ['echarpe-maille-torsadee-warm-plush'],
-    reviews: [
-        { author: 'Nicolas', rating: 5, comment: 'Écharpe de grande qualité, très chaude et confortable.'}
-    ]
+    sizes: ['Unique'],
+    colors: ['Crème', 'Gris Anthracite'],
   },
   {
     id: 'acc-27',
@@ -1867,10 +1758,375 @@ export const products: Product[] = [
     description_en: 'The perfect alliance between elegance and comfort. These supple leather gloves are lined with soft fleece to keep your hands warm without sacrificing a refined style.',
     category: 'accessories',
     images: ['gants-cuir-doubles-polaire-lady-warm'],
-    reviews: [
-        { author: 'Hélène', rating: 5, comment: 'Très chauds et le cuir est d\'une grande souplesse. Parfaits.'}
-    ]
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Marron'],
   },
+  {
+    id: 'femme1',
+    name: 'Manteau Long en Laine Ceinturé',
+    name_fr: 'Manteau Long en Laine Ceinturé',
+    name_en: 'Long Belted Wool Coat',
+    slug: 'manteau-long-laine-ceinture-femme1',
+    price: 890,
+    oldPrice: 1200,
+    description: 'Ein Meisterwerk der Eleganz. Dieser lange Mantel aus reiner Wolle mit seinem passenden Gürtel betont die Taille und schafft eine anmutige und zeitlose Silhouette.',
+    description_fr: 'Un chef-d\'œuvre d\'élégance. Ce manteau long en pure laine, avec sa ceinture assortie, souligne la taille pour une silhouette gracieuse et intemporelle.',
+    description_en: 'A masterpiece of elegance. This long coat in pure wool, with its matching belt, emphasizes the waist for a graceful and timeless silhouette.',
+    category: 'womens-clothing',
+    images: ['femme1'],
+    sizes: ['36', '38', '40', '42'],
+    colors: ['Camel', 'Noir'],
+  },
+  {
+    id: 'femme2',
+    name: 'Manteau Long Croisé',
+    name_fr: 'Manteau Long Croisé',
+    name_en: 'Long Double-Breasted Coat',
+    slug: 'manteau-long-croise-femme2',
+    price: 950,
+    oldPrice: 1350,
+    description: 'Strukturierte Eleganz für diesen langen zweireihigen Mantel. Sein scharfer Schnitt und die imposante Schulterpartie verleihen einen kraftvollen und anspruchsvollen Look.',
+    description_fr: 'L\'élégance structurée pour ce manteau long croisé. Sa coupe franche et sa carrure imposante confèrent une allure puissante et sophistiquée.',
+    description_en: 'Structured elegance for this long double-breasted coat. Its clean cut and impressive shoulders provide a powerful and sophisticated look.',
+    category: 'womens-clothing',
+    images: ['femme2'],
+    sizes: ['36', '38', '40'],
+    colors: ['Gris', 'Bleu Marine'],
+  },
+  {
+    id: 'femme3',
+    name: 'Manteau Long en Cachemire',
+    name_fr: 'Manteau Long en Cachemire',
+    name_en: 'Long Cashmere Coat',
+    slug: 'manteau-long-cachemire-femme3',
+    price: 1500,
+    oldPrice: 2200,
+    description: 'Hüllen Sie sich in absoluten Luxus mit diesem langen Mantel aus reinem Kaschmir. Seine unvergleichliche Weichheit und sein fließender Fall sind eine Einladung zu Komfort und Raffinesse.',
+    description_fr: 'Enveloppez-vous de luxe absolu avec ce manteau long en pur cachemire. Sa douceur inégalée et son tombé fluide sont une invitation au confort et au raffinement.',
+    description_en: 'Wrap yourself in absolute luxury with this long coat in pure cashmere. Its unparalleled softness and fluid drape are an invitation to comfort and refinement.',
+    category: 'womens-clothing',
+    images: ['femme3'],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Noir', 'Beige'],
+  },
+  {
+    id: 'femme4',
+    name: 'Manteau Long en Fausse Fourrure',
+    name_fr: 'Manteau Long en Fausse Fourrure',
+    name_en: 'Long Faux Fur Coat',
+    slug: 'manteau-long-fausse-fourrure-femme4',
+    price: 780,
+    oldPrice: 1100,
+    description: 'Ein glamouröser und gewagter Stil. Dieser lange Mantel aus luxuriösem Kunstpelz verspricht einen spektakulären Auftritt und gemütliche Wärme.',
+    description_fr: 'Une allure glamour et audacieuse. Ce manteau long en fausse fourrure luxueuse promet une entrée spectaculaire et une chaleur réconfortante.',
+    description_en: 'A glamorous and bold look. This long coat in luxurious faux fur promises a spectacular entrance and comforting warmth.',
+    category: 'womens-clothing',
+    images: ['femme4'],
+    sizes: ['S', 'M', 'L'],
+    colors: ['Léopard', 'Noir'],
+  },
+  {
+    id: 'femme5',
+    name: 'Manteau Long à Col Châle',
+    name_fr: 'Manteau Long à Col Châle',
+    name_en: 'Long Shawl Collar Coat',
+    slug: 'manteau-long-col-chale-femme5',
+    price: 820,
+    oldPrice: 1150,
+    description: 'Ein umhüllender und raffinierter langer Mantel. Sein großzügiger Schalkragen und der weiche Wollstoff schaffen eine Silhouette, die sowohl schick als auch entspannt ist.',
+    description_fr: 'Un manteau long enveloppant et raffiné. Son col châle généreux et son drap de laine souple créent une silhouette à la fois chic et décontractée.',
+    description_en: 'An enveloping and refined long coat. Its generous shawl collar and soft wool cloth create a silhouette that is both chic and relaxed.',
+    category: 'womens-clothing',
+    images: ['femme5'],
+    sizes: ['Taille Unique'],
+    colors: ['Gris Perle', 'Crème'],
+  },
+  {
+    id: 'femme6',
+    name: 'Manteau Long Oversize',
+    name_fr: 'Manteau Long Oversize',
+    name_en: 'Long Oversize Coat',
+    slug: 'manteau-long-oversize-femme6',
+    price: 990,
+    oldPrice: 1400,
+    description: 'Ein starkes Modestatement. Dieser lange Oversize-Mantel spielt mit Volumen für einen modernen und avantgardistischen Look, ohne auf Komfort und Wärme zu verzichten.',
+    description_fr: 'Une déclaration de mode forte. Ce manteau long oversize joue avec les volumes pour une allure moderne et avant-gardiste, sans compromis sur le confort et la chaleur.',
+    description_en: 'A strong fashion statement. This long oversized coat plays with volumes for a modern and avant-garde look, without compromising on comfort and warmth.',
+    category: 'womens-clothing',
+    images: ['femme6'],
+    sizes: ['S/M', 'L/XL'],
+    colors: ['Noir', 'Vert Bouteille'],
+  },
+  {
+    id: 'shoe-11',
+    name: 'Air Force 1 Noir Classique',
+    name_fr: 'Air Force 1 Noir Classique',
+    name_en: 'Air Force 1 Classic Black',
+    slug: 'air-force-1-noir-classique',
+    price: 120,
+    description: 'Un classique intemporel. La Air Force 1 noire est un pilier de la culture sneaker, offrant style et confort inégalés.',
+    description_fr: 'Un classique intemporel. La Air Force 1 noire est un pilier de la culture sneaker, offrant style et confort inégalés.',
+    description_en: 'A timeless classic. The black Air Force 1 is a pillar of sneaker culture, offering unparalleled style and comfort.',
+    category: 'shoes',
+    images: ['aire_force1_noir1'],
+    sizes: ['39', '40', '41', '42', '43', '44', '45'],
+    colors: ['Noir'],
+  },
+  {
+    id: 'shoe-12',
+    name: 'Air Jordan 1 High "University Blue"',
+    name_fr: 'Air Jordan 1 High "University Blue"',
+    name_en: 'Air Jordan 1 High "University Blue"',
+    slug: 'air-jordan-1-high-university-blue',
+    price: 220,
+    description: 'Une version iconique de la Jordan 1, avec des empiècements en bleu ciel rendant hommage à l\'alma mater de Michael Jordan.',
+    description_fr: 'Une version iconique de la Jordan 1, avec des empiècements en bleu ciel rendant hommage à l\'alma mater de Michael Jordan.',
+    description_en: 'An iconic version of the Jordan 1, with sky blue panels paying homage to Michael Jordan\'s alma mater.',
+    category: 'shoes',
+    images: ['aire_jordan_bleu'],
+    sizes: ['40', '41', '42', '43', '44', '45', '46'],
+    colors: ['Bleu Ciel', 'Blanc'],
+  },
+  {
+    id: 'shoe-13',
+    name: 'Air Jordan 1 Mid "Violet"',
+    name_fr: 'Air Jordan 1 Mid "Violet"',
+    name_en: 'Air Jordan 1 Mid "Violet"',
+    slug: 'air-jordan-1-mid-violet',
+    price: 180,
+    description: 'Une touche de couleur audacieuse avec cette Air Jordan 1 Mid. Le violet vibrant se marie parfaitement avec le noir et le blanc classiques.',
+    description_fr: 'Une touche de couleur audacieuse avec cette Air Jordan 1 Mid. Le violet vibrant se marie parfaitement avec le noir et le blanc classiques.',
+    description_en: 'A bold touch of color with this Air Jordan 1 Mid. The vibrant purple pairs perfectly with classic black and white.',
+    category: 'shoes',
+    images: ['air_jordan_violet'],
+    sizes: ['36', '37', '38', '39', '40'],
+    colors: ['Violet', 'Noir', 'Blanc'],
+  },
+  {
+    id: 'shoe-14',
+    name: 'Air Jordan 1 Mid "Rose Pâle"',
+    name_fr: 'Air Jordan 1 Mid "Rose Pâle"',
+    name_en: 'Air Jordan 1 Mid "Pale Pink"',
+    slug: 'air-jordan-1-mid-rose-pale',
+    price: 175,
+    description: 'Une version douce et féminine de la silhouette classique, avec des nuances de rose pâle et de blanc.',
+    description_fr: 'Une version douce et féminine de la silhouette classique, avec des nuances de rose pâle et de blanc.',
+    description_en: 'A soft and feminine version of the classic silhouette, with shades of pale pink and white.',
+    category: 'shoes',
+    images: ['air_jourdan_rose'],
+    sizes: ['36', '37', '38', '39', '40', '41'],
+    colors: ['Rose Pâle', 'Blanc'],
+  },
+  {
+    id: 'shoe-15',
+    name: 'Air Jordan 4 "Military Black"',
+    name_fr: 'Air Jordan 4 "Military Black"',
+    name_en: 'Air Jordan 4 "Military Black"',
+    slug: 'air-jordan-4-military-black',
+    price: 250,
+    description: 'Une version épurée et populaire de la Air Jordan 4, combinant du cuir blanc de qualité supérieure avec des touches de noir et de gris neutre.',
+    description_fr: 'Une version épurée et populaire de la Air Jordan 4, combinant du cuir blanc de qualité supérieure avec des touches de noir et de gris neutre.',
+    description_en: 'A clean and popular version of the Air Jordan 4, combining premium white leather with touches of black and neutral grey.',
+    category: 'shoes',
+    images: ['air_jordan_4_military_noir'],
+    sizes: ['40', '41', '42', '43', '44', '45'],
+    colors: ['Blanc', 'Noir', 'Gris'],
+  },
+  {
+    id: 'shoe-16',
+    name: 'Air Jordan 4 "Military Blue"',
+    name_fr: 'Air Jordan 4 "Military Blue"',
+    name_en: 'Air Jordan 4 "Military Blue"',
+    slug: 'air-jordan-4-military-blue',
+    price: 260,
+    description: 'Le retour d\'un classique OG. La Air Jordan 4 "Military Blue" est l\'une des couleurs les plus attendues, fidèle à l\'originale de 1989.',
+    description_fr: 'Le retour d\'un classique OG. La Air Jordan 4 "Military Blue" est l\'un des coloris les plus attendus, fidèle à l\'originale de 1989.',
+    description_en: 'The return of an OG classic. The Air Jordan 4 "Military Blue" is one of the most anticipated colorways, true to the 1989 original.',
+    category: 'shoes',
+    images: ['air_jordan4_military_bleu'],
+    sizes: ['40', '41', '42', '43', '44', '45', '46'],
+    colors: ['Blanc', 'Bleu', 'Gris Neutre'],
+  },
+  {
+    id: 'shoe-17',
+    name: 'Air Jordan 1 High "Heritage"',
+    name_fr: 'Air Jordan 1 High "Heritage"',
+    name_en: 'Air Jordan 1 High "Heritage"',
+    slug: 'air-jordan-1-high-heritage',
+    price: 210,
+    description: 'Inspirée des couleurs emblématiques de Chicago, cette Jordan 1 offre un color-blocking inversé pour un look frais et familier.',
+    description_fr: 'Inspirée des couleurs emblématiques de Chicago, cette Jordan 1 offre un color-blocking inversé pour un look frais et familier.',
+    description_en: 'Inspired by the iconic Chicago colors, this Jordan 1 features reverse color-blocking for a fresh yet familiar look.',
+    category: 'shoes',
+    images: ['aire_jordan1'],
+    sizes: ['40', '41', '42', '43', '44'],
+    colors: ['Rouge', 'Blanc', 'Noir'],
+  },
+  {
+    id: 'shoe-18',
+    name: 'Air Jordan 1 Mid (Enfant)',
+    name_fr: 'Air Jordan 1 Mid (Enfant)',
+    name_en: 'Air Jordan 1 Mid (Kids)',
+    slug: 'air-jordan-1-mid-kids',
+    price: 95,
+    description: 'Le style iconique de la Jordan 1, adapté pour les plus jeunes. Confort et durabilité pour les futurs champions.',
+    description_fr: 'Le style iconique de la Jordan 1, adapté pour les plus jeunes. Confort et durabilité pour les futurs champions.',
+    description_en: 'The iconic style of the Jordan 1, adapted for the youngest. Comfort and durability for future champions.',
+    category: 'shoes',
+    images: ['kids_aire_jordan1'],
+    sizes: ['28', '29', '30', '31', '32', '33', '34', '35'],
+    colors: ['Multicolore'],
+  },
+  {
+    id: 'shoe-19',
+    name: 'Air Force 1 \'07 "Triple Black"',
+    name_fr: 'Air Force 1 \'07 "Triple Black"',
+    name_en: 'Air Force 1 \'07 "Triple Black"',
+    slug: 'air-force-1-07-triple-black',
+    price: 125,
+    description: 'L\'icône streetwear dans sa version la plus sobre et polyvalente. Le cuir noir intégral assure un look audacieux et facile à assortir.',
+    description_fr: 'L\'icône streetwear dans sa version la plus sobre et polyvalente. Le cuir noir intégral assure un look audacieux et facile à assortir.',
+    description_en: 'The streetwear icon in its most understated and versatile version. The all-black leather ensures a bold and easy-to-match look.',
+    category: 'shoes',
+    images: ['aire_force1_noir'],
+    sizes: ['38', '39', '40', '41', '42', '43', '44', '45'],
+    colors: ['Noir'],
+  },
+  {
+    id: 'shoe-20',
+    name: 'Air Force 1 "White/Pink Lace"',
+    name_fr: 'Air Force 1 "Lacet Blanc/Rose"',
+    name_en: 'Air Force 1 "White/Pink Lace"',
+    slug: 'air-force-1-white-pink-lace',
+    price: 130,
+    description: 'Une touche de douceur sur un classique. La Air Force 1 blanche est rehaussée par des lacets roses pour une finition unique.',
+    description_fr: 'Une touche de douceur sur un classique. La Air Force 1 blanche est rehaussée par des lacets roses pour une finition unique.',
+    description_en: 'A touch of sweetness on a classic. The white Air Force 1 is enhanced with pink laces for a unique finish.',
+    category: 'shoes',
+    images: ['aire_force1_blanc_lacet_rose'],
+    sizes: ['36', '37', '38', '39', '40'],
+    colors: ['Blanc', 'Rose'],
+  },
+  {
+    id: 'shoe-21',
+    name: 'Air Force 1 \'07 "Triple White"',
+    name_fr: 'Air Force 1 \'07 "Triple White"',
+    name_en: 'Air Force 1 \'07 "Triple White"',
+    slug: 'air-force-1-07-triple-white',
+    price: 125,
+    description: 'La sneaker la plus emblématique. La Air Force 1 Triple White est un indispensable absolu, propre, net et incroyablement polyvalent.',
+    description_fr: 'La sneaker la plus emblématique. La Air Force 1 Triple White est un indispensable absolu, propre, net et incroyablement polyvalent.',
+    description_en: 'The most iconic sneaker. The Air Force 1 Triple White is an absolute essential, clean, crisp, and incredibly versatile.',
+    category: 'shoes',
+    images: ['aire_force1_blanc'],
+    sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45'],
+    colors: ['Blanc'],
+  },
+  {
+    id: 'sport-119',
+    name: 'New Balance 550',
+    name_fr: 'New Balance 550',
+    name_en: 'New Balance 550',
+    slug: 'new-balance-550-classic',
+    price: 140,
+    description: 'Une icône du basketball des années 80, réinventée. Le modèle 550 offre une silhouette basse et profilée, un classique du style rétro.',
+    description_fr: 'Une icône du basketball des années 80, réinventée. Le modèle 550 offre une silhouette basse et profilée, un classique du style rétro.',
+    description_en: 'A basketball icon from the \'80s, reimagined. The 550 offers a low-profile, streamlined silhouette, a classic in retro style.',
+    category: 'sport',
+    images: ['new_balance'],
+    sizes: ['39', '40', '41', '42', '43', '44', '45'],
+    colors: ['Blanc/Gris', 'Blanc/Vert'],
+  },
+  {
+    id: 'sport-120',
+    name: 'Adidas Tennis HU Pharrell',
+    name_fr: 'Adidas Tennis HU Pharrell',
+    name_en: 'Adidas Tennis HU Pharrell',
+    slug: 'adidas-tennis-hu-pharrell',
+    price: 110,
+    description: 'Une célébration de l\'humanité, conçue par Pharrell Williams. Cette chaussure de tennis moderne est dotée d\'une tige en maille respirante.',
+    description_fr: 'Une célébration de l\'humanité, conçue par Pharrell Williams. Cette chaussure de tennis moderne est dotée d\'une tige en maille respirante.',
+    description_en: 'A celebration of humanity, designed by Pharrell Williams. This modern tennis shoe features a breathable mesh upper.',
+    category: 'sport',
+    images: ['tenis_adidas3'],
+    sizes: ['38', '39', '40', '41', '42'],
+    colors: ['Blanc/Vert', 'Tout Noir'],
+  },
+  {
+    id: 'sport-121',
+    name: 'Adidas Stan Smith Classique',
+    name_fr: 'Adidas Stan Smith Classique',
+    name_en: 'Adidas Stan Smith Classic',
+    slug: 'adidas-stan-smith-classic',
+    price: 95,
+    description: 'L\'incarnation du style minimaliste. La Stan Smith est un incontournable depuis des décennies, avec son cuir souple et ses 3 bandes perforées.',
+    description_fr: 'L\'incarnation du style minimaliste. La Stan Smith est un incontournable depuis des décennies, avec son cuir souple et ses 3 bandes perforées.',
+    description_en: 'The epitome of minimalist style. The Stan Smith has been a staple for decades, with its soft leather and perforated 3-Stripes.',
+    category: 'sport',
+    images: ['tenis_adidas2'],
+    sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
+    colors: ['Blanc/Vert', 'Blanc/Bleu Marine'],
+  },
+  {
+    id: 'sport-122',
+    name: 'Adidas Gazelle Indoor',
+    name_fr: 'Adidas Gazelle Indoor',
+    name_en: 'Adidas Gazelle Indoor',
+    slug: 'adidas-gazelle-indoor',
+    price: 100,
+    description: 'Une chaussure d\'intérieur iconique devenue une icône de la mode. La Gazelle est célèbre pour sa tige en daim et sa semelle extérieure en gomme translucide.',
+    description_fr: 'Une chaussure d\'intérieur iconique devenue une icône de la mode. La Gazelle est célèbre pour sa tige en daim et sa semelle extérieure en gomme translucide.',
+    description_en: 'An iconic indoor shoe turned fashion icon. The Gazelle is famous for its suede upper and translucent gum outsole.',
+    category: 'sport',
+    images: ['tenis_adidas1'],
+    sizes: ['39', '40', '41', '42', '43'],
+    colors: ['Bleu', 'Rouge', 'Noir'],
+  },
+  {
+    id: 'sport-123',
+    name: 'Adidas Ultraboost',
+    name_fr: 'Adidas Ultraboost',
+    name_en: 'Adidas Ultraboost',
+    slug: 'adidas-ultraboost-running',
+    price: 180,
+    description: 'Conçue pour la course, adoptée par la rue. L\'Ultraboost offre un retour d\'énergie incroyable à chaque foulée grâce à sa semelle intermédiaire Boost.',
+    description_fr: 'Conçue pour la course, adoptée par la rue. L\'Ultraboost offre un retour d\'énergie incroyable à chaque foulée grâce à sa semelle intermédiaire Boost.',
+    description_en: 'Designed for running, adopted by the street. The Ultraboost provides incredible energy return with every stride thanks to its Boost midsole.',
+    category: 'sport',
+    images: ['tenis_adidas'],
+    sizes: ['40', '41', '42', '43', '44', '45', '46'],
+    colors: ['Noir/Blanc', 'Triple Blanc'],
+  },
+  {
+    id: 'sport-124',
+    name: 'Adidas Campus 00s',
+    name_fr: 'Adidas Campus 00s',
+    name_en: 'Adidas Campus 00s',
+    slug: 'adidas-campus-00s',
+    price: 110,
+    description: 'Un classique du skate des années 2000, la Campus revient avec ses proportions audacieuses et sa tige en daim résistante.',
+    description_fr: 'Un classique du skate des années 2000, la Campus revient avec ses proportions audacieuses et sa tige en daim résistante.',
+    description_en: 'A 2000s skate classic, the Campus returns with its bold proportions and durable suede upper.',
+    category: 'sport',
+    images: ['adidis_campus'],
+    sizes: ['38', '39', '40', '41', '42', '43'],
+    colors: ['Gris', 'Noir', 'Bordeaux'],
+  },
+  {
+    id: 'sport-125',
+    name: 'Adidas Superstar',
+    name_fr: 'Adidas Superstar',
+    name_en: 'Adidas Superstar',
+    slug: 'adidas-superstar-classic',
+    price: 100,
+    description: 'La chaussure au "shell-toe" iconique. Née sur les parquets de basketball, la Superstar est une légende du streetwear depuis plus de 50 ans.',
+    description_fr: 'La chaussure au "shell-toe" iconique. Née sur les parquets de basketball, la Superstar est une légende du streetwear depuis plus de 50 ans.',
+    description_en: 'The iconic "shell-toe" shoe. Born on the basketball courts, the Superstar has been a streetwear legend for over 50 years.',
+    category: 'sport',
+    images: ['adidas_superstar'],
+    sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44'],
+    colors: ['Blanc/Noir', 'Noir/Blanc'],
+  }
 ];
 
 
@@ -1893,7 +2149,7 @@ export function getProductsByCategory(products: Product[], categorySlug: string,
     return filteredProducts.slice(0, limit);
   }
 
-  return filteredProducts;
+  return filteredProducts.sort((a, b) => a.id.localeCompare(b.id));;
 }
 
 export function getProductBySlug(products: Product[], slug: string): Product | undefined {
@@ -1909,15 +2165,39 @@ export function getFeaturedProducts(products: Product[], limit: number = 4): Pro
     return winterProducts.slice(0, limit);
 }
 
+export function getWinterSaleProducts(products: Product[], limit?: number): Product[] {
+  const allSaleItems = products.filter(p => p.oldPrice).sort((a, b) => a.id.localeCompare(b.id));
 
-export function getWinterSaleProducts(products: Product[], limit?: number, homepage: boolean = false): Product[] {
-  const saleProducts = products
-    .filter(p => p.oldPrice)
-    .sort((a, b) => a.id.localeCompare(b.id)); // Sort for deterministic results
+  const featuredItems = new Set<Product>();
 
-  if (limit) {
-    return saleProducts.slice(0, limit);
+  // Helper function to add item if it exists and is not already added
+  const addFeaturedItem = (item: Product | undefined) => {
+    if (item && !featuredItems.has(item)) {
+      featuredItems.add(item);
+    }
+  };
+
+  // Add specific types of items
+  addFeaturedItem(allSaleItems.find(p => p.slug.includes('sac-de-couchage')));
+  addFeaturedItem(allSaleItems.find(p => p.slug.includes('sac-hiver')));
+  
+  // Add two distinct parkas
+  const parkas = allSaleItems.filter(p => p.name.toLowerCase().includes('parka'));
+  addFeaturedItem(parkas[0]);
+  addFeaturedItem(parkas[1]);
+
+  // Fill the rest with other sale items
+  const otherSaleItems = allSaleItems.filter(p => !featuredItems.has(p));
+  for (const item of otherSaleItems) {
+    if (featuredItems.size >= (limit || 9)) {
+      break;
+    }
+    featuredItems.add(item);
   }
 
-  return saleProducts;
+  return Array.from(featuredItems);
 }
+
+
+
+

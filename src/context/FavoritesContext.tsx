@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -13,58 +14,72 @@ type FavoritesContextType = {
   favorites: string[];
   toggleFavorite: (productId: string) => void;
   isFavorite: (productId: string) => boolean;
+  isFavoritesLoading: boolean;
 };
 
 const FavoritesContext = createContext<FavoritesContextType | undefined>(
   undefined
 );
 
+const LOCAL_STORAGE_FAVORITES_KEY = 'ezcentials-favorites';
+
 export function FavoritesProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Load initial favorites from localStorage on mount (client-side only)
   useEffect(() => {
-    // This code now runs only on the client
     try {
-      const storedFavorites = localStorage.getItem('atelier-luxe-favorites');
-      if (storedFavorites) {
-        setFavorites(JSON.parse(storedFavorites));
+      const localData = localStorage.getItem(LOCAL_STORAGE_FAVORITES_KEY);
+      if (localData) {
+        setFavorites(JSON.parse(localData));
       }
     } catch (error) {
-      console.error('Failed to load favorites from localStorage', error);
+      console.error('Failed to load favorites from local storage:', error);
+    } finally {
+      setIsLoading(false);
     }
-  }, []); // Empty dependency array ensures this runs once on mount
+  }, []);
 
-  const updateLocalStorage = (updatedFavorites: string[]) => {
-    try {
-      localStorage.setItem('atelier-luxe-favorites', JSON.stringify(updatedFavorites));
-    } catch (error) {
-      console.error('Failed to save favorites to localStorage', error);
+  // Save favorites to localStorage whenever they change
+  useEffect(() => {
+    if (!isLoading) {
+      try {
+        localStorage.setItem(
+          LOCAL_STORAGE_FAVORITES_KEY,
+          JSON.stringify(favorites)
+        );
+      } catch (error) {
+        console.error('Failed to save favorites to local storage:', error);
+      }
     }
-  };
+  }, [favorites, isLoading]);
 
   const toggleFavorite = useCallback((productId: string) => {
-    setFavorites((prevFavorites) => {
-      const isCurrentlyFavorite = prevFavorites.includes(productId);
-      let updatedFavorites;
+    setFavorites((currentFavorites) => {
+      const isCurrentlyFavorite = currentFavorites.includes(productId);
       if (isCurrentlyFavorite) {
-        updatedFavorites = prevFavorites.filter((id) => id !== productId);
+        return currentFavorites.filter((id) => id !== productId);
       } else {
-        updatedFavorites = [...prevFavorites, productId];
+        return [...currentFavorites, productId];
       }
-      updateLocalStorage(updatedFavorites);
-      return updatedFavorites;
     });
   }, []);
 
   const isFavorite = useCallback(
-    (productId: string) => {
-      return favorites.includes(productId);
-    },
+    (productId: string) => favorites.includes(productId),
     [favorites]
   );
 
   return (
-    <FavoritesContext.Provider value={{ favorites, toggleFavorite, isFavorite }}>
+    <FavoritesContext.Provider
+      value={{
+        favorites,
+        toggleFavorite,
+        isFavorite,
+        isFavoritesLoading: isLoading,
+      }}
+    >
       {children}
     </FavoritesContext.Provider>
   );

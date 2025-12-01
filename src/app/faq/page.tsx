@@ -18,11 +18,11 @@ export default function FaqPage() {
       question_fr: 'Comment passer une commande ?',
       question_en: 'How do I place an order?',
       answer_de:
-        'Um eine Bestellung aufzugeben, durchsuchen Sie einfach unsere Kollektionen, wählen Sie die Artikel und Größen aus, die Sie möchten, und fügen Sie sie Ihrem Warenkorb hinzu. Klicken Sie dann auf das Warenkorb-Symbol und folgen Sie den Anweisungen, um zur Kasse zu gehen. Sie müssen Ihre Versand- und Zahlungsinformationen angeben, um den Vorgang abzuschließen.',
+        'Wählen Sie Artikel aus und legen Sie sie in den Warenkorb. Gehen Sie zur Kasse, geben Sie Ihre Lieferinformationen an und folgen Sie den Anweisungen, um einen sofortigen Banktransfer durchzuführen. Laden Sie Ihren Zahlungsbeleg hoch. Ihre Bestellung wird nach Überprüfung des Belegs validiert.',
       answer_fr:
-        'Pour passer une commande, parcourez simplement nos collections, sélectionnez les articles et les tailles que vous désirez, puis ajoutez-les à votre panier. Ensuite, cliquez sur l\'icône du panier et suivez les instructions pour passer à la caisse. Vous devrez fournir vos informations de livraison et de paiement pour finaliser le processus.',
+        'Sélectionnez des articles et ajoutez-les au panier. Passez à la caisse, fournissez vos informations de livraison, puis suivez les instructions pour effectuer un virement bancaire instantané. Téléversez votre reçu de paiement. Votre commande sera validée après vérification du reçu.',
       answer_en:
-        'To place an order, simply browse our collections, select the items and sizes you want, and add them to your cart. Then, click on the cart icon and follow the instructions to proceed to checkout. You will need to provide your shipping and payment information to complete the process.',
+        'Select items and add them to the cart. Proceed to checkout, provide your shipping information, then follow the instructions to make an instant bank transfer. Upload your payment receipt. Your order will be validated after receipt verification.',
     },
     {
       icon: <Truck className="mr-3 h-5 w-5 text-primary" />,
@@ -32,9 +32,9 @@ export default function FaqPage() {
       answer_de:
         'Sobald Ihre Zahlung validiert ist, wird Ihre Bestellung innerhalb von 1-2 Werktagen vorbereitet. Die Standardlieferung dauert dann in der Regel 3-5 Werktage für Deutschland und 5-10 Werktage für internationale Sendungen. Wir tun unser Bestes, um Ihre luxuriösen Stücke so schnell wie möglich zu liefern.',
       answer_fr:
-        'Une fois votre paiement validé, votre commande est préparée sous 1 à 2 jours ouvrés. La livraison standard prend ensuite généralement 3 à 5 jours ouvrés pour la France et 5 à 10 jours pour l\'international. Nous faisons notre maximum pour vous livrer vos pièces de luxe au plus vite.',
+        'Une fois votre paiement validé, votre commande est préparée sous 1 à 2 jours ouvrés. La livraison standard prend ensuite généralement 3 à 5 jours ouvrés pour l\'Allemagne et 5 à 10 jours pour l\'international. Nous faisons notre maximum pour vous livrer vos pièces de luxe au plus vite.',
       answer_en:
-        'Once your payment is validated, your order is prepared within 1-2 business days. Standard delivery then usually takes 3-5 business days for the UK and 5-10 business days for international shipments. We do our best to deliver your luxury pieces as quickly as possible.',
+        'Once your payment is validated, your order is prepared within 1-2 business days. Standard delivery then usually takes 3-5 business days for Germany and 5-10 business days for international shipments. We do our best to deliver your luxury pieces as quickly as possible.',
     },
     {
       icon: <Undo className="mr-3 h-5 w-5 text-primary" />,
@@ -54,11 +54,11 @@ export default function FaqPage() {
       question_fr: 'Comment contacter le service client ?',
       question_en: 'How do I contact customer service?',
       answer_de:
-        'Unser Kundenservice steht Ihnen zur Verfügung, um alle Ihre Fragen zu beantworten. Sie können uns per E-Mail unter contact-support@ezcentials.com oder telefonisch unter +49 123 456 789 erreichen. Wir sind von Montag bis Freitag von 9 bis 18 Uhr erreichbar.',
+        'Unser Kundenservice steht Ihnen zur Verfügung, um alle Ihre Fragen zu beantworten. Sie können uns per E-Mail unter contact-support@ezcentials.com erreichen. Wir sind von Montag bis Freitag von 9 bis 18 Uhr erreichbar.',
       answer_fr:
-        'Notre service client est à votre disposition pour répondre à toutes vos questions. Vous pouvez nous contacter par email à l\'adresse contact-support@ezcentials.com ou par téléphone au +33 1 23 45 67 89. Nous sommes disponibles du lundi au vendredi, de 9h à 18h.',
+        'Notre service client est à votre disposition pour répondre à toutes vos questions. Vous pouvez nous contacter par email à l\'adresse contact-support@ezcentials.com. Nous sommes disponibles du lundi au vendredi, de 9h à 18h.',
       answer_en:
-        'Our customer service is available to answer all your questions. You can contact us by email at contact-support@ezcentials.com or by phone at +44 20 1234 5678. We are available Monday to Friday, from 9am to 6pm.',
+        'Our customer service is available to answer all your questions. You can contact us by email at contact-support@ezcentials.com. We are available Monday to Friday, from 9am to 6pm.',
     },
   ];
 

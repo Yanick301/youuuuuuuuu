@@ -1,8 +1,6 @@
 'use client';
 
-import { ShoppingBag } from 'lucide-react';
-import { useCart } from '@/context/CartContext';
-import { Button } from '@/components/ui/button';
+import { ShoppingCart } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -10,29 +8,37 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { TranslatedText } from '@/components/TranslatedText';
 import { CartSheetContent } from './CartSheetContent';
-import { TranslatedText } from '../TranslatedText';
+import { useCart } from '@/context/CartContext';
 
 export function CartButton() {
-  const { cart } = useCart();
-  const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-
+  const { totalItems } = useCart();
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
-          <ShoppingBag className="h-5 w-5" />
-          {itemCount > 0 && (
-            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-              {itemCount}
+          {totalItems > 0 && (
+            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+              {totalItems}
             </span>
           )}
-          <span className="sr-only"><TranslatedText fr="Ouvrir le panier" en="Open Cart">Warenkorb öffnen</TranslatedText></span>
+          <ShoppingCart className="h-5 w-5" />
+          <span className="sr-only">
+            <TranslatedText fr="Ouvrir le panier" en="Open Cart">
+              Warenkorb öffnen
+            </TranslatedText>
+          </span>
         </Button>
       </SheetTrigger>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle><TranslatedText fr="Panier" en="Cart">Warenkorb</TranslatedText></SheetTitle>
+      <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg">
+        <SheetHeader className="px-6">
+          <SheetTitle>
+            <TranslatedText fr="Panier" en="Cart">
+              Warenkorb
+            </TranslatedText>
+          </SheetTitle>
         </SheetHeader>
         <CartSheetContent />
       </SheetContent>

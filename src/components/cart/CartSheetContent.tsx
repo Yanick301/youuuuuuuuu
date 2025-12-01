@@ -1,138 +1,176 @@
 
 'use client';
 
-import Link from 'next/link';
-import { Plus, Minus, Trash2 } from 'lucide-react';
-
-import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { TranslatedText } from '@/components/TranslatedText';
+import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import { useCart } from '@/context/CartContext';
+import { DialogClose } from '@radix-ui/react-dialog';
 import placeholderImagesData from '@/lib/placeholder-images.json';
-import { TranslatedText } from '../TranslatedText';
-import { SheetClose } from '@/components/ui/sheet';
 
 const { placeholderImages } = placeholderImagesData;
 
-export function CartSheetContent() {
-  const { cart, removeFromCart, updateQuantity, subtotal } = useCart();
+const SheetClose = ({
+  children,
+  ...props
+}: {
+  children: React.ReactNode;
+}) => (
+  <DialogClose {...props} asChild>
+    {children}
+  </DialogClose>
+);
 
-  if (cart.length === 0) {
+export function CartSheetContent() {
+  const {
+    cartItems,
+    totalItems,
+    subtotal,
+    updateQuantity,
+    removeFromCart,
+  } = useCart();
+
+  if (totalItems === 0) {
     return (
-      <div className="flex h-full flex-col items-center justify-center text-center">
-        <ShoppingBagIcon className="h-24 w-24 text-muted" />
-        <h3 className="mt-4 text-lg font-semibold"><TranslatedText fr="Votre panier est vide" en="Your cart is empty">Ihr Warenkorb ist leer</TranslatedText></h3>
-        <p className="mt-2 text-sm text-muted-foreground"><TranslatedText fr="Ajoutez des produits pour commencer." en="Add some products to get started.">Fügen Sie einige Produkte hinzu, um loszulegen.</TranslatedText></p>
+      <div className="flex h-full flex-col items-center justify-center space-y-6 text-center">
+        <div
+          aria-hidden="true"
+          className="relative mb-4 h-24 w-24 text-muted-foreground"
+        >
+          <ShoppingBag className="h-full w-full" />
+        </div>
+        <div className="text-xl font-medium">
+          <TranslatedText fr="Votre panier est vide" en="Your cart is empty">
+            Ihr Warenkorb ist leer
+          </TranslatedText>
+        </div>
+        <SheetClose>
+          <Button asChild>
+            <Link href="/products/all">
+              <TranslatedText fr="Continuer les achats" en="Continue Shopping">
+                Weiter einkaufen
+              </TranslatedText>
+            </Link>
+          </Button>
+        </SheetClose>
       </div>
     );
   }
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex-1 overflow-y-auto">
-        <ul className="divide-y divide-border">
-          {cart.map((item) => {
-            const productImage = placeholderImages.find(p => p.id === item.product.images[0]);
-            return (
-                <li key={item.product.id} className="flex py-4">
-                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border">
-                    {productImage && (
-                        <img
-                            src={productImage.imageUrl}
-                            alt={item.product.name}
-                            className="h-full w-full object-cover object-center"
-                            data-ai-hint={productImage.imageHint}
-                        />
-                    )}
-                  </div>
-
-                  <div className="ml-4 flex flex-1 flex-col">
-                    <div>
-                      <div className="flex justify-between text-base font-medium text-foreground">
-                        <h3>
-                          <Link href={`/product/${item.product.slug}`}><TranslatedText fr={item.product.name_fr} en={item.product.name_en}>{item.product.name}</TranslatedText></Link>
-                        </h3>
-                        <p className="ml-4">€{(item.product.price * item.quantity).toFixed(2)}</p>
-                      </div>
-                    </div>
-                    <div className="flex flex-1 items-end justify-between text-sm">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-6 w-6"
-                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                        >
-                          <Minus className="h-3 w-3" />
-                        </Button>
-                        <span>{item.quantity}</span>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-6 w-6"
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                        >
-                          <Plus className="h-3 w-3" />
-                        </Button>
-                      </div>
-
-                      <div className="flex">
-                        <Button
-                          variant="ghost"
-                          type="button"
-                          className="font-medium text-destructive hover:text-destructive"
-                          onClick={() => removeFromCart(item.product.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </li>
+    <>
+      <ScrollArea className="flex-grow pr-6">
+        <div className="flex flex-col gap-6 py-4">
+          {cartItems.map((item) => {
+            const productImage = placeholderImages.find(
+              (p) => p.id === item.product.images[0]
             );
-        })}
-        </ul>
-      </div>
-
-      <div className="border-t border-border px-4 py-6 sm:px-6">
+            return (
+              <div key={item.id} className="flex items-start gap-4">
+                <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border">
+                  {productImage && (
+                    <img
+                      src={productImage.imageUrl}
+                      alt={item.product.name}
+                      className="h-full w-full object-cover"
+                    />
+                  )}
+                </div>
+                <div className="flex flex-1 flex-col gap-1">
+                  <div className="flex justify-between">
+                    <h4 className="font-medium">
+                      <Link href={`/product/${item.product.slug}`}>
+                        <SheetClose>
+                          <TranslatedText
+                            fr={item.product.name_fr}
+                            en={item.product.name_en}
+                          >
+                            {item.product.name}
+                          </TranslatedText>
+                        </SheetClose>
+                      </Link>
+                    </h4>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => removeFromCart(item.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    €{item.product.price.toFixed(2)}
+                  </p>
+                  {(item.size || item.color) && (
+                    <p className="text-xs text-muted-foreground">
+                      {item.size} {item.size && item.color && ' / '}{' '}
+                      {item.color}
+                    </p>
+                  )}
+                  <div className="mt-2 flex items-center">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() =>
+                        updateQuantity(item.id, item.quantity - 1)
+                      }
+                      disabled={item.quantity <= 1}
+                    >
+                      <Minus className="h-4 w-4" />
+                    </Button>
+                    <span className="w-10 text-center font-medium">
+                      {item.quantity}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() =>
+                        updateQuantity(item.id, item.quantity + 1)
+                      }
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </ScrollArea>
+      <div className="border-t px-6 py-4">
         <div className="flex justify-between text-base font-medium text-foreground">
-          <p><TranslatedText fr="Sous-total" en="Subtotal">Zwischensumme</TranslatedText></p>
+          <p>
+            <TranslatedText fr="Sous-total" en="Subtotal">
+              Zwischensumme
+            </TranslatedText>
+          </p>
           <p>€{subtotal.toFixed(2)}</p>
         </div>
         <p className="mt-0.5 text-sm text-muted-foreground">
-          <TranslatedText fr="Les frais de port et les taxes sont calculés au moment du paiement." en="Shipping and taxes calculated at checkout.">Versand und Steuern werden an der Kasse berechnet.</TranslatedText>
+          <TranslatedText
+            fr="Taxes et frais de port calculés à la caisse."
+            en="Taxes and shipping calculated at checkout."
+          >
+            Steuern und Versand an der Kasse berechnet.
+          </TranslatedText>
         </p>
         <div className="mt-6">
-            <SheetClose asChild>
-                <Button asChild className="w-full">
-                    <Link href="/checkout"><TranslatedText fr="Paiement" en="Checkout">Kasse</TranslatedText></Link>          
-                </Button>
-            </SheetClose>
+          <SheetClose>
+            <Button asChild className="w-full">
+              <Link href="/checkout">
+                <TranslatedText fr="Passer à la caisse" en="Checkout">
+                  Zur Kasse
+                </TranslatedText>
+              </Link>
+            </Button>
+          </SheetClose>
         </div>
       </div>
-    </div>
+    </>
   );
 }
-
-
-function ShoppingBagIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-      <path d="M3 6h18" />
-      <path d="M16 10a4 4 0 0 1-8 0" />
-    </svg>
-  )
-}
-
-    

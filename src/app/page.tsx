@@ -1,8 +1,6 @@
 
-
 'use client';
 import Link from 'next/link';
-
 import { Button } from '@/components/ui/button';
 import { getWinterSaleProducts, products } from '@/lib/data';
 import { ProductCard } from '@/components/ProductCard';
@@ -19,7 +17,7 @@ import { Award, Leaf, Truck } from 'lucide-react';
 
 export default function HomePage() {
   // We want 9 products in total on the homepage sale section
-  const saleProducts = getWinterSaleProducts(products, 9, true);
+  const saleProducts = getWinterSaleProducts(products, 9);
 
   return (
     <div className="flex flex-col">

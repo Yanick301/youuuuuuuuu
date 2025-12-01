@@ -1,6 +1,24 @@
 {
   "placeholderImages": [
     {
+      "id": "manteau-laine-premium",
+      "description": "Premium wool long coat",
+      "imageUrl": "/images/products/manteau-laine-premium.jpg",
+      "imageHint": "wool coat"
+    },
+    {
+      "id": "pull-cachemire-femme",
+      "description": "Cream cashmere sweater",
+      "imageUrl": "/images/products/pull-cachemire-femme.jpg",
+      "imageHint": "cashmere sweater"
+    },
+    {
+      "id": "robe-satinee-noire",
+      "description": "Long black satin dress",
+      "imageUrl": "/images/products/robe-satinee-noire.jpg",
+      "imageHint": "satin dress"
+    },
+    {
       "id": "hero",
       "description": "Hero fashion model",
       "imageUrl": "/images/header.jpg",
@@ -118,9 +136,9 @@
       "imageHint": "crewneck t-shirt"
     },
     {
-      "id": "pantalon-chino-stretch-burberry",
-      "imageUrl": "/images/products/pantalon-chino-stretch-burberry.jpg",
-      "imageHint": "stretch chino"
+      "id": "pantalon-cargo-noir-homme",
+      "imageUrl": "/images/products/cargo.jpg",
+      "imageHint": "black cargo"
     },
     {
       "id": "jean-coupe-ajustee-diesel",
@@ -663,34 +681,147 @@
       "imageHint": "knit scarf"
     },
     {
-      "id": "chale-hiver-motif-elegant-elegant-wrap",
-      "imageUrl": "/images/products/chale-hiver-motif-elegant-elegant-wrap.jpg",
-      "imageHint": "elegant shawl"
-    },
-    {
-      "id": "foulard-cachemire-imprime-cashmere-touch",
-      "imageUrl": "/images/products/foulard-cachemire-imprime-cashmere-touch.jpg",
-      "imageHint": "cashmere scarf"
-    },
-    {
       "id": "gants-cuir-doubles-polaire-lady-warm",
       "imageUrl": "/images/products/gants-cuir-doubles-polaire-lady-warm.jpg",
       "imageHint": "leather gloves"
     },
     {
-      "id": "petit-sac-a-main-chic-mini-glam",
-      "imageUrl": "/images/products/petit-sac-a-main-chic-mini-glam.jpg",
-      "imageHint": "chic handbag"
+      "id": "femme1",
+      "imageUrl": "/images/products/femme1.jpg",
+      "imageHint": "womens coat"
     },
     {
-      "id": "boucles-oreilles-pendantes-argentees-shine-drop",
-      "imageUrl": "/images/products/boucles-oreilles-pendantes-argentees-shine-drop.jpg",
-      "imageHint": "dangle earrings"
+      "id": "femme2",
+      "imageUrl": "/images/products/femme2.jpg",
+      "imageHint": "womens coat"
     },
     {
-      "id": "pochette-soiree-shine-night-premium",
-      "imageUrl": "/images/products/pochette-soiree-shine-night-premium.jpg",
-      "imageHint": "evening clutch"
+      "id": "femme3",
+      "imageUrl": "/images/products/femme3.jpg",
+      "imageHint": "womens coat"
+    },
+    {
+      "id": "femme4",
+      "imageUrl": "/images/products/femme4.jpg",
+      "imageHint": "womens coat"
+    },
+    {
+      "id": "femme5",
+      "imageUrl": "/images/products/femme5.jpg",
+      "imageHint": "womens coat"
+    },
+    {
+      "id": "femme6",
+      "imageUrl": "/images/products/femme6.jpg",
+      "imageHint": "womens coat"
+    },
+    {
+      "id": "aire_force1_noir1",
+      "description": "Air Force 1 in black",
+      "imageUrl": "/images/products/aire_force1_noir1.jpg",
+      "imageHint": "black sneaker"
+    },
+    {
+      "id": "aire_jordan_bleu",
+      "description": "Air Jordan in blue",
+      "imageUrl": "/images/products/aire_jordan_bleu.jpg",
+      "imageHint": "blue sneaker"
+    },
+    {
+      "id": "air_jordan_violet",
+      "description": "Air Jordan in purple",
+      "imageUrl": "/images/products/air_jordan_violet.jpg",
+      "imageHint": "purple sneaker"
+    },
+    {
+      "id": "air_jourdan_rose",
+      "description": "Air Jordan in pink",
+      "imageUrl": "/images/products/air_jourdan_rose.jpg",
+      "imageHint": "pink sneaker"
+    },
+    {
+      "id": "air_jordan_4_military_noir",
+      "description": "Air Jordan 4 Military Black",
+      "imageUrl": "/images/products/air_jordan_4_military_noir.jpg",
+      "imageHint": "black sneaker"
+    },
+    {
+      "id": "air_jordan4_military_bleu",
+      "description": "Air Jordan 4 Military Blue",
+      "imageUrl": "/images/products/air_jordan4_military_bleu.jpg",
+      "imageHint": "blue sneaker"
+    },
+    {
+      "id": "aire_jordan1",
+      "description": "Classic Air Jordan 1",
+      "imageUrl": "/images/products/aire_jordan1.jpg",
+      "imageHint": "red sneaker"
+    },
+    {
+      "id": "kids_aire_jordan1",
+      "description": "Kids Air Jordan 1",
+      "imageUrl": "/images/products/kids_aire_jordan1.jpg",
+      "imageHint": "kids sneaker"
+    },
+    {
+      "id": "aire_force1_noir",
+      "description": "Air Force 1 in black",
+      "imageUrl": "/images/products/aire_force1_noir.jpg",
+      "imageHint": "black sneaker"
+    },
+    {
+      "id": "aire_force1_blanc_lacet_rose",
+      "description": "White Air Force 1 with pink laces",
+      "imageUrl": "/images/products/aire_force1_blanc_lacet_rose.jpg",
+      "imageHint": "white sneaker"
+    },
+    {
+      "id": "aire_force1_blanc",
+      "description": "Classic white Air Force 1",
+      "imageUrl": "/images/products/aire_force1_blanc.jpg",
+      "imageHint": "white sneaker"
+    },
+    {
+      "id": "new_balance",
+      "description": "Classic New Balance 550 sneaker",
+      "imageUrl": "/images/products/new_balance.jpg",
+      "imageHint": "retro sneaker"
+    },
+    {
+      "id": "tenis_adidas3",
+      "description": "Adidas Tennis HU by Pharrell Williams",
+      "imageUrl": "/images/products/tenis_adidas3.jpg",
+      "imageHint": "tennis shoes"
+    },
+    {
+      "id": "tenis_adidas2",
+      "description": "Classic Adidas Stan Smith sneakers",
+      "imageUrl": "/images/products/tenis_adidas2.jpg",
+      "imageHint": "classic sneakers"
+    },
+    {
+      "id": "tenis_adidas1",
+      "description": "Adidas Gazelle Indoor sneakers",
+      "imageUrl": "/images/products/tenis_adidas1.jpg",
+      "imageHint": "suede sneakers"
+    },
+    {
+      "id": "tenis_adidas",
+      "description": "Adidas Ultraboost running shoes",
+      "imageUrl": "/images/products/tenis_adidas.jpg",
+      "imageHint": "running shoes"
+    },
+    {
+      "id": "adidis_campus",
+      "description": "Adidas Campus 00s skate shoes",
+      "imageUrl": "/images/products/adidis_campus.jpg",
+      "imageHint": "skate shoes"
+    },
+    {
+      "id": "adidas_superstar",
+      "description": "Iconic Adidas Superstar sneakers",
+      "imageUrl": "/images/products/adidas_superstar.jpg",
+      "imageHint": "shell-toe sneakers"
     }
   ]
 }

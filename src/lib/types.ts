@@ -1,7 +1,12 @@
+
 export type Review = {
-  author: string;
+  id: string;
+  productId: string;
+  userId: string;
+  userName: string;
   rating: number;
   comment: string;
+  createdAt: any; // Can be a Timestamp from Firebase or a JS Date object
 };
 
 export type Product = {
@@ -17,7 +22,8 @@ export type Product = {
   description_en: string;
   category: string;
   images: string[];
-  reviews: Review[];
+  sizes?: string[];
+  colors?: string[];
 };
 
 export type Category = {
@@ -30,6 +36,25 @@ export type Category = {
 };
 
 export type CartItem = {
+  id: string; // A unique ID for the cart item, e.g., product.id-size-color
   product: Product;
   quantity: number;
+  size?: string;
+  color?: string;
 };
+
+// Represents an item as it is stored within a saved order
+export type OrderItem = {
+  id: string; // CartItem id
+  productId: string;
+  name: string;
+  name_fr: string;
+  name_en: string;
+  price: number;
+  quantity: number;
+  size?: string;
+  color?: string;
+  image: string;
+};
+
+    
