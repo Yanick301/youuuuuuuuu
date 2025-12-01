@@ -7,10 +7,10 @@ import { FieldValue } from 'firebase-admin/firestore';
 import { revalidatePath } from 'next/cache';
 
 const AddReviewSchema = z.object({
-  productId: z.string(),
-  userId: z.string(),
-  userName: z.string(),
-  rating: z.number().min(1, "Veuillez sélectionner une note.").max(5),
+  productId: z.string().min(1),
+  userId: z.string().min(1),
+  userName: z.string().default('Anonyme'),
+  rating: z.coerce.number().min(1, "Veuillez sélectionner une note.").max(5),
   comment: z.string().min(10, "Le commentaire doit contenir au moins 10 caractères.").max(500),
 });
 
@@ -24,29 +24,24 @@ export type AddReviewState = {
 }
 
 export async function addReview(prevState: AddReviewState, formData: FormData): Promise<AddReviewState> {
-  const validatedFields = AddReviewSchema.safeParse({
-    productId: formData.get('productId'),
-    userId: formData.get('userId'),
-    userName: formData.get('userName'),
-    rating: Number(formData.get('rating')),
-    comment: formData.get('comment'),
-  });
+  const validatedFields = AddReviewSchema.safeParse(Object.fromEntries(formData.entries()));
 
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'La soumission a échoué. Veuillez corriger les erreurs.',
+      message: 'La soumission a échoué. Veuillez corriger les erreurs et réessayer.',
     };
   }
 
   const { productId, ...reviewData } = validatedFields.data;
 
   try {
-    const reviewsCollection = serverFirestore.collection(`products/${productId}/reviews`);
-    await reviewsCollection.add({
+    const reviewPayload = {
       ...reviewData,
       createdAt: FieldValue.serverTimestamp(),
-    });
+    };
+    
+    await serverFirestore.collection(`products/${productId}/reviews`).add(reviewPayload);
 
     revalidatePath(`/product/${productId}`);
 
