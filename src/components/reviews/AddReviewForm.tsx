@@ -13,8 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { TranslatedText } from '@/components/TranslatedText';
 import type { Review } from '@/lib/types';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { useFirestore } from '@/firebase/provider';
+import { submitReview } from '@/app/actions/reviewActions';
 
 
 const reviewSchema = z.object({
@@ -24,28 +23,6 @@ const reviewSchema = z.object({
 
 type ReviewFormValues = z.infer<typeof reviewSchema>;
 
-// Cette fonction est une Server Action
-async function submitReview(productId: string, userId: string, userName: string, data: ReviewFormValues) {
-  'use server';
-  try {
-    const { getFirebaseAdmin } = await import('@/firebase/admin');
-    const { firestore } = getFirebaseAdmin();
-    
-    const newReviewRef = await addDoc(collection(firestore, 'products', productId, 'reviews'), {
-      productId,
-      userId,
-      userName,
-      rating: data.rating,
-      comment: data.comment,
-      createdAt: serverTimestamp(),
-    });
-
-    return { success: true, id: newReviewRef.id };
-  } catch (error) {
-    console.error("Erreur lors de l'ajout de l'avis:", error);
-    return { success: false, error: "Une erreur est survenue lors de l'ajout de votre avis." };
-  }
-}
 
 export default function AddReviewForm({ productId, onReviewAdded }: { productId: string; onReviewAdded: (review: Review) => void }) {
   const { user } = useUser();
